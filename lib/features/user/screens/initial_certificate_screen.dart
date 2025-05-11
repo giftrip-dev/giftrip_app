@@ -88,7 +88,6 @@ class _InitialCertificateScreenState extends State<InitialCertificateScreen> {
             const SizedBox(height: 24),
             CustomTooltip(
               text: '🌟 자격증 내용이 식별 가능하도록 자세히 찍어주세요 🌟',
-              isDark: true,
             ),
             const SizedBox(height: 8),
             // 이미지 업로드 컨테이너

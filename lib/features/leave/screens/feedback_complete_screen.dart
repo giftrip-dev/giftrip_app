@@ -82,7 +82,6 @@ class _FeedbackCompleteScreenState extends State<FeedbackCompleteScreen> {
                 ),
                 SizedBox(height: 75),
                 CustomTooltip(
-                  isDark: true,
                   text: '오늘 묭해가 꾸준히 나아가는 여정들을\n계속 함께해주실 수 있나요?🥹',
                   size: "md",
                 ),

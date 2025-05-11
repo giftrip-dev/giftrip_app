@@ -53,6 +53,7 @@ flutter:
   assets:
     - .env
     - assets/svg/
+    - assets/png/
     - assets/service-terms.pdf
     - assets/privacy-policy.pdf
     - assets/fonts/Pretendard-Bold.woff
