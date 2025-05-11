@@ -42,7 +42,7 @@ class _MyCommunityListScreenState extends State<MyCommunityListScreen> {
               ? Center(
                   child: Text(
                     '작성한 게시글이 없어요.\n새로운 글을 작성하러 가볼까요?',
-                    style: body_2.copyWith(color: AppColors.labelAssistive),
+                    style: body_M.copyWith(color: AppColors.labelAssistive),
                     textAlign: TextAlign.center,
                   ),
                 )

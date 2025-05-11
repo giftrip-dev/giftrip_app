@@ -88,7 +88,7 @@ class _ContentInputFieldState extends State<ContentInputField> {
               maxLines: 10,
               minLines: 10,
               maxLength: widget.maxLen,
-              style: body_2,
+              style: body_M,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -111,7 +111,7 @@ class _ContentInputFieldState extends State<ContentInputField> {
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 hintText: widget.placeholder,
-                hintStyle: body_2.copyWith(color: AppColors.labelAssistive),
+                hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
                 counterText: "",
               ),
               onChanged: (text) {

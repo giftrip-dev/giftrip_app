@@ -105,12 +105,12 @@ class _CommentInputBoxState extends State<CommentInputBox> {
                   controller: _controller,
                   focusNode: widget.focusNode,
                   textAlignVertical: TextAlignVertical.center,
-                  style: body_2,
+                  style: body_M,
                   decoration: InputDecoration(
                     hintText: widget.parentId == null
                         ? '게시글에 대한 나의 생각은 어떤가요?'
                         : '답글을 입력하세요...',
-                    hintStyle: body_2.copyWith(
+                    hintStyle: body_M.copyWith(
                       color: AppColors.labelAssistive,
                     ),
                     border: OutlineInputBorder(

@@ -120,7 +120,7 @@ class _ReportDropDownState extends State<ReportDropDown> {
               child: InputDecorator(
                 decoration: InputDecoration(
                   hintText: widget.hintText,
-                  hintStyle: body_2,
+                  hintStyle: body_M,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
@@ -157,7 +157,7 @@ class _ReportDropDownState extends State<ReportDropDown> {
                       ? widget.items.firstWhere(
                           (r) => r['value'] == widget.value)['text']!
                       : widget.hintText,
-                  style: body_2.copyWith(
+                  style: body_M.copyWith(
                     color: widget.value != null
                         ? Colors.black
                         : AppColors.labelAssistive,

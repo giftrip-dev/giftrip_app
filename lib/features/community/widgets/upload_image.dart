@@ -154,7 +154,7 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
                   const SizedBox(height: 4),
                   Text(
                     "$totalCount/5",
-                    style: body_3.copyWith(
+                    style: body_S.copyWith(
                       color:
                           isMaxImages ? AppColors.statusError : AppColors.label,
                     ),

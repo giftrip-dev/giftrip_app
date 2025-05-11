@@ -24,7 +24,7 @@ class StartupScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               '4대 미용(헤어,메이크업,네일,피부)을\n업으로 삼고 있는 전국의 미용인이 모여있어요!',
-              style: body_3.copyWith(color: AppColors.labelNatural),
+              style: body_S.copyWith(color: AppColors.labelNatural),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 102),

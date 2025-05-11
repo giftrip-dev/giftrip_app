@@ -24,11 +24,13 @@ dependencies:
   flutter_naver_login: ^2.0.0
   kakao_flutter_sdk: ^1.9.6
   flutter_dotenv: ^5.2.1
+  flutter_svg: ^2.0.17
   flutter_local_notifications: ^18.0.1
   url_launcher: ^6.3.1
   share_plus: ^10.1.4
   flutter_slidable: ^4.0.0
   firebase_core: ^3.12.0
+  cached_network_image: ^3.4.1
   firebase_messaging: ^15.2.3
   device_info_plus: ^11.3.0
   app_links: ^6.4.0
@@ -50,10 +52,7 @@ flutter:
 
   assets:
     - .env
-    - assets/images/
-    - assets/images/icon/
-    - assets/images/logo/
-    - assets/images/illustrator/
+    - assets/svg/
     - assets/service-terms.pdf
     - assets/privacy-policy.pdf
     - assets/fonts/Pretendard-Bold.woff

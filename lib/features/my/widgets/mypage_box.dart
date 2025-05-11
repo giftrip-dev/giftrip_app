@@ -34,11 +34,11 @@ class MyPageBox extends StatelessWidget {
                   children: [
                     Text(
                       entry.key,
-                      style: body_2.copyWith(color: AppColors.label),
+                      style: body_M.copyWith(color: AppColors.label),
                     ),
                     Text(
                       entry.value['text'] as String? ?? '',
-                      style: body_3.copyWith(color: AppColors.labelAlternative),
+                      style: body_S.copyWith(color: AppColors.labelAlternative),
                     ),
                   ],
                 ),

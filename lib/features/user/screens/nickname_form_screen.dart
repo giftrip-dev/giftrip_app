@@ -238,10 +238,10 @@ class _NicknameFormScreenState extends State<NicknameFormScreen> {
         const SizedBox(height: 7),
         TextFormField(
           controller: _nicknameController,
-          style: body_2.copyWith(color: AppColors.label),
+          style: body_M.copyWith(color: AppColors.label),
           decoration: InputDecoration(
             hintText: '닉네임을 입력해주세요.',
-            hintStyle: body_2.copyWith(color: AppColors.labelAssistive),
+            hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
             enabledBorder: OutlineInputBorder(
               borderSide: _errorText != null
                   ? BorderSide(color: AppColors.statusError)

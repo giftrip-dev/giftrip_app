@@ -48,7 +48,7 @@ class ImagePickerBottomSheet extends StatelessWidget {
             leading: const Icon(Icons.photo_library),
             title: const Text(
               "앨범에서 선택",
-              style: body_2,
+              style: body_M,
             ),
             onTap: () async {
               onPickImage(ImageSource.gallery);
@@ -59,7 +59,7 @@ class ImagePickerBottomSheet extends StatelessWidget {
             leading: const Icon(Icons.camera_alt),
             title: const Text(
               "카메라로 촬영",
-              style: body_2,
+              style: body_M,
             ),
             onTap: () => _handleCameraSelection(context),
           ),

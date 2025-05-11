@@ -22,7 +22,7 @@ class LeaveCompleteScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   '탈퇴 후 7일 이내 로그인 시 계정 정보가 복구돼요!',
-                  style: body_3.copyWith(color: AppColors.labelNatural),
+                  style: body_S.copyWith(color: AppColors.labelNatural),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),

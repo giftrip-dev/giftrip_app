@@ -133,12 +133,12 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
                 children: [
                   Text(
                     '다크모드',
-                    style: body_2.copyWith(color: AppColors.label),
+                    style: body_M.copyWith(color: AppColors.label),
                   ),
                   const Spacer(),
                   Text(
                     '시스템설정',
-                    style: body_2.copyWith(color: AppColors.labelAlternative),
+                    style: body_M.copyWith(color: AppColors.labelAlternative),
                   ),
                 ],
               ),
@@ -147,7 +147,7 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
                 children: [
                   Text(
                     '알림설정',
-                    style: body_2.copyWith(color: AppColors.label),
+                    style: body_M.copyWith(color: AppColors.label),
                   ),
                   const Spacer(),
                   FlutterSwitch(

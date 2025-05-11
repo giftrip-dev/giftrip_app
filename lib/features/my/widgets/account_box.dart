@@ -33,7 +33,7 @@ class AccountBoxWidget extends StatelessWidget {
               children: [
                 Text(
                   '닉네임',
-                  style: body_2.copyWith(color: AppColors.label),
+                  style: body_M.copyWith(color: AppColors.label),
                 ),
                 Row(
                   children: [
@@ -57,7 +57,7 @@ class AccountBoxWidget extends StatelessWidget {
                         children: [
                           Text(
                             nickname,
-                            style: body_3.copyWith(color: AppColors.label),
+                            style: body_S.copyWith(color: AppColors.label),
                           ),
                           SizedBox(width: 4),
                           Icon(
@@ -79,11 +79,11 @@ class AccountBoxWidget extends StatelessWidget {
               children: [
                 Text(
                   '이메일',
-                  style: body_2.copyWith(color: AppColors.label),
+                  style: body_M.copyWith(color: AppColors.label),
                 ),
                 Text(
                   email,
-                  style: body_3.copyWith(color: AppColors.labelAlternative),
+                  style: body_S.copyWith(color: AppColors.labelAlternative),
                 ),
               ],
             ),

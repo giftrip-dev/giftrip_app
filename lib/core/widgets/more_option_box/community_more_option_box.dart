@@ -113,7 +113,7 @@ class CommunityMoreOptionBox extends StatelessWidget {
               children: [
                 Text(
                   text,
-                  style: body_3,
+                  style: body_S,
                 ),
                 const Spacer(),
                 Icon(icon, size: 18),

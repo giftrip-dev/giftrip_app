@@ -99,7 +99,7 @@ class PermissionGuideModal extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 description,
-                style: body_3,
+                style: body_S,
               ),
             ],
           ),
