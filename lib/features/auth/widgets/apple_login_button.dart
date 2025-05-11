@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myong/core/widgets/image/custom_image.dart';
 import 'package:myong/core/widgets/modal/one_button_modal.dart';
 import 'package:myong/core/widgets/modal/request_fail_modal.dart';
 import 'package:myong/features/auth/repositories/social_login_repo.dart';
@@ -90,12 +91,8 @@ GestureDetector appleLoginButton({
           ? const CircularProgressIndicator(
               color: Colors.black,
             )
-          : Image.asset(
-              'assets/images/icon/apple.png',
-              fit: BoxFit.contain,
-              width: 22,
-              height: 22,
-            ),
+          : CustomImage(
+              imageUrl: 'assets/svg/apple.svg', width: 48, height: 48),
     ),
   );
 }

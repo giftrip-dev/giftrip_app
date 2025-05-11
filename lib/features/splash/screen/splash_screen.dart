@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/constants/app_colors.dart';
+import 'package:myong/core/widgets/image/custom_image.dart';
 import 'package:myong/features/auth/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:myong/core/services/storage_service.dart';
@@ -58,14 +59,11 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         color: AppColors.primary,
         child: Center(
-          child: SizedBox(
-            width: 174, // 이미지 너비를 174로 제한
-            child: Image.asset(
-              'assets/images/illustrator/splash.png',
-              fit: BoxFit.contain, // 원본 크기 유지
-            ),
-          ),
-        ),
+            child: CustomImage(
+          imageUrl: 'assets/png/logo.png',
+          width: 183,
+          height: 50,
+        )),
       ),
     );
   }

@@ -45,7 +45,11 @@ class DarkAppColors {
 }
 
 class AppColors {
-  static const Color primary = Color(0xFFFF315B);
+  // primary
+  static const Color primary = Color(0xFFD1DCF4);
+  static const Color primaryStrong = Color(0xFF2659CC);
+  static const Color primaryAlternative = Color(0xFFF8F9FF);
+  static const Color primarySoft = Color(0xFF62D2F4);
   // gray
   static const Color white = Colors.white;
   static const Color gray900 = Color(0xFF000000);

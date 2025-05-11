@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/constants/app_colors.dart';
+import 'package:myong/core/widgets/image/custom_image.dart';
 import 'package:myong/features/auth/widgets/social_login_box.dart';
 import 'package:myong/features/auth/widgets/terms_box.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AmplitudeLogger.logViewEvent("app_login_screen_view", "app_login_screen");
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           color: AppColors.primary,
         ),
@@ -20,11 +21,11 @@ class LoginScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 192),
                   _buildLogo(),
                   const SizedBox(height: 60),
-                  _buildIllustrator()
                 ],
               ),
             ),
@@ -37,23 +38,10 @@ class LoginScreen extends StatelessWidget {
 
   // 로고
   Widget _buildLogo() {
-    return Center(
-      child: Image.asset(
-        'assets/images/logo/logo.png',
-        width: 205,
-        height: 86,
-      ),
-    );
-  }
-
-  // 일러스트
-  Widget _buildIllustrator() {
-    return Center(
-      child: Image.asset(
-        'assets/images/illustrator/login.png',
-        width: 206,
-        height: 172,
-      ),
+    return CustomImage(
+      imageUrl: 'assets/png/logo.png',
+      width: 183,
+      height: 50,
     );
   }
 
