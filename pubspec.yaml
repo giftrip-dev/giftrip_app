@@ -52,10 +52,7 @@ flutter:
 
   assets:
     - .env
-    - assets/images/
-    - assets/images/icon/
-    - assets/images/logo/
-    - assets/images/illustrator/
+    - assets/svg/
     - assets/service-terms.pdf
     - assets/privacy-policy.pdf
     - assets/fonts/Pretendard-Bold.woff
