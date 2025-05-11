@@ -154,10 +154,10 @@ class _EmploymentFormScreenState extends State<EmploymentFormScreen> {
         const SizedBox(height: 7),
         TextFormField(
           controller: controller,
-          style: body_2.copyWith(color: AppColors.label),
+          style: body_M.copyWith(color: AppColors.label),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: body_2.copyWith(color: AppColors.labelAssistive),
+            hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.line),
               borderRadius: BorderRadius.circular(8.0),
@@ -275,7 +275,7 @@ class _EmploymentFormScreenState extends State<EmploymentFormScreen> {
               children: [
                 Text(
                   _selectedDate ?? "YYYY/MM/DD",
-                  style: body_2.copyWith(
+                  style: body_M.copyWith(
                     color: _selectedDate == null
                         ? AppColors.labelAssistive
                         : AppColors.labelStrong,

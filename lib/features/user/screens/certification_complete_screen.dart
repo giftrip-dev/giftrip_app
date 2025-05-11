@@ -33,7 +33,7 @@ class CertificationCompleteScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               '오늘묭해가 꼼꼼히 확인 후\n자격증 검토가 끝나면 알림으로 알려드릴게요!',
-              style: body_3.copyWith(color: AppColors.labelNatural),
+              style: body_S.copyWith(color: AppColors.labelNatural),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),

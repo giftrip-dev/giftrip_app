@@ -22,7 +22,7 @@ class RemainScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   '오늘묭해를 한 번 더 믿어주셔서 감사합니다.\n피드백을 보완하여 보다 재밌고 풍성한\n오늘묭해를 선보일 수 있도록 최선을 다하겠습니다.',
-                  style: body_3.copyWith(color: AppColors.labelNatural),
+                  style: body_S.copyWith(color: AppColors.labelNatural),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),

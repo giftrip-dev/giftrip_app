@@ -60,7 +60,7 @@ class _CommentContentBoxState extends State<CommentContentBox> {
     TextSpan getFormattedContent(String content, String? mentionUserId) {
       if (mentionUserId == null || widget.replies == null) {
         return TextSpan(
-            text: content, style: body_3.copyWith(color: AppColors.label));
+            text: content, style: body_S.copyWith(color: AppColors.label));
       }
 
       // mentionUserId에 해당하는 댓글 찾기
@@ -86,14 +86,14 @@ class _CommentContentBoxState extends State<CommentContentBox> {
             ),
             TextSpan(
               text: content,
-              style: body_3.copyWith(color: AppColors.label),
+              style: body_S.copyWith(color: AppColors.label),
             ),
           ],
         );
       }
 
       return TextSpan(
-          text: content, style: body_3.copyWith(color: AppColors.label));
+          text: content, style: body_S.copyWith(color: AppColors.label));
     }
 
     if (widget.isDeleted) {
@@ -107,7 +107,7 @@ class _CommentContentBoxState extends State<CommentContentBox> {
         color: widget.isReply ? AppColors.backgroundAlternative : Colors.white,
         child: Text(
           "작성자에 의해 삭제된 댓글입니다.",
-          style: body_3.copyWith(color: AppColors.labelAlternative),
+          style: body_S.copyWith(color: AppColors.labelAlternative),
         ),
       );
     } else if (widget.isEditing) {
@@ -123,7 +123,7 @@ class _CommentContentBoxState extends State<CommentContentBox> {
                   controller: widget.editingController,
                   maxLines: null,
                   decoration: InputDecoration(
-                    hintStyle: body_2.copyWith(
+                    hintStyle: body_M.copyWith(
                       color: AppColors.labelAssistive,
                     ),
                     border: OutlineInputBorder(
@@ -164,7 +164,7 @@ class _CommentContentBoxState extends State<CommentContentBox> {
                   ),
                   child: Text(
                     "취소",
-                    style: body_3.copyWith(
+                    style: body_S.copyWith(
                       color: AppColors.labelAlternative,
                       height: 1.0, // 텍스트가 정확히 중앙 정렬되도록 설정
                     ),
@@ -180,7 +180,7 @@ class _CommentContentBoxState extends State<CommentContentBox> {
                   ),
                   child: Text(
                     "완료",
-                    style: body_3.copyWith(
+                    style: body_S.copyWith(
                       color: isButtonEnabled
                           ? AppColors.primary
                           : AppColors.labelAlternative,
@@ -196,7 +196,7 @@ class _CommentContentBoxState extends State<CommentContentBox> {
     } else {
       return Text.rich(
         getFormattedContent(widget.commentContent, widget.mentionUserId),
-        style: body_3.copyWith(color: AppColors.label),
+        style: body_S.copyWith(color: AppColors.label),
       );
     }
   }

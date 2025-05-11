@@ -68,7 +68,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 borderSide: BorderSide(color: AppColors.line),
               ),
               hintText: '검색어를 입력해주세요',
-              hintStyle: body_2.copyWith(color: AppColors.labelAlternative),
+              hintStyle: body_M.copyWith(color: AppColors.labelAlternative),
               suffixIcon: GestureDetector(
                 onTap: () {
                   if (_showRecentSearches) {

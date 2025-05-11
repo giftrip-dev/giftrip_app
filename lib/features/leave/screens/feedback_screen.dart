@@ -136,7 +136,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                               Expanded(
                                 child: Text(
                                   feedbackText,
-                                  style: body_2,
+                                  style: body_M,
                                 ),
                               ),
                             ],
@@ -150,7 +150,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                               child: TextField(
                                 controller: viewModel
                                     .getDetailController(feedbackNumber),
-                                style: body_2,
+                                style: body_M,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
@@ -170,7 +170,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 12, horizontal: 16),
                                   hintText: getHintText(feedbackNumber),
-                                  hintStyle: body_2.copyWith(
+                                  hintStyle: body_M.copyWith(
                                       color: AppColors.labelAssistive),
                                 ),
                               ),

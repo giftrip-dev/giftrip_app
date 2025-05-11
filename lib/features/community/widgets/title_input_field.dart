@@ -65,7 +65,7 @@ class _TitleInputFieldState extends State<TitleInputField> {
       children: [
         TextField(
           controller: widget.controller,
-          style: body_2,
+          style: body_M,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -88,7 +88,7 @@ class _TitleInputFieldState extends State<TitleInputField> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             hintText: "제목을 입력해주세요.",
-            hintStyle: body_2.copyWith(color: AppColors.labelAssistive),
+            hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
           ),
           onChanged: (text) {
             setState(() {

@@ -118,7 +118,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
                       onTap: _toggleAll,
                       child: const Text(
                         '전체 약관에 동의합니다.',
-                        style: body_2,
+                        style: body_M,
                       ),
                     ),
                   ),
@@ -143,7 +143,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
                       onTap: _toggleRequired1,
                       child: const Text(
                         '[필수] 회원가입 및 이용 약관 동의',
-                        style: body_2,
+                        style: body_M,
                       ),
                     ),
                   ),
@@ -182,7 +182,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
                       onTap: _toggleRequired2,
                       child: const Text(
                         '[필수] 개인정보 수집 및 이용 동의',
-                        style: body_2,
+                        style: body_M,
                       ),
                     ),
                   ),
@@ -221,7 +221,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
                       onTap: _toggleOptional,
                       child: const Text(
                         '[선택] 마케팅 활용 동의 및 광고 수신 동의',
-                        style: body_2,
+                        style: body_M,
                       ),
                     ),
                   ),

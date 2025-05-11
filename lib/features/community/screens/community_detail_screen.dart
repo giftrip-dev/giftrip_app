@@ -120,7 +120,7 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                             child: Center(
                               child: Text(
                                 '첫 번째 댓글을 남겨보세요',
-                                style: body_2.copyWith(
+                                style: body_M.copyWith(
                                     color: AppColors.labelAssistive),
                                 textAlign: TextAlign.center,
                               ),

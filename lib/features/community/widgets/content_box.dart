@@ -71,7 +71,7 @@ class ContentBox extends StatelessWidget {
 
           // 본문 내용
           Text(postData.content,
-              style: body_3.copyWith(color: AppColors.label)),
+              style: body_S.copyWith(color: AppColors.label)),
 
           // 이미지 리스트 (fileUrls이 있을 경우)
           if (postData.fileUrls.isNotEmpty) ...[
@@ -118,7 +118,7 @@ class ContentBox extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(postData.likeCount.toString(),
-                  style: body_3.copyWith(color: AppColors.labelAlternative)),
+                  style: body_S.copyWith(color: AppColors.labelAlternative)),
 
               const SizedBox(width: 16),
 
@@ -127,7 +127,7 @@ class ContentBox extends StatelessWidget {
                   size: 18, color: AppColors.labelAlternative),
               const SizedBox(width: 4),
               Text(postData.commentCount.toString(),
-                  style: body_3.copyWith(color: AppColors.labelAlternative)),
+                  style: body_S.copyWith(color: AppColors.labelAlternative)),
 
               // 조회수
               const Spacer(),
@@ -135,7 +135,7 @@ class ContentBox extends StatelessWidget {
                   size: 18, color: AppColors.labelAlternative),
               const SizedBox(width: 4),
               Text(postData.viewCount.toString(),
-                  style: body_3.copyWith(color: AppColors.labelAlternative)),
+                  style: body_S.copyWith(color: AppColors.labelAlternative)),
             ],
           ),
         ],

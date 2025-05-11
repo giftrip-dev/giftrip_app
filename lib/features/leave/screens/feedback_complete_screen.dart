@@ -77,7 +77,7 @@ class _FeedbackCompleteScreenState extends State<FeedbackCompleteScreen> {
                 SizedBox(height: 12),
                 Text(
                   '회원님이 전달해주신 피드백을 바탕으로 보다 즐겁고 건전한 커뮤니티를 만들 수 있도록 노력하겠습니다.',
-                  style: body_3.copyWith(color: AppColors.labelNatural),
+                  style: body_S.copyWith(color: AppColors.labelNatural),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 75),

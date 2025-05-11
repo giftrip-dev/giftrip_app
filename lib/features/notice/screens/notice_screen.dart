@@ -51,7 +51,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
               ? Center(
                   child: Text(
                     '등록된 공지가 없어요.',
-                    style: body_2.copyWith(color: AppColors.labelAssistive),
+                    style: body_M.copyWith(color: AppColors.labelAssistive),
                   ),
                 )
               : ListView.builder(
@@ -111,7 +111,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                               children: [
                                 Text(
                                   notice.content,
-                                  style: body_3,
+                                  style: body_S,
                                 ),
                                 if (notice.imageUrl != null)
                                   Padding(
