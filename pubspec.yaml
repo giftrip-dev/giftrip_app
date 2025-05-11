@@ -1,0 +1,63 @@
+name: myong
+description: "오늘묭해"
+
+publish_to: "none"
+
+version: 1.0.6+38
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.2
+  dio: ^5.8.0+1
+  logger: ^2.5.0
+  flutter_secure_storage: ^9.2.4
+  lucide_icons: ^0.257.0
+  image_picker: ^1.1.2
+  flutter_switch: ^0.3.2
+  flutter_naver_login: ^2.0.0
+  kakao_flutter_sdk: ^1.9.6
+  flutter_dotenv: ^5.2.1
+  flutter_local_notifications: ^18.0.1
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.4
+  flutter_slidable: ^4.0.0
+  firebase_core: ^3.12.0
+  firebase_messaging: ^15.2.3
+  device_info_plus: ^11.3.0
+  app_links: ^6.4.0
+  external_path: ^2.1.0
+  android_intent_plus: ^5.3.0
+  permission_handler: ^11.4.0
+  shared_preferences: ^2.5.2
+  sign_in_with_apple: ^6.1.4
+  amplitude_flutter: ^4.1.0
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/images/
+    - assets/images/icon/
+    - assets/images/logo/
+    - assets/images/illustrator/
+    - assets/service-terms.pdf
+    - assets/privacy-policy.pdf
+    - assets/fonts/Pretendard-Bold.woff
+    - assets/fonts/Pretendard-SemiBold.woff
+    - assets/fonts/Pretendard-ExtraBold.woff
+    - assets/fonts/Pretendard-Medium.woff
+    - assets/fonts/Pretendard-Regular.woff

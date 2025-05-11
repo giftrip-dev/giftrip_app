@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android naver social login  -->
+<resources>
+    <string name="client_id">HUPXYBRRHRSDBLPmZshq</string>
+    <string name="client_secret">4m5uBROHYA</string>
+    <string name="client_name">오늘묭해</string>
+</resources>
