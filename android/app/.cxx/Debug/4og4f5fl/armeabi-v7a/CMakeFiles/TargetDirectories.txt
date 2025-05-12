@@ -1,0 +1,2 @@
+/Users/jisu/Desktop/giftrip_app/android/app/.cxx/Debug/4og4f5fl/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/jisu/Desktop/giftrip_app/android/app/.cxx/Debug/4og4f5fl/armeabi-v7a/CMakeFiles/rebuild_cache.dir
