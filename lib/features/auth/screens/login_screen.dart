@@ -6,11 +6,17 @@ import 'package:myong/core/widgets/image/custom_image.dart';
 import 'package:myong/core/widgets/tooltip/tooltip.dart';
 import 'package:myong/features/auth/widgets/social_login_box.dart';
 import 'package:myong/features/auth/widgets/terms_box.dart';
+import 'package:myong/features/auth/widgets/login_input_fields.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,79 +44,53 @@ class LoginScreen extends StatelessWidget {
               // 아이디/비밀번호 입력
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
+                child: const LoginInputFields(),
+              ),
+              const SizedBox(height: 32),
+              // SNS 소셜 로그인, 약관
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: '아이디를 입력해주세요',
-                        hintStyle:
-                            body_M.copyWith(color: AppColors.labelAlternative),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.line,
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: '비밀번호를 입력해주세요',
-                        hintStyle:
-                            body_M.copyWith(color: AppColors.labelAlternative),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.line,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        suffixIcon: Icon(
-                          LucideIcons.eyeOff,
-                          color: AppColors.labelAlternative,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.labelStrong,
+                    Expanded(
+                      child: Container(
+                        decoration: ShapeDecoration(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(
+                              width: 1,
+                              strokeAlign: BorderSide.strokeAlignCenter,
+                              color: AppColors.line,
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 13.5),
                         ),
-                        onPressed: () {},
-                        child: const Text('로그인', style: title_S),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('회원가입',
-                              style: TextStyle(color: Colors.grey)),
+                    const SizedBox(width: 19),
+                    Text(
+                      'SNS 소셜 로그인하기',
+                      style: caption.copyWith(color: AppColors.labelNatural),
+                    ),
+                    const SizedBox(width: 19),
+                    Expanded(
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1,
+                              strokeAlign: BorderSide.strokeAlignCenter,
+                              color: AppColors.line,
+                            ),
+                          ),
                         ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('아이디 / 비밀번호 찾기',
-                              style: TextStyle(color: Colors.grey)),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              // const Spacer(),
-              // SNS 소셜 로그인, 약관
+              const SizedBox(height: 16),
               socialLoginBox(context: context),
               const SizedBox(height: 36),
               termsBox(context: context),
