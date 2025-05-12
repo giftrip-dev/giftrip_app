@@ -16,7 +16,7 @@ class CustomTooltip extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: const Color(0xFF606060),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(

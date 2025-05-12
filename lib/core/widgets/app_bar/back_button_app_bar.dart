@@ -50,7 +50,7 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: onBack ?? () => Navigator.pop(context),
           ),
           title: Text(title ?? "",
-              style: subtitle_M.copyWith(color: AppColors.labelStrong)),
+              style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
         );
 

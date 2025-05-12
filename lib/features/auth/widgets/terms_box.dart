@@ -21,7 +21,7 @@ Widget termsBox({
               "privacy_policy_click", "privacy_policy_button", "login_screen");
         },
         child: Text('개인정보 처리방침',
-            style: title_XS.copyWith(color: AppColors.labelWhite)),
+            style: title_XS.copyWith(color: AppColors.labelAlternative)),
       ),
       const SizedBox(width: 24),
       Text('|', style: title_XS.copyWith(color: AppColors.line)),
@@ -37,7 +37,7 @@ Widget termsBox({
               "service_terms_click", "service_terms_button", "login_screen");
         },
         child: Text('서비스 이용 약관',
-            style: title_XS.copyWith(color: AppColors.labelWhite)),
+            style: title_XS.copyWith(color: AppColors.labelAlternative)),
       ),
     ],
   );
