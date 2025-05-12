@@ -40,8 +40,6 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>naversearchapp</string>
-		<string>naversearchthirdlogin</string>
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
 		<string>kakaotalk</string>
@@ -52,23 +50,6 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>naver.com</key>
-			<dict>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
-			<key>naver.net</key>
-			<dict>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
-		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>자격증 인증 및 글쓰기 화면에서 사진을 추가하기 위해 카메라 권한이 필요합니다.</string>
@@ -102,13 +83,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>naverConsumerKey</key>
-	<string>HUPXYBRRHRSDBLPmZshq</string>
-	<key>naverConsumerSecret</key>
-	<string>4m5uBROHYA</string>
-	<key>naverServiceAppName</key>
-	<string>오늘묭해</string>
-	<key>naverServiceAppUrlScheme</key>
-	<string>myong</string>
 </dict>
 </plist>

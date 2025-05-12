@@ -64,7 +64,7 @@ class CustomImage extends StatelessWidget {
               );
 
     return ClipRRect(
-      borderRadius: borderRadius ?? BorderRadius.circular(8),
+      borderRadius: borderRadius ?? BorderRadius.circular(0),
       child: imageWidget,
     );
   }
