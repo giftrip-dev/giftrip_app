@@ -92,7 +92,7 @@ GestureDetector appleLoginButton({
               color: Colors.black,
             )
           : CustomImage(
-              imageUrl: 'assets/svg/apple.svg', width: 48, height: 48),
+              imageUrl: 'assets/svg/icons/apple.svg', width: 48, height: 48),
     ),
   );
 }

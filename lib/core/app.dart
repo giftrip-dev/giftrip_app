@@ -9,9 +9,15 @@ import 'package:myong/features/community/view_models/comment_view_model.dart';
 import 'package:myong/features/community/view_models/community_search_view_model.dart';
 import 'package:myong/features/community/view_models/community_view_model.dart';
 import 'package:myong/features/community/view_models/community_write_view_model.dart';
+import 'package:myong/features/event/screens/event_screen.dart';
+import 'package:myong/features/home/screens/experience_screen.dart';
+import 'package:myong/features/home/screens/tester_screen.dart';
+import 'package:myong/features/inquiry/screens/inquiry_screen.dart';
 import 'package:myong/features/leave/view_models/leave_view_model.dart';
+import 'package:myong/features/lodging/screens/lodging_screen.dart';
 import 'package:myong/features/my/view_models/my_community_view_model.dart';
 import 'package:myong/features/notice/view_models/notice_view_model.dart';
+import 'package:myong/features/shopping/screens/shopping_screen.dart';
 import 'package:myong/features/splash/screen/splash_screen.dart';
 import 'package:myong/features/user/view_models/certificate_view_model.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +29,6 @@ import 'package:myong/features/notification/view_models/notification_view_model.
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myong/core/utils/fcm_service.dart';
 import 'package:myong/core/utils/get_device_info.dart';
-import 'package:amplitude_flutter/amplitude.dart';
-import 'package:amplitude_flutter/configuration.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:uuid/uuid.dart';
 
 // 전역 navigatorKey 설정 (DioClient에서도 사용 가능)
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -41,16 +43,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final FCMService _fcmService = FCMService(navigatorKey: navigatorKey);
   final AppLinks _appLinks = AppLinks();
-  final Amplitude _amplitude = Amplitude(Configuration(
-    apiKey: dotenv.maybeGet('AMPLITUDE_API_KEY') ?? '',
-  ));
 
   @override
   void initState() {
     super.initState();
     _initFirebase();
     _initDeepLink();
-    _initAmplitude();
     // notificationPermissionSelected가 false일 때만 권한 요청
     GlobalStorage().getNotificationPermissionSelected().then((isSelected) {
       if (!isSelected) {
@@ -65,20 +63,6 @@ class _MyAppState extends State<MyApp> {
     await Firebase.initializeApp();
     await _fcmService.initializeFCM();
     await getDeviceInfo();
-  }
-
-  void _initAmplitude() async {
-    // 기존 amplitudeUserId 확인
-    final storage = GlobalStorage();
-    String? existingUserId = await storage.getAmplitudeUserId();
-
-    if (existingUserId == null) {
-      // UUID를 사용하여 고유 ID 생성
-      String newUserId = Uuid().v4();
-      await storage.setAmplitudeUserId(newUserId);
-    }
-
-    await _amplitude.isBuilt;
   }
 
   // 딥링크 초기화
@@ -141,9 +125,6 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Builder(
         builder: (context) {
-          // 앱 시작 시 알림 권한 요청
-          // GlobalStorage().requestNotificationPermission();
-
           return MaterialApp(
             navigatorKey: navigatorKey,
             navigatorObservers: [routeObserver],
@@ -156,7 +137,7 @@ class _MyAppState extends State<MyApp> {
               Locale('ko', ''),
             ],
             debugShowCheckedModeBanner: false,
-            title: 'My App',
+            title: 'Giftrip',
             theme: lightTheme,
             darkTheme: lightTheme,
             // themeMode: ThemeMode.system,
@@ -187,6 +168,12 @@ class _MyAppState extends State<MyApp> {
             routes: {
               '/login': (context) => const LoginScreen(),
               '/splash': (context) => const SplashScreen(),
+              '/experience': (ctx) => const ExperienceScreen(),
+              '/shopping': (ctx) => const ShoppingScreen(),
+              '/lodging': (ctx) => const LodgingScreen(),
+              '/tester': (ctx) => const TesterScreen(),
+              '/event': (ctx) => const EventScreen(),
+              '/inquiry': (ctx) => const InquiryScreen(),
             },
           );
         },

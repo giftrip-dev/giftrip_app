@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: AppColors.primary,
+        color: AppColors.white,
         child: Center(
             child: CustomImage(
           imageUrl: 'assets/png/logo.png',

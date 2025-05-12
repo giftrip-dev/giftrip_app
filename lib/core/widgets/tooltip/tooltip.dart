@@ -28,7 +28,7 @@ class CustomTooltip extends StatelessWidget {
           Positioned(
             bottom: 0,
             child: Image.asset(
-              'assets/png/arrow_down.png',
+              'assets/png/icons/arrow_down.png',
               width: 16,
               height: 16,
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:myong/core/constants/app_text_style.dart';
+import 'package:myong/core/widgets/image/custom_image.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackButton; // 뒤로가기 여부
@@ -18,9 +18,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        // border: Border(
-        //     bottom: BorderSide(
-        //         color: Color.fromARGB(255, 165, 172, 173), width: 1)), // 테두리 선
         color: Colors.white, // 색상
       ),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -45,16 +42,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     const SizedBox(width: 8),
                   ] else ...[
-                    SvgPicture.asset(
-                      'assets/svg/logo.svg',
-                      height: 24,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      '다글제작소 플러터 공통 위젯',
-                      style: title_M,
-                    ),
-                    const SizedBox(width: 8),
+                    CustomImage(
+                        imageUrl: 'assets/png/logo.png', width: 89, height: 24),
                   ],
                   if (title != null)
                     Text(
