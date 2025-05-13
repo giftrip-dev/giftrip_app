@@ -3,6 +3,7 @@ import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/widgets/text_field/custom_input_field.dart';
 import 'package:myong/core/widgets/dropdown/custom_dropdown.dart';
+import 'package:myong/core/widgets/modal/one_button_modal.dart';
 import 'package:myong/features/auth/widgets/bottom_cta_button.dart';
 import 'package:myong/features/auth/widgets/phone_number_verification.dart';
 
@@ -121,17 +122,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: passwordController,
                 placeholder: '비밀번호',
                 isPassword: true,
+                eyeIconColor: AppColors.componentNatural,
               ),
               const SizedBox(height: 8),
               CustomInputField(
                 controller: passwordConfirmController,
                 placeholder: '비밀번호 확인',
                 isPassword: true,
+                eyeIconColor: AppColors.componentNatural,
               ),
-              const SizedBox(height: 4),
-              Text(
-                '6~20자/영어 대,소문자,숫자,특수기호 중 2가지 이상 조합',
-                style: caption.copyWith(color: AppColors.labelAssistive),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  '6~20자/영어 대,소문자,숫자,특수기호 중 2가지 이상 조합',
+                  style: caption.copyWith(color: AppColors.labelNatural),
+                ),
               ),
               const SizedBox(height: 24),
               Text('휴대폰 번호 인증',

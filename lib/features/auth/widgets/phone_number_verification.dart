@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:myong/features/auth/widgets/timer_modal.dart';
-import 'package:myong/features/auth/widgets/signup_modal.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/widgets/text_field/custom_input_field.dart';
@@ -184,13 +182,17 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                     .isNotEmpty) return;
 
                             if (_timerSeconds > 0 && _isPhoneNumberSent) {
-                              timerModal(
+                              showDialog(
                                 context: context,
-                                title: "인증번호 발송 대기",
-                                btnText: "확인",
-                                onClick: () {},
-                                timerSeconds: _timerSeconds,
+                                builder: (context) => OneButtonModal(
+                                  title: "인증번호 재전송 대기",
+                                  desc: "원활한 인증을 위해 1분 후 다시 시도해주세요.",
+                                  onConfirm: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               );
+
                               return;
                             }
 
@@ -209,24 +211,30 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                   context.mounted) {
                                 _isPhoneNumberSent = false;
                                 widget.onVerificationSuccess();
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => OneButtonModal(
-                                    title: "인증 성공",
-                                    onConfirm: () => Navigator.pop(context),
-                                  ),
-                                );
+
+                                if (context.mounted) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => OneButtonModal(
+                                      title: "인증이 완료되었습니다",
+                                      onConfirm: () => Navigator.pop(context),
+                                    ),
+                                  );
+                                }
                               } else {
                                 if (!context.mounted) return;
                                 widget.onVerificationFailure();
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => OneButtonModal(
-                                    title: "인증 실패",
-                                    desc: "인증번호를 확인해주세요",
-                                    onConfirm: () => Navigator.pop(context),
-                                  ),
-                                );
+
+                                // if (context.mounted) {
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (context) => OneButtonModal(
+                                //       title: "인증 실패",
+                                //       desc: "인증번호를 확인해주세요",
+                                //       onConfirm: () => Navigator.pop(context),
+                                //     ),
+                                //   );
+                                // }
                               }
                             } else if (widget
                                 .phoneNumberController.text.isNotEmpty) {
@@ -245,7 +253,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                 showDialog(
                                     context: context,
                                     builder: (context) => OneButtonModal(
-                                          title: "인증번호를 전송했습니다",
+                                          title: _isResend
+                                              ? "인증번호를 재전송하였습니다."
+                                              : "인증번호를 전송했습니다.",
                                           desc: "해당 번호의 메신저함을 확인해주세요.",
                                           onConfirm: () {
                                             Navigator.pop(context);
@@ -264,7 +274,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       backgroundColor:
                           widget.phoneNumberController.text.isEmpty ||
                                   _isVerificationSuccessful
-                              ? AppColors.line
+                              ? AppColors.componentNatural
                               : Colors.white,
                       foregroundColor: _isVerificationSuccessful
                           ? const Color(0xFFDADCE3)
@@ -275,7 +285,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       side: BorderSide(
                         color: widget.phoneNumberController.text.isEmpty ||
                                 _isVerificationSuccessful
-                            ? (_isResend ? AppColors.line : Colors.transparent)
+                            ? (_isResend
+                                ? AppColors.componentNatural
+                                : Colors.transparent)
                             : const Color(0xFF0E0E0F),
                         width: 1,
                       ),
@@ -287,14 +299,16 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                               "재전송",
                               style: title_S.copyWith(
                                 color: _isVerificationSuccessful
-                                    ? AppColors.line
-                                    : AppColors.label,
+                                    ? AppColors.labelAlternative
+                                    : AppColors.labelStrong,
                               ),
                             )
                           : Text(
                               "인증번호 받기",
                               style: title_S.copyWith(
-                                color: AppColors.label,
+                                color: widget.phoneNumberController.text.isEmpty
+                                    ? AppColors.labelAlternative
+                                    : AppColors.labelStrong,
                               ),
                             ),
                     ),
@@ -343,7 +357,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                 if (_isVerificationSuccessful)
                                   const Icon(
                                     Icons.check,
-                                    color: AppColors.primary,
+                                    color: AppColors.primaryStrong,
                                   ),
                               ],
                             )
@@ -384,8 +398,29 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                     _isVerificationSuccessful = true;
                                   });
                                   widget.onVerificationSuccess();
+
+                                  if (context.mounted) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => OneButtonModal(
+                                        title: "인증이 완료되었습니다",
+                                        onConfirm: () => Navigator.pop(context),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   widget.onVerificationFailure();
+
+                                  if (context.mounted) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => OneButtonModal(
+                                        title: "인증 실패",
+                                        desc: "인증번호를 확인해주세요",
+                                        onConfirm: () => Navigator.pop(context),
+                                      ),
+                                    );
+                                  }
                                 }
                               }
                             : null,

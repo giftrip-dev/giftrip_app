@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class CustomInputField extends StatefulWidget {
   final TextEditingController controller;
@@ -12,6 +13,7 @@ class CustomInputField extends StatefulWidget {
   final Widget? suffixIcon; // 우측 아이콘
   final Function(String)? onChanged; // 값 변경 콜백
   final bool? isError; // 에러 여부
+  final Color? eyeIconColor; // 눈 아이콘 색상
 
   const CustomInputField({
     super.key,
@@ -24,6 +26,7 @@ class CustomInputField extends StatefulWidget {
     this.suffixIcon,
     this.onChanged,
     this.isError,
+    this.eyeIconColor,
   });
   @override
   State<CustomInputField> createState() => _CustomInputFieldState();
@@ -86,8 +89,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 (showObscureToggle
                     ? IconButton(
                         icon: Icon(
-                          _obscure ? Icons.visibility_off : Icons.visibility,
-                          color: AppColors.componentDimmer,
+                          _obscure ? LucideIcons.eyeOff : LucideIcons.eye,
+                          color: widget.eyeIconColor ?? AppColors.labelStrong,
                           size: 20,
                         ),
                         onPressed: () {
@@ -97,7 +100,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
                         },
                       )
                     : widget.isValid == true
-                        ? const Icon(Icons.check, color: AppColors.statusClear)
+                        ? const Icon(LucideIcons.check,
+                            color: AppColors.statusClear)
                         : null),
           ),
         ),
