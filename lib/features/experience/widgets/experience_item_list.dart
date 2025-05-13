@@ -32,10 +32,6 @@ class ExperienceItemList extends StatelessWidget {
         (screenWidth - totalPadding - (columnCount - 1) * itemSpacing) /
             columnCount;
 
-    // 아이템의 높이는 이미지(정사각형) + 텍스트 영역 + 간격들의 합
-    // 텍스트 영역과 간격의 예상 높이를 더해줍니다
-    final itemHeight = itemWidth + 120; // 120은 이미지 아래 컨텐츠의 대략적인 높이
-
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels >=
@@ -46,28 +42,68 @@ class ExperienceItemList extends StatelessWidget {
         }
         return true;
       },
-      child: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 24,
-          crossAxisSpacing: 12,
-          childAspectRatio: itemWidth / itemHeight,
-        ),
-        itemCount: experiences.length + (isLoading ? 2 : 0),
-        itemBuilder: (context, index) {
-          if (index < experiences.length) {
-            return ExperienceItem(
-              experience: experiences[index],
-              badgeType: ItemBadgeType.newArrival,
-              imageSize: itemWidth,
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, rowIndex) {
+                  // 현재 행의 시작 인덱스
+                  final startIndex = rowIndex * columnCount;
+                  // 남은 아이템이 없으면 null 반환
+                  if (startIndex >= experiences.length) {
+                    if (isLoading) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return null;
+                  }
+
+                  // 현재 행의 아이템들
+                  final rowItems = <Widget>[];
+                  for (var i = 0; i < columnCount; i++) {
+                    final itemIndex = startIndex + i;
+                    if (itemIndex < experiences.length) {
+                      rowItems.add(
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: i > 0 ? itemSpacing : 0,
+                            ),
+                            child: ExperienceItem(
+                              experience: experiences[itemIndex],
+                              badgeType: ItemBadgeType.newArrival,
+                              imageSize: itemWidth,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: rowIndex > 0 ? 24 : 0,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: rowItems,
+                      ),
+                    ),
+                  );
+                },
+                childCount: (experiences.length / columnCount).ceil() +
+                    (isLoading ? 1 : 0),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -37,7 +37,7 @@ class ExperienceItem extends StatelessWidget {
         SizedBox(
           child: Text(
             experience.title,
-            style: body_S,
+            style: body_M,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

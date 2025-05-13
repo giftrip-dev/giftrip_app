@@ -19,7 +19,7 @@ final List<ExperienceModel> mockExperienceList = List.generate(
 
     return ExperienceModel(
       id: 'exp_${index + 1}',
-      title: '${category.label} 상품 ${index + 1}',
+      title: '${category.label} 상품 ${index + 1} ',
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
       thumbnailUrl: 'assets/png/banner.png',
