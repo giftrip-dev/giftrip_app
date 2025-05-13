@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/utils/pdf_download.dart';
-import 'package:myong/features/user/screens/select_category_screen.dart';
-import 'package:myong/core/widgets/button/cta_button.dart';
-import 'package:myong/features/user/models/dto/user_dto.dart';
-import 'package:myong/features/user/view_models/user_view_model.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:dropdown_search/dropdown_search.dart';
+
 import 'package:myong/core/widgets/text_field/custom_input_field.dart';
 import 'package:myong/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:myong/features/auth/widgets/bottom_cta_button.dart';
+import 'package:myong/features/auth/screens/register_screen.dart';
 
 class InfluencerCheckScreen extends StatefulWidget {
   const InfluencerCheckScreen({super.key});
@@ -217,30 +210,38 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                           (_selectedDomain == '기타' &&
                               _customDomain.isNotEmpty)))
               ? () async {
-                  final userViewModel = UserViewModel();
-                  final storageService = GlobalStorage();
+                  // 기존 유저 정보 업데이트 로직 주석 처리 또는 삭제
+                  // final userViewModel = UserViewModel();
+                  // final storageService = GlobalStorage();
 
-                  bool success =
-                      await userViewModel.updateUser(UserUpdateRequestDto(
-                    isTermsOfServiceConsent: _yes,
-                    isPersonalInfoConsent: _yes,
-                    isAdvConsent: _yes,
-                  ));
-                  if (success) {
-                    await storageService.setServiceTermsComplete();
-                    AmplitudeLogger.logClickEvent("terms_agreement_cta_click",
-                        "terms_agreement_cta_button", "terms_agreement_screen");
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SelectCategoryScreen()),
-                      (route) => false,
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('유저 정보 업데이트에 실패했습니다.')),
-                    );
-                  }
+                  // bool success =
+                  //     await userViewModel.updateUser(UserUpdateRequestDto(
+                  //   isTermsOfServiceConsent: _yes,
+                  //   isPersonalInfoConsent: _yes,
+                  //   isAdvConsent: _yes,
+                  // ));
+                  // if (success) {
+                  //   await storageService.setServiceTermsComplete();
+                  //   AmplitudeLogger.logClickEvent("terms_agreement_cta_click",
+                  //       "terms_agreement_cta_button", "terms_agreement_screen");
+                  //   Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const SelectCategoryScreen()),
+                  //     (route) => false,
+                  //   );
+                  // } else {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(content: Text('유저 정보 업데이트에 실패했습니다.')),
+                  //   );
+                  // }
+                  // RegisterScreen으로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                  );
                 }
               : null,
           text: '다음',

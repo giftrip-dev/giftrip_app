@@ -9,6 +9,7 @@ class CustomInputField extends StatefulWidget {
   final bool isPassword; // 비밀번호 인풋 여부
   final String? errorText; // 에러 메세지
   final bool? isValid; // 유효성 검사 결과 (null: 검사 안함, true: 통과, false: 실패)
+  final Widget? suffixIcon; // 우측 아이콘
 
   const CustomInputField({
     super.key,
@@ -18,6 +19,7 @@ class CustomInputField extends StatefulWidget {
     this.isPassword = false,
     this.errorText,
     this.isValid,
+    this.suffixIcon,
   });
   @override
   State<CustomInputField> createState() => _CustomInputFieldState();
@@ -73,22 +75,23 @@ class _CustomInputFieldState extends State<CustomInputField> {
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.line, width: 1),
             ),
-            suffixIcon: showObscureToggle
-                ? IconButton(
-                    icon: Icon(
-                      _obscure ? Icons.visibility_off : Icons.visibility,
-                      color: AppColors.componentDimmer,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscure = !_obscure;
-                      });
-                    },
-                  )
-                : widget.isValid == true
-                    ? const Icon(Icons.check, color: AppColors.statusClear)
-                    : null,
+            suffixIcon: widget.suffixIcon ??
+                (showObscureToggle
+                    ? IconButton(
+                        icon: Icon(
+                          _obscure ? Icons.visibility_off : Icons.visibility,
+                          color: AppColors.componentDimmer,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscure = !_obscure;
+                          });
+                        },
+                      )
+                    : widget.isValid == true
+                        ? const Icon(Icons.check, color: AppColors.statusClear)
+                        : null),
           ),
         ),
         if (widget.errorText != null)
