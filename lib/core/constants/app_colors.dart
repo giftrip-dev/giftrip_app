@@ -82,6 +82,7 @@ class AppColors {
   static const Color statusWarning = Color(0xFFF1C038);
   static const Color statusAlarmDot = Color(0xFFFF2424);
   // component
+  static const Color component = gray600;
   static const Color componentStrong = gray900;
   static const Color componentNatural = gray400;
   static const Color componentAlternative = Color(0xFFF4F4F6);

@@ -22,9 +22,9 @@ class CTAButton extends StatelessWidget {
         onPressed: isEnabled ? onPressed : null,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: AppColors.componentNatural,
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.primaryStrong,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
         child: isEnabled

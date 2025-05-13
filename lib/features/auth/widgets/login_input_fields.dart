@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
+import 'package:myong/features/terms/screens/terms_agreement_screen.dart';
 
 class LoginInputFields extends StatefulWidget {
   const LoginInputFields({super.key});
@@ -97,7 +98,14 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TermsAgreementScreen(),
+                    ),
+                  );
+                },
                 child: Text(
                   '회원가입',
                   style:

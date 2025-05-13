@@ -78,198 +78,239 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const GlobalAppBar(noAlarm: true),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-
-            const Text(
-              '오늘묭해\n서비스 이용 약관',
-              style: h1_M,
-            ),
-            const SizedBox(height: 9),
-
-            Text(
-              '서비스 이용을 위해 약관을 동의해 주세요.',
-              style: subtitle_S.copyWith(color: AppColors.labelAlternative),
-            ),
-
-            const Spacer(),
-            // 전체 약관 동의 박스
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              decoration: BoxDecoration(
-                color: AppColors.backgroundAlternative,
-                borderRadius: BorderRadius.circular(8),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text("회원가입",
+              style: title_M.copyWith(color: AppColors.labelStrong)),
+          titleSpacing: 0,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 24),
+              Image.asset(
+                'assets/png/logo.png',
+                width: 85,
+                height: 23,
               ),
-              child: Row(
-                children: [
-                  _CustomRadio(
-                    isChecked: _allAgreed,
-                    onTap: _toggleAll,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: GestureDetector(
+              const SizedBox(height: 16),
+              const Text(
+                '기프트립\n서비스 이용 약관',
+                style: h1_M,
+              ),
+              const SizedBox(height: 8),
+
+              Text(
+                '서비스 이용을 위해 약관을 동의해 주세요.',
+                style: subtitle_S.copyWith(color: AppColors.labelAlternative),
+              ),
+
+              const Spacer(),
+              // 전체 약관 동의 박스
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryAlternative,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    _CustomRadio(
+                      isChecked: _allAgreed,
                       onTap: _toggleAll,
-                      child: const Text(
-                        '전체 약관에 동의합니다.',
-                        style: body_M,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _toggleAll,
+                        child: Text(
+                          '전체 약관에 동의합니다.',
+                          style: h2_R.copyWith(color: AppColors.primaryStrong),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            // 세부 약관들
-            const SizedBox(height: 32),
-            // 1) [필수] 회원가입 및 이용약관 동의
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  _CustomRadio(
-                    isChecked: _required1,
-                    onTap: _toggleRequired1,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: GestureDetector(
+              // 세부 약관들
+              const SizedBox(height: 32),
+              // 1) [필수] 회원가입 및 이용약관 동의
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: [
+                    _CustomRadio(
+                      isChecked: _required1,
                       onTap: _toggleRequired1,
-                      child: const Text(
-                        '[필수] 회원가입 및 이용 약관 동의',
-                        style: body_M,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _toggleRequired1,
+                        child: Row(
+                          children: [
+                            Text(
+                              '[필수] ',
+                              style:
+                                  h2_S.copyWith(color: AppColors.primaryStrong),
+                            ),
+                            Text(
+                              ' 회원가입 및 이용 약관 동의',
+                              style: h2_S.copyWith(color: Color(0xFF0E0E0F)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  // 오른쪽 끝에 아이콘
-                  InkWell(
-                    onTap: () {
-                      PdfDownloadUtil.downloadPdf(
-                        context: context,
-                        assetPath: 'assets/service-terms.pdf',
-                        fileName: 'service-terms.pdf',
-                      );
-                    },
-                    child: Icon(
-                      LucideIcons.chevronRight,
-                      size: 18,
-                      color: AppColors.componentStrong,
+                    // 오른쪽 끝에 아이콘
+                    InkWell(
+                      onTap: () {
+                        PdfDownloadUtil.downloadPdf(
+                          context: context,
+                          assetPath: 'assets/service-terms.pdf',
+                          fileName: 'service-terms.pdf',
+                        );
+                      },
+                      child: Icon(
+                        LucideIcons.chevronRight,
+                        size: 18,
+                        color: AppColors.component,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            const SizedBox(height: 32),
-            // 2) [필수] 개인정보 수집 및 이용 동의
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  _CustomRadio(
-                    isChecked: _required2,
-                    onTap: _toggleRequired2,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: GestureDetector(
+              const SizedBox(height: 32),
+              // 2) [필수] 개인정보 수집 및 이용 동의
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: [
+                    _CustomRadio(
+                      isChecked: _required2,
                       onTap: _toggleRequired2,
-                      child: const Text(
-                        '[필수] 개인정보 수집 및 이용 동의',
-                        style: body_M,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _toggleRequired2,
+                        child: Row(
+                          children: [
+                            Text(
+                              '[필수] ',
+                              style:
+                                  h2_S.copyWith(color: AppColors.primaryStrong),
+                            ),
+                            Text(
+                              ' 개인정보 수집 및 이용 동의',
+                              style: h2_S.copyWith(color: Color(0xFF0E0E0F)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  // 오른쪽 끝에 아이콘
-                  InkWell(
-                    onTap: () {
-                      PdfDownloadUtil.downloadPdf(
-                        context: context,
-                        assetPath: 'assets/privacy-policy.pdf',
-                        fileName: 'privacy-policy.pdf',
-                      );
-                    },
-                    child: Icon(
-                      LucideIcons.chevronRight,
-                      size: 18,
-                      color: AppColors.componentStrong,
+                    // 오른쪽 끝에 아이콘
+                    InkWell(
+                      onTap: () {
+                        PdfDownloadUtil.downloadPdf(
+                          context: context,
+                          assetPath: 'assets/privacy-policy.pdf',
+                          fileName: 'privacy-policy.pdf',
+                        );
+                      },
+                      child: Icon(
+                        LucideIcons.chevronRight,
+                        size: 18,
+                        color: AppColors.component,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            const SizedBox(height: 32),
-            // 3) [선택] 마케팅 활용 동의 및 광고 수신 동의
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  _CustomRadio(
-                    isChecked: _optional,
-                    onTap: _toggleOptional,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: GestureDetector(
+              const SizedBox(height: 32),
+              // 3) [선택] 마케팅 활용 동의 및 광고 수신 동의
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: [
+                    _CustomRadio(
+                      isChecked: _optional,
                       onTap: _toggleOptional,
-                      child: const Text(
-                        '[선택] 마케팅 활용 동의 및 광고 수신 동의',
-                        style: body_M,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _toggleOptional,
+                        child: Row(
+                          children: [
+                            Text(
+                              '[선택] ',
+                              style:
+                                  h2_S.copyWith(color: AppColors.primaryStrong),
+                            ),
+                            Text(
+                              ' 마케팅 활용 동의 및 광고 수신 동의',
+                              style: h2_S.copyWith(color: Color(0xFF0E0E0F)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  // 아이콘 없음
-                ],
+                    // 아이콘 없음
+                  ],
+                ),
               ),
-            ),
 
-            // 다음 버튼
-            const SizedBox(height: 44),
-            CTAButton(
-              isEnabled: _required1 && _required2,
-              onPressed: _required1 && _required2
-                  ? () async {
-                      final userViewModel = UserViewModel();
-                      final storageService = GlobalStorage();
+              // 다음 버튼
+              const SizedBox(height: 44),
+              CTAButton(
+                isEnabled: _required1 && _required2,
+                onPressed: _required1 && _required2
+                    ? () async {
+                        final userViewModel = UserViewModel();
+                        final storageService = GlobalStorage();
 
-                      bool success =
-                          await userViewModel.updateUser(UserUpdateRequestDto(
-                        isTermsOfServiceConsent: _required1,
-                        isPersonalInfoConsent: _required2,
-                        isAdvConsent: _optional,
-                      ));
-                      if (success) {
-                        await storageService.setServiceTermsComplete();
-                        AmplitudeLogger.logClickEvent(
-                            "terms_agreement_cta_click",
-                            "terms_agreement_cta_button",
-                            "terms_agreement_screen");
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const SelectCategoryScreen()),
-                          (route) => false,
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('유저 정보 업데이트에 실패했습니다.')),
-                        );
+                        bool success =
+                            await userViewModel.updateUser(UserUpdateRequestDto(
+                          isTermsOfServiceConsent: _required1,
+                          isPersonalInfoConsent: _required2,
+                          isAdvConsent: _optional,
+                        ));
+                        if (success) {
+                          await storageService.setServiceTermsComplete();
+                          AmplitudeLogger.logClickEvent(
+                              "terms_agreement_cta_click",
+                              "terms_agreement_cta_button",
+                              "terms_agreement_screen");
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SelectCategoryScreen()),
+                            (route) => false,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('유저 정보 업데이트에 실패했습니다.')),
+                          );
+                        }
                       }
-                    }
-                  : null,
-              text: '다음',
-            ),
+                    : null,
+                text: '다음',
+              ),
 
-            const SizedBox(height: 62),
-          ],
+              const SizedBox(height: 62),
+            ],
+          ),
         ),
       ),
     );
@@ -301,18 +342,18 @@ class _CustomRadio extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: isChecked ? Colors.black : AppColors.lineStrong,
+            color: isChecked ? AppColors.primaryStrong : AppColors.lineStrong,
             width: 1,
           ),
-          color: isChecked ? Colors.black : Colors.transparent,
+          color: isChecked ? AppColors.primaryStrong : AppColors.white,
         ),
         child: isChecked
             ? const Center(
-                // 하얀 동그라미 표현 등등
                 child: Icon(
                   Icons.check,
                   size: 14,
-                  color: Colors.white,
+                  weight: 2,
+                  color: AppColors.white,
                 ),
               )
             : null,
