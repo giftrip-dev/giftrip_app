@@ -4,12 +4,11 @@ import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/services/storage_service.dart';
 import 'package:myong/core/utils/pdf_download.dart';
-import 'package:myong/core/widgets/app_bar/global_app_bar.dart';
-import 'package:myong/features/user/screens/select_category_screen.dart';
 import 'package:myong/core/widgets/button/cta_button.dart';
 import 'package:myong/features/user/models/dto/user_dto.dart';
 import 'package:myong/features/user/view_models/user_view_model.dart';
 import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:myong/features/terms/screens/influencer-check-screen.dart';
 
 class TermsAgreementScreen extends StatefulWidget {
   const TermsAgreementScreen({super.key});
@@ -295,7 +294,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const SelectCategoryScreen()),
+                                    const InfluencerCheckScreen()),
                             (route) => false,
                           );
                         } else {

@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/features/terms/screens/terms_agreement_screen.dart';
+import 'package:myong/core/widgets/text_field/custom_input_field.dart';
 
 class LoginInputFields extends StatefulWidget {
   const LoginInputFields({super.key});
@@ -14,62 +15,30 @@ class LoginInputFields extends StatefulWidget {
 class _LoginInputFieldsState extends State<LoginInputFields> {
   bool _obscureText = true;
 
+  // 컨트롤러 추가
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _pwController = TextEditingController();
+
+  @override
+  void dispose() {
+    _idController.dispose();
+    _pwController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          decoration: InputDecoration(
-            hintText: '아이디를 입력해주세요',
-            hintStyle: body_M.copyWith(color: AppColors.labelAlternative),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.line),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.line),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.labelStrong),
-            ),
-          ),
+        CustomInputField(
+          controller: _idController,
+          placeholder: '아이디를 입력해주세요',
         ),
         const SizedBox(height: 8),
-        TextField(
-          obscureText: _obscureText,
-          decoration: InputDecoration(
-            hintText: '비밀번호를 입력해주세요',
-            hintStyle: body_M.copyWith(color: AppColors.labelAlternative),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureText ? LucideIcons.eyeOff : LucideIcons.eye,
-                color: AppColors.componentNatural,
-              ),
-              onPressed: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.line),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.line),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: AppColors.labelStrong),
-            ),
-          ),
+        CustomInputField(
+          controller: _pwController,
+          placeholder: '비밀번호를 입력해주세요',
+          isPassword: true,
         ),
         const SizedBox(height: 8),
         SizedBox(
