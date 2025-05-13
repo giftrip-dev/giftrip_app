@@ -57,6 +57,10 @@ class CustomDropdown extends StatelessWidget {
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
+              side: BorderSide(
+                color: AppColors.line,
+                width: 1,
+              ),
             ),
           ),
           constraints: const BoxConstraints(

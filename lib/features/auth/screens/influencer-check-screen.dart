@@ -35,6 +35,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
   final List<String> _domains = ['유튜브', '인스타그램', 'X (구 트위터)', '네이버 블로그', '기타'];
   String? _selectedDomain;
   final TextEditingController _accountController = TextEditingController();
+  final TextEditingController _customDomainController = TextEditingController();
 
   /// 인플루언서루활활 활활 토글
   void _toggleYes() {
@@ -114,9 +115,8 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                       ),
                       if (_yes) ...[
                         const SizedBox(height: 16),
-                        Text('도메인 선택',
-                            style:
-                                body_M.copyWith(color: AppColors.labelStrong)),
+                        Text('선택',
+                            style: h2_S.copyWith(color: AppColors.labelStrong)),
                         const SizedBox(height: 8),
                         CustomDropdown(
                           width: 150,
@@ -129,10 +129,17 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                           },
                           hintText: '도메인 선택',
                         ),
+                        if (_selectedDomain == '기타')
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 16),
+                            child: CustomInputField(
+                              controller: _customDomainController,
+                              placeholder: '도메인 입력',
+                            ),
+                          ),
                         const SizedBox(height: 16),
                         Text('계정 이름',
-                            style:
-                                body_M.copyWith(color: AppColors.labelStrong)),
+                            style: h2_S.copyWith(color: AppColors.labelStrong)),
                         const SizedBox(height: 8),
                         CustomInputField(
                           controller: _accountController,
@@ -162,7 +169,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                         child: GestureDetector(
                           onTap: _toggleNo,
                           child: Text(
-                            '아니오',
+                            '아니요',
                             style: h2_R.copyWith(color: AppColors.labelStrong),
                           ),
                         ),
@@ -217,6 +224,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
   @override
   void dispose() {
     _accountController.dispose();
+    _customDomainController.dispose();
     super.dispose();
   }
 }
