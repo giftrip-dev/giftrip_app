@@ -9,6 +9,7 @@ class CustomDropdown extends StatelessWidget {
   final ValueChanged<String?> onChanged;
   final String hintText;
   final double? width;
+  final double? height;
 
   const CustomDropdown({
     super.key,
@@ -17,6 +18,7 @@ class CustomDropdown extends StatelessWidget {
     required this.onChanged,
     required this.hintText,
     this.width,
+    this.height,
   });
 
   @override
@@ -63,8 +65,8 @@ class CustomDropdown extends StatelessWidget {
               ),
             ),
           ),
-          constraints: const BoxConstraints(
-            maxHeight: 240,
+          constraints: BoxConstraints(
+            maxHeight: height ?? 240,
           ),
           itemBuilder: (context, item, isSelected, isDisabled) {
             return Padding(

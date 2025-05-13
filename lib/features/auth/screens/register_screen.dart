@@ -27,12 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? selectedEmailDomain;
   final List<String> emailDomains = [
-    'naver.com',
-    'gmail.com',
     'kakao.com',
     'hanmail.net',
-    'nate.com',
-    '직접입력'
   ];
 
   bool isButtonEnabled = false;
@@ -99,7 +95,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       placeholder: '이메일',
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 8),
+                  Text('@',
+                      style: body_S.copyWith(color: AppColors.labelStrong)),
+                  const SizedBox(width: 8),
                   Expanded(
                     flex: 2,
                     child: CustomDropdown(
@@ -111,6 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         });
                       },
                       hintText: '선택',
+                      height: 96,
                     ),
                   ),
                 ],
