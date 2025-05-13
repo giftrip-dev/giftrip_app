@@ -25,6 +25,8 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
   @override
   void initState() {
     super.initState();
+    _accountController.addListener(_updateAccountName);
+    _customDomainController.addListener(_updateCustomDomain);
   }
 
   /// 인플루언서 활활 상태
@@ -36,6 +38,21 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
   String? _selectedDomain;
   final TextEditingController _accountController = TextEditingController();
   final TextEditingController _customDomainController = TextEditingController();
+
+  String _accountName = '';
+  String _customDomain = '';
+
+  void _updateAccountName() {
+    setState(() {
+      _accountName = _accountController.text;
+    });
+  }
+
+  void _updateCustomDomain() {
+    setState(() {
+      _customDomain = _customDomainController.text;
+    });
+  }
 
   /// 인플루언서루활활 활활 토글
   void _toggleYes() {
@@ -186,8 +203,19 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
           ),
         ),
         bottomNavigationBar: BottomCTAButton(
-          isEnabled: _yes || _no,
-          onPressed: _yes || _no
+          isEnabled: _no ||
+              (_yes &&
+                  _selectedDomain != null &&
+                  _accountName.isNotEmpty &&
+                  (_selectedDomain != '기타' ||
+                      (_selectedDomain == '기타' && _customDomain.isNotEmpty))),
+          onPressed: _no ||
+                  (_yes &&
+                      _selectedDomain != null &&
+                      _accountName.isNotEmpty &&
+                      (_selectedDomain != '기타' ||
+                          (_selectedDomain == '기타' &&
+                              _customDomain.isNotEmpty)))
               ? () async {
                   final userViewModel = UserViewModel();
                   final storageService = GlobalStorage();
@@ -223,6 +251,8 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
 
   @override
   void dispose() {
+    _accountController.removeListener(_updateAccountName);
+    _customDomainController.removeListener(_updateCustomDomain);
     _accountController.dispose();
     _customDomainController.dispose();
     super.dispose();
