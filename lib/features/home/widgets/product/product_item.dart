@@ -43,9 +43,9 @@ class ProductItem extends StatelessWidget {
         const SizedBox(height: 8),
 
         // 3. 가격 및 할인율
-        Row(
-          children: [
-            if (product.discountRate != null) ...[
+        if (product.hasDiscount) ...[
+          Row(
+            children: [
               Text(
                 '${product.discountRate}%',
                 style: subtitle_XS.copyWith(
@@ -61,8 +61,8 @@ class ProductItem extends StatelessWidget {
                 ),
               ),
             ],
-          ],
-        ),
+          ),
+        ],
 
         // 4. 최종 가격
         Text(
