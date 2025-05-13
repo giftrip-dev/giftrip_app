@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/utils/logger.dart';
 import 'package:myong/core/widgets/image/custom_image.dart';
 
 class HomeFeatureTab extends StatelessWidget {
@@ -42,7 +41,6 @@ class HomeFeatureTab extends StatelessWidget {
     ];
 
     Widget _buildItem(Map<String, String> f) {
-      logger.d(f["icon"]);
       return GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, f['route']!);

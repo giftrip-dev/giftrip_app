@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:myong/features/home/view_models/product_view_model.dart';
-import 'package:myong/features/home/models/product.dart';
+import 'package:myong/features/home/models/product_model.dart';
 import 'package:myong/features/home/widgets/product/product_item.dart';
 
 /// 가로 슬라이드 & 무한 페칭 캐러셀

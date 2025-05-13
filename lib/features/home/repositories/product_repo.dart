@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/home/models/product.dart';
+import 'package:myong/features/home/models/product_model.dart';
 
 class ProductRepo {
   final Dio _dio = DioClient().to();

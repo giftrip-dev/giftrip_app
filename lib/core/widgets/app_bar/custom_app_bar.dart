@@ -28,33 +28,48 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // 왼쪽 영역
-              Row(
-                children: [
-                  if (isBackButton) ...[
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      behavior: HitTestBehavior.opaque,
-                      child: const Icon(
-                        Icons.chevron_left,
-                        size: 24,
-                        color: Colors.black,
+              SizedBox(
+                width: 89,
+                child: Row(
+                  children: [
+                    if (isBackButton) ...[
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        behavior: HitTestBehavior.opaque,
+                        child: const Icon(
+                          Icons.chevron_left,
+                          size: 24,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                  ] else ...[
-                    CustomImage(
-                        imageUrl: 'assets/png/logo.png', width: 89, height: 24),
+                    ] else ...[
+                      CustomImage(
+                          imageUrl: 'assets/png/logo.png',
+                          width: 89,
+                          height: 24),
+                    ],
                   ],
-                  if (title != null)
-                    Text(
-                      title!,
-                      style: subtitle_M,
-                    ),
-                ],
+                ),
               ),
 
+              // 중앙 영역 (타이틀)
+              if (title != null)
+                Expanded(
+                  child: Text(
+                    title!,
+                    style: subtitle_M,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
               // 오른쪽 영역
-              rightWidget ?? const SizedBox.shrink(),
+              SizedBox(
+                width: 89,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: rightWidget ?? const SizedBox.shrink(),
+                ),
+              ),
             ],
           ),
         ),

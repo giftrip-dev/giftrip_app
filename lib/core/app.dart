@@ -10,6 +10,7 @@ import 'package:myong/features/community/view_models/community_search_view_model
 import 'package:myong/features/community/view_models/community_view_model.dart';
 import 'package:myong/features/community/view_models/community_write_view_model.dart';
 import 'package:myong/features/event/screens/event_screen.dart';
+import 'package:myong/features/event/view_models/event_view_model.dart';
 import 'package:myong/features/home/screens/experience_screen.dart';
 import 'package:myong/features/home/screens/tester_screen.dart';
 import 'package:myong/features/home/view_models/product_view_model.dart';
@@ -124,6 +125,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => NotificationViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
+        ChangeNotifierProvider(create: (_) => EventViewModel()),
       ],
       child: Builder(
         builder: (context) {
