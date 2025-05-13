@@ -10,6 +10,8 @@ class CustomInputField extends StatefulWidget {
   final String? errorText; // 에러 메세지
   final bool? isValid; // 유효성 검사 결과 (null: 검사 안함, true: 통과, false: 실패)
   final Widget? suffixIcon; // 우측 아이콘
+  final Function(String)? onChanged; // 값 변경 콜백
+  final bool? isError; // 에러 여부
 
   const CustomInputField({
     super.key,
@@ -20,6 +22,8 @@ class CustomInputField extends StatefulWidget {
     this.errorText,
     this.isValid,
     this.suffixIcon,
+    this.onChanged,
+    this.isError,
   });
   @override
   State<CustomInputField> createState() => _CustomInputFieldState();
@@ -44,6 +48,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 ? AppColors.labelStrong
                 : AppColors.labelAlternative,
           ),
+          onChanged: widget.onChanged,
           decoration: InputDecoration(
             hintText: widget.placeholder,
             hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
@@ -54,16 +59,18 @@ class _CustomInputFieldState extends State<CustomInputField> {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(
-                color: widget.errorText != null
+                color: (widget.errorText != null || widget.isError == true)
                     ? AppColors.statusError
                     : AppColors.line,
-                width: widget.errorText != null ? 2 : 1,
+                width: (widget.errorText != null || widget.isError == true)
+                    ? 2
+                    : 1,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(
-                color: widget.errorText != null
+                color: (widget.errorText != null || widget.isError == true)
                     ? AppColors.statusError
                     : (widget.isValid == true
                         ? AppColors.statusClear
