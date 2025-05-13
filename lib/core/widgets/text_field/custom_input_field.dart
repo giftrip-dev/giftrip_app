@@ -47,8 +47,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
             hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            filled: !widget.enabled,
-            fillColor: AppColors.backgroundAlternative,
+            filled: true,
+            fillColor: AppColors.white,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(

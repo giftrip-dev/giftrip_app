@@ -8,7 +8,7 @@ import 'package:myong/core/widgets/button/cta_button.dart';
 import 'package:myong/features/user/models/dto/user_dto.dart';
 import 'package:myong/features/user/view_models/user_view_model.dart';
 import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:myong/features/terms/screens/influencer-check-screen.dart';
+import 'package:myong/features/auth/screens/influencer-check-screen.dart';
 
 class TermsAgreementScreen extends StatefulWidget {
   const TermsAgreementScreen({super.key});
