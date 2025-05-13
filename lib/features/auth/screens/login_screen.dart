@@ -7,7 +7,6 @@ import 'package:myong/core/widgets/tooltip/tooltip.dart';
 import 'package:myong/features/auth/widgets/social_login_box.dart';
 import 'package:myong/features/auth/widgets/terms_box.dart';
 import 'package:myong/features/auth/widgets/login_input_fields.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

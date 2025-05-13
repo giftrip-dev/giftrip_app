@@ -37,20 +37,14 @@ class _CustomInputFieldState extends State<CustomInputField> {
           controller: widget.controller,
           enabled: widget.enabled,
           obscureText: showObscureToggle ? _obscure : false,
-          style: TextStyle(
+          style: body_M.copyWith(
             color: widget.enabled
                 ? AppColors.labelStrong
                 : AppColors.labelAlternative,
-            fontSize: 14,
-            height: 20 / 14,
           ),
           decoration: InputDecoration(
             hintText: widget.placeholder,
-            hintStyle: TextStyle(
-              color: AppColors.labelAssistive,
-              fontSize: 14,
-              height: 20 / 14,
-            ),
+            hintStyle: body_M.copyWith(color: AppColors.labelAssistive),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             filled: !widget.enabled,

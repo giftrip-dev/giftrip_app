@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/features/terms/screens/terms_agreement_screen.dart';
@@ -13,17 +12,27 @@ class LoginInputFields extends StatefulWidget {
 }
 
 class _LoginInputFieldsState extends State<LoginInputFields> {
-  bool _obscureText = true;
-
   // 컨트롤러 추가
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
+
+  // 에러 메시지 상태 추가
+  String? _idError;
+  String? _pwError;
 
   @override
   void dispose() {
     _idController.dispose();
     _pwController.dispose();
     super.dispose();
+  }
+
+  void _onLoginPressed() {
+    setState(() {
+      _idError = _idController.text.isEmpty ? '아이디를 입력해주세요' : null;
+      _pwError = _pwController.text.isEmpty ? '비밀번호를 입력해주세요' : null;
+    });
+    // 둘 다 값이 있으면 실제 로그인 로직 실행 (여기서는 생략)
   }
 
   @override
@@ -33,12 +42,14 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
         CustomInputField(
           controller: _idController,
           placeholder: '아이디를 입력해주세요',
+          errorText: _idError,
         ),
         const SizedBox(height: 8),
         CustomInputField(
           controller: _pwController,
           placeholder: '비밀번호를 입력해주세요',
           isPassword: true,
+          errorText: _pwError,
         ),
         const SizedBox(height: 8),
         SizedBox(
@@ -51,7 +62,7 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
               ),
               padding: const EdgeInsets.symmetric(vertical: 13.5),
             ),
-            onPressed: () {},
+            onPressed: _onLoginPressed,
             child: const Text('로그인', style: title_S),
           ),
         ),
