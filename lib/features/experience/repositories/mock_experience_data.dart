@@ -1,5 +1,6 @@
 import 'package:myong/features/experience/models/experience_category.dart';
 import 'package:myong/features/experience/models/experience_model.dart';
+import 'package:myong/features/home/models/product_model.dart';
 
 /// 목업 체험 상품 데이터
 final List<ExperienceModel> mockExperienceList = List.generate(
@@ -17,9 +18,27 @@ final List<ExperienceModel> mockExperienceList = List.generate(
         ? (originalPrice * (100 - discountRate) ~/ 100)
         : originalPrice;
 
+    // 뱃지 설정
+    final badges = <ItemBadgeType>[];
+
+    // 첫 10개 상품은 NEW 뱃지
+    if (index < 10) {
+      badges.add(ItemBadgeType.newArrival);
+    }
+
+    // 인덱스가 3의 배수인 상품은 BEST 뱃지
+    if (index % 3 == 0) {
+      badges.add(ItemBadgeType.bestSeller);
+    }
+
+    // 인덱스가 7의 배수인 상품은 품절임박 뱃지
+    if (index % 7 == 0) {
+      badges.add(ItemBadgeType.almostSoldOut);
+    }
+
     return ExperienceModel(
       id: 'exp_${index + 1}',
-      title: '${category.label} 상품 ${index + 1} ',
+      title: '${category.label} 상품 ${index + 1}',
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
       thumbnailUrl: 'assets/png/banner.png',
@@ -29,6 +48,7 @@ final List<ExperienceModel> mockExperienceList = List.generate(
       rating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평점
       reviewCount: 10 + index, // 10개부터 1개씩 증가
       discountRate: discountRate,
+      badges: badges,
     );
   },
 );

@@ -3,6 +3,7 @@ import 'package:myong/core/themes/light_theme.dart';
 import 'package:myong/core/utils/route_observer.dart';
 import 'package:myong/features/auth/screens/login_screen.dart';
 import 'package:myong/features/auth/view_models/auth_view_model.dart';
+import 'package:myong/features/cart/view_models/cart_view_model.dart';
 import 'package:myong/features/community/screens/community_detail_screen.dart';
 import 'package:myong/features/community/screens/community_screen.dart';
 import 'package:myong/features/community/view_models/comment_view_model.dart';
@@ -128,6 +129,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => EventViewModel()),
         ChangeNotifierProvider(create: (_) => ExperienceViewModel()),
+        ChangeNotifierProvider(create: (_) => CartViewModel()),
       ],
       child: Builder(
         builder: (context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myong/core/constants/app_colors.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/theme/colors.dart';
 import 'package:myong/features/cart/view_models/cart_view_model.dart';
 
 /// 장바구니 아이콘 버튼 위젯
@@ -24,7 +24,7 @@ class CartIconButton extends StatefulWidget {
   const CartIconButton({
     this.onPressed,
     this.color,
-    this.badgeColor = AppColors.primary,
+    this.badgeColor = AppColors.primarySoft,
     this.size = 24.0,
     this.useIconButton = false,
     super.key,

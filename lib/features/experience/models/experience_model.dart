@@ -1,5 +1,6 @@
 import 'package:myong/core/utils/page_meta.dart';
 import 'package:myong/features/experience/models/experience_category.dart';
+import 'package:myong/features/home/models/product_model.dart';
 
 /// 체험 상품 모델
 class ExperienceModel {
@@ -13,6 +14,7 @@ class ExperienceModel {
   final ExperienceCategory category;
   final double rating;
   final int reviewCount;
+  final List<ItemBadgeType> badges;
 
   const ExperienceModel({
     required this.id,
@@ -24,6 +26,7 @@ class ExperienceModel {
     required this.category,
     required this.rating,
     required this.reviewCount,
+    required this.badges,
     this.discountRate,
   });
 
@@ -44,6 +47,13 @@ class ExperienceModel {
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       discountRate: json['discountRate'] as int?,
+      badges: (json['badges'] as List<dynamic>?)
+              ?.map((e) => ItemBadgeType.values.firstWhere(
+                    (type) => type.name == e.toString().toUpperCase(),
+                    orElse: () => ItemBadgeType.newArrival,
+                  ))
+              .toList() ??
+          [],
     );
   }
 
@@ -60,6 +70,7 @@ class ExperienceModel {
       'rating': rating,
       'reviewCount': reviewCount,
       'discountRate': discountRate,
+      'badges': badges.map((e) => e.name).toList(),
     };
   }
 }

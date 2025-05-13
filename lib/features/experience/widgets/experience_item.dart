@@ -4,18 +4,14 @@ import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/utils/formatter.dart';
 import 'package:myong/core/widgets/image/custom_image.dart';
 import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/home/models/product_model.dart';
 import 'package:myong/features/home/widgets/product/item_badge.dart';
 
 class ExperienceItem extends StatelessWidget {
   final ExperienceModel experience;
-  final ItemBadgeType badgeType;
   final double imageSize;
-
   const ExperienceItem({
     super.key,
     required this.experience,
-    required this.badgeType,
     required this.imageSize,
   });
 
@@ -37,7 +33,7 @@ class ExperienceItem extends StatelessWidget {
         SizedBox(
           child: Text(
             experience.title,
-            style: body_M,
+            style: body_S,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -74,8 +70,16 @@ class ExperienceItem extends StatelessWidget {
 
         const SizedBox(height: 8),
 
-        // 5. 뱃지
-        ItemBadge(type: badgeType),
+        // 5. 뱃지들
+        if (experience.badges.isNotEmpty)
+          Row(
+            children: [
+              for (var i = 0; i < experience.badges.length; i++) ...[
+                if (i > 0) const SizedBox(width: 4),
+                ItemBadge(type: experience.badges[i]),
+              ],
+            ],
+          ),
       ],
     );
   }

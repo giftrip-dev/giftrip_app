@@ -77,7 +77,6 @@ class ExperienceItemList extends StatelessWidget {
                             ),
                             child: ExperienceItem(
                               experience: experiences[itemIndex],
-                              badgeType: ItemBadgeType.newArrival,
                               imageSize: itemWidth,
                             ),
                           ),
