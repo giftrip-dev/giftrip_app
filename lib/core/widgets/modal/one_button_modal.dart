@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
+import 'package:myong/core/widgets/button/cta_button.dart';
 
 class OneButtonModal extends StatelessWidget {
   final String title;
   final String? desc;
   final VoidCallback onConfirm;
+  final EdgeInsetsGeometry contentPadding;
 
   const OneButtonModal({
     super.key,
     required this.title,
     this.desc,
     required this.onConfirm,
+    this.contentPadding = const EdgeInsets.only(bottom: 24, top: 32),
   });
 
   @override
@@ -40,7 +43,7 @@ class OneButtonModal extends StatelessWidget {
           children: [
             // ✅ 상단 섹션
             Padding(
-              padding: const EdgeInsets.all(24),
+              padding: contentPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -49,7 +52,7 @@ class OneButtonModal extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       desc!,
-                      style: subtitle_S.copyWith(color: AppColors.labelNatural),
+                      style: body_S.copyWith(color: AppColors.labelNatural),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -58,28 +61,13 @@ class OneButtonModal extends StatelessWidget {
             ),
 
             // ✅ 하단 버튼 섹션
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: AppColors.line),
-                ),
-              ),
-              child: TextButton(
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              child: CTAButton(
                 onPressed: onConfirm,
-                style: TextButton.styleFrom(
-                  minimumSize: Size(double.infinity, 0),
-                  padding: const EdgeInsets.symmetric(vertical: 13.5),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    ),
-                  ),
-                ),
-                child: Text(
-                  "확인",
-                  style: title_S.copyWith(color: AppColors.primary),
-                ),
+                text: "확인",
+                isEnabled: true,
+                textStyle: title_S.copyWith(color: AppColors.white),
               ),
             ),
           ],

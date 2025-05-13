@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:myong/features/auth/widgets/common_modal.dart';
 import 'package:myong/features/auth/widgets/timer_modal.dart';
 import 'package:myong/features/auth/widgets/signup_modal.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/widgets/text_field/custom_input_field.dart';
+import 'package:myong/core/widgets/modal/one_button_modal.dart';
 
 class Code {
   String? phoneNumber;
@@ -209,14 +209,24 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                   context.mounted) {
                                 _isPhoneNumberSent = false;
                                 widget.onVerificationSuccess();
-                                commonModal(context: context, title: "인증 성공");
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => OneButtonModal(
+                                    title: "인증 성공",
+                                    onConfirm: () => Navigator.pop(context),
+                                  ),
+                                );
                               } else {
                                 if (!context.mounted) return;
                                 widget.onVerificationFailure();
-                                commonModal(
-                                    context: context,
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => OneButtonModal(
                                     title: "인증 실패",
-                                    desc: "인증번호를 확인해주세요");
+                                    desc: "인증번호를 확인해주세요",
+                                    onConfirm: () => Navigator.pop(context),
+                                  ),
+                                );
                               }
                             } else if (widget
                                 .phoneNumberController.text.isNotEmpty) {
@@ -232,14 +242,15 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                               });
 
                               if (context.mounted) {
-                                signupModal(
+                                showDialog(
                                     context: context,
-                                    titleText: "인증번호 발송 완료",
-                                    description: "문자로 발송된 인증번호를 확인해주세요.",
-                                    confirmButtonText: "확인",
-                                    onConfirm: () {
-                                      Navigator.pop(context);
-                                    });
+                                    builder: (context) => OneButtonModal(
+                                          title: "인증번호를 전송했습니다",
+                                          desc: "해당 번호의 메신저함을 확인해주세요.",
+                                          onConfirm: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ));
                                 _startTimer();
                               }
                             }

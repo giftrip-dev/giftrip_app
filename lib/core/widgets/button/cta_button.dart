@@ -6,12 +6,14 @@ class CTAButton extends StatelessWidget {
   final bool isEnabled;
   final VoidCallback? onPressed;
   final String text;
+  final TextStyle? textStyle;
 
   const CTAButton({
     Key? key,
     required this.isEnabled,
     required this.onPressed,
     required this.text,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -29,9 +31,11 @@ class CTAButton extends StatelessWidget {
         ),
         child: isEnabled
             ? Text(text,
-                style: subtitle_L.copyWith(color: AppColors.labelWhite))
+                style: textStyle ??
+                    subtitle_L.copyWith(color: AppColors.labelWhite))
             : Text(text,
-                style: subtitle_L.copyWith(color: AppColors.labelAlternative)),
+                style: textStyle ??
+                    subtitle_L.copyWith(color: AppColors.labelAlternative)),
       ),
     );
   }
