@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myong/core/widgets/app_bar/search_app_bar.dart';
 import 'package:myong/features/event/view_models/event_view_model.dart';
-import 'package:myong/features/event/widgets/event_app_bar.dart';
 import 'package:myong/features/event/widgets/event_list.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EventAppBar(),
+      appBar: SearchAppBar(title: '이벤트'),
       body: Consumer<EventViewModel>(
         builder: (context, viewModel, child) {
           return EventList(
