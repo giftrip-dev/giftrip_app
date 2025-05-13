@@ -55,6 +55,7 @@ flutter:
     - assets/svg/icons/
     - assets/png/
     - assets/png/icons/
+    - assets/webp/icons/
     - assets/service-terms.pdf
     - assets/privacy-policy.pdf
     - assets/fonts/Pretendard-Bold.woff
