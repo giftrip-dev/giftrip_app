@@ -3,7 +3,7 @@ import 'package:myong/core/widgets/app_bar/search_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/features/experience/view_models/experience_view_model.dart';
-import 'package:myong/features/experience/widgets/experience_grid.dart';
+import 'package:myong/features/experience/widgets/experience_item_list.dart';
 
 class ExperienceScreen extends StatefulWidget {
   const ExperienceScreen({super.key});
@@ -32,7 +32,7 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
                 Expanded(
                   child: vm.experienceList.isEmpty && vm.isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : ExperienceGrid(
+                      : ExperienceItemList(
                           experiences: vm.experienceList,
                           isLoading: vm.isLoading,
                           onLoadMore: vm.nextPage != null
