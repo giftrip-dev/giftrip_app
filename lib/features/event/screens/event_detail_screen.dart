@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
+import 'package:myong/core/widgets/app_bar/search_app_bar.dart';
 import 'package:myong/core/widgets/image/custom_image.dart';
 import 'package:myong/features/event/models/event_model.dart';
-import 'package:myong/features/event/widgets/event_app_bar.dart';
 
 class EventDetailScreen extends StatelessWidget {
   final EventModel event;
@@ -20,7 +20,9 @@ class EventDetailScreen extends StatelessWidget {
     final formattedDate = dateFormat.format(event.startDate);
 
     return Scaffold(
-      appBar: const EventAppBar(),
+      appBar: const SearchAppBar(
+        title: "이벤트",
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
