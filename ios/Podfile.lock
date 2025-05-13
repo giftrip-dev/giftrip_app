@@ -10,8 +10,6 @@ PODS:
     - Flutter
   - device_info_plus (0.0.1):
     - Flutter
-  - external_path (2.0.1):
-    - Flutter
   - Firebase/Core (11.8.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 11.8.0)
@@ -68,9 +66,6 @@ PODS:
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - flutter_naver_login (0.0.1):
-    - Flutter
-    - naveridlogin-sdk-ios (~> 4.2.3)
   - flutter_secure_storage (6.0.0):
     - Flutter
   - GoogleAppMeasurement (11.8.0):
@@ -132,7 +127,6 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
-  - naveridlogin-sdk-ios (4.2.3)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -159,14 +153,12 @@ DEPENDENCIES:
   - amplitude_flutter (from `.symlinks/plugins/amplitude_flutter/darwin`)
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
-  - external_path (from `.symlinks/plugins/external_path/ios`)
   - Firebase/Core
   - Firebase/Messaging
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_naver_login (from `.symlinks/plugins/flutter_naver_login/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - kakao_flutter_sdk_common (from `.symlinks/plugins/kakao_flutter_sdk_common/ios`)
@@ -193,7 +185,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - nanopb
-    - naveridlogin-sdk-ios
     - PromisesObjC
 
 EXTERNAL SOURCES:
@@ -203,8 +194,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_links/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
-  external_path:
-    :path: ".symlinks/plugins/external_path/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
@@ -213,8 +202,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_naver_login:
-    :path: ".symlinks/plugins/flutter_naver_login/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   image_picker_ios:
@@ -244,7 +231,6 @@ SPEC CHECKSUMS:
   AnalyticsConnector: 3def11199b4ddcad7202c778bde982ec5da0ebb3
   app_links: 76b66b60cc809390ca1ad69bfd66b998d2387ac7
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
-  external_path: fd37c654b69a1336e33a2403f48383ae6100e443
   Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
   firebase_core: 8d552814f6c01ccde5d88939fced4ec26f2f5510
   firebase_messaging: 5e0adf2eb18b0ee59aa0c109314c091a0497ecac
@@ -255,7 +241,6 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 487b634ccdf6f7b7ff180fdcb2a9935490f764e8
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_local_notifications: 395056b3175ba4f08480a7c5de30cd36d69827e4
-  flutter_naver_login: 16059b897077e4cffa38046fe95155a8a15a83f2
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   GoogleAppMeasurement: fc0817122bd4d4189164f85374e06773b9561896
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
@@ -263,7 +248,6 @@ SPEC CHECKSUMS:
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   kakao_flutter_sdk_common: 7747df5fa2bf4cfcdc7aaa9ec260eb5e89e05f75
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  naveridlogin-sdk-ios: d9d46d02119d303023d7000cd5963864d5bb89e5
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47

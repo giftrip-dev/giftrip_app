@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/utils/date_formatter.dart';
+import 'package:myong/core/utils/formatter.dart';
 import 'package:myong/core/widgets/app_bar/back_button_app_bar.dart';
 import 'package:myong/features/notice/view_models/notice_view_model.dart';
 import 'package:provider/provider.dart';
