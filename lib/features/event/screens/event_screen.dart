@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/banner/event_banner.dart';
-import 'package:myong/features/home/widgets/home_app_bar.dart';
+import 'package:myong/features/event/view_models/event_view_model.dart';
+import 'package:myong/features/event/widgets/event_app_bar.dart';
+import 'package:myong/features/event/widgets/event_list.dart';
+import 'package:provider/provider.dart';
 
 class EventScreen extends StatefulWidget {
   const EventScreen({super.key});
@@ -13,26 +15,29 @@ class _EventScreenState extends State<EventScreen> {
   @override
   void initState() {
     super.initState();
+    // 화면이 처음 로드될 때 이벤트 목록을 불러옵니다
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<EventViewModel>().fetchEventList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBar(),
-      body: Column(
-        children: [
-          const EventBannerWidget(),
-          Expanded(
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              children: [
-                Text('이벤트 페이지'),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ],
+      appBar: EventAppBar(),
+      body: Consumer<EventViewModel>(
+        builder: (context, viewModel, child) {
+          return EventList(
+            events: viewModel.eventList,
+            isLoading: viewModel.isLoading,
+            onRefresh: () => viewModel.fetchEventList(refresh: true),
+            onLoadMore: () {
+              if (viewModel.nextPage != null) {
+                viewModel.fetchEventList();
+              }
+            },
+          );
+        },
       ),
     );
   }

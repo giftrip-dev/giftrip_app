@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:myong/core/utils/logger.dart';
 import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/home/models/product.dart';
+import 'package:myong/features/home/models/product_model.dart';
 import 'package:myong/features/home/repositories/product_repo.dart';
 
 /// 목업용 상품 리스트 (30개)
@@ -13,7 +13,7 @@ final List<ProductModel> mockProducts = List.generate(
     // 매 5번째 아이템에는 할인율 적용
     final discount = (index % 5 == 0) ? ((id * 2) % 50 + 10) : null;
     return ProductModel(
-      thumbnailUrl: 'https://via.placeholder.com/156x145?text=Product\$id',
+      thumbnailUrl: 'assets/webp/icons/event.webp',
       title: '테스트 상품 제목 $id',
       originalPrice: price,
       discountRate: discount,

@@ -8,6 +8,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return CustomAppBar(
       rightWidget: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           // 검색
           GestureDetector(
