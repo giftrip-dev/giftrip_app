@@ -61,21 +61,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!isFormSubmitted) return;
 
     setState(() {
-      nameError = nameController.text.isEmpty ? '이름을 입력해주세요' : null;
+      nameError = nameController.text.isEmpty ? '이름을 입력해주세요.' : null;
 
       if (emailController.text.isEmpty) {
-        emailError = '이메일을 입력해주세요';
+        emailError = '이메일을 입력해주세요.';
       } else if (selectedEmailDomain == null) {
-        emailError = '이메일 도메인을 선택해주세요';
+        emailError = '이메일 도메인을 선택해주세요.';
       } else {
         emailError = null;
       }
 
       if (passwordController.text.isEmpty) {
-        passwordError = '비밀번호를 입력해주세요';
+        passwordError = '비밀번호를 입력해주세요.';
       } else if (passwordController.text.length < 6 ||
           passwordController.text.length > 20) {
-        passwordError = '비밀번호는 6~20자 사이여야 합니다';
+        passwordError = '6~20자/영어,대,소문자,숫자,특수기호 중 2가지 이상 조합해주세요.';
       } else {
         int complexity = 0;
         if (RegExp(r'[A-Z]').hasMatch(passwordController.text)) complexity++;
@@ -85,13 +85,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           complexity++;
 
         passwordError =
-            complexity < 2 ? '영어 대,소문자,숫자,특수기호 중 2가지 이상 조합해주세요' : null;
+            complexity < 2 ? '6~20자/영어,대,소문자,숫자,특수기호 중 2가지 이상 조합해주세요.' : null;
       }
 
       if (passwordConfirmController.text.isEmpty) {
-        passwordConfirmError = '비밀번호 확인을 입력해주세요';
+        passwordConfirmError = '비밀번호 확인을 입력해주세요.';
       } else if (passwordConfirmController.text != passwordController.text) {
-        passwordConfirmError = '비밀번호가 일치하지 않습니다';
+        passwordConfirmError = '비밀번호가 일치하지 않습니다.';
       } else {
         passwordConfirmError = null;
       }
@@ -260,14 +260,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onVerificationSuccess: _onVerificationSuccess,
                 onVerificationFailure: _onVerificationFailure,
                 type: 'SIGNUP',
+                isFormSubmitted: isFormSubmitted,
               ),
               // if (isFormSubmitted && !isPhoneVerified)
               //   Padding(
-              //     padding: const EdgeInsets.only(left: 8, top: 4),
+              //     padding: const EdgeInsets.only(
+              //       left: 8,
+              //     ),
               //     child: Text(
               //       '휴대폰 인증을 완료해주세요',
-              //       style:
-              //           TextStyle(color: AppColors.statusError, fontSize: 13),
+              //       style: subtitle_S.copyWith(color: AppColors.statusError),
               //     ),
               //   ),
             ],

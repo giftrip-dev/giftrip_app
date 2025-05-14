@@ -49,19 +49,21 @@ class PhoneNumberVerification extends StatefulWidget {
   final VoidCallback onVerificationSuccess;
   final VoidCallback onVerificationFailure;
   final String type;
+  final bool isFormSubmitted;
 
   const PhoneNumberVerification({
-    Key? key,
+    super.key,
     required this.phoneNumberController,
     required this.verificationCodeController,
     required this.focusScopeNode,
     required this.onVerificationSuccess,
     required this.onVerificationFailure,
     required this.type,
-  }) : super(key: key);
+    this.isFormSubmitted = false,
+  });
 
   @override
-  _PhoneNumberVerificationState createState() =>
+  State<PhoneNumberVerification> createState() =>
       _PhoneNumberVerificationState();
 }
 
@@ -134,7 +136,10 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                     enabled: !_isVerificationSuccessful &&
                         (!_isPhoneNumberSent || _timerSeconds == 0),
                     errorText: null, // 에러 메시지는 아래에서 처리
-                    isError: _phoneNumberErrorText != null,
+                    isError: _phoneNumberErrorText != null ||
+                        (widget.isFormSubmitted &&
+                            !_isPhoneNumberSent &&
+                            !_isVerificationSuccessful),
                     onChanged: (value) {
                       if (value.length > 11) {
                         widget.phoneNumberController.text =
@@ -318,10 +323,21 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
             ),
             if (_phoneNumberErrorText != null)
               Padding(
-                padding: const EdgeInsets.only(left: 4, top: 4),
+                padding: const EdgeInsets.only(left: 8, top: 8),
                 child: Text(
                   _phoneNumberErrorText!,
-                  style: TextStyle(color: AppColors.statusError, fontSize: 13),
+                  style: subtitle_S.copyWith(color: AppColors.statusError),
+                ),
+              ),
+            if (widget.isFormSubmitted &&
+                !_isPhoneNumberSent &&
+                !_isVerificationSuccessful &&
+                _phoneNumberErrorText == null)
+              Padding(
+                padding: const EdgeInsets.only(left: 8, top: 8),
+                child: Text(
+                  '휴대폰 번호 인증을 완료해주세요',
+                  style: subtitle_S.copyWith(color: AppColors.statusError),
                 ),
               ),
           ],
@@ -341,6 +357,13 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       enabled: _isPhoneNumberSent && !_isVerificationSuccessful,
                       isValid: _isVerificationSuccessful,
                       errorText: null, // 에러 메시지는 아래에서 처리
+                      isError: (_isVerificationAttempted &&
+                              !_isVerificationSuccessful &&
+                              widget.verificationCodeController.text
+                                  .isNotEmpty) ||
+                          (widget.isFormSubmitted &&
+                              _isPhoneNumberSent &&
+                              !_isVerificationSuccessful),
                       suffixIcon: _isPhoneNumberSent
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
@@ -465,6 +488,17 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                   padding: const EdgeInsets.only(left: 8, top: 8),
                   child: Text(
                     '인증번호가 일치하지 않습니다.',
+                    style: subtitle_S.copyWith(color: AppColors.statusError),
+                  ),
+                ),
+              if (widget.isFormSubmitted &&
+                  _isPhoneNumberSent &&
+                  !_isVerificationSuccessful &&
+                  !_isVerificationAttempted)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 8),
+                  child: Text(
+                    '휴대폰 번호 인증을 완료해주세요',
                     style: subtitle_S.copyWith(color: AppColors.statusError),
                   ),
                 ),
