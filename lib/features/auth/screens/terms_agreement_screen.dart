@@ -86,6 +86,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
               style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
           centerTitle: true,
+          toolbarHeight: 56,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

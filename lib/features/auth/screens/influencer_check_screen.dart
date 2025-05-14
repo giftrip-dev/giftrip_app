@@ -72,6 +72,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
               style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
           centerTitle: true,
+          toolbarHeight: 56,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

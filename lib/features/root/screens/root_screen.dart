@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/services/storage_service.dart';
 import 'package:myong/core/widgets/gnb/bottom_gnb.dart';
-import 'package:myong/features/community/screens/community_screen.dart';
-import 'package:myong/features/community/screens/search_screen.dart';
 import 'package:myong/features/home/screens/home_screen.dart';
-import 'package:myong/features/my/screens/my_page_screen.dart';
-import 'package:myong/features/community/screens/write_screen.dart';
 import 'package:myong/core/enum/community_enum.dart';
 import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:myong/features/category/category_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({
@@ -37,7 +33,7 @@ class RootScreenState extends State<RootScreen> {
 
   List<Widget> get pages => [
         const HomeScreen(),
-        const HomeScreen(),
+        const CategoryScreen(),
         const HomeScreen(),
         const HomeScreen(),
       ];
@@ -110,7 +106,7 @@ class RootScreenState extends State<RootScreen> {
       case 0:
         return const HomeScreen(key: ValueKey('home'));
       case 1:
-        return const HomeScreen(key: ValueKey('home'));
+        return const CategoryScreen(key: ValueKey('category'));
       case 2:
         return const HomeScreen(key: ValueKey('home'));
       case 3:

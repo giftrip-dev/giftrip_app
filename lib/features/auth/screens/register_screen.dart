@@ -146,6 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
+        toolbarHeight: 56,
       ),
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
