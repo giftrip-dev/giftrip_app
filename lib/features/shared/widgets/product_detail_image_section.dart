@@ -6,10 +6,12 @@ import 'dart:async';
 
 /// 상품 상세 이미지 섹션 위젯
 class ProductDetailImageSection extends StatefulWidget {
-  final String imageUrl;
+  final String croppedImageUrl;
+  final String detailImageUrl;
 
   const ProductDetailImageSection({
-    required this.imageUrl,
+    required this.croppedImageUrl,
+    required this.detailImageUrl,
     super.key,
   });
 
@@ -20,19 +22,17 @@ class ProductDetailImageSection extends StatefulWidget {
 
 class _ProductDetailImageSectionState extends State<ProductDetailImageSection> {
   bool _isExpanded = false;
-  final double _collapsedHeight = 200.0;
-  bool _isImageTall = false;
-  bool _isImageLoading = true;
+  bool _isImageLoading = false;
+  double _imageHeight = 250.0; // 기본 높이
 
   @override
   void initState() {
     super.initState();
-    _checkImageHeight();
+    _calculateImageHeight();
   }
 
-  /// 이미지 높이 체크를 위한 메서드
-  Future<void> _checkImageHeight() async {
-    // 이미지 로딩 중 상태로 설정
+  // 원본 이미지의 높이 계산
+  Future<void> _calculateImageHeight() async {
     setState(() {
       _isImageLoading = true;
     });
@@ -40,8 +40,8 @@ class _ProductDetailImageSectionState extends State<ProductDetailImageSection> {
     final completer = Completer<ImageInfo>();
 
     // 네트워크 이미지인 경우
-    if (widget.imageUrl.startsWith('http')) {
-      final image = NetworkImage(widget.imageUrl);
+    if (widget.detailImageUrl.startsWith('http')) {
+      final image = NetworkImage(widget.detailImageUrl);
       image.resolve(const ImageConfiguration()).addListener(
         ImageStreamListener((info, _) {
           completer.complete(info);
@@ -50,7 +50,7 @@ class _ProductDetailImageSectionState extends State<ProductDetailImageSection> {
     }
     // 로컬 이미지인 경우
     else {
-      final image = AssetImage(widget.imageUrl);
+      final image = AssetImage(widget.detailImageUrl);
       image.resolve(const ImageConfiguration()).addListener(
         ImageStreamListener((info, _) {
           completer.complete(info);
@@ -63,19 +63,21 @@ class _ProductDetailImageSectionState extends State<ProductDetailImageSection> {
       final imageHeight = imageInfo.image.height.toDouble();
       final imageWidth = imageInfo.image.width.toDouble();
 
-      // 디바이스 너비를 기준으로 이미지 비율 계산
+      // 디바이스 너비에 맞는 높이 계산
       final deviceWidth = MediaQuery.of(context).size.width - 32; // 패딩 고려
-      final scaledHeight = (deviceWidth * imageHeight) / imageWidth;
+      final calculatedHeight = (deviceWidth * imageHeight) / imageWidth;
 
       setState(() {
-        _isImageTall = scaledHeight > 500;
+        _imageHeight = calculatedHeight;
         _isImageLoading = false;
       });
     } catch (e) {
+      // 오류 발생 시 기본 높이 사용
       setState(() {
+        _imageHeight = 250.0;
         _isImageLoading = false;
       });
-      print('이미지 로딩 실패: $e');
+      debugPrint('이미지 높이 계산 실패: $e');
     }
   }
 
@@ -111,48 +113,45 @@ class _ProductDetailImageSectionState extends State<ProductDetailImageSection> {
           else
             Column(
               children: [
-                // 상세 이미지 컨테이너
-                ClipRect(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: _isImageTall && !_isExpanded
-                          ? _collapsedHeight
-                          : double.infinity,
-                    ),
-                    child: CustomImage(
-                      imageUrl: widget.imageUrl,
-                      width: contentWidth,
-                      height: contentWidth, // 초기 높이 설정, 실제로는 이미지 비율에 맞게 조정됨
-                      fit: BoxFit.fitWidth,
+                // 확장 상태에 따라 다른 이미지 표시
+                _isExpanded
+                    ? CustomImage(
+                        imageUrl: widget.detailImageUrl,
+                        width: contentWidth,
+                        height: _imageHeight, // 계산된 높이 사용
+                        fit: BoxFit.contain,
+                      )
+                    : CustomImage(
+                        imageUrl: widget.croppedImageUrl,
+                        width: contentWidth,
+                        height: 250, // 크롭된 이미지용 고정 높이
+                        fit: BoxFit.fitWidth,
+                      ),
+
+                // 더보기/접기 버튼
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: GestureDetector(
+                    onTap: _toggleExpand,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _isExpanded ? '접기' : '더보기',
+                          style: body_S.copyWith(color: AppColors.primary),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          _isExpanded
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
+                          size: 16,
+                          color: AppColors.primary,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-
-                // 더보기/접기 버튼 - 이미지가 높을 때만 표시
-                if (_isImageTall)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: GestureDetector(
-                      onTap: _toggleExpand,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            _isExpanded ? '접기' : '더보기',
-                            style: body_S.copyWith(color: AppColors.primary),
-                          ),
-                          const SizedBox(width: 4),
-                          Icon(
-                            _isExpanded
-                                ? Icons.keyboard_arrow_up
-                                : Icons.keyboard_arrow_down,
-                            size: 16,
-                            color: AppColors.primary,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
               ],
             ),
         ],

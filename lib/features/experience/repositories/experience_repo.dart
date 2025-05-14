@@ -113,6 +113,7 @@ class ExperienceRepo {
       managerPhoneNumber: '010-1234-5678',
       relatedLink: 'https://example.com/experience/${experience.id}',
       detailImageUrl: 'assets/png/product_detail.png',
+      croppedDetailImageUrl: 'assets/png/product_detail.png',
       inquiryInfo: const InformationSection(
         title: '문의하기',
         content: '체험 상품 관련 문의사항이 있으시면 담당자에게 연락 부탁드립니다.',
