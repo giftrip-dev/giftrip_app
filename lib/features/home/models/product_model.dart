@@ -12,6 +12,7 @@ class ProductModel {
   final String thumbnailUrl;
   final String title;
   final int originalPrice;
+  final int finalPrice;
   final int? discountRate;
   final DateTime createdAt;
 
@@ -19,17 +20,13 @@ class ProductModel {
     required this.thumbnailUrl,
     required this.title,
     required this.originalPrice,
+    required this.finalPrice,
     this.discountRate,
     required this.createdAt,
   });
 
-  /// 할인 적용 후 최종 가격
-  int get finalPrice {
-    if (discountRate != null) {
-      return ((originalPrice * (100 - discountRate!)) / 100).round();
-    }
-    return originalPrice;
-  }
+  /// 할인이 적용되었는지 여부
+  bool get hasDiscount => discountRate != null && discountRate! > 0;
 
   /// JSON -> ProductModel
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +34,7 @@ class ProductModel {
       thumbnailUrl: json['thumbnailUrl'] as String,
       title: json['title'] as String,
       originalPrice: json['originalPrice'] as int,
+      finalPrice: json['finalPrice'] as int,
       discountRate:
           json['discountRate'] != null ? json['discountRate'] as int : null,
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -49,6 +47,7 @@ class ProductModel {
       'thumbnailUrl': thumbnailUrl,
       'title': title,
       'originalPrice': originalPrice,
+      'finalPrice': finalPrice,
       'discountRate': discountRate,
       'createdAt': createdAt.toIso8601String(),
     };

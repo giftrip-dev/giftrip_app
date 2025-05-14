@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/widgets/app_bar/custom_app_bar.dart';
 
-class EventAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const EventAppBar({super.key});
+class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  const SearchAppBar({
+    super.key,
+    required this.title,
+  });
+
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
       isBackButton: true,
-      title: '이벤트',
+      title: title,
       rightWidget: GestureDetector(
         onTap: () {
           // TODO: 검색 기능 구현

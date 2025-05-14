@@ -9,14 +9,20 @@ final List<ProductModel> mockProducts = List.generate(
   30,
   (index) {
     final id = index + 1;
-    final price = 10000 + (index * 500);
+    final originalPrice = 10000 + (index * 500);
     // 매 5번째 아이템에는 할인율 적용
-    final discount = (index % 5 == 0) ? ((id * 2) % 50 + 10) : null;
+    final discountRate = (index % 5 == 0) ? ((id * 2) % 50 + 10) : null;
+    // 할인율이 있는 경우 최종 가격 계산, 없는 경우 원가와 동일
+    final finalPrice = discountRate != null
+        ? ((originalPrice * (100 - discountRate)) / 100).round()
+        : originalPrice;
+
     return ProductModel(
-      thumbnailUrl: 'assets/webp/icons/event.webp',
+      thumbnailUrl: 'assets/png/banner.png',
       title: '테스트 상품 제목 $id',
-      originalPrice: price,
-      discountRate: discount,
+      originalPrice: originalPrice,
+      finalPrice: finalPrice,
+      discountRate: discountRate,
       createdAt: DateTime.now().subtract(Duration(days: index)),
     );
   },

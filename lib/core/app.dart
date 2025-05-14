@@ -3,6 +3,7 @@ import 'package:myong/core/themes/light_theme.dart';
 import 'package:myong/core/utils/route_observer.dart';
 import 'package:myong/features/auth/screens/login_screen.dart';
 import 'package:myong/features/auth/view_models/auth_view_model.dart';
+import 'package:myong/features/cart/view_models/cart_view_model.dart';
 import 'package:myong/features/community/screens/community_detail_screen.dart';
 import 'package:myong/features/community/screens/community_screen.dart';
 import 'package:myong/features/community/view_models/comment_view_model.dart';
@@ -11,8 +12,9 @@ import 'package:myong/features/community/view_models/community_view_model.dart';
 import 'package:myong/features/community/view_models/community_write_view_model.dart';
 import 'package:myong/features/event/screens/event_screen.dart';
 import 'package:myong/features/event/view_models/event_view_model.dart';
-import 'package:myong/features/home/screens/experience_screen.dart';
 import 'package:myong/features/home/screens/tester_screen.dart';
+import 'package:myong/features/experience/screens/experience_screen.dart';
+import 'package:myong/features/experience/view_models/experience_view_model.dart';
 import 'package:myong/features/home/view_models/product_view_model.dart';
 import 'package:myong/features/inquiry/screens/inquiry_screen.dart';
 import 'package:myong/features/leave/view_models/leave_view_model.dart';
@@ -126,6 +128,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => EventViewModel()),
+        ChangeNotifierProvider(create: (_) => ExperienceViewModel()),
+        ChangeNotifierProvider(create: (_) => CartViewModel()),
       ],
       child: Builder(
         builder: (context) {
