@@ -70,8 +70,11 @@ class PhoneNumberVerification extends StatefulWidget {
 class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   bool _isPhoneNumberSent = false;
   bool _isResend = false;
+  bool _hasEverSentCode = false;
+  bool _isTimerExpired = false;
+
   bool _isCodeFilled = false;
-  int _timerSeconds = 60;
+  int _timerSeconds = 5;
   Timer? _timer;
   // bool _isMessageSendLoading = false;
   bool _isVerificationSuccessful = false;
@@ -85,7 +88,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   }
 
   void _startTimer() {
-    _timerSeconds = 60;
+    _timerSeconds = 5;
+    _isTimerExpired = false;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_timerSeconds > 0) {
         setState(() {
@@ -96,9 +100,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
         setState(() {
           if (!_isVerificationSuccessful) {
             widget.verificationCodeController.text = '';
-            _isPhoneNumberSent = false;
             _isCodeFilled = false;
             _isVerificationAttempted = false;
+            _isTimerExpired = true;
           }
         });
       }
@@ -108,7 +112,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   void _stopTimer() {
     _timer?.cancel();
     setState(() {
-      _timerSeconds = 60;
+      _timerSeconds = 5;
+      _isTimerExpired = false;
     });
   }
 
@@ -248,10 +253,12 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
 
                               // 임시로 인증번호 발송 성공으로 처리
                               setState(() {
+                                _isResend = _isPhoneNumberSent;
+                                _hasEverSentCode = true;
                                 _isPhoneNumberSent = true;
                                 _isCodeFilled = false;
                                 _isVerificationAttempted = false;
-                                _isResend = true;
+                                // _isResend = true;
                               });
 
                               if (context.mounted) {
@@ -298,8 +305,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       ),
                     ),
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 60),
-                      child: _isResend
+                      duration: const Duration(milliseconds: 5),
+                      child: _hasEverSentCode
                           ? Text(
                               "재전송",
                               style: title_S.copyWith(
@@ -354,7 +361,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                     child: CustomInputField(
                       controller: widget.verificationCodeController,
                       placeholder: "인증번호 6자리",
-                      enabled: _isPhoneNumberSent && !_isVerificationSuccessful,
+                      enabled: _isPhoneNumberSent &&
+                          !_isVerificationSuccessful &&
+                          !_isTimerExpired,
                       isValid: _isVerificationSuccessful,
                       errorText: null, // 에러 메시지는 아래에서 처리
                       isError: (_isVerificationAttempted &&
@@ -368,7 +377,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (!_isVerificationSuccessful)
+                                if (!_isVerificationSuccessful &&
+                                    !_isTimerExpired)
                                   Text(
                                     _formatTime(_timerSeconds),
                                     style: body_S.copyWith(
@@ -394,7 +404,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                       height: 48,
                       child: OutlinedButton(
                         onPressed: _isPhoneNumberSent &&
-                                !_isVerificationSuccessful
+                                !_isVerificationSuccessful &&
+                                !_isTimerExpired
                             ? () async {
                                 setState(() {
                                   _isVerificationAttempted = true;
@@ -453,10 +464,14 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                               Radius.circular(8),
                             ),
                           ),
-                          backgroundColor: AppColors.primaryStrong,
+                          backgroundColor: _isTimerExpired
+                              ? AppColors.componentNatural
+                              : AppColors.primaryStrong,
                           foregroundColor: _isVerificationSuccessful
                               ? AppColors.line
-                              : AppColors.labelWhite,
+                              : _isTimerExpired
+                                  ? AppColors.labelAlternative
+                                  : AppColors.labelWhite,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 12,
@@ -464,16 +479,24 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                           side: BorderSide(
                             color: _isVerificationSuccessful
                                 ? AppColors.line
-                                : AppColors.primary,
+                                : _isTimerExpired
+                                    ? Colors.transparent
+                                    : AppColors.primary,
                             width: 1,
                           ),
                         ),
                         child: Text(
                           _isPhoneNumberSent
-                              ? (_isVerificationSuccessful ? "인증완료" : "인증확인")
+                              ? (_isVerificationSuccessful
+                                  ? "인증완료"
+                                  : _isTimerExpired
+                                      ? "인증시간 만료"
+                                      : "인증확인")
                               : "인증확인",
                           style: title_S.copyWith(
-                            color: AppColors.labelWhite,
+                            color: _isTimerExpired
+                                ? AppColors.labelAlternative
+                                : AppColors.labelWhite,
                           ),
                         ),
                       ),
