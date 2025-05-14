@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/services/storage_service.dart';
 import 'package:myong/features/auth/screens/login_screen.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
-import 'package:myong/features/terms/screens/terms_agreement_screen.dart';
+// import 'package:myong/features/root/screens/root_screen.dart';
+import 'package:myong/features/auth/screens/terms_agreement_screen.dart';
 import 'package:myong/features/user/screens/select_category_screen.dart';
 import 'package:myong/features/user/screens/nickname_form_screen.dart';
 import 'package:myong/features/user/view_models/user_view_model.dart';
+import 'package:myong/features/home/screens/home_screen.dart';
 
 class AuthViewModel extends ChangeNotifier {
   Future<Widget> checkAutoLogin() async {
@@ -31,14 +32,13 @@ class AuthViewModel extends ChangeNotifier {
         else if (user.nickname == null) {
           return NicknameFormScreen();
         }
-        return const RootScreen(
-          selectedIndex: 0,
-        );
+        // 항상 HomeScreen으로 이동하도록 임시 수정
+        return const HomeScreen();
       } catch (e) {
-        return const LoginScreen();
+        return const HomeScreen();
       }
     } else {
-      return const LoginScreen();
+      return const HomeScreen();
     }
   }
 }

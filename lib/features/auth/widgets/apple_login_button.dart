@@ -4,7 +4,7 @@ import 'package:myong/core/widgets/modal/one_button_modal.dart';
 import 'package:myong/core/widgets/modal/request_fail_modal.dart';
 import 'package:myong/features/auth/repositories/social_login_repo.dart';
 import 'package:myong/features/root/screens/root_screen.dart';
-import 'package:myong/features/terms/screens/terms_agreement_screen.dart';
+import 'package:myong/features/auth/screens/terms_agreement_screen.dart';
 import 'package:myong/features/user/screens/nickname_form_screen.dart';
 import 'package:myong/features/user/screens/select_category_screen.dart';
 

@@ -74,16 +74,16 @@ class FCMService {
       }
     });
 
-    FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       await _showForegroundNotification(message);
     });
   }
 
-  // 백그라운드 메시지 핸들러
-  Future<void> _backgroundHandler(RemoteMessage message) async {
-    logger.d('Background message received: ${message.notification?.body}');
-  }
+  // // 백그라운드 메시지 핸들러
+  // Future<void> _backgroundHandler(RemoteMessage message) async {
+  //   logger.d('Background message received: ${message.notification?.body}');
+  // }
 
   // 로컬 알림 표시 메서드
   Future<void> _showForegroundNotification(RemoteMessage message) async {

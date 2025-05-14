@@ -41,6 +41,8 @@ dependencies:
   amplitude_flutter: ^4.1.0
   uuid: ^4.5.1
   path_provider: ^2.1.5
+  dropdown_search: ^6.0.2
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
@@ -64,3 +66,4 @@ flutter:
     - assets/fonts/Pretendard-ExtraBold.woff
     - assets/fonts/Pretendard-Medium.woff
     - assets/fonts/Pretendard-Regular.woff
+    - assets/png/heart.png

@@ -25,6 +25,9 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
       case BackButtonAppBarType.complete:
         return AppBar(
           leading: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            visualDensity: VisualDensity.compact,
             icon: const Icon(LucideIcons.chevronLeft, size: 24),
             onPressed: onBack ?? () => Navigator.pop(context),
           ),
@@ -46,17 +49,23 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
       case BackButtonAppBarType.textCenter:
         return AppBar(
           leading: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            visualDensity: VisualDensity.compact,
             icon: const Icon(LucideIcons.chevronLeft, size: 24),
             onPressed: onBack ?? () => Navigator.pop(context),
           ),
           title: Text(title ?? "",
-              style: subtitle_M.copyWith(color: AppColors.labelStrong)),
+              style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
         );
 
       case BackButtonAppBarType.textLeft:
         return AppBar(
           leading: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            visualDensity: VisualDensity.compact,
             icon: const Icon(LucideIcons.chevronLeft, size: 24),
             onPressed: onBack ?? () => Navigator.pop(context),
           ),
@@ -69,6 +78,9 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
       case BackButtonAppBarType.none:
         return AppBar(
           leading: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            visualDensity: VisualDensity.compact,
             icon: const Icon(LucideIcons.chevronLeft, size: 24),
             onPressed: onBack ?? () => Navigator.pop(context),
           ),
@@ -77,5 +89,5 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(48.0);
 }

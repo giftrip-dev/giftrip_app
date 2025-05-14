@@ -6,12 +6,14 @@ class CTAButton extends StatelessWidget {
   final bool isEnabled;
   final VoidCallback? onPressed;
   final String text;
+  final TextStyle? textStyle;
 
   const CTAButton({
     Key? key,
     required this.isEnabled,
     required this.onPressed,
     required this.text,
+    this.textStyle,
   }) : super(key: key);
 
   @override
@@ -22,16 +24,18 @@ class CTAButton extends StatelessWidget {
         onPressed: isEnabled ? onPressed : null,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: AppColors.componentNatural,
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.primaryStrong,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
         child: isEnabled
             ? Text(text,
-                style: subtitle_L.copyWith(color: AppColors.labelWhite))
+                style: textStyle ??
+                    subtitle_L.copyWith(color: AppColors.labelWhite))
             : Text(text,
-                style: subtitle_L.copyWith(color: AppColors.labelAlternative)),
+                style: textStyle ??
+                    subtitle_L.copyWith(color: AppColors.labelAlternative)),
       ),
     );
   }
