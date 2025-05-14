@@ -5,6 +5,7 @@ import 'package:myong/core/widgets/text_field/custom_input_field.dart';
 import 'package:myong/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:myong/features/auth/widgets/bottom_cta_button.dart';
 import 'package:myong/features/auth/widgets/phone_number_verification.dart';
+import 'package:myong/features/auth/screens/register_success_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -123,6 +124,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         passwordConfirmError == null &&
         isPhoneVerified) {
       print('회원가입 성공!');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RegisterSuccessScreen(),
+        ),
+      );
     } else {
       print('회원가입 실패!');
     }
