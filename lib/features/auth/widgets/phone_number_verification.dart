@@ -462,11 +462,10 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                   !_isVerificationSuccessful &&
                   widget.verificationCodeController.text.isNotEmpty)
                 Padding(
-                  padding: const EdgeInsets.only(left: 4, top: 4),
+                  padding: const EdgeInsets.only(left: 8, top: 8),
                   child: Text(
                     '인증번호가 일치하지 않습니다.',
-                    style:
-                        TextStyle(color: AppColors.statusError, fontSize: 13),
+                    style: subtitle_S.copyWith(color: AppColors.statusError),
                   ),
                 ),
             ],
