@@ -34,19 +34,19 @@ class PermissionGuideModal extends StatelessWidget {
                 _buildPermissionItem(
                   icon: Icons.notifications,
                   title: '알림',
-                  description: '알림은 오늘묭해 소식 및 게시글에 대한 알림을 받을 수 있습니다.',
+                  description: '소식 및 게시글에 대한 알림을 받을 수 있습니다.',
                 ),
                 const SizedBox(height: 12),
                 _buildPermissionItem(
                   icon: Icons.photo_library,
                   title: '앨범',
-                  description: '앨범은 자격증 인증 및 게시글 업로드에 사용됩니다.',
+                  description: '앨범은 리뷰 작성에 사용됩니다.',
                 ),
                 const SizedBox(height: 12),
                 _buildPermissionItem(
                   icon: Icons.camera_alt,
                   title: '카메라',
-                  description: '카메라는 자격증 인증 및 게시글 업로드에 사용됩니다.',
+                  description: '카메라는 리뷰 작성에 사용됩니다.',
                 ),
               ],
             ),
