@@ -21,6 +21,7 @@ import 'package:myong/features/leave/view_models/leave_view_model.dart';
 import 'package:myong/features/lodging/screens/lodging_screen.dart';
 import 'package:myong/features/my/view_models/my_community_view_model.dart';
 import 'package:myong/features/notice/view_models/notice_view_model.dart';
+import 'package:myong/features/review/view_models/review_view_model.dart';
 import 'package:myong/features/shopping/screens/shopping_screen.dart';
 import 'package:myong/features/splash/screen/splash_screen.dart';
 import 'package:myong/features/user/view_models/certificate_view_model.dart';
@@ -130,6 +131,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => EventViewModel()),
         ChangeNotifierProvider(create: (_) => ExperienceViewModel()),
         ChangeNotifierProvider(create: (_) => CartViewModel()),
+        ChangeNotifierProvider(create: (_) => ReviewViewModel()),
       ],
       child: Builder(
         builder: (context) {

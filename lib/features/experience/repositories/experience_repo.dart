@@ -120,7 +120,8 @@ class ExperienceRepo {
       ),
       changeInfo: const InformationSection(
         title: '변경 안내',
-        content: '예약 변경은 체험 시작일 3일 전까지 가능합니다.',
+        content:
+            '• 예약 변경은 체험 시작일 3일 전까지 가능합니다.\n• 예약 변경 시 차액이 발생할 수 있습니다.\n• 변경 횟수는 1회로 제한됩니다.',
       ),
       availablePeriod: AvailablePeriod(
         startDate: DateTime.now(),
