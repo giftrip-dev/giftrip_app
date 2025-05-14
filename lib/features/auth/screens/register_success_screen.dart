@@ -9,14 +9,6 @@ class RegisterSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title:
-            Text("회원가입", style: title_M.copyWith(color: AppColors.labelStrong)),
-        titleSpacing: 0,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
@@ -33,11 +25,35 @@ class RegisterSuccessScreen extends StatelessWidget {
         ),
         width: double.infinity,
         height: double.infinity,
-      ),
-      bottomNavigationBar: BottomCTAButton(
-        onPressed: () {},
-        text: "홈으로 이동",
-        isEnabled: true,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text("회원가입",
+                    style: title_M.copyWith(color: AppColors.labelStrong)),
+              ),
+              const Spacer(),
+              Image.asset(
+                "assets/png/heart.png",
+                width: 88,
+                height: 88,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "기프트립 회원이 되신 것을 \n진심으로 환영합니다.",
+                style: h1_R.copyWith(color: AppColors.labelStrong),
+                textAlign: TextAlign.center,
+              ),
+              const Spacer(),
+              BottomCTAButton(
+                onPressed: () {},
+                text: "홈으로 이동",
+                isEnabled: true,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

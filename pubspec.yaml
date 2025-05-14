@@ -64,3 +64,4 @@ flutter:
     - assets/fonts/Pretendard-ExtraBold.woff
     - assets/fonts/Pretendard-Medium.woff
     - assets/fonts/Pretendard-Regular.woff
+    - assets/png/register_success.png
