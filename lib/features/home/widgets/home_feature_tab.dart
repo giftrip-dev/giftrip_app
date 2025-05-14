@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:myong/core/utils/logger.dart';
+import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/widgets/image/custom_image.dart';
 
 class HomeFeatureTab extends StatelessWidget {
@@ -11,60 +10,54 @@ class HomeFeatureTab extends StatelessWidget {
     final features = [
       {
         'label': '체험',
-        'icon': 'assets/svg/icons/experience.svg',
+        'icon': 'assets/webp/icons/experience.webp',
         'route': '/experience',
       },
       {
         'label': '쇼핑',
-        'icon': 'assets/svg/icons/shopping.svg',
+        'icon': 'assets/webp/icons/shopping.webp',
         'route': '/shopping',
       },
       {
         'label': '숙소',
-        'icon': 'assets/svg/icons/lodging.svg',
+        'icon': 'assets/webp/icons/lodging.webp',
         'route': '/lodging',
       },
       {
         'label': '체험단',
-        'icon': 'assets/svg/icons/tester.svg',
+        'icon': 'assets/webp/icons/tester.webp',
         'route': '/tester',
       },
       {
         'label': '이벤트',
-        'icon': 'assets/svg/icons/event.svg',
+        'icon': 'assets/webp/icons/event.webp',
         'route': '/event',
       },
       {
         'label': '협업문의',
-        'icon': 'assets/svg/icons/inquiry.svg',
+        'icon': 'assets/webp/icons/inquiry.webp',
         'route': '/inquiry',
       },
     ];
 
     Widget _buildItem(Map<String, String> f) {
-      logger.d(f["icon"]);
       return GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, f['route']!);
         },
         child: Column(
           children: [
-            // CustomImage(
-            //   imageUrl: f['icon']!,
-            //   width: 48,
-            //   height: 52,
-            //   // fit: BoxFit.contain,
-            // ),
-            SvgPicture.asset(
-              f['icon']!,
+            CustomImage(
+              imageUrl: f['icon']!,
               width: 48,
               height: 52,
-              fit: BoxFit.contain,
+              // fit: BoxFit.contain,
             ),
             const SizedBox(height: 8),
             Text(
               f['label']!,
               textAlign: TextAlign.center,
+              style: subtitle_XS,
             ),
           ],
         ),
@@ -75,13 +68,6 @@ class HomeFeatureTab extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 36),
       child: Column(
         children: [
-          // 첫 번째 줄
-          SvgPicture.asset(
-            "assets/svg/icons/event.svg",
-            width: 48,
-            height: 52,
-            fit: BoxFit.contain,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: features.sublist(0, 3).map(_buildItem).toList(),

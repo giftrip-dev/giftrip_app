@@ -17,3 +17,10 @@ class DateUtil {
     }
   }
 }
+
+/// 3자리마다 콤마 삽입
+String formatPrice(int value) {
+  final str = value.toString();
+  final reg = RegExp(r'\B(?=(\d{3})+(?!\d))');
+  return str.replaceAllMapped(reg, (m) => ',');
+}
