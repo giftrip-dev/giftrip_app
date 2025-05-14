@@ -59,6 +59,7 @@ class ExperienceDetailModel extends ExperienceModel {
   final String managerPhoneNumber;
   final String? relatedLink;
   final String detailImageUrl;
+  final String croppedDetailImageUrl;
   final InformationSection inquiryInfo;
   final InformationSection changeInfo;
   final AvailablePeriod availablePeriod;
@@ -78,6 +79,7 @@ class ExperienceDetailModel extends ExperienceModel {
     required this.location,
     required this.managerPhoneNumber,
     required this.detailImageUrl,
+    required this.croppedDetailImageUrl,
     required this.inquiryInfo,
     required this.changeInfo,
     required this.availablePeriod,
@@ -110,6 +112,7 @@ class ExperienceDetailModel extends ExperienceModel {
       managerPhoneNumber: json['managerPhoneNumber'] as String,
       relatedLink: json['relatedLink'] as String?,
       detailImageUrl: json['detailImageUrl'] as String,
+      croppedDetailImageUrl: json['croppedDetailImageUrl'] as String,
       inquiryInfo: InformationSection.fromJson(
           json['inquiryInfo'] as Map<String, dynamic>),
       changeInfo: InformationSection.fromJson(
@@ -129,6 +132,7 @@ class ExperienceDetailModel extends ExperienceModel {
       'managerPhoneNumber': managerPhoneNumber,
       'relatedLink': relatedLink,
       'detailImageUrl': detailImageUrl,
+      'croppedDetailImageUrl': croppedDetailImageUrl,
       'inquiryInfo': inquiryInfo.toJson(),
       'changeInfo': changeInfo.toJson(),
       'availablePeriod': availablePeriod.toJson(),
