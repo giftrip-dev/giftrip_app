@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
-
 import 'package:myong/core/widgets/text_field/custom_input_field.dart';
 import 'package:myong/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:myong/features/auth/widgets/bottom_cta_button.dart';
@@ -72,6 +71,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
           title: Text("회원가입",
               style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -210,31 +210,6 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                           (_selectedDomain == '기타' &&
                               _customDomain.isNotEmpty)))
               ? () async {
-                  // 기존 유저 정보 업데이트 로직 주석 처리 또는 삭제
-                  // final userViewModel = UserViewModel();
-                  // final storageService = GlobalStorage();
-
-                  // bool success =
-                  //     await userViewModel.updateUser(UserUpdateRequestDto(
-                  //   isTermsOfServiceConsent: _yes,
-                  //   isPersonalInfoConsent: _yes,
-                  //   isAdvConsent: _yes,
-                  // ));
-                  // if (success) {
-                  //   await storageService.setServiceTermsComplete();
-                  //   AmplitudeLogger.logClickEvent("terms_agreement_cta_click",
-                  //       "terms_agreement_cta_button", "terms_agreement_screen");
-                  //   Navigator.pushAndRemoveUntil(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const SelectCategoryScreen()),
-                  //     (route) => false,
-                  //   );
-                  // } else {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(content: Text('유저 정보 업데이트에 실패했습니다.')),
-                  //   );
-                  // }
                   // RegisterScreen으로 이동
                   Navigator.push(
                     context,

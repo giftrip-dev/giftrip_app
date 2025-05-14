@@ -85,6 +85,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
           title: Text("회원가입",
               style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

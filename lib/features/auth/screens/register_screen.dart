@@ -145,6 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         titleSpacing: 0,
         backgroundColor: AppColors.white,
         elevation: 0,
+        centerTitle: true,
       ),
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
