@@ -11,7 +11,7 @@ import 'package:giftrip/features/home/widgets/product/item_badge.dart';
 class ProductBasicInfoSection extends StatelessWidget {
   final String title;
   final String thumbnailUrl;
-  final List<ItemBadgeType> badges;
+  final List<ProductTagType> badges;
   final String location;
   final String? memo;
   final String phoneNumber;

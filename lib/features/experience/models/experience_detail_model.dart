@@ -75,6 +75,8 @@ class ExperienceDetailModel extends ExperienceModel {
     required super.rating,
     required super.reviewCount,
     required super.badges,
+    required super.availableFrom,
+    required super.availableTo,
     required this.thumbnailUrl,
     required this.location,
     required this.managerPhoneNumber,
@@ -89,6 +91,9 @@ class ExperienceDetailModel extends ExperienceModel {
   }) : super(thumbnailUrl: thumbnailUrl);
 
   factory ExperienceDetailModel.fromJson(Map<String, dynamic> json) {
+    final availablePeriod = AvailablePeriod.fromJson(
+        json['availablePeriod'] as Map<String, dynamic>);
+
     return ExperienceDetailModel(
       id: json['id'] as String,
       title: json['title'] as String,
@@ -101,12 +106,14 @@ class ExperienceDetailModel extends ExperienceModel {
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ItemBadgeType.values.firstWhere(
+              ?.map((e) => ProductTagType.values.firstWhere(
                     (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ItemBadgeType.newArrival,
+                    orElse: () => ProductTagType.newArrival,
                   ))
               .toList() ??
           [],
+      availableFrom: availablePeriod.startDate,
+      availableTo: availablePeriod.endDate,
       discountRate: json['discountRate'] as int?,
       location: json['location'] as String,
       managerPhoneNumber: json['managerPhoneNumber'] as String,
@@ -117,8 +124,7 @@ class ExperienceDetailModel extends ExperienceModel {
           json['inquiryInfo'] as Map<String, dynamic>),
       changeInfo: InformationSection.fromJson(
           json['changeInfo'] as Map<String, dynamic>),
-      availablePeriod: AvailablePeriod.fromJson(
-          json['availablePeriod'] as Map<String, dynamic>),
+      availablePeriod: availablePeriod,
       durationInDays: json['durationInDays'] as int,
     );
   }

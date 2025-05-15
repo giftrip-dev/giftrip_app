@@ -5,12 +5,17 @@ import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 상품 뱃지 위젯
 class ItemBadge extends StatelessWidget {
-  final ItemBadgeType type;
+  final ProductTagType type;
 
   const ItemBadge({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
+    return _buildSingleBadge(type);
+  }
+
+  /// 단일 배지 위젯
+  static Widget _buildSingleBadge(ProductTagType type) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
       decoration: BoxDecoration(
@@ -25,25 +30,48 @@ class ItemBadge extends StatelessWidget {
   }
 }
 
-extension ItemBadgeTypeProps on ItemBadgeType {
+/// 복수 배지를 표시하는 위젯
+class ItemBadges extends StatelessWidget {
+  final List<ProductTagType> badges;
+  final double spacing;
+
+  const ItemBadges({
+    super.key,
+    required this.badges,
+    this.spacing = 4,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (badges.isEmpty) return const SizedBox.shrink();
+
+    return Wrap(
+      spacing: spacing,
+      children:
+          badges.map((badge) => ItemBadge._buildSingleBadge(badge)).toList(),
+    );
+  }
+}
+
+extension ProductTagTypeProps on ProductTagType {
   String get label {
     switch (this) {
-      case ItemBadgeType.newArrival:
+      case ProductTagType.newArrival:
         return 'NEW';
-      case ItemBadgeType.bestSeller:
+      case ProductTagType.bestSeller:
         return 'BEST';
-      case ItemBadgeType.almostSoldOut:
+      case ProductTagType.almostSoldOut:
         return '품절임박';
     }
   }
 
   Color get backgroundColor {
     switch (this) {
-      case ItemBadgeType.newArrival:
+      case ProductTagType.newArrival:
         return AppColors.statusAlarm;
-      case ItemBadgeType.bestSeller:
+      case ProductTagType.bestSeller:
         return AppColors.primarySoft;
-      case ItemBadgeType.almostSoldOut:
+      case ProductTagType.almostSoldOut:
         return AppColors.statusError;
     }
   }

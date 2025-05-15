@@ -14,7 +14,9 @@ class ExperienceModel {
   final ExperienceCategory category;
   final double rating;
   final int reviewCount;
-  final List<ItemBadgeType> badges;
+  final List<ProductTagType> badges;
+  final DateTime availableFrom; // 구매 가능 시작일
+  final DateTime availableTo; // 구매 가능 종료일
 
   const ExperienceModel({
     required this.id,
@@ -27,11 +29,19 @@ class ExperienceModel {
     required this.rating,
     required this.reviewCount,
     required this.badges,
+    required this.availableFrom,
+    required this.availableTo,
     this.discountRate,
   });
 
   /// 할인이 적용되었는지 여부
   bool get hasDiscount => discountRate != null && discountRate! > 0;
+
+  /// 현재 구매 가능한지 여부
+  bool get isAvailableToPurchase {
+    final now = DateTime.now();
+    return now.isAfter(availableFrom) && now.isBefore(availableTo);
+  }
 
   /// JSON -> Experience Model
   factory ExperienceModel.fromJson(Map<String, dynamic> json) {
@@ -48,12 +58,14 @@ class ExperienceModel {
       reviewCount: json['reviewCount'] as int,
       discountRate: json['discountRate'] as int?,
       badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ItemBadgeType.values.firstWhere(
+              ?.map((e) => ProductTagType.values.firstWhere(
                     (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ItemBadgeType.newArrival,
+                    orElse: () => ProductTagType.newArrival,
                   ))
               .toList() ??
           [],
+      availableFrom: DateTime.parse(json['availableFrom'] as String),
+      availableTo: DateTime.parse(json['availableTo'] as String),
     );
   }
 
@@ -71,6 +83,8 @@ class ExperienceModel {
       'reviewCount': reviewCount,
       'discountRate': discountRate,
       'badges': badges.map((e) => e.name).toList(),
+      'availableFrom': availableFrom.toIso8601String(),
+      'availableTo': availableTo.toIso8601String(),
     };
   }
 }

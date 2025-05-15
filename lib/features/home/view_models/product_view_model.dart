@@ -17,6 +17,16 @@ final List<ProductModel> mockProducts = List.generate(
         ? ((originalPrice * (100 - discountRate)) / 100).round()
         : originalPrice;
 
+    // 랜덤으로 뱃지 할당 (복수 뱃지도 가능하도록)
+    List<ProductTagType> badges = [];
+    if (index % 3 == 0) badges.add(ProductTagType.newArrival);
+    if (index % 4 == 0) badges.add(ProductTagType.bestSeller);
+    if (index % 10 == 9) badges.add(ProductTagType.almostSoldOut);
+
+    // 상품 타입 랜덤 할당
+    final productTypeIndex = index % ProductType.values.length;
+    final productType = ProductType.values[productTypeIndex];
+
     return ProductModel(
       thumbnailUrl: 'assets/png/banner.png',
       title: '테스트 상품 제목 $id',
@@ -24,12 +34,14 @@ final List<ProductModel> mockProducts = List.generate(
       finalPrice: finalPrice,
       discountRate: discountRate,
       createdAt: DateTime.now().subtract(Duration(days: index)),
+      productType: productType,
+      badges: badges.isNotEmpty ? badges : null,
     );
   },
 ).toList();
 
 /// 섹션 구분용 enum
-enum ProductSection { newArrivals, bestSellers, timeDeals }
+enum ProductSection { newArrivals, bestSellers, timeDeals, relatedProducts }
 
 class ProductViewModel extends ChangeNotifier {
   final ProductRepo _repo = ProductRepo();
@@ -42,18 +54,22 @@ class ProductViewModel extends ChangeNotifier {
   List<ProductModel> _newList = [];
   List<ProductModel> _bestList = [];
   List<ProductModel> _timeDealList = [];
+  List<ProductModel> _relatedList = [];
   PageMeta? _newMeta;
   PageMeta? _bestMeta;
   PageMeta? _timeDealMeta;
+  PageMeta? _relatedMeta;
   bool _isLoading = false;
 
   // 외부 접근용 Getter
   List<ProductModel> get newList => _newList;
   List<ProductModel> get bestList => _bestList;
   List<ProductModel> get timeDealList => _timeDealList;
+  List<ProductModel> get relatedList => _relatedList;
   PageMeta? get newMeta => _newMeta;
   PageMeta? get bestMeta => _bestMeta;
   PageMeta? get timeDealMeta => _timeDealMeta;
+  PageMeta? get relatedMeta => _relatedMeta;
   bool get isLoading => _isLoading;
 
   /// 다음 페이지 번호 계산 (NEW)
@@ -80,10 +96,19 @@ class ProductViewModel extends ChangeNotifier {
         : null;
   }
 
+  /// 다음 페이지 번호 계산 (RELATED)
+  int? get nextRelatedPage {
+    if (_relatedMeta == null) return null;
+    return _relatedMeta!.currentPage < _relatedMeta!.totalPages
+        ? _relatedMeta!.currentPage + 1
+        : null;
+  }
+
   /// 추가 데이터 여부
   bool get hasMoreNew => nextNewPage != null;
   bool get hasMoreBest => nextBestPage != null;
   bool get hasMoreTimeDeal => nextTimeDealPage != null;
+  bool get hasMoreRelated => nextRelatedPage != null;
 
   /// 신상품 조회 (목업/실제 API 분기)
   Future<void> fetchNewProducts({int page = 1, int limit = 10}) async {
@@ -213,6 +238,70 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
+  /// 관련 상품 조회 (목업/실제 API 분기)
+  Future<void> fetchRelatedProducts({
+    required ProductType productType,
+    String? productId,
+    int page = 1,
+    int limit = 10,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+
+    // 지연
+    await Future.delayed(Duration(milliseconds: page == 1 ? 200 : 500));
+
+    try {
+      if (useMock) {
+        // ─ 목업 페이지네이션 로직
+        // 상품 타입에 따라 필터링
+        final all =
+            mockProducts.where((p) => p.productType == productType).toList();
+
+        // 현재 상품 ID와 다른 상품들만 선택
+        final filtered = productId != null
+            ? all.where((p) => p.title != '테스트 상품 제목 $productId').toList()
+            : all;
+
+        final pageItems =
+            filtered.skip((page - 1) * limit).take(limit).toList();
+
+        if (page == 1) {
+          _relatedList = pageItems;
+        } else {
+          _relatedList.addAll(pageItems);
+        }
+
+        final total = filtered.length;
+        _relatedMeta = PageMeta(
+          totalItems: total,
+          currentPage: page,
+          itemsPerPage: limit,
+          totalPages: (total ~/ limit) + (total % limit > 0 ? 1 : 0),
+        );
+      } else {
+        // ─ 실제 API 호출 로직
+        // final resp = await _repo.getRelatedProducts(
+        //   productType: productType,
+        //   productId: productId,
+        //   page: page,
+        //   limit: limit,
+        // );
+        // if (page == 1) {
+        //   _relatedList = resp.items;
+        // } else {
+        //   _relatedList.addAll(resp.items);
+        // }
+        // _relatedMeta = resp.meta;
+      }
+    } catch (e, st) {
+      logger.e('관련 상품 조회 실패: $e\n$st');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   /// NEXT/PREV helpers
   Future<void> nextPageNew() async {
     final next = nextNewPage;
@@ -244,6 +333,30 @@ class ProductViewModel extends ChangeNotifier {
   Future<void> prevPageTimeDeal() async {
     if (_timeDealMeta != null && _timeDealMeta!.currentPage > 1) {
       await fetchTimeDealProducts(page: _timeDealMeta!.currentPage - 1);
+    }
+  }
+
+  /// NEXT/PREV helpers (RELATED)
+  Future<void> nextPageRelated(
+      {required ProductType productType, String? productId}) async {
+    final next = nextRelatedPage;
+    if (next != null) {
+      await fetchRelatedProducts(
+        productType: productType,
+        productId: productId,
+        page: next,
+      );
+    }
+  }
+
+  Future<void> prevPageRelated(
+      {required ProductType productType, String? productId}) async {
+    if (_relatedMeta != null && _relatedMeta!.currentPage > 1) {
+      await fetchRelatedProducts(
+        productType: productType,
+        productId: productId,
+        page: _relatedMeta!.currentPage - 1,
+      );
     }
   }
 }

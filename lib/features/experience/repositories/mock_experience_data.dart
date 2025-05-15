@@ -19,22 +19,28 @@ final List<ExperienceModel> mockExperienceList = List.generate(
         : originalPrice;
 
     // 뱃지 설정
-    final badges = <ItemBadgeType>[];
+    final badges = <ProductTagType>[];
 
     // 첫 10개 상품은 NEW 뱃지
     if (index < 10) {
-      badges.add(ItemBadgeType.newArrival);
+      badges.add(ProductTagType.newArrival);
     }
 
     // 인덱스가 3의 배수인 상품은 BEST 뱃지
     if (index % 3 == 0) {
-      badges.add(ItemBadgeType.bestSeller);
+      badges.add(ProductTagType.bestSeller);
     }
 
     // 인덱스가 7의 배수인 상품은 품절임박 뱃지
     if (index % 7 == 0) {
-      badges.add(ItemBadgeType.almostSoldOut);
+      badges.add(ProductTagType.almostSoldOut);
     }
+
+    // 구매 가능 기간 설정 (현재로부터 1일 후 ~ 60일 후까지)
+    final now = DateTime.now();
+    final availableFrom = now.add(Duration(days: 1 + (index % 5))); // 1-5일 후부터
+    final availableTo =
+        now.add(Duration(days: 30 + (index % 30))); // 30-59일 후까지
 
     return ExperienceModel(
       id: 'exp_${index + 1}',
@@ -49,6 +55,8 @@ final List<ExperienceModel> mockExperienceList = List.generate(
       reviewCount: 10 + index, // 10개부터 1개씩 증가
       discountRate: discountRate,
       badges: badges,
+      availableFrom: availableFrom,
+      availableTo: availableTo,
     );
   },
 );
