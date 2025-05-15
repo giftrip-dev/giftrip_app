@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/review/models/review_model.dart';
-import 'package:myong/features/review/repositories/review_repo.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/review/models/review_model.dart';
+import 'package:giftrip/features/review/repositories/review_repo.dart';
 
 class ReviewViewModel extends ChangeNotifier {
   final ReviewRepo _reviewRepo;

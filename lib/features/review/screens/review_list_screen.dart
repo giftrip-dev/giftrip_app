@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/utils/formatter.dart';
-import 'package:myong/core/widgets/app_bar/search_app_bar.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
-import 'package:myong/features/review/view_models/review_view_model.dart';
-import 'package:myong/features/review/widgets/review_item.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/review/view_models/review_view_model.dart';
+import 'package:giftrip/features/review/widgets/review_item.dart';
 
 class ProductSummaryModel {
   final String thumbnailUrl;

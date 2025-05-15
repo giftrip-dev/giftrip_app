@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/home/models/product_model.dart';
-import 'package:myong/features/home/view_models/product_view_model.dart';
-import 'package:myong/features/home/widgets/product/product_carousel.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/home/view_models/product_view_model.dart';
+import 'package:giftrip/features/home/widgets/product/product_carousel.dart';
 
 /// 관련 상품 섹션 위젯
 /// 상품 상세, 체험 상세, 체험단 상세 등에서 재사용 가능

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/review/models/review_model.dart';
-import 'package:myong/features/review/repositories/mock_review_data.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/review/models/review_model.dart';
+import 'package:giftrip/features/review/repositories/mock_review_data.dart';
 
 class ReviewRepo {
   final Dio _dio = DioClient().to();

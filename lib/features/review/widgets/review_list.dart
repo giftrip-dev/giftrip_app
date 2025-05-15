@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/review/view_models/review_view_model.dart';
-import 'package:myong/features/review/widgets/review_item.dart';
-import 'package:myong/core/widgets/button/cta_button.dart';
-import 'package:myong/features/review/screens/review_list_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/review/view_models/review_view_model.dart';
+import 'package:giftrip/features/review/widgets/review_item.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/features/review/screens/review_list_screen.dart';
 
 class ReviewList extends StatefulWidget {
   final String productId;
