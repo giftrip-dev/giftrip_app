@@ -9,6 +9,8 @@ import 'package:giftrip/features/user/models/dto/user_dto.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
+import 'package:giftrip/features/auth/models/terms_model.dart';
+import 'package:giftrip/features/auth/repositories/terms_repo.dart';
 
 class TermsAgreementScreen extends StatefulWidget {
   const TermsAgreementScreen({super.key});
@@ -18,6 +20,9 @@ class TermsAgreementScreen extends StatefulWidget {
 }
 
 class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
+  final TermsRepository _termsRepo = TermsRepository();
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +78,49 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
     } else {
       _allAgreed = false;
     }
+  }
+
+  Future<void> _submitTermsAgreement() async {
+    if (!_required1 || !_required2) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final request = TermsAgreementRequest(
+      isTermsOfServiceConsent: _required1,
+      isPersonalInfoConsent: _required2,
+      isAdvConsent: _optional,
+    );
+
+    final response = await _termsRepo.updateTermsAgreement(request);
+
+    if (response.isSuccess) {
+      AmplitudeLogger.logClickEvent("terms_agreement_cta_click",
+          "terms_agreement_cta_button", "terms_agreement_screen");
+
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const InfluencerCheckScreen()),
+          (route) => false,
+        );
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.errorMessage ?? '약관 동의에 실패했습니다.'),
+            backgroundColor: AppColors.statusError,
+          ),
+        );
+      }
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -274,39 +322,10 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
               // 다음 버튼
               const SizedBox(height: 44),
               CTAButton(
-                isEnabled: _required1 && _required2,
-                onPressed: _required1 && _required2
-                    ? () async {
-                        final userViewModel = UserViewModel();
-                        final storageService = GlobalStorage();
-
-                        bool success =
-                            await userViewModel.updateUser(UserUpdateRequestDto(
-                          isTermsOfServiceConsent: _required1,
-                          isPersonalInfoConsent: _required2,
-                          isAdvConsent: _optional,
-                        ));
-                        if (success) {
-                          await storageService.setServiceTermsComplete();
-                          AmplitudeLogger.logClickEvent(
-                              "terms_agreement_cta_click",
-                              "terms_agreement_cta_button",
-                              "terms_agreement_screen");
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const InfluencerCheckScreen()),
-                            (route) => false,
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('유저 정보 업데이트에 실패했습니다.')),
-                          );
-                        }
-                      }
-                    : null,
-                text: '다음',
+                isEnabled: _required1 && _required2 && !_isLoading,
+                onPressed:
+                    _required1 && _required2 ? _submitTermsAgreement : null,
+                text: _isLoading ? '처리중...' : '다음',
               ),
 
               const SizedBox(height: 62),
