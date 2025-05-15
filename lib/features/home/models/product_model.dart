@@ -10,7 +10,7 @@ enum ProductTagType {
 /// 상품 타입
 enum ProductType {
   product, // 식품/가구/의류 등
-  accommodation, // 숙소
+  lodging, // 숙소
   experience, // 체험
   experienceGroup, // 체험단
 }

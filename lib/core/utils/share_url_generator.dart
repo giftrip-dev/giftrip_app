@@ -15,7 +15,7 @@ class ShareUrlGenerator {
   static String generateWebUrl(String itemId, ProductItemType type) {
     final path = switch (type) {
       ProductItemType.product => 'products',
-      ProductItemType.accommodation => 'accommodations',
+      ProductItemType.lodging => 'lodgings',
       ProductItemType.experience => 'experiences',
       ProductItemType.experienceGroup => 'experience-groups',
     };
@@ -27,7 +27,7 @@ class ShareUrlGenerator {
   static String generateDeepLink(String itemId, ProductItemType type) {
     final path = switch (type) {
       ProductItemType.product => 'products',
-      ProductItemType.accommodation => 'accommodations',
+      ProductItemType.lodging => 'lodgings',
       ProductItemType.experience => 'experiences',
       ProductItemType.experienceGroup => 'experience-groups',
     };
