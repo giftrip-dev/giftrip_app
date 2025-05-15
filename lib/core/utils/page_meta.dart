@@ -19,4 +19,13 @@ class PageMeta {
       totalPages: json['totalPages'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'totalItems': totalItems,
+      'currentPage': currentPage,
+      'itemsPerPage': itemsPerPage,
+      'totalPages': totalPages,
+    };
+  }
 }

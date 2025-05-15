@@ -8,13 +8,17 @@ import 'package:myong/features/home/widgets/product/item_badge.dart';
 
 class ProductItem extends StatelessWidget {
   final ProductModel product;
-  final ItemBadgeType badgeType;
+  final ProductTagType? badgeType;
+
+  /// 홈 화면이 아닌 곳에서는 상품 자체의 배지를 사용하려면 true로 설정
+  final bool useProductBadges;
 
   const ProductItem({
     super.key,
     required this.product,
-    required this.badgeType,
-  });
+    this.badgeType,
+    this.useProductBadges = false,
+  }) : assert(badgeType != null || useProductBadges);
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +76,11 @@ class ProductItem extends StatelessWidget {
 
         const SizedBox(height: 8),
 
-        // 5. 뱃지
-        ItemBadge(type: badgeType),
+        // 5. 뱃지 (홈 화면에서는 섹션 배지, 다른 화면에서는 상품 자체 배지)
+        if (useProductBadges && product.badges != null)
+          ItemBadges(badges: product.badges!)
+        else if (badgeType != null)
+          ItemBadge(type: badgeType!),
       ],
     );
   }

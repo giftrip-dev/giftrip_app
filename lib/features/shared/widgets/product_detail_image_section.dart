@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
 import 'package:myong/core/constants/app_text_style.dart';
 import 'package:myong/core/widgets/image/custom_image.dart';
+import 'package:myong/core/widgets/button/cta_button.dart';
 import 'dart:async';
 
 /// 상품 상세 이미지 섹션 위젯
@@ -121,36 +121,55 @@ class _ProductDetailImageSectionState extends State<ProductDetailImageSection> {
                         height: _imageHeight, // 계산된 높이 사용
                         fit: BoxFit.contain,
                       )
-                    : CustomImage(
-                        imageUrl: widget.croppedImageUrl,
-                        width: contentWidth,
-                        height: 250, // 크롭된 이미지용 고정 높이
-                        fit: BoxFit.fitWidth,
+                    : Stack(
+                        children: [
+                          // 크롭된 이미지
+                          CustomImage(
+                            imageUrl: widget.croppedImageUrl,
+                            width: contentWidth,
+                            height: 250, // 크롭된 이미지용 고정 높이
+                            fit: BoxFit.fitWidth,
+                          ),
+                          // 하단 그라데이션 효과
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              height: 70,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.white.withOpacity(0),
+                                    Colors.white.withOpacity(0.9),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
 
                 // 더보기/접기 버튼
                 Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: GestureDetector(
-                    onTap: _toggleExpand,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          _isExpanded ? '접기' : '더보기',
-                          style: body_S.copyWith(color: AppColors.primary),
+                  padding: const EdgeInsets.only(top: 16),
+                  child: _isExpanded
+                      ? CTAButton(
+                          isEnabled: true,
+                          onPressed: _toggleExpand,
+                          text: '접기',
+                          type: CTAButtonType.outline,
+                          size: CTAButtonSize.large,
+                        )
+                      : CTAButton(
+                          isEnabled: true,
+                          onPressed: _toggleExpand,
+                          text: '더보기',
+                          type: CTAButtonType.outline,
+                          size: CTAButtonSize.large,
                         ),
-                        const SizedBox(width: 4),
-                        Icon(
-                          _isExpanded
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
-                          size: 16,
-                          color: AppColors.primary,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),

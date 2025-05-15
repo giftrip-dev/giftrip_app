@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:myong/core/widgets/section_divider.dart';
 import 'package:myong/features/shared/widgets/product_detail_image_section.dart';
+import 'package:myong/features/shared/widgets/product_policy_section.dart';
 import 'package:provider/provider.dart';
 import 'package:myong/core/constants/item_type.dart';
 import 'package:myong/features/experience/view_models/experience_view_model.dart';
+import 'package:myong/features/home/models/product_model.dart';
+import 'package:myong/features/home/widgets/product/related_products_section.dart';
+import 'package:myong/features/review/widgets/review_list.dart';
 import 'package:myong/features/shared/widgets/product_app_bar.dart';
 import 'package:myong/features/shared/widgets/product_basic_info_section.dart';
 
@@ -87,10 +91,45 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                 ),
                 const SectionDivider(),
 
+                // 리뷰 목록
+                ReviewList(
+                  productId: widget.experienceId,
+                  productType: 'experience',
+                  productTitle: experience.title,
+                  productThumbnailUrl: experience.thumbnailUrl,
+                  productPrice: experience.finalPrice,
+                ),
+                const SectionDivider(),
+
                 // 상세 이미지
                 ProductDetailImageSection(
                   croppedImageUrl: experience.croppedDetailImageUrl,
                   detailImageUrl: experience.detailImageUrl,
+                ),
+                const SectionDivider(),
+
+                // 문의하기 섹션
+                ProductPolicySection(
+                  title: '문의하기',
+                  sectionTitle: experience.inquiryInfo.title,
+                  sectionContent: experience.inquiryInfo.content,
+                ),
+                const SectionDivider(),
+
+                // 변경 및 취소 섹션
+                ProductPolicySection(
+                  title: '변경 및 취소',
+                  sectionTitle: experience.changeInfo.title,
+                  sectionContent: experience.changeInfo.content,
+                ),
+                const SectionDivider(),
+
+                // 관련 체험 추천 섹션
+                RelatedProductsSection(
+                  title: '이런 체험 어떠세요?',
+                  productType: ProductType.experience,
+                  productId: widget.experienceId,
+                  pageSize: 5,
                 ),
               ],
             ),
