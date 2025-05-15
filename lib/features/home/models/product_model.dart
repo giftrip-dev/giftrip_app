@@ -1,10 +1,18 @@
 import 'package:myong/core/utils/page_meta.dart';
 
 /// 상품 뱃지
-enum ItemBadgeType {
+enum ProductTagType {
   newArrival, // NEW
   bestSeller, // BEST
   almostSoldOut, // 품절임박
+}
+
+/// 상품 타입
+enum ProductType {
+  product, // 식품/가구/의류 등
+  accommodation, // 숙소
+  experience, // 체험
+  experienceGroup, // 체험단
 }
 
 /// 상품
@@ -15,6 +23,8 @@ class ProductModel {
   final int finalPrice;
   final int? discountRate;
   final DateTime createdAt;
+  final ProductType productType;
+  final List<ProductTagType>? badges;
 
   const ProductModel({
     required this.thumbnailUrl,
@@ -23,6 +33,8 @@ class ProductModel {
     required this.finalPrice,
     this.discountRate,
     required this.createdAt,
+    required this.productType,
+    this.badges,
   });
 
   /// 할인이 적용되었는지 여부
@@ -30,6 +42,25 @@ class ProductModel {
 
   /// JSON -> ProductModel
   factory ProductModel.fromJson(Map<String, dynamic> json) {
+    // 상품 타입 변환
+    final productTypeStr = json['productType'] as String;
+    final productType = ProductType.values.firstWhere(
+      (type) => type.toString().split('.').last == productTypeStr,
+      orElse: () => ProductType.product,
+    );
+
+    // 배지 타입 변환
+    List<ProductTagType>? badges;
+    if (json['badges'] != null) {
+      final List<dynamic> badgeList = json['badges'] as List<dynamic>;
+      badges = badgeList.map((badgeStr) {
+        return ProductTagType.values.firstWhere(
+          (badge) => badge.toString().split('.').last == badgeStr,
+          orElse: () => ProductTagType.newArrival,
+        );
+      }).toList();
+    }
+
     return ProductModel(
       thumbnailUrl: json['thumbnailUrl'] as String,
       title: json['title'] as String,
@@ -38,6 +69,8 @@ class ProductModel {
       discountRate:
           json['discountRate'] != null ? json['discountRate'] as int : null,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      productType: productType,
+      badges: badges,
     );
   }
 
@@ -50,6 +83,9 @@ class ProductModel {
       'finalPrice': finalPrice,
       'discountRate': discountRate,
       'createdAt': createdAt.toIso8601String(),
+      'productType': productType.toString().split('.').last,
+      'badges':
+          badges?.map((badge) => badge.toString().split('.').last).toList(),
     };
   }
 }

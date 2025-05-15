@@ -109,6 +109,8 @@ class ExperienceRepo {
       reviewCount: experience.reviewCount,
       badges: experience.badges,
       discountRate: experience.discountRate,
+      availableFrom: experience.availableFrom,
+      availableTo: experience.availableTo,
       location: '서울특별시 강남구 테헤란로 123',
       managerPhoneNumber: '010-1234-5678',
       relatedLink: 'https://example.com/experience/${experience.id}',
@@ -124,8 +126,8 @@ class ExperienceRepo {
             '• 예약 변경은 체험 시작일 3일 전까지 가능합니다.\n• 예약 변경 시 차액이 발생할 수 있습니다.\n• 변경 횟수는 1회로 제한됩니다.',
       ),
       availablePeriod: AvailablePeriod(
-        startDate: DateTime.now(),
-        endDate: DateTime.now().add(const Duration(days: 30)),
+        startDate: experience.availableFrom,
+        endDate: experience.availableTo,
       ),
       durationInDays: 1 + (experience.id.hashCode % 3), // 1~3일 랜덤 생성
     );
