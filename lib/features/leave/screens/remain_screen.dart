@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class RemainScreen extends StatelessWidget {
   @override

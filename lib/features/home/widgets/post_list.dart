@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/features/community/models/post_model.dart';
-import 'package:myong/features/community/widgets/post_item.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
+import 'package:giftrip/features/community/widgets/post_item.dart';
 
 class PostListWidget extends StatelessWidget {
   final List<PostModel> posts;

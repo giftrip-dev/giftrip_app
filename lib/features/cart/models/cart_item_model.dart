@@ -1,4 +1,4 @@
-import 'package:myong/core/constants/item_type.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 
 class CartItemModel {
   final String id;

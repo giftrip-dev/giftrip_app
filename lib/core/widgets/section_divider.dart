@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:myong/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
 
 /// 높이 8인 디바이더
 class SectionDivider extends StatelessWidget {

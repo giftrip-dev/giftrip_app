@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/widgets/modal/two_button_modal.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:myong/core/utils/check_permission.dart';
+import 'package:giftrip/core/utils/check_permission.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 

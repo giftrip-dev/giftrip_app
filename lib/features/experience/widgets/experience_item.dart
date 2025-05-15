@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/utils/formatter.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
-import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/experience/screens/experience_detail_screen.dart';
-import 'package:myong/features/home/widgets/product/item_badge.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/experience/screens/experience_detail_screen.dart';
+import 'package:giftrip/features/home/widgets/product/item_badge.dart';
 
 class ExperienceItem extends StatelessWidget {
   final ExperienceModel experience;

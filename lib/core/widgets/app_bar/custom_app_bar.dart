@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackButton; // 뒤로가기 여부

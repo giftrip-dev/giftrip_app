@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/features/home/view_models/product_view_model.dart';
-import 'package:myong/features/home/models/product_model.dart';
-import 'package:myong/features/home/widgets/product/product_item.dart';
+import 'package:giftrip/features/home/view_models/product_view_model.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/home/widgets/product/product_item.dart';
 
 /// 가로 슬라이드 & 무한 페칭 캐러셀
 class ProductCarousel extends StatefulWidget {

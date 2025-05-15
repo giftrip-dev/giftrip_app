@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/notification/models/notification_model.dart';
-import 'package:myong/core/utils/logger.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/features/notification/models/notification_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 class NotificationRepo {
   final Dio _dio = DioClient().to();

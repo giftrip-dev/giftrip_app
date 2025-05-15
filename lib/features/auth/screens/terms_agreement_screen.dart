@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/utils/pdf_download.dart';
-import 'package:myong/core/widgets/button/cta_button.dart';
-import 'package:myong/features/user/models/dto/user_dto.dart';
-import 'package:myong/features/user/view_models/user_view_model.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:myong/features/auth/screens/influencer_check_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/utils/pdf_download.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/features/user/models/dto/user_dto.dart';
+import 'package:giftrip/features/user/view_models/user_view_model.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 
 class TermsAgreementScreen extends StatefulWidget {
   const TermsAgreementScreen({super.key});
@@ -86,6 +86,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
               style: title_M.copyWith(color: AppColors.labelStrong)),
           titleSpacing: 0,
           centerTitle: true,
+          toolbarHeight: 56,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

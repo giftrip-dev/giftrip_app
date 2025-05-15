@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/features/community/widgets/category_bottom_sheet.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
-import 'package:myong/core/widgets/modal/two_button_modal.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/features/community/widgets/category_bottom_sheet.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 
 class WriteAppBar extends StatelessWidget implements PreferredSizeWidget {
   final BeautyCategory selectedCategory;

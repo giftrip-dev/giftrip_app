@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
 
 /// 버튼 타입 정의
 enum CTAButtonType {

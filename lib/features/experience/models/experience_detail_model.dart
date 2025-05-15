@@ -1,6 +1,6 @@
-import 'package:myong/features/experience/models/experience_category.dart';
-import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/home/models/product_model.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
+import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 문의/변경 정보 모델
 class InformationSection {

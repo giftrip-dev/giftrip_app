@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/widgets/button/cta_button.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
 
 class OneButtonBottomSheet extends StatelessWidget {
   final bool isEnabled;

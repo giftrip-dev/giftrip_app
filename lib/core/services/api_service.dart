@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/app.dart';
-import 'package:myong/core/constants/api_endpoint.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/auth/repositories/auth_repo.dart';
+import 'package:giftrip/core/app.dart';
+import 'package:giftrip/core/constants/api_endpoint.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();

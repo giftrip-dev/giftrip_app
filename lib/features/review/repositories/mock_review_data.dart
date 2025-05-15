@@ -1,4 +1,4 @@
-import 'package:myong/features/review/models/review_model.dart';
+import 'package:giftrip/features/review/models/review_model.dart';
 
 /// 리뷰 목업 데이터
 final List<ReviewModel> mockReviewList = [

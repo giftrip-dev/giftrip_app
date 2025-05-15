@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/app_bar/back_button_app_bar.dart';
-import 'package:myong/features/my/view_models/my_community_view_model.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/features/my/view_models/my_community_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/features/community/widgets/post_item.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/community/widgets/post_item.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class MyCommunityListScreen extends StatefulWidget {
   const MyCommunityListScreen({Key? key}) : super(key: key);

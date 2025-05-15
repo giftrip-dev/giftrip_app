@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/community/models/dto/report_dto.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/features/community/models/dto/report_dto.dart';
 
 class ReportResponse {
   final bool isSuccess;

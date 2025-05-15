@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/features/experience/models/experience_category.dart';
-import 'package:myong/features/experience/widgets/experience_category_bar.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
+import 'package:giftrip/features/experience/widgets/experience_category_bar.dart';
 
 class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
   final ExperienceCategory? selectedCategory;

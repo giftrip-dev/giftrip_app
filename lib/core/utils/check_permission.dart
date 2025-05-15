@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/services/storage_service.dart';
+import 'package:giftrip/core/services/storage_service.dart';
 
 Future<void> checkNotificationPermission(BuildContext context) async {
   // 현재 권한 상태를 확인

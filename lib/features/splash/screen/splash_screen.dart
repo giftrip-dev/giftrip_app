@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
-import 'package:myong/features/auth/view_models/auth_view_model.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/widgets/modal/permission_guide_modal.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/widgets/modal/permission_guide_modal.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

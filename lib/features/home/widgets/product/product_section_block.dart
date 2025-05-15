@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/widgets/section_divider.dart';
-import 'package:myong/features/home/view_models/product_view_model.dart';
-import 'package:myong/features/home/widgets/product/product_carousel.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/widgets/section_divider.dart';
+import 'package:giftrip/features/home/view_models/product_view_model.dart';
+import 'package:giftrip/features/home/widgets/product/product_carousel.dart';
 
 /// 단일 상품 섹션(제목+부제목+캐러셀) UI
 class ProductSectionBlock extends StatelessWidget {

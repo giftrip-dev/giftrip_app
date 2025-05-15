@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/notice/models/notice_model.dart';
-import 'package:myong/features/notice/repositories/notice_repo.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/notice/models/notice_model.dart';
+import 'package:giftrip/features/notice/repositories/notice_repo.dart';
 
 class NoticeViewModel extends ChangeNotifier {
   final NoticeRepo _noticeRepo = NoticeRepo();

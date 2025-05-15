@@ -1,6 +1,6 @@
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/community/models/comment_model.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/community/models/comment_model.dart';
 
 class PostModel {
   final List<String> fileUrls;

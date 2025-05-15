@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/experience/models/experience_category.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
 
 class ExperienceCategoryBar extends StatelessWidget {
   final ExperienceCategory? selectedCategory;

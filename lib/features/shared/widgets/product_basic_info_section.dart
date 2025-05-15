@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
-import 'package:myong/features/home/models/product_model.dart';
-import 'package:myong/features/home/widgets/product/item_badge.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/home/widgets/product/item_badge.dart';
 
 /// 상품 상세 정보 섹션 위젯
 class ProductBasicInfoSection extends StatelessWidget {

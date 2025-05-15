@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/community/models/comment_model.dart';
-import 'package:myong/features/community/models/dto/comment_dto.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/features/community/models/comment_model.dart';
+import 'package:giftrip/features/community/models/dto/comment_dto.dart';
 
 class CommentRepo {
   final Dio _dio = DioClient().to();

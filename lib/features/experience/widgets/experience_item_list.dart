@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/experience/widgets/experience_item.dart';
-import 'package:myong/features/home/models/product_model.dart';
+import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/experience/widgets/experience_item.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 
 class ExperienceItemList extends StatelessWidget {
   final List<ExperienceModel> experiences;

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/event/models/event_model.dart';
-import 'package:myong/features/event/repositories/mock_event_data.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/event/models/event_model.dart';
+import 'package:giftrip/features/event/repositories/mock_event_data.dart';
 
 class EventRepo {
   final Dio _dio = DioClient().to();

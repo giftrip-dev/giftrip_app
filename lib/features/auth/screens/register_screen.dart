@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/text_field/custom_input_field.dart';
-import 'package:myong/core/widgets/dropdown/custom_dropdown.dart';
-import 'package:myong/features/auth/widgets/bottom_cta_button.dart';
-import 'package:myong/features/auth/widgets/phone_number_verification.dart';
-import 'package:myong/features/auth/screens/register_success_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
+import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
+import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
+import 'package:giftrip/features/auth/widgets/phone_number_verification.dart';
+import 'package:giftrip/features/auth/screens/register_success_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -146,6 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
+        toolbarHeight: 56,
       ),
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(

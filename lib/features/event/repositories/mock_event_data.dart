@@ -1,4 +1,4 @@
-import 'package:myong/features/event/models/event_model.dart';
+import 'package:giftrip/features/event/models/event_model.dart';
 
 /// 목업 이벤트 데이터
 final List<EventModel> mockEventList = List.generate(

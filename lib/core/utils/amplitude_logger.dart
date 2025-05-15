@@ -2,8 +2,8 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:amplitude_flutter/configuration.dart';
 import 'package:amplitude_flutter/events/base_event.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/services/storage_service.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/services/storage_service.dart';
 
 class AmplitudeLogger {
   static final Amplitude _amplitude = Amplitude(Configuration(

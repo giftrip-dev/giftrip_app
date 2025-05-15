@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
 
 /// 상품 문의하기 및 변경/취소 정보 섹션 위젯
 class ProductPolicySection extends StatelessWidget {

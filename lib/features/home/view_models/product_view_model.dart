@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/home/models/product_model.dart';
-import 'package:myong/features/home/repositories/product_repo.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/home/repositories/product_repo.dart';
 
 /// 목업용 상품 리스트 (30개)
 final List<ProductModel> mockProducts = List.generate(

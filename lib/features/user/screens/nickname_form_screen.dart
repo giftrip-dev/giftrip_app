@@ -1,19 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/app_bar/global_app_bar.dart';
-import 'package:myong/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
-import 'package:myong/features/user/view_models/user_view_model.dart';
-import 'package:myong/features/user/screens/startup_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
+import 'package:giftrip/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
+import 'package:giftrip/features/user/view_models/user_view_model.dart';
+import 'package:giftrip/features/user/screens/startup_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/widgets/app_bar/back_button_app_bar.dart';
-import 'package:myong/core/widgets/modal/two_button_modal.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class NicknameFormScreen extends StatefulWidget {
   final bool? isAppSettingsRequired;

@@ -1,6 +1,6 @@
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/experience/models/experience_category.dart';
-import 'package:myong/features/home/models/product_model.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 체험 상품 모델
 class ExperienceModel {

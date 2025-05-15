@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myong/features/user/models/dto/user_dto.dart';
-import 'package:myong/features/user/repositories/user_repo.dart';
-import 'package:myong/core/services/storage_service.dart'; // GlobalStorage 임포트
-import 'package:myong/features/auth/models/user_model.dart';
+import 'package:giftrip/features/user/models/dto/user_dto.dart';
+import 'package:giftrip/features/user/repositories/user_repo.dart';
+import 'package:giftrip/core/services/storage_service.dart'; // GlobalStorage 임포트
+import 'package:giftrip/features/auth/models/user_model.dart';
 
 class UserViewModel extends ChangeNotifier {
   final UserRepository _repository = UserRepository();

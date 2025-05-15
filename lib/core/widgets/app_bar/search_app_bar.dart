@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/app_bar/custom_app_bar.dart';
+import 'package:giftrip/core/widgets/app_bar/custom_app_bar.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

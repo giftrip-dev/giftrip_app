@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/widgets/more_option_box/community_more_option_box.dart';
+import 'package:giftrip/core/widgets/more_option_box/community_more_option_box.dart';
 
 class CommunityMoreOptionOverlayButton extends StatefulWidget {
   final bool isAuthor; // 작성자 여부

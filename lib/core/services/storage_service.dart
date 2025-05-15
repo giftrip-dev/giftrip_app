@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/auth/models/user_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/auth/models/user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:myong/core/utils/logger.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 class GlobalStorage {
   static const _storage = FlutterSecureStorage();

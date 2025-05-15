@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/widgets/banner/event_banner.dart';
-import 'package:myong/core/widgets/section_divider.dart';
-import 'package:myong/features/home/view_models/product_view_model.dart';
-import 'package:myong/features/home/widgets/home_app_bar.dart';
-import 'package:myong/features/home/widgets/home_feature_tab.dart';
-import 'package:myong/features/home/widgets/product/product_section_block.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/widgets/banner/event_banner.dart';
+import 'package:giftrip/core/widgets/section_divider.dart';
+import 'package:giftrip/features/home/view_models/product_view_model.dart';
+import 'package:giftrip/features/home/widgets/home_app_bar.dart';
+import 'package:giftrip/features/home/widgets/home_feature_tab.dart';
+import 'package:giftrip/features/home/widgets/product/product_section_block.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

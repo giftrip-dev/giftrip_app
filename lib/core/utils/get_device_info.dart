@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:myong/core/services/storage_service.dart';
+import 'package:giftrip/core/services/storage_service.dart';
 
 Future<Map<String, String?>> getDeviceInfo() async {
   final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();

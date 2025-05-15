@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class CommunityFilterBar extends StatelessWidget {
   final PostSortType selectedSort;

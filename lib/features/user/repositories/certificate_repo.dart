@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/user/models/dto/certificates_dto.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/user/models/certificate_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/user/models/dto/certificates_dto.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/features/user/models/certificate_model.dart';
 
 class CertificateRepository {
   final Dio _dio = DioClient().to();

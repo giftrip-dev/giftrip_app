@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/user/models/dto/user_dto.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/auth/models/user_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/user/models/dto/user_dto.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/features/auth/models/user_model.dart';
 
 class UserRepository {
   final Dio _dio = DioClient().to();

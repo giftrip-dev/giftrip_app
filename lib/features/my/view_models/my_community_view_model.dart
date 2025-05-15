@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/community/models/post_model.dart';
-import 'package:myong/features/community/repositories/community_repo.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
+import 'package:giftrip/features/community/repositories/community_repo.dart';
 
 class MyCommunityViewModel extends ChangeNotifier {
   final CommunityRepo _communityRepo = CommunityRepo();

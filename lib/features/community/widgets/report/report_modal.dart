@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/modal/one_button_modal.dart';
-import 'package:myong/core/widgets/modal/request_fail_modal.dart';
-import 'package:myong/features/community/models/dto/report_dto.dart';
-import 'package:myong/features/community/repositories/report_repo.dart';
-import 'package:myong/features/community/widgets/content_input_field.dart';
-import 'package:myong/features/community/widgets/report/report_drop_down.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
+import 'package:giftrip/features/community/models/dto/report_dto.dart';
+import 'package:giftrip/features/community/repositories/report_repo.dart';
+import 'package:giftrip/features/community/widgets/content_input_field.dart';
+import 'package:giftrip/features/community/widgets/report/report_drop_down.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class ReportModal extends StatefulWidget {
   final String targetId;

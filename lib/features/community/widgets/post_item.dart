@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/formatter.dart';
-import 'package:myong/features/community/models/post_model.dart';
-import 'package:myong/features/community/screens/community_detail_screen.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
+import 'package:giftrip/features/community/screens/community_detail_screen.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class PostItem extends StatelessWidget {
   final PostModel post;

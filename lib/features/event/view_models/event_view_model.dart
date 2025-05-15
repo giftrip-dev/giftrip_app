@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/event/models/event_model.dart';
-import 'package:myong/features/event/repositories/event_repo.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/event/models/event_model.dart';
+import 'package:giftrip/features/event/repositories/event_repo.dart';
 
 /// 이벤트 뷰모델
 class EventViewModel extends ChangeNotifier {

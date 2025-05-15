@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/auth/models/auth_result_model.dart';
-import 'package:myong/features/auth/models/user_model.dart';
-import 'package:myong/features/notification/view_models/notification_view_model.dart';
-import 'package:myong/features/notification/models/notification_model.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/auth/models/auth_result_model.dart';
+import 'package:giftrip/features/auth/models/user_model.dart';
+import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
+import 'package:giftrip/features/notification/models/notification_model.dart';
 
 class AuthRepository {
   final Dio _dio = DioClient().to();

@@ -1,4 +1,4 @@
-import 'package:myong/core/utils/page_meta.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
 
 /// 상품 뱃지
 enum ProductTagType {

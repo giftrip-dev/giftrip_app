@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
-import 'package:myong/core/app.dart';
-import 'package:myong/core/constants/font_manager.dart';
+import 'package:giftrip/core/app.dart';
+import 'package:giftrip/core/constants/font_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

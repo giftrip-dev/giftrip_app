@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/features/community/screens/community_detail_screen.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/features/community/screens/community_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

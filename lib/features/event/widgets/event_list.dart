@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/features/event/models/event_model.dart';
-import 'package:myong/features/event/widgets/event_item.dart';
+import 'package:giftrip/features/event/models/event_model.dart';
+import 'package:giftrip/features/event/widgets/event_item.dart';
 
 class EventList extends StatelessWidget {
   final List<EventModel> events;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/utils/pdf_download.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/utils/pdf_download.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 Widget termsBox({
   required BuildContext context,

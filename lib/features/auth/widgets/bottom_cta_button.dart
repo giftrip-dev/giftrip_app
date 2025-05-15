@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/button/cta_button.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
 
 class BottomCTAButton extends StatelessWidget {
   final bool isEnabled;

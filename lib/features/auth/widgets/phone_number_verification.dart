@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/text_field/custom_input_field.dart';
-import 'package:myong/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
+import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 
 class Code {
   String? phoneNumber;

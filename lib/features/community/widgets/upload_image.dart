@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/bottom_sheet/image_select_bottom_sheet.dart';
-import 'package:myong/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/bottom_sheet/image_select_bottom_sheet.dart';
+import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 
 class UploadImageWidget extends StatefulWidget {
   /// 부모(WriteScreen)의 BuildContext를 전달받아서

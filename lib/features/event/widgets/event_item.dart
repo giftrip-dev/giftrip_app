@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
-import 'package:myong/features/event/models/event_model.dart';
-import 'package:myong/features/event/screens/event_detail_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/event/models/event_model.dart';
+import 'package:giftrip/features/event/screens/event_detail_screen.dart';
 
 class EventItem extends StatelessWidget {
   final EventModel event;

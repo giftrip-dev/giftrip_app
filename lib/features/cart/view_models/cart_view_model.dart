@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/constants/item_type.dart';
-import 'package:myong/features/cart/models/cart_item_model.dart';
-import 'package:myong/features/cart/repositories/cart_repo.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/constants/item_type.dart';
+import 'package:giftrip/features/cart/models/cart_item_model.dart';
+import 'package:giftrip/features/cart/repositories/cart_repo.dart';
 
 class CartViewModel extends ChangeNotifier {
   final CartRepo _repo = CartRepo();
