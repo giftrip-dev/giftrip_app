@@ -5,6 +5,9 @@ import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
 import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/auth/screens/register_screen.dart';
+import 'package:giftrip/features/auth/models/influencer_model.dart';
+import 'package:giftrip/features/auth/repositories/influencer_repo.dart';
+import 'dart:developer' as developer;
 
 class InfluencerCheckScreen extends StatefulWidget {
   const InfluencerCheckScreen({super.key});
@@ -14,6 +17,9 @@ class InfluencerCheckScreen extends StatefulWidget {
 }
 
 class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
+  final InfluencerRepository _influencerRepo = InfluencerRepository();
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -38,26 +44,96 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
     setState(() {
       _accountName = _accountController.text;
     });
+    developer.log(
+      '계정 이름 업데이트: ${_accountName} (유효성: ${_accountName.isNotEmpty})',
+      name: 'InfluencerCheckScreen',
+    );
   }
 
   void _updateCustomDomain() {
     setState(() {
       _customDomain = _customDomainController.text;
     });
+    developer.log(
+      '커스텀 도메인 업데이트: ${_customDomain} (유효성: ${_customDomain.isNotEmpty})',
+      name: 'InfluencerCheckScreen',
+    );
   }
 
-  /// 인플루언서루활활 활활 토글
+  /// 인플루언서 활활 활활 토글
   void _toggleYes() {
     setState(() {
       _yes = true;
       _no = false;
     });
+    developer.log(
+      '''인플루언서 활동 여부: 예
+      - 선택된 도메인: ${_selectedDomain ?? '없음'}
+      - 계정 이름: ${_accountName.isEmpty ? '없음' : _accountName}
+      - 커스텀 도메인: ${_customDomain.isEmpty ? '없음' : _customDomain}
+      - 유효성: ${_selectedDomain != null && _accountName.isNotEmpty && (_selectedDomain != '기타' || (_selectedDomain == '기타' && _customDomain.isNotEmpty))}''',
+      name: 'InfluencerCheckScreen',
+    );
   }
 
   void _toggleNo() {
     setState(() {
       _yes = false;
       _no = true;
+    });
+    developer.log(
+      '인플루언서 활동 여부: 아니오',
+      name: 'InfluencerCheckScreen',
+    );
+  }
+
+  Future<void> _submitInfluencerInfo() async {
+    developer.log(
+      '''인플루언서 정보 제출 시작:
+      - 인플루언서 여부: ${_yes ? '예' : '아니오'}
+      - 선택된 도메인: ${_selectedDomain ?? '없음'}
+      - 커스텀 도메인: ${_customDomain.isEmpty ? '없음' : _customDomain}
+      - 계정 이름: ${_accountName.isEmpty ? '없음' : _accountName}
+      - 유효성: ${_no || (_yes && _selectedDomain != null && _accountName.isNotEmpty && (_selectedDomain != '기타' || (_selectedDomain == '기타' && _customDomain.isNotEmpty)))}''',
+      name: 'InfluencerCheckScreen',
+    );
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final request = InfluencerInfoRequest(
+      isInfluencer: _yes,
+      domain: _selectedDomain,
+      customDomain: _selectedDomain == '기타' ? _customDomain : null,
+      accountName: _accountName,
+    );
+
+    final response = await _influencerRepo.updateInfluencerInfo(request);
+
+    if (response.isSuccess) {
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RegisterScreen(),
+          ),
+          (route) => false,
+        );
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.errorMessage ?? '인플루언서 정보 저장에 실패했습니다.'),
+            backgroundColor: AppColors.statusError,
+          ),
+        );
+      }
+    }
+
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -137,6 +213,13 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                             setState(() {
                               _selectedDomain = value;
                             });
+                            developer.log(
+                              '''도메인 선택:
+                              - 선택된 도메인: ${value ?? '없음'}
+                              - 커스텀 도메인 여부: ${value == '기타'}
+                              - 유효성: ${value != null}''',
+                              name: 'InfluencerCheckScreen',
+                            );
                           },
                           hintText: '도메인 선택',
                         ),
@@ -146,6 +229,12 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                             child: CustomInputField(
                               controller: _customDomainController,
                               placeholder: '도메인 입력',
+                              onChanged: (value) {
+                                developer.log(
+                                  '커스텀 도메인 입력: ${value} (유효성: ${value.isNotEmpty})',
+                                  name: 'InfluencerCheckScreen',
+                                );
+                              },
                             ),
                           ),
                         const SizedBox(height: 16),
@@ -155,6 +244,12 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                         CustomInputField(
                           controller: _accountController,
                           placeholder: '계정 이름',
+                          onChanged: (value) {
+                            developer.log(
+                              '계정 이름 입력: ${value} (유효성: ${value.isNotEmpty})',
+                              name: 'InfluencerCheckScreen',
+                            );
+                          },
                         ),
                       ],
                     ],
@@ -199,10 +294,12 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
         bottomNavigationBar: BottomCTAButton(
           isEnabled: _no ||
               (_yes &&
-                  _selectedDomain != null &&
-                  _accountName.isNotEmpty &&
-                  (_selectedDomain != '기타' ||
-                      (_selectedDomain == '기타' && _customDomain.isNotEmpty))),
+                      _selectedDomain != null &&
+                      _accountName.isNotEmpty &&
+                      (_selectedDomain != '기타' ||
+                          (_selectedDomain == '기타' &&
+                              _customDomain.isNotEmpty))) &&
+                  !_isLoading,
           onPressed: _no ||
                   (_yes &&
                       _selectedDomain != null &&
@@ -210,15 +307,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
                       (_selectedDomain != '기타' ||
                           (_selectedDomain == '기타' &&
                               _customDomain.isNotEmpty)))
-              ? () async {
-                  // RegisterScreen으로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    ),
-                  );
-                }
+              ? _submitInfluencerInfo
               : null,
           text: '다음',
         ),
