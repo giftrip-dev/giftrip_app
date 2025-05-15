@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/core/widgets/banner/event_banner.dart';
-import 'package:giftrip/features/home/widgets/home_app_bar.dart';
+import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -18,16 +17,15 @@ class _LodgingScreenState extends State<LodgingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBar(),
+      appBar: const SearchAppBar(title: '숙박'),
       body: Column(
         children: [
-          const EventBannerWidget(),
           Expanded(
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
               children: [
-                Text('이벤트 페이지'),
+                Text('숙박 페이지'),
                 const SizedBox(height: 20),
               ],
             ),

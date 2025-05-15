@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:giftrip/features/user/screens/nickname_form_screen.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class AccountBoxWidget extends StatelessWidget {
@@ -39,14 +38,6 @@ class AccountBoxWidget extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NicknameFormScreen(
-                                    previousPage: 'my_page',
-                                    nickname: nickname,
-                                  )),
-                        );
                         AmplitudeLogger.logClickEvent(
                           'nickname_change_click',
                           'nickname_change_button',

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
-import 'package:giftrip/features/my/widgets/certificate_board.dart';
 import 'package:giftrip/features/my/widgets/account_box.dart';
 import 'package:giftrip/features/my/widgets/mypage_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
 import 'package:giftrip/features/my/widgets/config_box.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
-import 'package:giftrip/features/user/view_models/certificate_view_model.dart';
-import 'package:giftrip/features/user/models/certificate_model.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
-import 'package:giftrip/core/services/storage_service.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -21,8 +17,7 @@ class MyPageScreen extends StatefulWidget {
 class _MyPageScreenState extends State<MyPageScreen> {
   late MyPageViewModel myPageViewModel;
   late UserViewModel userViewModel;
-  late CertificateViewModel certificateViewModel;
-  List<CertificateModel>? certificates;
+
   // userInfo 변수를 추가합니다.
   String? userNickname;
   String? userEmail;
@@ -32,10 +27,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
     super.initState();
     myPageViewModel = MyPageViewModel();
     userViewModel = UserViewModel();
-    certificateViewModel = CertificateViewModel();
     // getUserInfo 호출하여 사용자 정보를 가져옵니다.
     _loadUserInfo();
-    _loadCertificate();
     AmplitudeLogger.logViewEvent(
         "app_my_page_screen_view", "app_my_page_screen");
   }
@@ -47,15 +40,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
       setState(() {
         userNickname = userInfo.nickname; // 닉네임 저장
         userEmail = userInfo.email; // 이메일 저장
-      });
-    }
-  }
-
-  void _loadCertificate() async {
-    var loadedCertificates = await certificateViewModel.getCertificate();
-    if (loadedCertificates != null) {
-      setState(() {
-        this.certificates = loadedCertificates;
       });
     }
   }
@@ -72,12 +56,12 @@ class _MyPageScreenState extends State<MyPageScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CertificateBoard(certificates: certificates),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     CertificateBoard(certificates: certificates),
+                  //   ],
+                  // ),
                   // AccountBoxWidget에 userNickname과 userEmail을 전달합니다.
                   AccountBoxWidget(
                     nickname: userNickname ?? '',

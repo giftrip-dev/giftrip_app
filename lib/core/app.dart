@@ -23,7 +23,6 @@ import 'package:giftrip/features/my/view_models/my_community_view_model.dart';
 import 'package:giftrip/features/notice/view_models/notice_view_model.dart';
 import 'package:giftrip/features/shopping/screens/shopping_screen.dart';
 import 'package:giftrip/features/splash/screen/splash_screen.dart';
-import 'package:giftrip/features/user/view_models/certificate_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:giftrip/core/services/storage_service.dart';
@@ -116,7 +115,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CertificateViewModel()),
         ChangeNotifierProvider(create: (_) => CommunityViewModel()),
         ChangeNotifierProvider(create: (_) => CommunitySearchViewModel()),
         ChangeNotifierProvider(create: (_) => CommunityWriteViewModel()),
