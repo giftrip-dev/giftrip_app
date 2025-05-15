@@ -1,6 +1,6 @@
-import 'package:myong/features/experience/models/experience_category.dart';
-import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/home/models/product_model.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
+import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 목업 체험 상품 데이터
 final List<ExperienceModel> mockExperienceList = List.generate(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/auth/screens/login_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/auth/screens/login_screen.dart';
 
 class LeaveCompleteScreen extends StatelessWidget {
   @override

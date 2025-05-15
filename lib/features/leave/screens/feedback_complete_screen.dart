@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/modal/request_fail_modal.dart';
-import 'package:myong/core/widgets/tooltip/tooltip.dart';
-import 'package:myong/features/leave/repositories/leave_repo.dart';
-import 'package:myong/features/leave/screens/leave_complete_screen.dart';
-import 'package:myong/features/leave/screens/remain_screen.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
+import 'package:giftrip/core/widgets/tooltip/tooltip.dart';
+import 'package:giftrip/features/leave/repositories/leave_repo.dart';
+import 'package:giftrip/features/leave/screens/leave_complete_screen.dart';
+import 'package:giftrip/features/leave/screens/remain_screen.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class FeedbackCompleteScreen extends StatefulWidget {
   @override

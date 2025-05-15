@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/core/constants/item_type.dart';
-import 'package:myong/features/cart/models/cart_item_model.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/core/constants/item_type.dart';
+import 'package:giftrip/features/cart/models/cart_item_model.dart';
 
 class CartRepo {
   final Dio _dio = DioClient().to();

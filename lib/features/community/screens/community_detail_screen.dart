@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/modal/one_button_modal.dart';
-import 'package:myong/features/community/view_models/comment_view_model.dart';
-import 'package:myong/features/community/view_models/community_view_model.dart';
-import 'package:myong/features/community/widgets/comment/comment_box.dart';
-import 'package:myong/features/community/widgets/comment/comment_input_box.dart';
-import 'package:myong/features/community/widgets/community_app_bar.dart';
-import 'package:myong/features/community/widgets/content_box.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/features/community/view_models/comment_view_model.dart';
+import 'package:giftrip/features/community/view_models/community_view_model.dart';
+import 'package:giftrip/features/community/widgets/comment/comment_box.dart';
+import 'package:giftrip/features/community/widgets/comment/comment_input_box.dart';
+import 'package:giftrip/features/community/widgets/community_app_bar.dart';
+import 'package:giftrip/features/community/widgets/content_box.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class CommunityDetailScreen extends StatefulWidget {
   final String postId;

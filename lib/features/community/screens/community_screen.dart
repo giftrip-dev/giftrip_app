@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/widgets/loading/circular_progress_indicator.dart';
-import 'package:myong/features/community/models/post_model.dart';
-import 'package:myong/features/community/widgets/post_item.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/widgets/loading/circular_progress_indicator.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
+import 'package:giftrip/features/community/widgets/post_item.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/widgets/app_bar/global_app_bar.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/features/community/view_models/community_view_model.dart';
-import 'package:myong/features/community/widgets/community_filter_bar.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/features/community/view_models/community_view_model.dart';
+import 'package:giftrip/features/community/widgets/community_filter_bar.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class CommunityScreen extends StatefulWidget {
   final PostSortType initialSort;

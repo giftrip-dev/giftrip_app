@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/features/cart/view_models/cart_view_model.dart';
+import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 
 /// 장바구니 아이콘 버튼 위젯
 /// Badge를 통해 현재 장바구니에 담긴 아이템 개수를 표시

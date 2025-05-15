@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/app_bar/global_app_bar.dart';
-import 'package:myong/features/my/widgets/certificate_board.dart';
-import 'package:myong/features/my/widgets/account_box.dart';
-import 'package:myong/features/my/widgets/mypage_box.dart';
-import 'package:myong/features/my/view_models/mypage_view_model.dart';
-import 'package:myong/features/my/widgets/config_box.dart';
-import 'package:myong/features/user/view_models/user_view_model.dart';
-import 'package:myong/features/user/view_models/certificate_view_model.dart';
-import 'package:myong/features/user/models/certificate_model.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:myong/core/services/storage_service.dart';
+import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
+import 'package:giftrip/features/my/widgets/certificate_board.dart';
+import 'package:giftrip/features/my/widgets/account_box.dart';
+import 'package:giftrip/features/my/widgets/mypage_box.dart';
+import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
+import 'package:giftrip/features/my/widgets/config_box.dart';
+import 'package:giftrip/features/user/view_models/user_view_model.dart';
+import 'package:giftrip/features/user/view_models/certificate_view_model.dart';
+import 'package:giftrip/features/user/models/certificate_model.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/services/storage_service.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});

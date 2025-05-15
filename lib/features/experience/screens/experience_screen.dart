@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/app_bar/search_app_bar.dart';
-import 'package:myong/core/widgets/banner/event_banner.dart';
+import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
+import 'package:giftrip/core/widgets/banner/event_banner.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/features/experience/view_models/experience_view_model.dart';
-import 'package:myong/features/experience/widgets/persistent_category_bar.dart';
-import 'package:myong/features/experience/widgets/experience_item_list.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
+import 'package:giftrip/features/experience/widgets/persistent_category_bar.dart';
+import 'package:giftrip/features/experience/widgets/experience_item_list.dart';
 
 class ExperienceScreen extends StatefulWidget {
   const ExperienceScreen({super.key});

@@ -1,4 +1,4 @@
-import 'package:myong/core/enum/community_enum.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
 
 // 게시글 작성 DTO
 class PostCreateRequestDto {

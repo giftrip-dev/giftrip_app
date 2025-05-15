@@ -1,4 +1,4 @@
-import 'package:myong/features/auth/models/user_model.dart';
+import 'package:giftrip/features/auth/models/user_model.dart';
 
 class AuthRes {
   final bool isSuccess;

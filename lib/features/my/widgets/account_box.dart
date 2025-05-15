@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/features/user/screens/nickname_form_screen.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/user/screens/nickname_form_screen.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class AccountBoxWidget extends StatelessWidget {
   final String nickname;

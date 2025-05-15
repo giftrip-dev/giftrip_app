@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class BottomGnb extends StatelessWidget {

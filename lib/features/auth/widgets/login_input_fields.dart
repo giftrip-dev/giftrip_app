@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/auth/screens/terms_agreement_screen.dart';
-import 'package:myong/core/widgets/text_field/custom_input_field.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
+import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
 
 class LoginInputFields extends StatefulWidget {
   const LoginInputFields({super.key});

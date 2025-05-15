@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/services/s3.dart';
-import 'package:myong/features/user/models/dto/certificates_dto.dart';
-import 'package:myong/features/user/repositories/certificate_repo.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/features/user/models/certificate_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/services/s3.dart';
+import 'package:giftrip/features/user/models/dto/certificates_dto.dart';
+import 'package:giftrip/features/user/repositories/certificate_repo.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/features/user/models/certificate_model.dart';
 
 class CertificateViewModel extends ChangeNotifier {
   final CertificateRepository _repository = CertificateRepository();

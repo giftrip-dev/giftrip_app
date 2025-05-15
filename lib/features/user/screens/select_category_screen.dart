@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/app_bar/global_app_bar.dart';
-import 'package:myong/features/user/widgets/category_button.dart';
-import 'package:myong/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
-import 'package:myong/features/user/screens/initial_certificate_screen.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
+import 'package:giftrip/features/user/widgets/category_button.dart';
+import 'package:giftrip/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
+import 'package:giftrip/features/user/screens/initial_certificate_screen.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class SelectCategoryScreen extends StatefulWidget {
   const SelectCategoryScreen({super.key});

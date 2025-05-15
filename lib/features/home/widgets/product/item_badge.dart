@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/home/models/product_model.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 상품 뱃지 위젯
 class ItemBadge extends StatelessWidget {

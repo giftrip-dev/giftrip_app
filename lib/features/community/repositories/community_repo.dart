@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/features/community/models/dto/post_dto.dart';
-import 'package:myong/features/community/models/post_model.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/features/community/models/dto/post_dto.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
 
 class CommunityRepo {
   final Dio _dio = DioClient().to();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/widgets/more_option_box/notification_more_option_box.dart';
+import 'package:giftrip/core/widgets/more_option_box/notification_more_option_box.dart';
 
 class NotificationMoreOptionOverlayButton extends StatefulWidget {
   final VoidCallback onDeleteAll; // 삭제 핸들러

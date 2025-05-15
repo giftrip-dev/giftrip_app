@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/experience/models/experience_category.dart';
-import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/experience/models/experience_detail_model.dart';
-import 'package:myong/features/experience/repositories/mock_experience_data.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
+import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/experience/models/experience_detail_model.dart';
+import 'package:giftrip/features/experience/repositories/mock_experience_data.dart';
 
 class ExperienceRepo {
   final Dio _dio = DioClient().to();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/section_divider.dart';
-import 'package:myong/features/shared/widgets/product_detail_image_section.dart';
+import 'package:giftrip/core/widgets/section_divider.dart';
+import 'package:giftrip/features/shared/widgets/product_detail_image_section.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/constants/item_type.dart';
-import 'package:myong/features/experience/view_models/experience_view_model.dart';
-import 'package:myong/features/shared/widgets/product_app_bar.dart';
-import 'package:myong/features/shared/widgets/product_basic_info_section.dart';
+import 'package:giftrip/core/constants/item_type.dart';
+import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
+import 'package:giftrip/features/shared/widgets/product_app_bar.dart';
+import 'package:giftrip/features/shared/widgets/product_basic_info_section.dart';
 
 class ExperienceDetailScreen extends StatefulWidget {
   final String experienceId;

@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
-import 'package:myong/core/widgets/app_bar/back_button_app_bar.dart';
-import 'package:myong/features/user/screens/certification_complete_screen.dart';
-import 'package:myong/features/user/screens/certification_complete_no_alarm_screen.dart';
-import 'package:myong/core/utils/check_permission.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/features/user/view_models/certificate_view_model.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
+import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/features/user/screens/certification_complete_screen.dart';
+import 'package:giftrip/features/user/screens/certification_complete_no_alarm_screen.dart';
+import 'package:giftrip/core/utils/check_permission.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/features/user/view_models/certificate_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class EmploymentFormScreen extends StatefulWidget {
   final BeautyCategory category;

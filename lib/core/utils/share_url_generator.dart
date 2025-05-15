@@ -1,4 +1,4 @@
-import 'package:myong/core/constants/item_type.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 
 /// 공유 URL 생성 유틸리티
 class ShareUrlGenerator {

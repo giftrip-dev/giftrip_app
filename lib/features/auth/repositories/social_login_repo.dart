@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/auth/models/auth_result_model.dart';
-import 'package:myong/features/auth/repositories/auth_repo.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/auth/models/auth_result_model.dart';
+import 'package:giftrip/features/auth/repositories/auth_repo.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class SocialLoginRepo {
   final Map<String, dynamic> resultMap = <String, dynamic>{};

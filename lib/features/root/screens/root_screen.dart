@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/gnb/bottom_gnb.dart';
-import 'package:myong/features/home/screens/home_screen.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:myong/features/category/category_screen.dart';
+import 'package:giftrip/core/widgets/gnb/bottom_gnb.dart';
+import 'package:giftrip/features/home/screens/home_screen.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/category/category_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({

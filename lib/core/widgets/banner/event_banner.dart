@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
 
 class EventBannerWidget extends StatelessWidget {
   // todo : 실제 이미지 URL과 이동 링크를 받음

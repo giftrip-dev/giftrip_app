@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/utils/formatter.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:myong/features/community/models/comment_model.dart';
-import 'package:myong/core/widgets/more_option_box/community_more_option_overlay_button.dart';
-import 'package:myong/features/community/models/dto/comment_dto.dart';
-import 'package:myong/features/community/view_models/comment_view_model.dart';
-import 'package:myong/features/community/widgets/comment/comment_content_box.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/community/models/comment_model.dart';
+import 'package:giftrip/core/widgets/more_option_box/community_more_option_overlay_button.dart';
+import 'package:giftrip/features/community/models/dto/comment_dto.dart';
+import 'package:giftrip/features/community/view_models/comment_view_model.dart';
+import 'package:giftrip/features/community/widgets/comment/comment_content_box.dart';
 import 'package:provider/provider.dart';
 
 class CommentBox extends StatefulWidget {

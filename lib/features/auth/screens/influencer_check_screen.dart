@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/text_field/custom_input_field.dart';
-import 'package:myong/core/widgets/dropdown/custom_dropdown.dart';
-import 'package:myong/features/auth/widgets/bottom_cta_button.dart';
-import 'package:myong/features/auth/screens/register_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
+import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
+import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
+import 'package:giftrip/features/auth/screens/register_screen.dart';
 
 class InfluencerCheckScreen extends StatefulWidget {
   const InfluencerCheckScreen({super.key});

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:myong/core/services/api_service.dart';
+import 'package:giftrip/core/services/api_service.dart';
 
 /// 파일 도메인
 enum FileDomain {

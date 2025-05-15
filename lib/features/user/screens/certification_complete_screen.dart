@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/app_bar/global_app_bar.dart';
-import 'package:myong/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
-import 'package:myong/features/user/screens/nickname_form_screen.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
+import 'package:giftrip/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
+import 'package:giftrip/features/user/screens/nickname_form_screen.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class CertificationCompleteScreen extends StatelessWidget {
   final String? previousPage;

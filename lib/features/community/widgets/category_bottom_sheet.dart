@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/enum/community_enum.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
 
 class WriteCategoryBottomSheet extends StatelessWidget {
   final BeautyCategory selectedCategory;

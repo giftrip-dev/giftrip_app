@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/features/leave/repositories/leave_repo.dart';
+import 'package:giftrip/features/leave/repositories/leave_repo.dart';
 
 class FeedbackViewModel extends ChangeNotifier {
   final LeaveRepo _leaveRepo = LeaveRepo();

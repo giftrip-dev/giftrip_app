@@ -1,18 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:myong/core/services/s3.dart';
-import 'package:myong/features/community/widgets/guide_text_box.dart';
-import 'package:myong/features/community/widgets/upload_image.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/services/s3.dart';
+import 'package:giftrip/features/community/widgets/guide_text_box.dart';
+import 'package:giftrip/features/community/widgets/upload_image.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/features/community/view_models/community_write_view_model.dart';
-import 'package:myong/features/community/widgets/write_app_bar.dart';
-import 'package:myong/features/community/widgets/title_input_field.dart';
-import 'package:myong/features/community/widgets/content_input_field.dart';
-import 'package:myong/core/widgets/modal/request_fail_modal.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/features/community/view_models/community_write_view_model.dart';
+import 'package:giftrip/features/community/widgets/write_app_bar.dart';
+import 'package:giftrip/features/community/widgets/title_input_field.dart';
+import 'package:giftrip/features/community/widgets/content_input_field.dart';
+import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class WriteScreen extends StatefulWidget {
   const WriteScreen({super.key});

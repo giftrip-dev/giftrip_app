@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
-import 'package:myong/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/bottom_sheet/one_button_bottom_sheet.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class StartupScreen extends StatelessWidget {
   const StartupScreen({super.key});

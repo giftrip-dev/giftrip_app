@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/services/s3.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/community/models/dto/post_dto.dart';
-import 'package:myong/features/community/models/post_model.dart';
-import 'package:myong/features/community/repositories/community_repo.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/services/s3.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/community/models/dto/post_dto.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
+import 'package:giftrip/features/community/repositories/community_repo.dart';
 
 class CommunityWriteViewModel extends ChangeNotifier {
   final CommunityRepo _communityRepo = CommunityRepo();

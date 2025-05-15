@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImagePickerBottomSheet extends StatelessWidget {

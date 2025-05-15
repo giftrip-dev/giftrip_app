@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/features/notification/screens/notification_screen.dart';
-import 'package:myong/features/notification/view_models/notification_view_model.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/features/notification/screens/notification_screen.dart';
+import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:provider/provider.dart';
 
 class GlobalAppBar extends StatefulWidget implements PreferredSizeWidget {

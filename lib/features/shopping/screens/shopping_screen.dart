@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/banner/event_banner.dart';
-import 'package:myong/features/home/widgets/home_app_bar.dart';
+import 'package:giftrip/core/widgets/banner/event_banner.dart';
+import 'package:giftrip/features/home/widgets/home_app_bar.dart';
 
 class ShoppingScreen extends StatefulWidget {
   const ShoppingScreen({super.key});

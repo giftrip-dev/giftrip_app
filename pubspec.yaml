@@ -1,9 +1,9 @@
-name: myong
-description: "오늘묭해"
+name: giftrip
+description: "기프트립"
 
 publish_to: "none"
 
-version: 1.0.6+38
+version: 1.0.0+1
 
 environment:
   sdk: ^3.6.1

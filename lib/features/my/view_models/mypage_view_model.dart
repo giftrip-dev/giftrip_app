@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/utils/pdf_download.dart';
-import 'package:myong/core/services/storage_service.dart';
-// import 'package:myong/core/widgets/modal/one_button_modal.dart';
-import 'package:myong/features/auth/repositories/auth_repo.dart';
-import 'package:myong/features/leave/screens/feedback_screen.dart';
-import 'package:myong/features/my/screens/my_community_list_screen.dart';
-import 'package:myong/features/notice/screens/notice_screen.dart';
-import 'package:myong/features/auth/screens/login_screen.dart';
-import 'package:myong/features/notification/view_models/notification_view_model.dart';
+import 'package:giftrip/core/utils/pdf_download.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+// import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/features/auth/repositories/auth_repo.dart';
+import 'package:giftrip/features/leave/screens/feedback_screen.dart';
+import 'package:giftrip/features/my/screens/my_community_list_screen.dart';
+import 'package:giftrip/features/notice/screens/notice_screen.dart';
+import 'package:giftrip/features/auth/screens/login_screen.dart';
+import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class MyPageViewModel {
   final AuthRepository _authRepo = AuthRepository();

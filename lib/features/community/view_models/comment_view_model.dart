@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/features/community/models/comment_model.dart';
-import 'package:myong/features/community/models/dto/comment_dto.dart';
-import 'package:myong/features/community/repositories/comment_repo.dart';
-import 'package:myong/features/community/view_models/community_view_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/features/community/models/comment_model.dart';
+import 'package:giftrip/features/community/models/dto/comment_dto.dart';
+import 'package:giftrip/features/community/repositories/comment_repo.dart';
+import 'package:giftrip/features/community/view_models/community_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class CommentViewModel extends ChangeNotifier {
   final CommentRepo _commentRepo = CommentRepo();

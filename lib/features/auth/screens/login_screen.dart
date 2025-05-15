@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/widgets/app_bar/back_button_app_bar.dart';
-import 'package:myong/core/widgets/image/custom_image.dart';
-import 'package:myong/core/widgets/tooltip/tooltip.dart';
-import 'package:myong/features/auth/widgets/social_login_box.dart';
-import 'package:myong/features/auth/widgets/terms_box.dart';
-import 'package:myong/features/auth/widgets/login_input_fields.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/tooltip/tooltip.dart';
+import 'package:giftrip/features/auth/widgets/social_login_box.dart';
+import 'package:giftrip/features/auth/widgets/terms_box.dart';
+import 'package:giftrip/features/auth/widgets/login_input_fields.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

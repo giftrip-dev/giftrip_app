@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/features/notification/widgets/notification_item.dart';
-import 'package:myong/features/notification/view_models/notification_view_model.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/notification/widgets/notification_item.dart';
+import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
-import 'package:myong/features/notification/widgets/notification_app_bar.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/notification/widgets/notification_app_bar.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

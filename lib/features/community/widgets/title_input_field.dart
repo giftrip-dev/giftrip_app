@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_text_style.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/utils/logger.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 class TitleInputField extends StatefulWidget {
   final TextEditingController controller;

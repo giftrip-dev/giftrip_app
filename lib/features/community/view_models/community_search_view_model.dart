@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/community/models/post_model.dart';
-import 'package:myong/features/community/repositories/community_repo.dart';
-import 'package:myong/features/community/view_models/comment_view_model.dart';
-import 'package:myong/features/my/view_models/my_community_view_model.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/community/models/post_model.dart';
+import 'package:giftrip/features/community/repositories/community_repo.dart';
+import 'package:giftrip/features/community/view_models/comment_view_model.dart';
+import 'package:giftrip/features/my/view_models/my_community_view_model.dart';
 import 'package:provider/provider.dart';
 
 class CommunitySearchViewModel extends ChangeNotifier {

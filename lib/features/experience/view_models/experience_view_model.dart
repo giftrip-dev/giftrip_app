@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:myong/core/utils/logger.dart';
-import 'package:myong/core/utils/page_meta.dart';
-import 'package:myong/features/experience/models/experience_category.dart';
-import 'package:myong/features/experience/models/experience_model.dart';
-import 'package:myong/features/experience/models/experience_detail_model.dart';
-import 'package:myong/features/experience/repositories/experience_repo.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/experience/models/experience_category.dart';
+import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/experience/models/experience_detail_model.dart';
+import 'package:giftrip/features/experience/repositories/experience_repo.dart';
 
 /// 체험 상품 뷰모델
 class ExperienceViewModel extends ChangeNotifier {

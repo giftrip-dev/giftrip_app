@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   @override

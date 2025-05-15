@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:myong/core/constants/app_colors.dart';
-import 'package:myong/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:myong/features/user/models/certificate_model.dart';
-import 'package:myong/features/user/screens/initial_certificate_screen.dart';
-import 'package:myong/core/enum/community_enum.dart';
-import 'package:myong/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/user/models/certificate_model.dart';
+import 'package:giftrip/features/user/screens/initial_certificate_screen.dart';
+import 'package:giftrip/core/enum/community_enum.dart';
+import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class Certificate {
   final String title;

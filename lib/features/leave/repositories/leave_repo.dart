@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:myong/core/services/api_service.dart';
-import 'package:myong/core/services/storage_service.dart';
-import 'package:myong/core/utils/logger.dart';
+import 'package:giftrip/core/services/api_service.dart';
+import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 // 피드백 DTO
 class FeedbackDto {
