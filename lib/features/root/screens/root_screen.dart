@@ -4,6 +4,7 @@ import 'package:giftrip/features/home/screens/home_screen.dart';
 import 'package:giftrip/core/enum/community_enum.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/category/category_screen.dart';
+import 'package:giftrip/features/auth/screens/login_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({
@@ -35,7 +36,7 @@ class RootScreenState extends State<RootScreen> {
         const HomeScreen(),
         const CategoryScreen(),
         const HomeScreen(),
-        const HomeScreen(),
+        const LoginScreen(),
       ];
 
   void onItemTapped(int index) async {
@@ -110,7 +111,7 @@ class RootScreenState extends State<RootScreen> {
       case 2:
         return const HomeScreen(key: ValueKey('home'));
       case 3:
-        return const HomeScreen(key: ValueKey('home'));
+        return const LoginScreen(key: ValueKey('login'));
       default:
         return const HomeScreen(key: ValueKey('home'));
     }
