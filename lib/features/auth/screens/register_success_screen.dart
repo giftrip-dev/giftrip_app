@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class RegisterSuccessScreen extends StatelessWidget {
   const RegisterSuccessScreen({super.key});
@@ -47,7 +48,12 @@ class RegisterSuccessScreen extends StatelessWidget {
               ),
               const Spacer(),
               BottomCTAButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RootScreen()),
+                  );
+                },
                 text: "홈으로 이동",
                 isEnabled: true,
               ),
