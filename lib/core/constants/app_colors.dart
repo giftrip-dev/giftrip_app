@@ -88,4 +88,7 @@ class AppColors {
   static const Color componentAlternative = Color(0xFFF4F4F6);
   static const Color componentDimmer = Color(0xB3000000);
   static const Color componentWhiteDimmer = Color(0x2EFFFFFF);
+  //toast
+  static const Color toastBackground = Color(0XFF181719);
+  static const Color toastLabel = Color(0XFFEEF0F5);
 }

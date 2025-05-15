@@ -6,6 +6,8 @@ import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/auth/widgets/phone_number_verification.dart';
 import 'package:giftrip/features/auth/screens/register_success_screen.dart';
+import 'package:giftrip/features/auth/models/register_model.dart';
+import 'package:giftrip/features/auth/repositories/register_repo.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,6 +17,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final RegisterRepository _registerRepo = RegisterRepository();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -33,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool isButtonEnabled = true;
   bool isPhoneVerified = false;
+  bool isLoading = false;
 
   String? nameError;
   String? emailError;
@@ -111,9 +115,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     setState(() {
       isFormSubmitted = true;
+      isLoading = true;
     });
 
     _validateForm();
@@ -123,16 +128,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
         passwordError == null &&
         passwordConfirmError == null &&
         isPhoneVerified) {
-      print('회원가입 성공!');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const RegisterSuccessScreen(),
-        ),
+      final email = '${emailController.text}@$selectedEmailDomain';
+
+      final request = RegisterRequest(
+        name: nameController.text,
+        email: email,
+        password: passwordController.text,
+        phoneNumber: phoneController.text,
       );
-    } else {
-      print('회원가입 실패!');
+
+      final response = await _registerRepo.register(request);
+
+      if (response.isSuccess) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RegisterSuccessScreen(),
+            ),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.errorMessage ?? '회원가입에 실패했습니다.'),
+              backgroundColor: AppColors.statusError,
+            ),
+          );
+        }
+      }
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override

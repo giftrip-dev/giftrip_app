@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/features/category/models/category.dart';
+import 'package:giftrip/features/category/widgets/category_tab.dart';
+import 'package:giftrip/features/category/widgets/sub_category_item.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -10,55 +13,14 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  int _selectedIndex = 2; // 기본값으로 '체험단' 선택 (인덱스 2)
+  int _selectedIndex = 0;
+  late final List<CategoryData> _categoryData;
 
-  // 각 카테고리별 서브카테고리 목록
-  final Map<int, List<String>> _subCategories = {
-    0: [
-      '음식체험',
-      '공예체험',
-      '놀이체험',
-      '공간체험',
-      '문화예술체험',
-      '축제체험',
-      '생태체험',
-      '뷰티체험',
-      '웰빙체험',
-      '뷰티체험',
-      '웰빙체험'
-    ],
-    1: [
-      '여행상품',
-      '특산품',
-      '로컬상품',
-      '기념품',
-      '식품',
-      '건강식품',
-      '생활용품,문구',
-      '주방용품',
-      '가구,가전용품',
-      '의류,뷰티용품',
-      '기타',
-    ],
-    2: [
-      '호텔',
-      '펜션',
-      '독채',
-      '모텔',
-      '리조트',
-      '민박',
-      '캠핑/글램핑',
-      '게스트하우스',
-    ],
-    3: [
-      '인플루언서',
-      '일반',
-      '공동구매',
-    ],
-  };
-
-  // 탭 타이틀 리스트
-  final List<String> _tabTitles = ['체험', '상품', '숙박', '체험단'];
+  @override
+  void initState() {
+    super.initState();
+    _categoryData = CategoryManager.getCategoryData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,15 +42,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
             width: 100,
             color: AppColors.backgroundNatural,
             child: Column(
-              children: List.generate(_tabTitles.length, (index) {
-                return GestureDetector(
+              children: List.generate(_categoryData.length, (index) {
+                return CategoryTab(
+                  title: _categoryData[index].mainCategory.label,
+                  isSelected: _selectedIndex == index,
                   onTap: () {
                     setState(() {
                       _selectedIndex = index;
                     });
                   },
-                  child: _buildCategoryTab(
-                      _tabTitles[index], _selectedIndex == index),
                 );
               }),
             ),
@@ -96,39 +58,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
           // 오른쪽 서브 카테고리 메뉴
           Expanded(
             child: ListView(
-              children: _subCategories[_selectedIndex]!
-                  .map((item) => _buildSubCategoryItem(item))
+              children: _categoryData[_selectedIndex]
+                  .subCategories
+                  .map((item) => SubCategoryItem(
+                        title: item,
+                        categoryIndex: _selectedIndex,
+                      ))
                   .toList(),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryTab(String title, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      width: 100,
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white : Colors.grey[100],
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        title,
-        style: isSelected
-            ? subtitle_M.copyWith(color: AppColors.labelStrong)
-            : subtitle_M.copyWith(color: AppColors.labelAlternative),
-      ),
-    );
-  }
-
-  Widget _buildSubCategoryItem(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      child: Text(
-        title,
-        style: body_M.copyWith(color: AppColors.label),
       ),
     );
   }
