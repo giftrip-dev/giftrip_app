@@ -88,7 +88,10 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                 const SectionDivider(),
 
                 // 상세 이미지
-                ProductDetailImageSection(imageUrl: experience.detailImageUrl),
+                ProductDetailImageSection(
+                  croppedImageUrl: experience.croppedDetailImageUrl,
+                  detailImageUrl: experience.detailImageUrl,
+                ),
               ],
             ),
           );
