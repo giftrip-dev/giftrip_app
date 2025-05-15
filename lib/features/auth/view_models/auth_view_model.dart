@@ -8,6 +8,7 @@ import 'package:giftrip/features/user/screens/nickname_form_screen.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
 import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/auth/repositories/login_repo.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'dart:developer' as developer;
 
 class AuthViewModel extends ChangeNotifier {
@@ -82,7 +83,6 @@ class AuthViewModel extends ChangeNotifier {
         '로그인 성공',
         name: 'AuthViewModel',
       );
-      // TODO: 로그인 성공 후 처리 (예: 홈 화면으로 이동)
       return true;
     } else {
       _errorMessage = response.errorMessage;

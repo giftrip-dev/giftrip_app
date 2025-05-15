@@ -4,9 +4,11 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
 import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
 import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
-import 'package:giftrip/features/root/screens/root_screen.dart';
+import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class LoginInputFields extends StatefulWidget {
   const LoginInputFields({super.key});
@@ -32,9 +34,19 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
   }
 
   Future<void> _onLoginPressed() async {
+    // 입력값이 비어있으면 스낵바 표시 후 리턴
+    if (_idController.text.isEmpty || _pwController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          message: '아이디 와 비밀번호를 입력해 주세요',
+          icon: LucideIcons.logIn,
+        ),
+      );
+      return;
+    }
     setState(() {
-      _idError = _idController.text.isEmpty ? '아이디를 입력해주세요' : null;
-      _pwError = _pwController.text.isEmpty ? '비밀번호를 입력해주세요' : null;
+      // _idError = _idController.text.isEmpty ? '아이디를 입력해주세요' : null;
+      // _pwError = _pwController.text.isEmpty ? '비밀번호를 입력해주세요' : null;
     });
 
     if (_idError != null || _pwError != null) {
@@ -53,11 +65,19 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
       _pwController.text,
     );
 
-    if (!success && mounted) {
+    if (success && mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RootScreen(),
+        ),
+        (route) => false,
+      );
+    } else if (!success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(authViewModel.errorMessage ?? '로그인에 실패했습니다.'),
-          backgroundColor: AppColors.statusError,
+        CustomSnackBar(
+          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+          icon: LucideIcons.logIn,
         ),
       );
     }
