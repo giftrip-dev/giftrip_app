@@ -20,7 +20,7 @@ class LodgingCategoryBar extends StatefulWidget {
 class _LodgingCategoryBarState extends State<LodgingCategoryBar> {
   final ScrollController _scrollController = ScrollController();
   final List<GlobalKey> _chipKeys = List.generate(
-    LodgingCategory.values.length + 1, // +1 for '전체'
+    LodgingCategory.values.length,
     (index) => GlobalKey(),
   );
 
@@ -43,11 +43,10 @@ class _LodgingCategoryBarState extends State<LodgingCategoryBar> {
   }
 
   void _scrollToSelectedCategory() {
-    int selectedIndex = 0;
-    if (widget.selectedCategory != null) {
-      selectedIndex =
-          LodgingCategory.values.indexOf(widget.selectedCategory!) + 1;
-    }
+    if (widget.selectedCategory == null) return;
+
+    int selectedIndex =
+        LodgingCategory.values.indexOf(widget.selectedCategory!);
     final key = _chipKeys[selectedIndex];
     final context = key.currentContext;
     if (context == null) return;
@@ -82,22 +81,15 @@ class _LodgingCategoryBarState extends State<LodgingCategoryBar> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           children: [
-            // 전체 카테고리
-            _CategoryChip(
-              key: _chipKeys[0],
-              label: '전체',
-              isSelected: widget.selectedCategory == null,
-              onTap: () => widget.onCategoryChanged(null),
-            ),
-            const SizedBox(width: 28),
-            // 나머지 카테고리들
             ...LodgingCategory.values.asMap().entries.map((entry) {
               final idx = entry.key;
               final category = entry.value;
               return Padding(
-                padding: const EdgeInsets.only(right: 32),
+                padding: EdgeInsets.only(
+                  right: idx < LodgingCategory.values.length - 1 ? 32 : 0,
+                ),
                 child: _CategoryChip(
-                  key: _chipKeys[idx + 1],
+                  key: _chipKeys[idx],
                   label: category.label,
                   isSelected: widget.selectedCategory == category,
                   onTap: () => widget.onCategoryChanged(category),
