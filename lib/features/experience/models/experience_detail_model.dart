@@ -88,6 +88,8 @@ class ExperienceDetailModel extends ExperienceModel {
     required this.durationInDays,
     this.relatedLink,
     super.discountRate,
+    super.soldOut,
+    super.unavailableDates,
   }) : super(thumbnailUrl: thumbnailUrl);
 
   factory ExperienceDetailModel.fromJson(Map<String, dynamic> json) {
@@ -114,6 +116,10 @@ class ExperienceDetailModel extends ExperienceModel {
           [],
       availableFrom: availablePeriod.startDate,
       availableTo: availablePeriod.endDate,
+      soldOut: json['soldOut'] as bool? ?? false,
+      unavailableDates: (json['unavailableDates'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       discountRate: json['discountRate'] as int?,
       location: json['location'] as String,
       managerPhoneNumber: json['managerPhoneNumber'] as String,
