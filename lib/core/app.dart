@@ -23,6 +23,7 @@ import 'package:giftrip/features/leave/view_models/leave_view_model.dart';
 import 'package:giftrip/features/my/view_models/my_community_view_model.dart';
 import 'package:giftrip/features/notice/view_models/notice_view_model.dart';
 import 'package:giftrip/features/shopping/screens/shopping_screen.dart';
+import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
 import 'package:giftrip/features/splash/screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -132,6 +133,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => LodgingViewModel()),
         ChangeNotifierProvider(create: (_) => CartViewModel()),
         ChangeNotifierProvider(create: (_) => ReviewViewModel()),
+        ChangeNotifierProvider(create: (_) => ShoppingViewModel()),
       ],
       child: Builder(
         builder: (context) {
