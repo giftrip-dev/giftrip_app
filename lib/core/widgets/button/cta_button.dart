@@ -42,7 +42,9 @@ class CTAButton extends StatelessWidget {
         style: _getButtonStyle(),
         child: Text(
           text,
-          style: _getTextStyle(),
+          style: _getTextStyle().copyWith(
+            height: 1,
+          ),
         ),
       ),
     );
@@ -105,8 +107,8 @@ class CTAButton extends StatelessWidget {
     switch (type) {
       case CTAButtonType.primary:
         return isEnabled
-            ? subtitle_L.copyWith(color: AppColors.labelWhite)
-            : subtitle_L.copyWith(color: AppColors.labelAlternative);
+            ? title_L.copyWith(color: AppColors.labelWhite)
+            : title_L.copyWith(color: AppColors.labelAlternative);
       case CTAButtonType.outline:
         return isEnabled
             ? title_S.copyWith(color: AppColors.labelStrong)

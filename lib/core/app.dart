@@ -140,12 +140,14 @@ class _MyAppState extends State<MyApp> {
             navigatorObservers: [routeObserver],
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [
-              Locale('en', ''),
-              Locale('ko', ''),
+              Locale('ko', 'KR'),
+              Locale('en', 'US'),
             ],
+            locale: const Locale('ko', 'KR'), // 기본 로케일을 한국어로 설정
             debugShowCheckedModeBanner: false,
             title: 'Giftrip',
             theme: lightTheme,

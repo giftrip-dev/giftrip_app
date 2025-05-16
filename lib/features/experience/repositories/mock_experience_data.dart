@@ -42,6 +42,22 @@ final List<ExperienceModel> mockExperienceList = List.generate(
     final availableTo =
         now.add(Duration(days: 30 + (index % 30))); // 30-59일 후까지
 
+    // 품절 여부 (6번째마다 하나씩 품절)
+    final soldOut = index % 6 == 0;
+
+    // 이용 불가능 날짜 생성 (랜덤으로 3~7일)
+    final unavailableDates = <String>[];
+    if (!soldOut) {
+      // 품절이 아닌 상품만 불가능 날짜 설정
+      final random = index % 5 + 3; // 3~7일
+      final startDay = 5 + (index % 10); // 5~14일 후부터
+
+      for (var i = 0; i < random; i++) {
+        final unavailableDate = now.add(Duration(days: startDay + i * 2));
+        unavailableDates.add(unavailableDate.toIso8601String().split('T')[0]);
+      }
+    }
+
     return ExperienceModel(
       id: 'exp_${index + 1}',
       title: '${category.label} 상품 ${index + 1}',
@@ -57,6 +73,8 @@ final List<ExperienceModel> mockExperienceList = List.generate(
       badges: badges,
       availableFrom: availableFrom,
       availableTo: availableTo,
+      soldOut: soldOut,
+      unavailableDates: unavailableDates.isEmpty ? null : unavailableDates,
     );
   },
 );

@@ -5,6 +5,7 @@ enum ProductTagType {
   newArrival, // NEW
   bestSeller, // BEST
   almostSoldOut, // 품절임박
+  soldOut, // 품절
 }
 
 /// 상품 타입

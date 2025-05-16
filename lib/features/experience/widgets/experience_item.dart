@@ -5,6 +5,7 @@ import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/features/experience/models/experience_model.dart';
 import 'package:giftrip/features/experience/screens/experience_detail_screen.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/item_badge.dart';
 
 class ExperienceItem extends StatelessWidget {
@@ -33,11 +34,15 @@ class ExperienceItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 1. 썸네일
-          CustomImage(
-            imageUrl: experience.thumbnailUrl,
-            width: imageSize,
-            height: imageSize,
-            borderRadius: BorderRadius.circular(4),
+          Stack(
+            children: [
+              CustomImage(
+                imageUrl: experience.thumbnailUrl,
+                width: imageSize,
+                height: imageSize,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
 
@@ -45,7 +50,10 @@ class ExperienceItem extends StatelessWidget {
           SizedBox(
             child: Text(
               experience.title,
-              style: body_S,
+              style: body_S.copyWith(
+                // 품절일 경우 텍스트 색상을 labelAlternative로 변경
+                color: experience.soldOut ? AppColors.labelAlternative : null,
+              ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -77,13 +85,20 @@ class ExperienceItem extends StatelessWidget {
           // 4. 최종 가격
           Text(
             '${formatPrice(experience.finalPrice)}원',
-            style: title_L,
+            style: title_L.copyWith(
+              // 품절일 경우 가격 텍스트 색상도 변경
+              color: experience.soldOut ? AppColors.labelAlternative : null,
+            ),
           ),
 
           const SizedBox(height: 8),
 
           // 5. 뱃지들
-          if (experience.badges.isNotEmpty)
+          if (experience.soldOut)
+            // 품절인 경우 품절 뱃지만 표시
+            const ItemBadge(type: ProductTagType.soldOut)
+          else if (experience.badges.isNotEmpty)
+            // 품절이 아닌 경우 기존 뱃지 표시
             Row(
               children: [
                 for (var i = 0; i < experience.badges.length; i++) ...[

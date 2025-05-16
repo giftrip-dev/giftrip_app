@@ -111,6 +111,8 @@ class ExperienceRepo {
       discountRate: experience.discountRate,
       availableFrom: experience.availableFrom,
       availableTo: experience.availableTo,
+      soldOut: experience.soldOut,
+      unavailableDates: experience.unavailableDates,
       location: '서울특별시 강남구 테헤란로 123',
       managerPhoneNumber: '010-1234-5678',
       relatedLink: 'https://example.com/experience/${experience.id}',
