@@ -62,6 +62,8 @@ extension ProductTagTypeProps on ProductTagType {
         return 'BEST';
       case ProductTagType.almostSoldOut:
         return '품절임박';
+      case ProductTagType.soldOut:
+        return '품절';
     }
   }
 
@@ -72,6 +74,8 @@ extension ProductTagTypeProps on ProductTagType {
       case ProductTagType.bestSeller:
         return AppColors.primarySoft;
       case ProductTagType.almostSoldOut:
+        return AppColors.statusError;
+      case ProductTagType.soldOut:
         return AppColors.statusError;
     }
   }
