@@ -47,7 +47,8 @@ final List<LodgingModel> mockLodgingList = List.generate(
       title: '${category.label} 상품 ${index + 1}',
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 편안한 휴식을 위한 최고의 선택이 될 것입니다.',
-      thumbnailUrl: 'assets/png/banner.png',
+      thumbnailUrl: 'assets/png/hotel.png',
+      location: '역삼역 7번 출구 600m',
       originalPrice: originalPrice,
       finalPrice: finalPrice,
       category: category,

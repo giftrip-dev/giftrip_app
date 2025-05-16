@@ -24,9 +24,9 @@ class LodgingItemList extends StatelessWidget {
     // 아이템 사이 간격
     const itemSpacing = 16.0;
 
-    // 아이템 하나의 너비 계산
+    // 아이템 하나의 너비 및 높이 계산
     final itemWidth = screenWidth - totalPadding;
-
+    final itemHeight = itemWidth * (213 / 328); // 328:213 비율 적용
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels >=
@@ -63,7 +63,8 @@ class LodgingItemList extends StatelessWidget {
                     ),
                     child: LodgingItem(
                       lodging: lodgings[index],
-                      imageSize: itemWidth,
+                      width: itemWidth,
+                      height: itemHeight,
                     ),
                   );
                 },

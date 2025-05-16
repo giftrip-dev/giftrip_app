@@ -17,7 +17,7 @@ class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       color: Colors.white,
       child: LodgingCategoryBar(
-        selectedCategory: selectedCategory,
+        selectedCategory: selectedCategory ?? LodgingCategory.defaultCategory,
         onCategoryChanged: onCategoryChanged,
       ),
     );
