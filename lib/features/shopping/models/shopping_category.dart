@@ -1,5 +1,7 @@
+import 'package:giftrip/core/widgets/category/category_interface.dart';
+
 /// 쇼핑 카테고리 열거형
-enum ShoppingCategory {
+enum ShoppingCategory implements CategoryInterface {
   speciality, // 특산품
   local, // 로컬상품
   souvenir, // 기념품
@@ -12,6 +14,7 @@ enum ShoppingCategory {
   others; // 기타
 
   /// 카테고리명 반환
+  @override
   String get label {
     switch (this) {
       case ShoppingCategory.speciality:

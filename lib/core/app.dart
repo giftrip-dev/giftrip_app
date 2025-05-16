@@ -4,12 +4,6 @@ import 'package:giftrip/core/utils/route_observer.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
-import 'package:giftrip/features/community/screens/community_detail_screen.dart';
-import 'package:giftrip/features/community/screens/community_screen.dart';
-import 'package:giftrip/features/community/view_models/comment_view_model.dart';
-import 'package:giftrip/features/community/view_models/community_search_view_model.dart';
-import 'package:giftrip/features/community/view_models/community_view_model.dart';
-import 'package:giftrip/features/community/view_models/community_write_view_model.dart';
 import 'package:giftrip/features/event/screens/event_screen.dart';
 import 'package:giftrip/features/event/view_models/event_view_model.dart';
 import 'package:giftrip/features/home/screens/tester_screen.dart';
@@ -20,7 +14,6 @@ import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 import 'package:giftrip/features/inquiry/screens/inquiry_screen.dart';
 import 'package:giftrip/features/leave/view_models/leave_view_model.dart';
-import 'package:giftrip/features/my/view_models/my_community_view_model.dart';
 import 'package:giftrip/features/notice/view_models/notice_view_model.dart';
 import 'package:giftrip/features/shopping/screens/shopping_screen.dart';
 import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
@@ -30,7 +23,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 import 'package:app_links/app_links.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
-import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:giftrip/core/utils/fcm_service.dart';
 import 'package:giftrip/core/utils/get_device_info.dart';
@@ -54,7 +46,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _initFirebase();
-    _initDeepLink();
+    // _initDeepLink();
     // notificationPermissionSelected가 false일 때만 권한 요청
     GlobalStorage().getNotificationPermissionSelected().then((isSelected) {
       if (!isSelected) {
@@ -72,60 +64,54 @@ class _MyAppState extends State<MyApp> {
   }
 
   // 딥링크 초기화
-  void _initDeepLink() async {
-    try {
-      // 앱이 처음 실행될 때 URL 확인
-      Uri? initialUri = await _appLinks.getInitialLink();
-      if (initialUri != null) {
-        _handleDeepLink(initialUri);
-      }
+  // void _initDeepLink() async {
+  //   try {
+  //     // 앱이 처음 실행될 때 URL 확인
+  //     Uri? initialUri = await _appLinks.getInitialLink();
+  //     if (initialUri != null) {
+  //       _handleDeepLink(initialUri);
+  //     }
 
-      // 앱이 실행 중일 때 URL 감지
-      _appLinks.uriLinkStream.listen((Uri? uri) {
-        if (uri != null) {
-          _handleDeepLink(uri);
-        }
-      });
-    } catch (e) {
-      debugPrint("딥 링크 처리 중 오류 발생: $e");
-    }
-  }
+  //     // 앱이 실행 중일 때 URL 감지
+  //     _appLinks.uriLinkStream.listen((Uri? uri) {
+  //       if (uri != null) {
+  //         _handleDeepLink(uri);
+  //       }
+  //     });
+  //   } catch (e) {
+  //     debugPrint("딥 링크 처리 중 오류 발생: $e");
+  //   }
+  // }
 
-  void _handleDeepLink(Uri uri) {
-    debugPrint("딥 링크 감지됨: $uri");
+  // void _handleDeepLink(Uri uri) {
+  //   debugPrint("딥 링크 감지됨: $uri");
 
-    if (uri.pathSegments.isNotEmpty) {
-      if (uri.host == 'community' && uri.pathSegments.isNotEmpty) {
-        String communityId = uri.pathSegments[0];
+  //   if (uri.pathSegments.isNotEmpty) {
+  //     if (uri.host == 'community' && uri.pathSegments.isNotEmpty) {
+  //       String communityId = uri.pathSegments[0];
 
-        // navigatorKey를 사용하여 어디서든 페이지 이동 가능
-        if (navigatorKey.currentState != null && mounted) {
-          navigatorKey.currentState?.push(
-            MaterialPageRoute(
-              builder: (context) => CommunityDetailScreen(postId: communityId),
-              settings: RouteSettings(name: "/community/$communityId"),
-            ),
-          );
-        } else {
-          debugPrint("현재 navigatorState가 null이거나 위젯이 마운트되지 않았습니다.");
-        }
-      }
-    }
-  }
+  //       // navigatorKey를 사용하여 어디서든 페이지 이동 가능
+  //       if (navigatorKey.currentState != null && mounted) {
+  //         navigatorKey.currentState?.push(
+  //           MaterialPageRoute(
+  //             builder: (context) => CommunityDetailScreen(postId: communityId),
+  //             settings: RouteSettings(name: "/community/$communityId"),
+  //           ),
+  //         );
+  //       } else {
+  //         debugPrint("현재 navigatorState가 null이거나 위젯이 마운트되지 않았습니다.");
+  //       }
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CommunityViewModel()),
-        ChangeNotifierProvider(create: (_) => CommunitySearchViewModel()),
-        ChangeNotifierProvider(create: (_) => CommunityWriteViewModel()),
-        ChangeNotifierProvider(create: (_) => MyCommunityViewModel()),
         ChangeNotifierProvider(create: (_) => FeedbackViewModel()),
-        ChangeNotifierProvider(create: (_) => CommentViewModel()),
         ChangeNotifierProvider(create: (_) => NoticeViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
-        ChangeNotifierProvider(create: (_) => NotificationViewModel()),
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => EventViewModel()),
@@ -154,27 +140,26 @@ class _MyAppState extends State<MyApp> {
             title: 'Giftrip',
             theme: lightTheme,
             darkTheme: lightTheme,
-            // themeMode: ThemeMode.system,
             initialRoute: '/splash',
             onGenerateRoute: (settings) {
               final uri = Uri.parse(settings.name ?? "");
 
               if (uri.pathSegments.isNotEmpty &&
                   uri.pathSegments.first == "community") {
-                if (uri.pathSegments.length > 1) {
-                  // /community/{id} 상세 페이지 처리
-                  final postId = uri.pathSegments[1];
-                  return MaterialPageRoute(
-                    builder: (context) => CommunityDetailScreen(postId: postId),
-                    settings: RouteSettings(name: "/community/$postId"),
-                  );
-                } else {
-                  // /community 목록 페이지 처리
-                  return MaterialPageRoute(
-                    builder: (context) => const CommunityScreen(),
-                    settings: const RouteSettings(name: "/community"),
-                  );
-                }
+                // if (uri.pathSegments.length > 1) {
+                //   // /community/{id} 상세 페이지 처리
+                //   final postId = uri.pathSegments[1];
+                //   return MaterialPageRoute(
+                //     builder: (context) => CommunityDetailScreen(postId: postId),
+                //     settings: RouteSettings(name: "/community/$postId"),
+                //   );
+                // } else {
+                //   // /community 목록 페이지 처리
+                //   return MaterialPageRoute(
+                //     builder: (context) => const CommunityScreen(),
+                //     settings: const RouteSettings(name: "/community"),
+                //   );
+                // }
               }
               return null;
             },

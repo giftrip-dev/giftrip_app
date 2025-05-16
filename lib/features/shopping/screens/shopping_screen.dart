@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
 import 'package:giftrip/core/widgets/banner/event_banner.dart';
+import 'package:giftrip/core/widgets/category/generic_persistent_category_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/features/shopping/models/shopping_category.dart';
 import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
-import 'package:giftrip/features/shopping/widgets/persistent_category_bar.dart';
 import 'package:giftrip/features/shopping/widgets/shopping_item_list.dart';
 
 class ShoppingScreen extends StatefulWidget {
@@ -43,12 +44,19 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   SliverPersistentHeader(
                     pinned: true,
                     floating: true,
-                    delegate: PersistentCategoryBarDelegate(
+                    delegate:
+                        GenericPersistentCategoryBarDelegate<ShoppingCategory>(
                       selectedCategory: vm.selectedCategory,
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
+                      categories: ShoppingCategory.values,
+                      getLabelFunc: (category) => category.label,
                     ),
+                  ),
+                  // 카테고리 바와 리스트 사이 여백 추가
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 16),
                   ),
                 ];
               },

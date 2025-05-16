@@ -1,5 +1,7 @@
+import 'package:giftrip/core/widgets/category/category_interface.dart';
+
 /// 체험 상품 카테고리
-enum ExperienceCategory {
+enum ExperienceCategory implements CategoryInterface {
   food('음식 체험'),
   craft('공예 체험'),
   play('놀이 체험'),
@@ -10,6 +12,7 @@ enum ExperienceCategory {
   beauty('뷰티 체험'),
   wellbeing('웰빙 체험');
 
+  @override
   final String label;
   const ExperienceCategory(this.label);
 
