@@ -5,8 +5,6 @@ import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
 import 'package:giftrip/features/auth/repositories/social_login_repo.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
-import 'package:giftrip/features/user/screens/nickname_form_screen.dart';
-import 'package:giftrip/features/user/screens/select_category_screen.dart';
 
 GestureDetector appleLoginButton({
   required BuildContext context,
@@ -47,35 +45,15 @@ GestureDetector appleLoginButton({
             (route) => false,
           );
         } else {
-          if (result.user?.certificateStatus == "NOT_REQUESTED") {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SelectCategoryScreen(),
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RootScreen(
+                selectedIndex: 0,
               ),
-              (route) => false,
-            );
-          } else {
-            if (result.user?.nickname == null) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NicknameFormScreen(),
-                ),
-                (route) => false,
-              );
-            } else {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RootScreen(
-                    selectedIndex: 0,
-                  ),
-                ),
-                (route) => false,
-              );
-            }
-          }
+            ),
+            (route) => false,
+          );
         }
       }
     },

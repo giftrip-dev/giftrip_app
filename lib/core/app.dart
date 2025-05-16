@@ -15,15 +15,15 @@ import 'package:giftrip/features/event/view_models/event_view_model.dart';
 import 'package:giftrip/features/home/screens/tester_screen.dart';
 import 'package:giftrip/features/experience/screens/experience_screen.dart';
 import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
+import 'package:giftrip/features/lodging/screens/lodging_screen.dart';
+import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 import 'package:giftrip/features/inquiry/screens/inquiry_screen.dart';
 import 'package:giftrip/features/leave/view_models/leave_view_model.dart';
-import 'package:giftrip/features/lodging/screens/lodging_screen.dart';
 import 'package:giftrip/features/my/view_models/my_community_view_model.dart';
 import 'package:giftrip/features/notice/view_models/notice_view_model.dart';
 import 'package:giftrip/features/shopping/screens/shopping_screen.dart';
 import 'package:giftrip/features/splash/screen/splash_screen.dart';
-import 'package:giftrip/features/user/view_models/certificate_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:giftrip/core/services/storage_service.dart';
@@ -116,7 +116,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CertificateViewModel()),
         ChangeNotifierProvider(create: (_) => CommunityViewModel()),
         ChangeNotifierProvider(create: (_) => CommunitySearchViewModel()),
         ChangeNotifierProvider(create: (_) => CommunityWriteViewModel()),
@@ -130,6 +129,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => EventViewModel()),
         ChangeNotifierProvider(create: (_) => ExperienceViewModel()),
+        ChangeNotifierProvider(create: (_) => LodgingViewModel()),
         ChangeNotifierProvider(create: (_) => CartViewModel()),
         ChangeNotifierProvider(create: (_) => ReviewViewModel()),
       ],

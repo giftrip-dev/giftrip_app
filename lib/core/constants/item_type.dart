@@ -4,7 +4,7 @@ enum ProductItemType {
   product('product', '쇼핑'),
 
   /// 숙소 상품
-  accommodation('accommodation', '숙소'),
+  lodging('lodging', '숙소'),
 
   /// 체험 상품
   experience('experience', '체험'),

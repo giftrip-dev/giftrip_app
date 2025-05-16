@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
 import 'package:giftrip/core/widgets/banner/event_banner.dart';
-import 'package:giftrip/features/home/widgets/home_app_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
+import 'package:giftrip/features/lodging/widgets/persistent_category_bar.dart';
+import 'package:giftrip/features/lodging/widgets/lodging_item_list.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -11,29 +16,64 @@ class LodgingScreen extends StatefulWidget {
 
 class _LodgingScreenState extends State<LodgingScreen> {
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const SearchAppBar(title: '숙박'),
+      body: Consumer<LodgingViewModel>(
+        builder: (context, vm, child) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              await vm.fetchLodgingList(refresh: true);
+            },
+            color: AppColors.primary,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  // 1) 지역 날짜 선택 바 (고정)
+
+                  // 여백 추가
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 16),
+                  ),
+                  // 2) 카테고리 필터링 바 (고정)
+                  SliverPersistentHeader(
+                    pinned: true,
+                    floating: true,
+                    delegate: PersistentCategoryBarDelegate(
+                      selectedCategory: vm.selectedCategory,
+                      onCategoryChanged: (category) {
+                        vm.changeCategory(category);
+                      },
+                    ),
+                  ),
+                ];
+              },
+              // 3) 숙박 상품 리스트
+              body: vm.lodgingList.isEmpty && vm.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : LodgingItemList(
+                      lodgings: vm.lodgingList,
+                      isLoading: vm.isLoading,
+                      onLoadMore: vm.nextPage != null
+                          ? () => vm.fetchLodgingList()
+                          : null,
+                    ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const HomeAppBar(),
-      body: Column(
-        children: [
-          const EventBannerWidget(),
-          Expanded(
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              children: [
-                Text('이벤트 페이지'),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  void initState() {
+    super.initState();
+    // 초기 데이터 로드
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final vm = context.read<LodgingViewModel>();
+      vm.fetchLodgingList();
+    });
   }
 }
