@@ -95,10 +95,17 @@ class RootScreenState extends State<RootScreen> {
             ? const Center(child: CircularProgressIndicator())
             : _buildCurrentScreen(),
       ),
-      bottomNavigationBar: BottomGnb(
-        selectedIndex: selectedIndex,
-        onTap: onItemTapped,
-      ),
+      // bottomNavigationBar: BottomGnb(
+      //   selectedIndex: selectedIndex,
+      //   onTap: onItemTapped,
+      // ),
+      // 로그인 화면에서는 메뉴바 숨김(시연 영상용)
+      bottomNavigationBar: selectedIndex == 3
+          ? null
+          : BottomGnb(
+              selectedIndex: selectedIndex,
+              onTap: onItemTapped,
+            ),
     );
   }
 
