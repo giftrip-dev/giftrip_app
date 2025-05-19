@@ -10,7 +10,8 @@
     <application
         android:label="기프트립"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
 
         <!-- 플러터 메인 액티비티 -->
         <activity
