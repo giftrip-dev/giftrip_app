@@ -16,6 +16,7 @@ class ProductBasicInfoSection extends StatelessWidget {
   final String? memo;
   final String phoneNumber;
   final String? relatedLink;
+  final String? manufacturer;
 
   const ProductBasicInfoSection({
     required this.title,
@@ -25,6 +26,7 @@ class ProductBasicInfoSection extends StatelessWidget {
     required this.phoneNumber,
     this.memo,
     this.relatedLink,
+    this.manufacturer,
     super.key,
   });
 
@@ -71,6 +73,16 @@ class ProductBasicInfoSection extends StatelessWidget {
                 icon: LucideIcons.mapPin,
                 text: location,
               ),
+
+              // 제조사 정보 (있는 경우만 표시)
+              if (manufacturer != null && manufacturer!.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: _buildInfoRow(
+                    icon: LucideIcons.factory,
+                    text: manufacturer!,
+                  ),
+                ),
 
               // 메모 정보 (항상 표시, 없으면 "-"로 표시)
               Padding(
