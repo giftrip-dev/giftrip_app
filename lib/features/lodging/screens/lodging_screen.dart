@@ -5,6 +5,7 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_item_list.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dart';
+import 'package:giftrip/features/lodging/widgets/location_screen.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -39,10 +40,15 @@ class _LodgingScreenState extends State<LodgingScreen> {
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
-                      locationText: '강남/역삼/삼성/논현',
-                      datePeopleText: '05.05(월)  성인 2명',
+                      locationText: '',
+                      datePeopleText: '',
                       onLocationTap: () {
-                        // TODO: 지역 선택 모달 등 연결
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LocationScreen(),
+                          ),
+                        );
                       },
                       onDatePeopleTap: () {
                         // TODO: 날짜/인원 선택 모달 등 연결

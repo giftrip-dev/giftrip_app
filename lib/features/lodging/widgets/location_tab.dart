@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 
-class CategoryTab extends StatelessWidget {
+class LocationTab extends StatelessWidget {
   final String title;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const CategoryTab({
+  const LocationTab({
     super.key,
     required this.title,
     required this.isSelected,

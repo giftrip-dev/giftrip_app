@@ -1,4 +1,4 @@
-enum MainCategory {
+enum MainLocation {
   seoul('서울'),
   busan('부산'),
   jeju('제주'),
@@ -10,27 +10,27 @@ enum MainCategory {
   chungcheong('충청');
 
   final String label;
-  const MainCategory(this.label);
+  const MainLocation(this.label);
 }
 
-class CategoryData {
-  final MainCategory mainCategory;
-  final List<String> subCategories;
-  final Function(String)? onSubCategoryTap;
+class LocationData {
+  final MainLocation mainLocation;
+  final List<String> subLocations;
+  final Function(String)? onSubLocationTap;
 
-  const CategoryData({
-    required this.mainCategory,
-    required this.subCategories,
-    this.onSubCategoryTap,
+  const LocationData({
+    required this.mainLocation,
+    required this.subLocations,
+    this.onSubLocationTap,
   });
 }
 
-class CategoryManager {
-  static List<CategoryData> getCategoryData() {
+class LocationManager {
+  static List<LocationData> getLocationData() {
     return [
-      CategoryData(
-        mainCategory: MainCategory.seoul,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.seoul,
+        subLocations: [
           '강남/역삼/삼성',
           '신사/청담/압구정',
           '서초/교대/사당',
@@ -47,9 +47,9 @@ class CategoryManager {
           '성북/강북/노원/도봉',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.busan,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.busan,
+        subLocations: [
           '해운대/마린시티',
           '벡스코/센텀시티',
           '송정/기장/정관',
@@ -62,9 +62,9 @@ class CategoryManager {
           '사상/강서/김해공항/하단',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.jeju,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.jeju,
+        subLocations: [
           '제주시/제주국제공항',
           '서귀포시/모슬포',
           '애월/한림/협재',
@@ -73,9 +73,9 @@ class CategoryManager {
           '함덕/김녕/세화'
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.gyeonggi,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.gyeonggi,
+        subLocations: [
           '가평/청평/양평',
           '수원/화성',
           '고양/파주/김포',
@@ -88,9 +88,9 @@ class CategoryManager {
           '안양/의왕/군포',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.incheon,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.incheon,
+        subLocations: [
           '송도/소래포구',
           '인천국제공항/강화/을왕리',
           '영종도/월미도',
@@ -98,9 +98,9 @@ class CategoryManager {
           '청라/계양/부평',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.gangwon,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.gangwon,
+        subLocations: [
           '강릉',
           '속초/고성',
           '양양(서피비치/낙산)',
@@ -110,9 +110,9 @@ class CategoryManager {
           '홍천/횡성/원주',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.gyeongsang,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.gyeongsang,
+        subLocations: [
           '대구/구미/안동/문경',
           '경주',
           '울산/양산/밀양',
@@ -122,9 +122,9 @@ class CategoryManager {
           '남해/사천/하동/진주',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.jeolla,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.jeolla,
+        subLocations: [
           '전주/완주',
           '광주/나주/함평',
           '여수',
@@ -134,9 +134,9 @@ class CategoryManager {
           '목포/신안/영광/진도/고흥/완도/강진/해남',
         ],
       ),
-      CategoryData(
-        mainCategory: MainCategory.chungcheong,
-        subCategories: [
+      LocationData(
+        mainLocation: MainLocation.chungcheong,
+        subLocations: [
           '대전/세종',
           '천안/아산/도고',
           '당진/덕산/태안/서산/안면도',
