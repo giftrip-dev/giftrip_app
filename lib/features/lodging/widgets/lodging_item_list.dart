@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_item.dart';
-import 'package:giftrip/features/home/models/product_model.dart';
 
 class LodgingItemList extends StatelessWidget {
   final List<LodgingModel> lodgings;
