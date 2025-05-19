@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
-import 'package:giftrip/core/widgets/banner/event_banner.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
-import 'package:giftrip/features/lodging/widgets/persistent_category_bar.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_item_list.dart';
+import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -32,22 +31,35 @@ class _LodgingScreenState extends State<LodgingScreen> {
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
                   // 1) 지역 날짜 선택 바 (고정)
-
-                  // 여백 추가
-                  // const SliverToBoxAdapter(
-                  //   child: SizedBox(height: 16),
-                  // ),
-                  // 2) 카테고리 필터링 바 (고정)
                   SliverPersistentHeader(
                     pinned: true,
                     floating: true,
-                    delegate: PersistentCategoryBarDelegate(
+                    delegate: LodgingFilterCombinedBarDelegate(
                       selectedCategory: vm.selectedCategory,
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
+                      locationText: '강남/역삼/삼성/논현',
+                      datePeopleText: '05.05(월)  성인 2명',
+                      onLocationTap: () {
+                        // TODO: 지역 선택 모달 등 연결
+                      },
+                      onDatePeopleTap: () {
+                        // TODO: 날짜/인원 선택 모달 등 연결
+                      },
                     ),
                   ),
+                  // // 2) 카테고리 필터링 바 (고정)
+                  // SliverPersistentHeader(
+                  //   pinned: true,
+                  //   floating: true,
+                  //   delegate: PersistentCategoryBarDelegate(
+                  //     selectedCategory: vm.selectedCategory,
+                  //     onCategoryChanged: (category) {
+                  //       vm.changeCategory(category);
+                  //     },
+                  //   ),
+                  // ),
                 ];
               },
               // 3) 숙박 상품 리스트
