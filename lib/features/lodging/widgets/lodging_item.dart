@@ -85,7 +85,7 @@ class LodgingItem extends StatelessWidget {
                 ],
               ],
             ),
-
+          const SizedBox(height: 12),
           // 6. 가격 및 할인율
           if (lodging.hasDiscount) ...[
             Row(
@@ -94,7 +94,7 @@ class LodgingItem extends StatelessWidget {
                 Text(
                   '${lodging.discountRate}%',
                   style: subtitle_XS.copyWith(
-                    color: AppColors.statusError,
+                    color: AppColors.labelAlternative,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -117,8 +117,6 @@ class LodgingItem extends StatelessWidget {
               style: title_L,
             ),
           ),
-
-          const SizedBox(height: 8),
         ],
       ),
     );

@@ -22,7 +22,7 @@ class LodgingItemList extends StatelessWidget {
     // 전체 패딩 (좌우 각각 16)
     const totalPadding = 32.0;
     // 아이템 사이 간격
-    const itemSpacing = 16.0;
+    const itemSpacing = 24.0;
 
     // 아이템 하나의 너비 및 높이 계산
     final itemWidth = screenWidth - totalPadding;

@@ -34,9 +34,9 @@ class _LodgingScreenState extends State<LodgingScreen> {
                   // 1) 지역 날짜 선택 바 (고정)
 
                   // 여백 추가
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 16),
-                  ),
+                  // const SliverToBoxAdapter(
+                  //   child: SizedBox(height: 16),
+                  // ),
                   // 2) 카테고리 필터링 바 (고정)
                   SliverPersistentHeader(
                     pinned: true,
