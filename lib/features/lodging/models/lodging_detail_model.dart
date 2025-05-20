@@ -88,7 +88,7 @@ class LodgingDetailModel extends LodgingModel {
     required this.durationInDays,
     this.relatedLink,
     super.discountRate,
-  }) : super(thumbnailUrl: thumbnailUrl);
+  }) : super(thumbnailUrl: thumbnailUrl, location: location);
 
   factory LodgingDetailModel.fromJson(Map<String, dynamic> json) {
     final availablePeriod = AvailablePeriod.fromJson(

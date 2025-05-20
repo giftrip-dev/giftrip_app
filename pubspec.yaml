@@ -45,6 +45,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   table_calendar: ^3.1.0
   tosspayments_widget_sdk_flutter: ^2.1.1
+  flutter_inappwebview: ^6.0.0
 
 dev_dependencies:
   flutter_test:

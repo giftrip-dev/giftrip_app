@@ -12,6 +12,9 @@ enum LodgingCategory {
   final String label;
   const LodgingCategory(this.label);
 
+  /// 기본 선택 카테고리
+  static LodgingCategory get defaultCategory => LodgingCategory.hotel;
+
   /// 문자열로부터 카테고리 생성
   static LodgingCategory? fromString(String value) {
     try {
