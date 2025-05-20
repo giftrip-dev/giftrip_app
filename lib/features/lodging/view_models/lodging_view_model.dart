@@ -20,6 +20,8 @@ class LodgingViewModel extends ChangeNotifier {
   LodgingCategory? _selectedCategory;
   String _locationText = '';
   String _stayOptionText = '';
+  int _adultCount = 2;
+  int _childCount = 0;
 
   // 외부 접근용 Getter
   List<LodgingModel> get lodgingList => _lodgingList;
@@ -30,6 +32,17 @@ class LodgingViewModel extends ChangeNotifier {
   LodgingCategory? get selectedCategory => _selectedCategory;
   String get locationText => _locationText;
   String get stayOptionText => _stayOptionText;
+  int get adultCount => _adultCount;
+  int get childCount => _childCount;
+
+  LodgingViewModel() {
+    // 초기 날짜 설정
+    final now = DateTime.now();
+    final tomorrow = now.add(const Duration(days: 1));
+    final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
+    _stayOptionText =
+        '${dateFormat.format(now)}~${dateFormat.format(tomorrow)} | 성인 $_adultCount명';
+  }
 
   /// 다음 페이지 번호 계산
   int? get nextPage {
@@ -124,7 +137,18 @@ class LodgingViewModel extends ChangeNotifier {
   void setStayDates(DateTime startDate, DateTime endDate) {
     final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
     _stayOptionText =
-        '${dateFormat.format(startDate)} - ${dateFormat.format(endDate)}';
+        '${dateFormat.format(startDate)}~${dateFormat.format(endDate)} | 성인 $_adultCount명${_childCount > 0 ? ', 아동 $_childCount명' : ''}';
     notifyListeners();
+  }
+
+  void setGuestCount(int adultCount, int childCount) {
+    _adultCount = adultCount;
+    _childCount = childCount;
+    // 현재 선택된 날짜가 있다면 stayOptionText 업데이트
+    if (_stayOptionText.isNotEmpty) {
+      final now = DateTime.now();
+      final tomorrow = now.add(const Duration(days: 1));
+      setStayDates(now, tomorrow);
+    }
   }
 }
