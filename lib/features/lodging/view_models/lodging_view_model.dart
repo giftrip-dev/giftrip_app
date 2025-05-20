@@ -22,6 +22,8 @@ class LodgingViewModel extends ChangeNotifier {
   String _stayOptionText = '';
   int _adultCount = 2;
   int _childCount = 0;
+  DateTime? _startDate;
+  DateTime? _endDate;
 
   // 외부 접근용 Getter
   List<LodgingModel> get lodgingList => _lodgingList;
@@ -34,11 +36,18 @@ class LodgingViewModel extends ChangeNotifier {
   String get stayOptionText => _stayOptionText;
   int get adultCount => _adultCount;
   int get childCount => _childCount;
+  DateTime? get startDate => _startDate;
+  DateTime? get endDate => _endDate;
 
   LodgingViewModel() {
+    // 초기 카테고리 설정
+    _selectedCategory = LodgingCategory.defaultCategory;
+
     // 초기 날짜 설정
     final now = DateTime.now();
     final tomorrow = now.add(const Duration(days: 1));
+    _startDate = now;
+    _endDate = tomorrow;
     final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
     _stayOptionText =
         '${dateFormat.format(now)}~${dateFormat.format(tomorrow)} | 성인 $_adultCount명';
@@ -88,6 +97,9 @@ class LodgingViewModel extends ChangeNotifier {
       final response = await _repo.getLodgingList(
         category: _selectedCategory,
         page: page,
+        location: _locationText,
+        startDate: _startDate,
+        endDate: _endDate,
       );
 
       if (refresh || _lodgingList.isEmpty) {
@@ -131,14 +143,16 @@ class LodgingViewModel extends ChangeNotifier {
 
   void setLocationText(String text) {
     _locationText = text;
-    notifyListeners();
+    fetchLodgingList(refresh: true);
   }
 
   void setStayDates(DateTime startDate, DateTime endDate) {
+    _startDate = startDate;
+    _endDate = endDate;
     final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
     _stayOptionText =
         '${dateFormat.format(startDate)}~${dateFormat.format(endDate)} | 성인 $_adultCount명${_childCount > 0 ? ', 아동 $_childCount명' : ''}';
-    notifyListeners();
+    fetchLodgingList(refresh: true);
   }
 
   void setGuestCount(int adultCount, int childCount) {

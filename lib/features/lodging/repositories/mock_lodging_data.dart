@@ -39,19 +39,29 @@ final List<LodgingModel> mockLodgingList = List.generate(
 
     // 구매 가능 기간 설정 (현재로부터 1일 후 ~ 60일 후까지)
     final now = DateTime.now();
-    final availableFrom = now.add(Duration(days: 1 + (index % 5))); // 1-5일 후부터
+    final availableFrom = DateTime.now(); // 1-5일 후부터
     final availableTo =
         now.add(Duration(days: 30 + (index % 30))); // 30-59일 후까지
 
+    // 지역 설정
+    final locations = [
+      '강남/역삼/삼성',
+      '신사/청담/압구정',
+      '서초/교대/사당',
+    ];
+    final subLocation = locations[index % locations.length];
+    final distanceInfo =
+        '${subLocation.split('/')[0]}역 ${(index % 10 + 1) * 100}m';
+
     return LodgingModel(
       id: 'lod_${index + 1}',
-      title: '${category.label} 상품 ${index + 1}',
+      title: '${category.label} 상품 ${index + 1} ${subLocation}',
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 편안한 휴식을 위한 최고의 선택이 될 것입니다.',
       thumbnailUrl: 'assets/png/hotel.png',
       mainLocation: MainLocation.seoul.label,
-      subLocation: "강남/역삼/삼성",
-      distanceInfo: '역삼역 7번 출구 600m',
+      subLocation: subLocation,
+      distanceInfo: distanceInfo,
       originalPrice: originalPrice,
       finalPrice: finalPrice,
       category: category,

@@ -14,14 +14,39 @@ class LodgingRepo {
     LodgingCategory? category,
     int page = 1,
     int limit = 10,
+    String? location,
+    DateTime? startDate,
+    DateTime? endDate,
   }) async {
     // 데이터를 불러오는 동안 0.2초 딜레이
     await Future.delayed(const Duration(milliseconds: 200));
 
-    // 카테고리로 필터링
-    final filteredList = category != null
-        ? mockLodgingList.where((item) => item.category == category).toList()
-        : mockLodgingList;
+    // 필터링 적용
+    var filteredList = mockLodgingList;
+
+    // 카테고리 필터링
+    if (category != null) {
+      filteredList =
+          filteredList.where((item) => item.category == category).toList();
+    }
+
+    // 지역 필터링
+    if (location != null && location.isNotEmpty) {
+      filteredList =
+          filteredList.where((item) => item.subLocation == location).toList();
+    }
+
+    // 날짜 필터링
+    if (startDate != null && endDate != null) {
+      filteredList = filteredList.where((item) {
+        // 상품의 구매 가능 기간이 선택된 날짜 범위와 겹치는지 확인
+        final itemStart = item.availableFrom;
+        final itemEnd = item.availableTo;
+
+        // 선택된 날짜 범위가 상품의 구매 가능 기간 내에 있는지 확인
+        return !itemStart.isAfter(endDate) && !itemEnd.isBefore(startDate);
+      }).toList();
+    }
 
     // 페이지네이션 처리
     final startIndex = (page - 1) * limit;
