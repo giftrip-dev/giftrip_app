@@ -1,6 +1,7 @@
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 
 /// 목업 숙박 상품 데이터
 final List<LodgingModel> mockLodgingList = List.generate(
@@ -48,7 +49,9 @@ final List<LodgingModel> mockLodgingList = List.generate(
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 편안한 휴식을 위한 최고의 선택이 될 것입니다.',
       thumbnailUrl: 'assets/png/hotel.png',
-      location: '역삼역 7번 출구 600m',
+      mainLocation: MainLocation.seoul.label,
+      subLocation: "강남/역삼/삼성",
+      distanceInfo: '역삼역 7번 출구 600m',
       originalPrice: originalPrice,
       finalPrice: finalPrice,
       category: category,

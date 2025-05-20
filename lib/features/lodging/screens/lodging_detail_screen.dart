@@ -83,7 +83,7 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                   title: lodging.title,
                   thumbnailUrl: lodging.thumbnailUrl,
                   badges: lodging.badges,
-                  location: lodging.location,
+                  location: lodging.distanceInfo,
                   phoneNumber: lodging.managerPhoneNumber,
                   memo: lodging.description,
                   relatedLink: lodging.relatedLink,

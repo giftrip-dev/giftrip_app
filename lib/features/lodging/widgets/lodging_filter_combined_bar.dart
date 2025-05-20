@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'lodging_filter_bar.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_category_bar.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class LodgingFilterCombinedBar extends StatelessWidget {
   final String locationText;
@@ -22,13 +23,13 @@ class LodgingFilterCombinedBar extends StatelessWidget {
     return Column(
       children: [
         LodgingFilterBar(
-          icon: Icons.place_outlined,
+          icon: LucideIcons.mapPin,
           text: locationText,
           onTap: onLocationTap,
         ),
         const SizedBox(height: 8),
         LodgingFilterBar(
-          icon: Icons.calendar_today_outlined,
+          icon: LucideIcons.calendarDays,
           text: stayOptionText,
           onTap: onStayOptionTap,
         ),

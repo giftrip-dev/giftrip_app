@@ -8,7 +8,9 @@ class LodgingModel {
   final String title;
   final String description;
   final String thumbnailUrl;
-  final String location;
+  final String mainLocation;
+  final String subLocation;
+  final String distanceInfo;
   final int originalPrice;
   final int finalPrice;
   final int? discountRate;
@@ -24,7 +26,9 @@ class LodgingModel {
     required this.title,
     required this.description,
     required this.thumbnailUrl,
-    required this.location,
+    required this.mainLocation,
+    required this.subLocation,
+    required this.distanceInfo,
     required this.originalPrice,
     required this.finalPrice,
     required this.category,
@@ -52,7 +56,9 @@ class LodgingModel {
       title: json['title'] as String,
       description: json['description'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
-      location: json['location'] as String,
+      mainLocation: json['mainLocation'] as String,
+      subLocation: json['subLocation'] as String,
+      distanceInfo: json['distanceInfo'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
       category: LodgingCategory.fromString(json['category'] as String) ??
@@ -79,7 +85,9 @@ class LodgingModel {
       'title': title,
       'description': description,
       'thumbnailUrl': thumbnailUrl,
-      'location': location,
+      'mainLocation': mainLocation,
+      'subLocation': subLocation,
+      'distanceInfo': distanceInfo,
       'originalPrice': originalPrice,
       'finalPrice': finalPrice,
       'category': category.name,

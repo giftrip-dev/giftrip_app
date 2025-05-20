@@ -55,7 +55,9 @@ class AvailablePeriod {
 /// 숙박 상품 상세 모델
 class LodgingDetailModel extends LodgingModel {
   final String thumbnailUrl;
-  final String location;
+  final String mainLocation;
+  final String subLocation;
+  final String distanceInfo;
   final String managerPhoneNumber;
   final String? relatedLink;
   final String detailImageUrl;
@@ -78,7 +80,9 @@ class LodgingDetailModel extends LodgingModel {
     required super.availableFrom,
     required super.availableTo,
     required this.thumbnailUrl,
-    required this.location,
+    required this.mainLocation,
+    required this.subLocation,
+    required this.distanceInfo,
     required this.managerPhoneNumber,
     required this.detailImageUrl,
     required this.croppedDetailImageUrl,
@@ -88,7 +92,11 @@ class LodgingDetailModel extends LodgingModel {
     required this.durationInDays,
     this.relatedLink,
     super.discountRate,
-  }) : super(thumbnailUrl: thumbnailUrl, location: location);
+  }) : super(
+            thumbnailUrl: thumbnailUrl,
+            mainLocation: mainLocation,
+            subLocation: subLocation,
+            distanceInfo: distanceInfo);
 
   factory LodgingDetailModel.fromJson(Map<String, dynamic> json) {
     final availablePeriod = AvailablePeriod.fromJson(
@@ -115,7 +123,9 @@ class LodgingDetailModel extends LodgingModel {
       availableFrom: availablePeriod.startDate,
       availableTo: availablePeriod.endDate,
       discountRate: json['discountRate'] as int?,
-      location: json['location'] as String,
+      mainLocation: json['mainLocation'] as String,
+      subLocation: json['subLocation'] as String,
+      distanceInfo: json['distanceInfo'] as String,
       managerPhoneNumber: json['managerPhoneNumber'] as String,
       relatedLink: json['relatedLink'] as String?,
       detailImageUrl: json['detailImageUrl'] as String,
@@ -134,7 +144,9 @@ class LodgingDetailModel extends LodgingModel {
     final baseJson = super.toJson();
     return {
       ...baseJson,
-      'location': location,
+      'mainLocation': mainLocation,
+      'subLocation': subLocation,
+      'distanceInfo': distanceInfo,
       'managerPhoneNumber': managerPhoneNumber,
       'relatedLink': relatedLink,
       'detailImageUrl': detailImageUrl,
