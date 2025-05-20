@@ -20,6 +20,7 @@ class LodgingViewModel extends ChangeNotifier {
   LodgingCategory? _selectedCategory;
   String _locationText = '강남/역삼/삼성';
   String _stayOptionText = '';
+  String _stayDateText = '';
   int _adultCount = 2;
   int _childCount = 0;
   DateTime? _startDate;
@@ -38,6 +39,7 @@ class LodgingViewModel extends ChangeNotifier {
   int get childCount => _childCount;
   DateTime? get startDate => _startDate;
   DateTime? get endDate => _endDate;
+  String get stayDateText => _stayDateText;
 
   LodgingViewModel() {
     // 초기 카테고리 설정
@@ -50,7 +52,8 @@ class LodgingViewModel extends ChangeNotifier {
     _endDate = tomorrow;
     final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
     _stayOptionText =
-        '${dateFormat.format(now)}~${dateFormat.format(tomorrow)} | 성인 $_adultCount명';
+        '${dateFormat.format(now)}~${dateFormat.format(tomorrow)} | 성인 $_adultCount';
+    _stayDateText = '${dateFormat.format(now)}~${dateFormat.format(tomorrow)}';
   }
 
   /// 다음 페이지 번호 계산
@@ -151,7 +154,9 @@ class LodgingViewModel extends ChangeNotifier {
     _endDate = endDate;
     final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
     _stayOptionText =
-        '${dateFormat.format(startDate)}~${dateFormat.format(endDate)} | 성인 $_adultCount명${_childCount > 0 ? ', 아동 $_childCount명' : ''}';
+        '${dateFormat.format(startDate)}~${dateFormat.format(endDate)} | 성인 $_adultCount${_childCount > 0 ? ', 아동 $_childCount' : ''}';
+    _stayDateText =
+        '${dateFormat.format(startDate)}~${dateFormat.format(endDate)}';
     fetchLodgingList(refresh: true);
   }
 

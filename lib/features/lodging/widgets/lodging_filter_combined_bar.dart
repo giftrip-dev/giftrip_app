@@ -82,7 +82,7 @@ class LodgingFilterCombinedBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 98.0 + 45.0 + 16.0; // 두 바 높이 합산 (적절히 조정)
+  double get maxExtent => 98.0 + 45.0 + 16.0;
 
   @override
   double get minExtent => 98.0 + 45.0 + 16.0;

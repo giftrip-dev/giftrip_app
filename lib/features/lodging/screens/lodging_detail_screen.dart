@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
-import 'package:giftrip/features/shared/widgets/product_detail_image_section.dart';
+import 'package:giftrip/features/lodging/widgets/lodging_select_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/shared/widgets/product_app_bar.dart';
 import 'package:giftrip/features/shared/widgets/product_basic_info_section.dart';
 import 'package:giftrip/features/shared/widgets/product_policy_section.dart';
-
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/related_products_section.dart';
 import 'package:giftrip/features/review/widgets/review_list.dart';
@@ -100,10 +99,11 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 ),
                 const SectionDivider(),
 
-                // 상세 이미지
-                ProductDetailImageSection(
-                  croppedImageUrl: lodging.croppedDetailImageUrl,
-                  detailImageUrl: lodging.detailImageUrl,
+                // 객실 선택 섹션
+                LodgingSelectSection(
+                  dateText: viewModel.stayDateText,
+                  guestText:
+                      '성인 ${viewModel.adultCount}${viewModel.childCount > 0 ? ', 아동 ${viewModel.childCount}' : ''}',
                 ),
                 const SectionDivider(),
 

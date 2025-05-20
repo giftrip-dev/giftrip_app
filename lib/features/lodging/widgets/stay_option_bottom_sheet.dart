@@ -5,7 +5,6 @@ import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/widgets/calendar_widget.dart';
 import 'package:giftrip/features/lodging/widgets/guest_widget.dart';
@@ -54,14 +53,15 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
   @override
   void initState() {
     super.initState();
-    final now = DateTime.now();
-    _selectedStartDate = now;
-    _selectedEndDate = now.add(const Duration(days: 1));
-
     // ViewModel의 초기값 가져오기
     final viewModel = context.read<LodgingViewModel>();
     _adultCount = viewModel.adultCount;
     _childCount = viewModel.childCount;
+
+    // ViewModel의 날짜 값이 있으면 사용하고, 없으면 기본값 설정
+    _selectedStartDate = viewModel.startDate ?? DateTime.now();
+    _selectedEndDate =
+        viewModel.endDate ?? DateTime.now().add(const Duration(days: 1));
   }
 
   @override
