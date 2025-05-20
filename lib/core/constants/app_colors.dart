@@ -94,4 +94,6 @@ class AppColors {
   //calendar
   static const Color calendarSelected = Color(0xFFEAF0FF);
   static const Color calendarText = Color(0xFF060812);
+  static const Color calendarDay = Color(0xFFC2C7CF);
+  static const Color calendarDisabled = Color(0xFF8B909C);
 }

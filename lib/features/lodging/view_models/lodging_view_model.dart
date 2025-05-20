@@ -122,7 +122,7 @@ class LodgingViewModel extends ChangeNotifier {
   }
 
   void setStayDates(DateTime startDate, DateTime endDate) {
-    final dateFormat = DateFormat('yyyy년 MM월 dd일');
+    final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
     _stayOptionText =
         '${dateFormat.format(startDate)} - ${dateFormat.format(endDate)}';
     notifyListeners();
