@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -170,33 +171,95 @@ class _RoomItemState extends State<RoomItem> {
             ),
             const SizedBox(height: 12),
             // 4. 가격 및 할인율
-            if (widget.room.discountRate > 0) ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.backgroundAlternative,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              child: Row(
                 children: [
-                  Text(
-                    '${widget.room.discountRate}%',
-                    style: subtitle_XS.copyWith(
-                      color: AppColors.labelAlternative,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (widget.room.discountRate > 0) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${widget.room.discountRate}%',
+                              style: subtitle_XS.copyWith(
+                                color: AppColors.labelAlternative,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${formatPrice(widget.room.originalPrice)}원',
+                              style: caption.copyWith(
+                                color: AppColors.labelAlternative,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      // 5. 최종 가격
+                      Text(
+                        '${formatPrice(widget.room.finalPrice)}원',
+                        style: title_L,
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${formatPrice(widget.room.originalPrice)}원',
-                    style: caption.copyWith(
-                      color: AppColors.labelAlternative,
-                      decoration: TextDecoration.lineThrough,
-                    ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.line),
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              LucideIcons.shoppingCart,
+                              color: AppColors.labelStrong,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      SizedBox(
+                        width: 94,
+                        height: 37,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: AppColors.primaryStrong,
+                            disabledBackgroundColor: AppColors.componentNatural,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '예약하기',
+                              style: title_S.copyWith(height: 1),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              ),
-            ],
-            // 5. 최종 가격
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '${formatPrice(widget.room.finalPrice)}원',
-                style: title_L,
               ),
             ),
           ],
