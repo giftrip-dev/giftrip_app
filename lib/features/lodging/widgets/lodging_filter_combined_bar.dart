@@ -6,15 +6,15 @@ import 'package:giftrip/features/lodging/widgets/lodging_category_bar.dart';
 class LodgingFilterCombinedBar extends StatelessWidget {
   final String locationText;
   final VoidCallback? onLocationTap;
-  final String datePeopleText;
-  final VoidCallback? onDatePeopleTap;
+  final String stayOptionText;
+  final VoidCallback? onStayOptionTap;
 
   const LodgingFilterCombinedBar({
     super.key,
     required this.locationText,
     this.onLocationTap,
-    required this.datePeopleText,
-    this.onDatePeopleTap,
+    required this.stayOptionText,
+    this.onStayOptionTap,
   });
 
   @override
@@ -29,8 +29,8 @@ class LodgingFilterCombinedBar extends StatelessWidget {
         const SizedBox(height: 8),
         LodgingFilterBar(
           icon: Icons.calendar_today_outlined,
-          text: datePeopleText,
-          onTap: onDatePeopleTap,
+          text: stayOptionText,
+          onTap: onStayOptionTap,
         ),
       ],
     );
@@ -40,16 +40,16 @@ class LodgingFilterCombinedBar extends StatelessWidget {
 class LodgingFilterCombinedBarDelegate extends SliverPersistentHeaderDelegate {
   final String locationText;
   final VoidCallback? onLocationTap;
-  final String datePeopleText;
-  final VoidCallback? onDatePeopleTap;
+  final String stayOptionText;
+  final VoidCallback? onStayOptionTap;
   final LodgingCategory? selectedCategory;
   final Function(LodgingCategory?) onCategoryChanged;
 
   LodgingFilterCombinedBarDelegate({
     required this.locationText,
     this.onLocationTap,
-    required this.datePeopleText,
-    this.onDatePeopleTap,
+    required this.stayOptionText,
+    this.onStayOptionTap,
     required this.selectedCategory,
     required this.onCategoryChanged,
   });
@@ -66,8 +66,8 @@ class LodgingFilterCombinedBarDelegate extends SliverPersistentHeaderDelegate {
             child: LodgingFilterCombinedBar(
               locationText: locationText,
               onLocationTap: onLocationTap,
-              datePeopleText: datePeopleText,
-              onDatePeopleTap: onDatePeopleTap,
+              stayOptionText: stayOptionText,
+              onStayOptionTap: onStayOptionTap,
             ),
           ),
           LodgingCategoryBar(
@@ -89,7 +89,7 @@ class LodgingFilterCombinedBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant LodgingFilterCombinedBarDelegate oldDelegate) {
     return locationText != oldDelegate.locationText ||
-        datePeopleText != oldDelegate.datePeopleText ||
+        stayOptionText != oldDelegate.stayOptionText ||
         selectedCategory != oldDelegate.selectedCategory;
   }
 }

@@ -6,6 +6,7 @@ import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_item_list.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dart';
 import 'package:giftrip/features/lodging/screens/location_screen.dart';
+import 'package:giftrip/features/lodging/widgets/stay_option_bottom_sheet.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -41,7 +42,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
                         vm.changeCategory(category);
                       },
                       locationText: vm.locationText,
-                      datePeopleText: '',
+                      stayOptionText: vm.stayOptionText,
                       onLocationTap: () async {
                         final selected = await Navigator.push(
                           context,
@@ -53,8 +54,8 @@ class _LodgingScreenState extends State<LodgingScreen> {
                           vm.setLocationText(selected);
                         }
                       },
-                      onDatePeopleTap: () {
-                        // TODO: 날짜/인원 선택 모달 등 연결
+                      onStayOptionTap: () {
+                        StayOptionBottomSheet.show(context);
                       },
                     ),
                   ),

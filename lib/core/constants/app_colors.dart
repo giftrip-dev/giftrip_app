@@ -91,4 +91,7 @@ class AppColors {
   //toast
   static const Color toastBackground = Color(0XFF181719);
   static const Color toastLabel = Color(0XFFEEF0F5);
+  //calendar
+  static const Color calendarSelected = Color(0xFFEAF0FF);
+  static const Color calendarText = Color(0xFF060812);
 }
