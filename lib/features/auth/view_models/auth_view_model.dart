@@ -17,36 +17,9 @@ class AuthViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   Future<Widget> checkAutoLogin() async {
-    final autoLoginStatus = await GlobalStorage().getAutoLogin();
-
-    if (autoLoginStatus) {
-      try {
-        final user = await UserViewModel().getUserInfo();
-
-        if (user == null) {
-          return const LoginScreen();
-        }
-
-        // 약관 동의를 하지 않은 경우
-        if (user.isTermsOfServiceConsent != true) {
-          return const TermsAgreementScreen();
-        }
-        // 자격 인증을 하지 않은 경우
-
-        // 닉네임을 설정하지 않은 경우
-        return const RootScreen(
-          selectedIndex: 0,
-        );
-      } catch (e) {
-        return const RootScreen(
-          selectedIndex: 0,
-        );
-      }
-    } else {
-      return const RootScreen(
-        selectedIndex: 0,
-      );
-    }
+    return const RootScreen(
+      selectedIndex: 0,
+    );
   }
 
   Future<bool> login(String id, String password) async {

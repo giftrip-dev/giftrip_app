@@ -43,7 +43,11 @@ class _ExperienceReservationBottomSheetState
   bool _isCalendarVisible = false;
 
   // 포맷터
-  final DateFormat _dateFormat = DateFormat('yyyy년 MM월 dd일');
+  final DateFormat _dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
+
+  String _formatDate(DateTime date) {
+    return _dateFormat.format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +119,7 @@ class _ExperienceReservationBottomSheetState
                   Expanded(
                     child: Text(
                       _selectedStartDate != null && _selectedEndDate != null
-                          ? '${_dateFormat.format(_selectedStartDate!)} - ${_dateFormat.format(_selectedEndDate!)}'
+                          ? '${_formatDate(_selectedStartDate!)} ~ ${_formatDate(_selectedEndDate!)}'
                           : '날짜를 선택해주세요',
                       style: _selectedStartDate != null
                           ? body_M
@@ -123,7 +127,7 @@ class _ExperienceReservationBottomSheetState
                     ),
                   ),
                   const Icon(
-                    LucideIcons.calendar,
+                    LucideIcons.calendarDays,
                     size: 20,
                     color: AppColors.component,
                   ),
@@ -181,9 +185,10 @@ class _ExperienceReservationBottomSheetState
     final lastDay = experience.availableTo;
 
     return Container(
+      padding: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.line),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.lineStrong),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: TableCalendar(
         firstDay: firstDay,
@@ -194,32 +199,95 @@ class _ExperienceReservationBottomSheetState
         rangeEndDay: _selectedEndDate,
         rangeSelectionMode: RangeSelectionMode.enforced,
         headerStyle: HeaderStyle(
+          headerPadding: const EdgeInsets.only(top: 10, bottom: 14),
           titleCentered: true,
           formatButtonVisible: false,
-          titleTextStyle: title_S,
+          titleTextStyle: title_M.copyWith(color: AppColors.calendarText),
+          leftChevronIcon: const Icon(
+            LucideIcons.chevronLeft,
+            size: 24,
+            color: AppColors.calendarText,
+          ),
+          leftChevronMargin: const EdgeInsets.only(left: 0),
+          leftChevronPadding: const EdgeInsets.only(left: 12),
+          rightChevronIcon: const Icon(
+            LucideIcons.chevronRight,
+            size: 24,
+            color: AppColors.calendarText,
+          ),
+          rightChevronMargin: const EdgeInsets.only(right: 0),
+          rightChevronPadding: const EdgeInsets.only(right: 12),
         ),
         calendarStyle: CalendarStyle(
-          outsideDaysVisible: false,
-          weekendTextStyle: body_S.copyWith(color: AppColors.statusError),
-          todayDecoration: BoxDecoration(
-            color: AppColors.primaryAlternative,
-            shape: BoxShape.circle,
+          defaultDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
           ),
-          todayTextStyle: body_S.copyWith(color: AppColors.primaryStrong),
+          defaultTextStyle: body_S.copyWith(
+            color: AppColors.calendarText,
+          ),
+          outsideDaysVisible: true,
+          weekendTextStyle: body_S.copyWith(color: AppColors.calendarText),
+          todayDecoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: AppColors.labelStrong),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          todayTextStyle: body_S.copyWith(color: AppColors.calendarText),
           selectedDecoration: BoxDecoration(
             color: AppColors.primaryStrong,
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
           ),
           rangeStartDecoration: BoxDecoration(
             color: AppColors.primaryStrong,
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
           ),
           rangeEndDecoration: BoxDecoration(
             color: AppColors.primaryStrong,
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
           ),
-          rangeHighlightColor: AppColors.primaryAlternative,
-          disabledTextStyle: body_S.copyWith(color: AppColors.labelAssistive),
+          withinRangeDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          rowDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          markerDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          holidayDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          outsideDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          weekendDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          disabledDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          disabledTextStyle: body_S.copyWith(color: AppColors.calendarDisabled),
+          rangeHighlightColor: AppColors.calendarSelected,
+        ),
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekdayStyle: body_S.copyWith(
+            color: AppColors.calendarDay,
+          ),
+          weekendStyle: body_S.copyWith(
+            color: AppColors.calendarDay,
+          ),
         ),
         selectedDayPredicate: (day) {
           return isSameDay(_selectedStartDate, day);
@@ -279,6 +347,7 @@ class _ExperienceReservationBottomSheetState
           }
         },
         locale: 'ko_KR',
+        startingDayOfWeek: StartingDayOfWeek.monday,
       ),
     );
   }
