@@ -4,6 +4,9 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/experience/models/experience_category.dart';
 import 'package:giftrip/features/experience/screens/experience_screen.dart';
 import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
+import 'package:giftrip/features/lodging/models/lodging_category.dart';
+import 'package:giftrip/features/lodging/screens/lodging_screen.dart';
+import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SubCategoryItem extends StatelessWidget {
@@ -31,6 +34,22 @@ class SubCategoryItem extends StatelessWidget {
                   create: (context) =>
                       ExperienceViewModel()..changeCategory(category),
                   child: const ExperienceScreen(),
+                ),
+              ),
+            );
+          }
+        }
+        if (categoryIndex == 2) {
+          // 숙박 카테고리인 경우
+          final category = LodgingCategory.fromString(title);
+          if (category != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (context) =>
+                      LodgingViewModel()..changeCategory(category),
+                  child: const LodgingScreen(),
                 ),
               ),
             );

@@ -1,13 +1,13 @@
 /// 숙박 상품 카테고리
 enum LodgingCategory {
   hotel('호텔'),
-  resort('리조트'),
   pension('펜션'),
-  guesthouse('게스트하우스'),
-  camping('캠핑'),
-  hanok('한옥'),
-  villa('빌라'),
-  motel('모텔');
+  privateHouse('독채'),
+  motel('모텔'),
+  resort('리조트'),
+  inn('민박'),
+  camping('캠핑/글램핑'),
+  guestHouse('게스트하우스');
 
   final String label;
   const LodgingCategory(this.label);
