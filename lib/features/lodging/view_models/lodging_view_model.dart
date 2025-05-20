@@ -17,6 +17,7 @@ class LodgingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   LodgingCategory? _selectedCategory;
+  String _locationText = '';
 
   // 외부 접근용 Getter
   List<LodgingModel> get lodgingList => _lodgingList;
@@ -25,6 +26,7 @@ class LodgingViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
   LodgingCategory? get selectedCategory => _selectedCategory;
+  String get locationText => _locationText;
 
   /// 다음 페이지 번호 계산
   int? get nextPage {
@@ -108,6 +110,11 @@ class LodgingViewModel extends ChangeNotifier {
   /// 선택된 상품 초기화
   void clearSelectedLodging() {
     _selectedLodging = null;
+    notifyListeners();
+  }
+
+  void setLocationText(String text) {
+    _locationText = text;
     notifyListeners();
   }
 }

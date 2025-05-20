@@ -9,34 +9,19 @@ import 'package:provider/provider.dart';
 class SubCategoryItem extends StatelessWidget {
   final String title;
   final int categoryIndex;
+  final VoidCallback? onTap;
 
   const SubCategoryItem({
     super.key,
     required this.title,
     required this.categoryIndex,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (categoryIndex == 0) {
-          // 체험 카테고리인 경우
-          final category = ExperienceCategory.fromString(title);
-          if (category != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                  create: (context) =>
-                      ExperienceViewModel()..changeCategory(category),
-                  child: const ExperienceScreen(),
-                ),
-              ),
-            );
-          }
-        }
-      },
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: Text(

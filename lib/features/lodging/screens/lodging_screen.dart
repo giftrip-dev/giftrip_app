@@ -5,7 +5,7 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_item_list.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dart';
-import 'package:giftrip/features/lodging/widgets/location_screen.dart';
+import 'package:giftrip/features/lodging/screens/location_screen.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -40,15 +40,18 @@ class _LodgingScreenState extends State<LodgingScreen> {
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
-                      locationText: '',
+                      locationText: vm.locationText,
                       datePeopleText: '',
-                      onLocationTap: () {
-                        Navigator.push(
+                      onLocationTap: () async {
+                        final selected = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const LocationScreen(),
                           ),
                         );
+                        if (selected is String && selected.isNotEmpty) {
+                          vm.setLocationText(selected);
+                        }
                       },
                       onDatePeopleTap: () {
                         // TODO: 날짜/인원 선택 모달 등 연결
