@@ -3,22 +3,28 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:giftrip/features/lodging/widgets/stay_option_bottom_sheet.dart';
+import 'package:giftrip/features/lodging/widgets/room_item.dart';
+import 'package:provider/provider.dart';
+import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
+import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
+import 'package:giftrip/features/lodging/repositories/mock_room_data.dart';
+import 'package:giftrip/features/lodging/widgets/room_list.dart';
 
 /// 객실 선택 섹션 위젯
-class LodgingSelectSection extends StatefulWidget {
+class RoomSelectSection extends StatefulWidget {
   final String dateText;
   final String guestText;
-  const LodgingSelectSection({
+  const RoomSelectSection({
     super.key,
     required this.dateText,
     required this.guestText,
   });
 
   @override
-  State<LodgingSelectSection> createState() => _LodgingSelectSectionState();
+  State<RoomSelectSection> createState() => _RoomSelectSectionState();
 }
 
-class _LodgingSelectSectionState extends State<LodgingSelectSection> {
+class _RoomSelectSectionState extends State<RoomSelectSection> {
   @override
   void initState() {
     super.initState();
@@ -26,6 +32,15 @@ class _LodgingSelectSectionState extends State<LodgingSelectSection> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<LodgingViewModel>();
+    final lodging = viewModel.selectedLodging;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final itemWidth = screenWidth;
+    final itemHeight = itemWidth * (213 / 328); // 328:213 비율 적용
+
+    if (lodging == null) return const SizedBox.shrink();
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -85,6 +100,12 @@ class _LodgingSelectSectionState extends State<LodgingSelectSection> {
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: 12),
+          RoomList(
+            rooms: mockRoomList,
+            width: itemWidth,
+            height: itemHeight,
           ),
         ],
       ),

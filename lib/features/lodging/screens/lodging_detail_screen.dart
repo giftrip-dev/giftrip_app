@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
-import 'package:giftrip/features/lodging/widgets/lodging_select_section.dart';
+import 'package:giftrip/features/lodging/widgets/room_select_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
@@ -100,7 +100,7 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 const SectionDivider(),
 
                 // 객실 선택 섹션
-                LodgingSelectSection(
+                RoomSelectSection(
                   dateText: viewModel.stayDateText,
                   guestText:
                       '성인 ${viewModel.adultCount}${viewModel.childCount > 0 ? ', 아동 ${viewModel.childCount}' : ''}',
