@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/core/widgets/app_bar/global_app_bar.dart';
-import 'package:giftrip/features/my/widgets/account_box.dart';
 import 'package:giftrip/features/my/widgets/mypage_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
-import 'package:giftrip/features/my/widgets/config_box.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 
@@ -47,7 +44,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -56,55 +52,15 @@ class _MyPageScreenState extends State<MyPageScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     CertificateBoard(certificates: certificates),
-                  //   ],
-                  // ),
-                  // AccountBoxWidget에 userNickname과 userEmail을 전달합니다.
-                  AccountBoxWidget(
-                    nickname: userNickname ?? '',
-                    email: userEmail ?? '',
-                  ),
                   MyPageBox(
-                    title: '커뮤니티',
+                    title: '페이지 이동',
                     myPageInfo: {
-                      '내가 작성한 게시글': {
-                        'onTap': () => myPageViewModel.onTapMyPosts(context),
+                      '로그인': {
+                        'onTap': () => myPageViewModel.onTapLogin(context),
                       },
-                    },
-                  ),
-                  ConfigBox(),
-                  MyPageBox(
-                    title: '이용 안내',
-                    myPageInfo: {
-                      '앱버전': {
-                        'text': 'v1.0.6',
-                        'onTap': myPageViewModel.onTapAppVersion,
-                      },
-                      '카카오톡 문의': {
-                        'onTap': () => myPageViewModel.onTapContact(context),
-                      },
-                      '공지사항': {
-                        'onTap': () => myPageViewModel.onTapNotice(context),
-                      },
-                      '서비스 이용 약관': {
-                        'onTap': () => myPageViewModel.onTapTerms(context),
-                      },
-                      '개인정보 처리 방침': {
+                      '주문/예약 목록': {
                         'onTap': () =>
-                            myPageViewModel.onTapPrivacyPolicy(context),
-                      },
-                      '로그아웃': {
-                        // 'onTap': () => GlobalStorage().deleteAccessToken(),
-                        'onTap': () => myPageViewModel.onTapLogout(context),
-                      },
-                      '문의/신고': {
-                        'text': 'daggle@daggle.io',
-                      },
-                      '회원탈퇴': {
-                        'onTap': () => myPageViewModel.onTapWithdraw(context),
+                            myPageViewModel.onTapReservationList(context),
                       },
                     },
                   ),

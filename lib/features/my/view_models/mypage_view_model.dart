@@ -8,6 +8,7 @@ import 'package:giftrip/features/my/screens/my_community_list_screen.dart';
 import 'package:giftrip/features/notice/screens/notice_screen.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
+import 'package:giftrip/features/reservation/screens/reservation_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 
@@ -90,10 +91,7 @@ class MyPageViewModel {
     );
   }
 
-  void onTapLogout(BuildContext context) async {
-    final fcmToken = await _storage.getFcmToken();
-    await _notificationViewModel.deleteFCMToken(token: fcmToken ?? '');
-    _authRepo.logout();
+  void onTapLogin(BuildContext context) async {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -103,6 +101,13 @@ class MyPageViewModel {
       'logout_click',
       'logout_button',
       'my_page',
+    );
+  }
+
+  void onTapReservationList(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ReservationListScreen()),
     );
   }
 
