@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
