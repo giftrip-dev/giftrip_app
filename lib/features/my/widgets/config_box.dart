@@ -67,7 +67,7 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
       // Android에서는 Intent 사용
       const intent = AndroidIntent(
         action: 'android.settings.APPLICATION_DETAILS_SETTINGS',
-        data: 'package:com.daggle.myong', // 앱 패키지명으로 변경
+        data: 'package:kr.co.giftrip.app', // 앱 패키지명으로 변경
         flags: <int>[Flag.FLAG_ACTIVITY_NEW_TASK],
       );
       await intent.launch();
