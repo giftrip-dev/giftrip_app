@@ -5,9 +5,9 @@ import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/widgets/calendar_widget.dart';
+import 'package:giftrip/features/lodging/widgets/guest_widget.dart';
 
 /// 숙박 옵션 바텀시트
 class StayOptionBottomSheet extends StatefulWidget {
@@ -39,12 +39,29 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
   DateTime? _selectedStartDate;
   DateTime? _selectedEndDate;
   bool _isCalendarVisible = false;
+  bool _isGuestVisible = false;
+  int _adultCount = 2;
+  int _childCount = 0;
 
   // 포맷터
   final DateFormat _dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
 
   String _formatDate(DateTime date) {
     return _dateFormat.format(date);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // ViewModel의 초기값 가져오기
+    final viewModel = context.read<LodgingViewModel>();
+    _adultCount = viewModel.adultCount;
+    _childCount = viewModel.childCount;
+
+    // ViewModel의 날짜 값이 있으면 사용하고, 없으면 기본값 설정
+    _selectedStartDate = viewModel.startDate ?? DateTime.now();
+    _selectedEndDate =
+        viewModel.endDate ?? DateTime.now().add(const Duration(days: 1));
   }
 
   @override
@@ -96,12 +113,13 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
             onTap: () {
               setState(() {
                 _isCalendarVisible = !_isCalendarVisible;
+                if (_isCalendarVisible) _isGuestVisible = false;
               });
             },
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.line),
+                border: Border.all(color: AppColors.lineStrong),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -109,7 +127,7 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
                   Expanded(
                     child: Text(
                       _selectedStartDate != null && _selectedEndDate != null
-                          ? '${_formatDate(_selectedStartDate!)} ~ ${_formatDate(_selectedEndDate!)}'
+                          ? '${_formatDate(_selectedStartDate!)}~${_formatDate(_selectedEndDate!)}'
                           : '날짜를 선택해주세요',
                       style: _selectedStartDate != null
                           ? body_M
@@ -118,6 +136,36 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
                   ),
                   const Icon(
                     LucideIcons.calendarDays,
+                    size: 20,
+                    color: AppColors.component,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // 인원 선택 필드
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isGuestVisible = !_isGuestVisible;
+                if (_isGuestVisible) _isCalendarVisible = false;
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.lineStrong),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child:
+                        Text('성인 $_adultCount, 아동 $_childCount', style: body_M),
+                  ),
+                  const Icon(
+                    LucideIcons.user,
                     size: 20,
                     color: AppColors.component,
                   ),
@@ -145,6 +193,31 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
                   });
                 },
               ),
+            ),
+          ],
+
+          // 인원 선택 위젯 (토글 가능)
+          if (_isGuestVisible) ...[
+            const SizedBox(height: 8),
+            GuestWidget(
+              adultCount: _adultCount,
+              childCount: _childCount,
+              onAdultChanged: (val) {
+                setState(() {
+                  _adultCount = val;
+                });
+                context
+                    .read<LodgingViewModel>()
+                    .setGuestCount(_adultCount, _childCount);
+              },
+              onChildChanged: (val) {
+                setState(() {
+                  _childCount = val;
+                });
+                context
+                    .read<LodgingViewModel>()
+                    .setGuestCount(_adultCount, _childCount);
+              },
             ),
           ],
 
