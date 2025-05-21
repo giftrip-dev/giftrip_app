@@ -1,6 +1,9 @@
 import 'package:giftrip/features/reservation/models/reservation_category.dart';
 import 'package:giftrip/features/reservation/models/reservation_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
+import 'dart:math';
+
+final random = Random();
 
 /// 목업 체험 상품 데이터
 final List<ReservationModel> mockReservationList = List.generate(
@@ -17,24 +20,6 @@ final List<ReservationModel> mockReservationList = List.generate(
     final finalPrice = discountRate != null
         ? (originalPrice * (100 - discountRate) ~/ 100)
         : originalPrice;
-
-    // 뱃지 설정
-    final badges = <ProductTagType>[];
-
-    // 첫 10개 상품은 NEW 뱃지
-    if (index < 10) {
-      badges.add(ProductTagType.newArrival);
-    }
-
-    // 인덱스가 3의 배수인 상품은 BEST 뱃지
-    if (index % 3 == 0) {
-      badges.add(ProductTagType.bestSeller);
-    }
-
-    // 인덱스가 7의 배수인 상품은 품절임박 뱃지
-    if (index % 7 == 0) {
-      badges.add(ProductTagType.almostSoldOut);
-    }
 
     // 구매 가능 기간 설정 (현재로부터 1일 후 ~ 60일 후까지)
     final now = DateTime.now();
@@ -58,6 +43,12 @@ final List<ReservationModel> mockReservationList = List.generate(
       }
     }
 
+    final progress = ReservationProgress
+        .values[random.nextInt(ReservationProgress.values.length)];
+
+    // 결제 날짜는 오늘로부터 1~7일 전 중 랜덤하게 설정
+    final paidAt = now.subtract(Duration(days: (index % 7) + 1));
+
     return ReservationModel(
       id: 'res_${index + 1}',
       title: '${category.label} 상품 ${index + 1}',
@@ -70,11 +61,12 @@ final List<ReservationModel> mockReservationList = List.generate(
       rating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평점
       reviewCount: 10 + index, // 10개부터 1개씩 증가
       discountRate: discountRate,
-      badges: badges,
       availableFrom: availableFrom,
       availableTo: availableTo,
       soldOut: soldOut,
       unavailableDates: unavailableDates.isEmpty ? null : unavailableDates,
+      progress: progress,
+      paidAt: paidAt,
     );
   },
 );

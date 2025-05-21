@@ -2,6 +2,21 @@ import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/reservation/models/reservation_category.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 
+/// 예약 진행 상태
+enum ReservationProgress {
+  confirmed, // 예약/구매 완료
+  completed; // 사용/배송 완료
+
+  String get label {
+    switch (this) {
+      case ReservationProgress.confirmed:
+        return '예약 확정';
+      case ReservationProgress.completed:
+        return '이용 완료';
+    }
+  }
+}
+
 /// 체험 상품 모델
 class ReservationModel {
   final String id;
@@ -14,11 +29,12 @@ class ReservationModel {
   final ReservationCategory category;
   final double rating;
   final int reviewCount;
-  final List<ProductTagType> badges;
-  final DateTime availableFrom; // 구매 가능 시작일
-  final DateTime availableTo; // 구매 가능 종료일
+  final DateTime? availableFrom; // 구매 가능 시작일
+  final DateTime? availableTo; // 구매 가능 종료일
   final bool soldOut; // 품절 여부
   final List<String>? unavailableDates; // 이용 불가능 날짜 목록
+  final ReservationProgress progress; // 예약 진행 상태
+  final DateTime paidAt; // 결제 완료 날짜
 
   const ReservationModel({
     required this.id,
@@ -30,12 +46,13 @@ class ReservationModel {
     required this.category,
     required this.rating,
     required this.reviewCount,
-    required this.badges,
     required this.availableFrom,
     required this.availableTo,
+    required this.progress,
     this.discountRate,
     this.soldOut = false, // 기본값은 품절 아님
     this.unavailableDates,
+    required this.paidAt,
   });
 
   /// 할인이 적용되었는지 여부
@@ -45,7 +62,8 @@ class ReservationModel {
   bool get isAvailableToPurchase {
     if (soldOut) return false; // 품절인 경우 구매 불가
     final now = DateTime.now();
-    return now.isAfter(availableFrom) && now.isBefore(availableTo);
+    return now.isAfter(availableFrom ?? DateTime.now()) &&
+        now.isBefore(availableTo ?? DateTime.now());
   }
 
   /// 특정 날짜에 이용 가능한지 여부
@@ -54,7 +72,8 @@ class ReservationModel {
     if (soldOut) return false;
 
     // 2. 구매 가능 기간 체크
-    if (date.isBefore(availableFrom) || date.isAfter(availableTo)) {
+    if (date.isBefore(availableFrom ?? DateTime.now()) ||
+        date.isAfter(availableTo ?? DateTime.now())) {
       return false;
     }
 
@@ -81,19 +100,17 @@ class ReservationModel {
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       discountRate: json['discountRate'] as int?,
-      badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ProductTagType.values.firstWhere(
-                    (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ProductTagType.newArrival,
-                  ))
-              .toList() ??
-          [],
       availableFrom: DateTime.parse(json['availableFrom'] as String),
       availableTo: DateTime.parse(json['availableTo'] as String),
       soldOut: json['soldOut'] as bool? ?? false,
       unavailableDates: (json['unavailableDates'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      progress: ReservationProgress.values.firstWhere(
+        (e) => e.name == json['progress'],
+        orElse: () => ReservationProgress.confirmed,
+      ),
+      paidAt: DateTime.parse(json['paidAt'] as String),
     );
   }
 
@@ -110,11 +127,12 @@ class ReservationModel {
       'rating': rating,
       'reviewCount': reviewCount,
       'discountRate': discountRate,
-      'badges': badges.map((e) => e.name).toList(),
-      'availableFrom': availableFrom.toIso8601String(),
-      'availableTo': availableTo.toIso8601String(),
+      'availableFrom': availableFrom?.toIso8601String(),
+      'availableTo': availableTo?.toIso8601String(),
       'soldOut': soldOut,
       'unavailableDates': unavailableDates,
+      'progress': progress.name,
+      'paidAt': paidAt?.toIso8601String(),
     };
   }
 }

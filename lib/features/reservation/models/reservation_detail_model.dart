@@ -74,9 +74,9 @@ class ReservationDetailModel extends ReservationModel {
     required super.category,
     required super.rating,
     required super.reviewCount,
-    required super.badges,
     required super.availableFrom,
     required super.availableTo,
+    required super.progress,
     required this.thumbnailUrl,
     required this.location,
     required this.managerPhoneNumber,
@@ -90,6 +90,7 @@ class ReservationDetailModel extends ReservationModel {
     super.discountRate,
     super.soldOut,
     super.unavailableDates,
+    required super.paidAt,
   }) : super(thumbnailUrl: thumbnailUrl);
 
   factory ReservationDetailModel.fromJson(Map<String, dynamic> json) {
@@ -107,13 +108,6 @@ class ReservationDetailModel extends ReservationModel {
           ReservationCategory.lodging,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
-      badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ProductTagType.values.firstWhere(
-                    (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ProductTagType.newArrival,
-                  ))
-              .toList() ??
-          [],
       availableFrom: availablePeriod.startDate,
       availableTo: availablePeriod.endDate,
       soldOut: json['soldOut'] as bool? ?? false,
@@ -121,6 +115,11 @@ class ReservationDetailModel extends ReservationModel {
           ?.map((e) => e as String)
           .toList(),
       discountRate: json['discountRate'] as int?,
+      progress: ReservationProgress.values.firstWhere(
+        (e) => e.name == json['progress'],
+        orElse: () => ReservationProgress.confirmed,
+      ),
+      paidAt: DateTime.parse(json['paidAt'] as String),
       location: json['location'] as String,
       managerPhoneNumber: json['managerPhoneNumber'] as String,
       relatedLink: json['relatedLink'] as String?,
@@ -149,6 +148,7 @@ class ReservationDetailModel extends ReservationModel {
       'changeInfo': changeInfo.toJson(),
       'availablePeriod': availablePeriod.toJson(),
       'durationInDays': durationInDays,
+      'paidAt': paidAt.toIso8601String(),
     };
   }
 }

@@ -6,11 +6,13 @@ import 'package:giftrip/features/reservation/models/reservation_category.dart';
 class ReservationCategoryBar extends StatefulWidget {
   final ReservationCategory? selectedCategory;
   final Function(ReservationCategory?) onCategoryChanged;
+  final int totalCount;
 
   const ReservationCategoryBar({
     super.key,
     required this.selectedCategory,
     required this.onCategoryChanged,
+    required this.totalCount,
   });
 
   @override
@@ -39,7 +41,7 @@ class _ReservationCategoryBarState extends State<ReservationCategoryBar> {
           // 전체 카테고리
           _CategoryChip(
             key: _chipKeys[0],
-            label: '전체',
+            label: '전체(${widget.totalCount})',
             isSelected: widget.selectedCategory == null,
             onTap: () => widget.onCategoryChanged(null),
           ),

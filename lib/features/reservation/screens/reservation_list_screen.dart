@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/reservation/view_models/reservation_view_model.dart';
 import 'package:giftrip/features/reservation/widgets/persistent_category_bar.dart';
+import 'package:giftrip/features/reservation/widgets/reservation_list.dart';
 
 class ReservationListScreen extends StatefulWidget {
   const ReservationListScreen({super.key});
@@ -30,6 +31,7 @@ class _ReservationListScreenState extends State<ReservationListScreen> {
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
                   // 2) 카테고리 필터링 바 (고정)
+
                   SliverPersistentHeader(
                     pinned: true,
                     floating: true,
@@ -38,11 +40,19 @@ class _ReservationListScreenState extends State<ReservationListScreen> {
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
+                      totalCount: vm.reservationList.length,
                     ),
                   ),
                 ];
               },
-              body: const Center(child: Text('주문/예약 내역')),
+              body: ReservationList(
+                reservations: vm.reservationList,
+                isLoading: vm.isLoading,
+                hasError: vm.hasError,
+                onLoadMore: vm.nextPage != null
+                    ? () => vm.fetchReservationList()
+                    : null,
+              ),
             ),
           );
         },
