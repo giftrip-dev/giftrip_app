@@ -77,6 +77,13 @@ const TextStyle h2_S = TextStyle(
   letterSpacing: -0.3,
 );
 
+const TextStyle heading_4 = TextStyle(
+  fontFamily: AppFonts.pretendard,
+  fontWeight: FontWeight.w700,
+  fontSize: 16,
+  height: 1.8,
+  letterSpacing: 0,
+);
 // Title Styles
 const TextStyle title_L = TextStyle(
   fontFamily: AppFonts.pretendard,

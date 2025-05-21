@@ -1,40 +1,21 @@
 {
   "project_info": {
-    "project_number": "124816659989",
-    "project_id": "today-myong",
-    "storage_bucket": "today-myong.firebasestorage.app"
+    "project_number": "479328366433",
+    "project_id": "giftrip-d0106",
+    "storage_bucket": "giftrip-d0106.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:124816659989:android:72ac4c9269698c56b6601c",
+        "mobilesdk_app_id": "1:479328366433:android:47610ab970e371a3795f20",
         "android_client_info": {
-          "package_name": "com.daggle.myong"
+          "package_name": "kr.co.giftrip.app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAUhN2vZBLGJxIgjZUx58nNw1zYgmE020E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:124816659989:android:20f26a57e5bf5ce3b6601c",
-        "android_client_info": {
-          "package_name": "com.handaggle.myong"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAUhN2vZBLGJxIgjZUx58nNw1zYgmE020E"
+          "current_key": "AIzaSyCVOBt-RzZEt-kgFct9G90e4fosmA6XigE"
         }
       ],
       "services": {

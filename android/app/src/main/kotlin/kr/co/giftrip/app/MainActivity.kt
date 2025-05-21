@@ -1,4 +1,4 @@
-package com.daggle.myong
+package kr.co.giftrip.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
