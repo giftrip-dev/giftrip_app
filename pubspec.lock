@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  daum_postcode_search:
+    dependency: "direct main"
+    description:
+      name: daum_postcode_search
+      sha256: "6d5661093957637dd03e1642a2bd1547b1f77e93768a3a9f3f630b8500f97342"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   dbus:
     dependency: transitive
     description:
