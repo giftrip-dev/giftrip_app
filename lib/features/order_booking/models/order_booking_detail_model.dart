@@ -1,5 +1,5 @@
-import 'package:giftrip/features/reservation/models/reservation_category.dart';
-import 'package:giftrip/features/reservation/models/reservation_model.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 문의/변경 정보 모델
@@ -53,7 +53,7 @@ class AvailablePeriod {
 }
 
 /// 체험 상품 상세 모델
-class ReservationDetailModel extends ReservationModel {
+class OrderBookingDetailModel extends OrderBookingModel {
   final String thumbnailUrl;
   final String location;
   final String managerPhoneNumber;
@@ -65,7 +65,7 @@ class ReservationDetailModel extends ReservationModel {
   final AvailablePeriod availablePeriod;
   final int durationInDays;
 
-  const ReservationDetailModel({
+  const OrderBookingDetailModel({
     required super.id,
     required super.title,
     required super.description,
@@ -93,19 +93,19 @@ class ReservationDetailModel extends ReservationModel {
     required super.paidAt,
   }) : super(thumbnailUrl: thumbnailUrl);
 
-  factory ReservationDetailModel.fromJson(Map<String, dynamic> json) {
+  factory OrderBookingDetailModel.fromJson(Map<String, dynamic> json) {
     final availablePeriod = AvailablePeriod.fromJson(
         json['availablePeriod'] as Map<String, dynamic>);
 
-    return ReservationDetailModel(
+    return OrderBookingDetailModel(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
-      category: ReservationCategory.fromString(json['category'] as String) ??
-          ReservationCategory.lodging,
+      category: OrderBookingCategory.fromString(json['category'] as String) ??
+          OrderBookingCategory.lodging,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       availableFrom: availablePeriod.startDate,
@@ -115,9 +115,9 @@ class ReservationDetailModel extends ReservationModel {
           ?.map((e) => e as String)
           .toList(),
       discountRate: json['discountRate'] as int?,
-      progress: ReservationProgress.values.firstWhere(
+      progress: OrderBookingProgress.values.firstWhere(
         (e) => e.name == json['progress'],
-        orElse: () => ReservationProgress.confirmed,
+        orElse: () => OrderBookingProgress.confirmed,
       ),
       paidAt: DateTime.parse(json['paidAt'] as String),
       location: json['location'] as String,

@@ -40,7 +40,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   bool _hasEverSentCode = false;
   bool _isTimerExpired = false;
   bool _isCodeFilled = false;
-  int _timerSeconds = 60;
+  int _timerSeconds = 180;
   Timer? _timer;
   bool _isVerificationSuccessful = false;
   bool _isVerificationAttempted = false;
@@ -53,7 +53,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   }
 
   void _startTimer() {
-    _timerSeconds = 60;
+    _timerSeconds = 180;
     _isTimerExpired = false;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_timerSeconds > 0) {
@@ -77,7 +77,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   void _stopTimer() {
     _timer?.cancel();
     setState(() {
-      _timerSeconds = 60;
+      _timerSeconds = 180;
       _isTimerExpired = false;
     });
   }

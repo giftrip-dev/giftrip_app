@@ -90,7 +90,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
                     ? IconButton(
                         icon: Icon(
                           _obscure ? LucideIcons.eyeOff : LucideIcons.eye,
-                          color: widget.eyeIconColor ?? AppColors.labelStrong,
+                          color:
+                              widget.eyeIconColor ?? AppColors.componentNatural,
                           size: 20,
                         ),
                         onPressed: () {

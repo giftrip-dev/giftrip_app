@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
-import 'package:giftrip/features/reservation/models/reservation_category.dart';
-import 'package:giftrip/features/reservation/models/reservation_model.dart';
-import 'package:giftrip/features/reservation/models/reservation_detail_model.dart';
-import 'package:giftrip/features/reservation/repositories/mock_reservation_data.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_detail_model.dart';
+import 'package:giftrip/features/order_booking/repositories/mock_order_booking_data.dart';
 
-class ReservationRepo {
+class OrderBookingRepo {
   final Dio _dio = DioClient().to();
 
   /// 체험 상품 목록 조회
-  Future<ReservationPageResponse> getReservationList({
-    ReservationCategory? category,
+  Future<OrderBookingPageResponse> getOrderBookingList({
+    OrderBookingCategory? category,
     int page = 1,
     int limit = 10,
   }) async {
@@ -20,10 +20,10 @@ class ReservationRepo {
 
     // 카테고리로 필터링
     final filteredList = category != null
-        ? mockReservationList
+        ? mockOrderBookingList
             .where((item) => item.category == category)
             .toList()
-        : mockReservationList;
+        : mockOrderBookingList;
 
     // 페이지네이션 처리
     final startIndex = (page - 1) * limit;
@@ -31,7 +31,7 @@ class ReservationRepo {
 
     // 데이터가 범위를 벗어나지 않도록 체크
     if (startIndex >= filteredList.length) {
-      return ReservationPageResponse(
+      return OrderBookingPageResponse(
         items: [],
         meta: PageMeta(
           currentPage: page,
@@ -47,7 +47,7 @@ class ReservationRepo {
       endIndex > filteredList.length ? filteredList.length : endIndex,
     );
 
-    return ReservationPageResponse(
+    return OrderBookingPageResponse(
       items: items,
       meta: PageMeta(
         currentPage: page,
@@ -76,7 +76,7 @@ class ReservationRepo {
   }
 
   /// 체험 상품 상세 정보 조회
-  Future<ReservationDetailModel> getReservationDetail(String id) async {
+  Future<OrderBookingDetailModel> getOrderBookingDetail(String id) async {
     // try {
     //   final response = await _dio.get('/api/experiences/$id');
 
@@ -93,30 +93,30 @@ class ReservationRepo {
     await Future.delayed(const Duration(milliseconds: 200));
 
     // 기본 상품 정보 찾기
-    final reservation = mockReservationList.firstWhere(
+    final orderBooking = mockOrderBookingList.firstWhere(
       (item) => item.id == id,
       orElse: () => throw Exception('상품을 찾을 수 없습니다.'),
     );
 
     // 상세 정보 생성 (목업)
-    return ReservationDetailModel(
-      id: reservation.id,
-      title: reservation.title,
-      description: reservation.description,
-      thumbnailUrl: reservation.thumbnailUrl,
-      originalPrice: reservation.originalPrice,
-      finalPrice: reservation.finalPrice,
-      category: reservation.category,
-      rating: reservation.rating,
-      reviewCount: reservation.reviewCount,
-      discountRate: reservation.discountRate,
-      availableFrom: reservation.availableFrom,
-      availableTo: reservation.availableTo,
-      soldOut: reservation.soldOut,
-      unavailableDates: reservation.unavailableDates,
+    return OrderBookingDetailModel(
+      id: orderBooking.id,
+      title: orderBooking.title,
+      description: orderBooking.description,
+      thumbnailUrl: orderBooking.thumbnailUrl,
+      originalPrice: orderBooking.originalPrice,
+      finalPrice: orderBooking.finalPrice,
+      category: orderBooking.category,
+      rating: orderBooking.rating,
+      reviewCount: orderBooking.reviewCount,
+      discountRate: orderBooking.discountRate,
+      availableFrom: orderBooking.availableFrom,
+      availableTo: orderBooking.availableTo,
+      soldOut: orderBooking.soldOut,
+      unavailableDates: orderBooking.unavailableDates,
       location: '서울특별시 강남구 테헤란로 123',
       managerPhoneNumber: '010-1234-5678',
-      relatedLink: 'https://example.com/experience/${reservation.id}',
+      relatedLink: 'https://example.com/experience/${orderBooking.id}',
       detailImageUrl: 'assets/png/product_detail.png',
       croppedDetailImageUrl: 'assets/png/product_detail.png',
       inquiryInfo: const InformationSection(
@@ -129,12 +129,12 @@ class ReservationRepo {
             '• 예약 변경은 체험 시작일 3일 전까지 가능합니다.\n• 예약 변경 시 차액이 발생할 수 있습니다.\n• 변경 횟수는 1회로 제한됩니다.',
       ),
       availablePeriod: AvailablePeriod(
-        startDate: reservation.availableFrom ?? DateTime.now(),
-        endDate: reservation.availableTo ?? DateTime.now(),
+        startDate: orderBooking.availableFrom ?? DateTime.now(),
+        endDate: orderBooking.availableTo ?? DateTime.now(),
       ),
-      durationInDays: 1 + (reservation.id.hashCode % 3), // 1~3일 랜덤 생성
-      progress: reservation.progress,
-      paidAt: reservation.paidAt,
+      durationInDays: 1 + (orderBooking.id.hashCode % 3), // 1~3일 랜덤 생성
+      progress: orderBooking.progress,
+      paidAt: orderBooking.paidAt,
     );
   }
 }
