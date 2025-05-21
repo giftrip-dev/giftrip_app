@@ -1,24 +1,24 @@
 import 'package:giftrip/core/utils/page_meta.dart';
-import 'package:giftrip/features/reservation/models/reservation_category.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 예약 진행 상태
-enum ReservationProgress {
+enum OrderBookingProgress {
   confirmed, // 예약/구매 완료
   completed; // 사용/배송 완료
 
   String get label {
     switch (this) {
-      case ReservationProgress.confirmed:
+      case OrderBookingProgress.confirmed:
         return '예약 확정';
-      case ReservationProgress.completed:
+      case OrderBookingProgress.completed:
         return '이용 완료';
     }
   }
 }
 
 /// 체험 상품 모델
-class ReservationModel {
+class OrderBookingModel {
   final String id;
   final String title;
   final String description;
@@ -26,17 +26,17 @@ class ReservationModel {
   final int originalPrice;
   final int finalPrice;
   final int? discountRate;
-  final ReservationCategory category;
+  final OrderBookingCategory category;
   final double rating;
   final int reviewCount;
   final DateTime? availableFrom; // 구매 가능 시작일
   final DateTime? availableTo; // 구매 가능 종료일
   final bool soldOut; // 품절 여부
   final List<String>? unavailableDates; // 이용 불가능 날짜 목록
-  final ReservationProgress progress; // 예약 진행 상태
+  final OrderBookingProgress progress; // 예약 진행 상태
   final DateTime paidAt; // 결제 완료 날짜
 
-  const ReservationModel({
+  const OrderBookingModel({
     required this.id,
     required this.title,
     required this.description,
@@ -87,16 +87,16 @@ class ReservationModel {
   }
 
   /// JSON -> Experience Model
-  factory ReservationModel.fromJson(Map<String, dynamic> json) {
-    return ReservationModel(
+  factory OrderBookingModel.fromJson(Map<String, dynamic> json) {
+    return OrderBookingModel(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
-      category: ReservationCategory.fromString(json['category'] as String) ??
-          ReservationCategory.lodging,
+      category: OrderBookingCategory.fromString(json['category'] as String) ??
+          OrderBookingCategory.lodging,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       discountRate: json['discountRate'] as int?,
@@ -106,9 +106,9 @@ class ReservationModel {
       unavailableDates: (json['unavailableDates'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      progress: ReservationProgress.values.firstWhere(
+      progress: OrderBookingProgress.values.firstWhere(
         (e) => e.name == json['progress'],
-        orElse: () => ReservationProgress.confirmed,
+        orElse: () => OrderBookingProgress.confirmed,
       ),
       paidAt: DateTime.parse(json['paidAt'] as String),
     );
@@ -138,19 +138,19 @@ class ReservationModel {
 }
 
 /// 페이징 응답
-class ReservationPageResponse {
-  final List<ReservationModel> items;
+class OrderBookingPageResponse {
+  final List<OrderBookingModel> items;
   final PageMeta meta;
 
-  ReservationPageResponse({
+  OrderBookingPageResponse({
     required this.items,
     required this.meta,
   });
 
-  factory ReservationPageResponse.fromJson(Map<String, dynamic> json) {
+  factory OrderBookingPageResponse.fromJson(Map<String, dynamic> json) {
     final itemsJson = json['items'] as List<dynamic>;
-    return ReservationPageResponse(
-      items: itemsJson.map((e) => ReservationModel.fromJson(e)).toList(),
+    return OrderBookingPageResponse(
+      items: itemsJson.map((e) => OrderBookingModel.fromJson(e)).toList(),
       meta: PageMeta.fromJson(json['meta']),
     );
   }

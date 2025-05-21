@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/features/reservation/models/reservation_model.dart';
-import 'package:giftrip/features/reservation/widgets/reservation_item.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
+import 'package:giftrip/features/order_booking/widgets/order_booking_item.dart';
 
-class ReservationList extends StatefulWidget {
-  final List<ReservationModel> reservations;
+class OrderBookingList extends StatefulWidget {
+  final List<OrderBookingModel> orderBookings;
   final bool isLoading;
   final bool hasError;
   final VoidCallback? onLoadMore;
 
-  const ReservationList({
+  const OrderBookingList({
     super.key,
-    required this.reservations,
+    required this.orderBookings,
     this.isLoading = false,
     this.hasError = false,
     this.onLoadMore,
   });
 
   @override
-  State<ReservationList> createState() => _ReservationListState();
+  State<OrderBookingList> createState() => _OrderBookingListState();
 }
 
-class _ReservationListState extends State<ReservationList> {
+class _OrderBookingListState extends State<OrderBookingList> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -53,7 +53,7 @@ class _ReservationListState extends State<ReservationList> {
       );
     }
 
-    if (widget.reservations.isEmpty && !widget.isLoading) {
+    if (widget.orderBookings.isEmpty && !widget.isLoading) {
       return const Center(
         child: Text('예약 내역이 없습니다.'),
       );
@@ -62,9 +62,9 @@ class _ReservationListState extends State<ReservationList> {
     return ListView.builder(
       controller: _scrollController,
       itemCount:
-          widget.reservations.length + (widget.onLoadMore != null ? 1 : 0),
+          widget.orderBookings.length + (widget.onLoadMore != null ? 1 : 0),
       itemBuilder: (context, index) {
-        if (index == widget.reservations.length) {
+        if (index == widget.orderBookings.length) {
           if (widget.isLoading) {
             return const Center(
               child: Padding(
@@ -76,8 +76,8 @@ class _ReservationListState extends State<ReservationList> {
           return const SizedBox.shrink();
         }
 
-        return ReservationItem(
-          reservation: widget.reservations[index],
+        return OrderBookingItem(
+          orderBooking: widget.orderBookings[index],
         );
       },
     );

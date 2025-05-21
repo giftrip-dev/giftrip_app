@@ -34,8 +34,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:giftrip/core/utils/fcm_service.dart';
 import 'package:giftrip/core/utils/get_device_info.dart';
 import 'package:giftrip/features/review/view_models/review_view_model.dart';
-import 'package:giftrip/features/reservation/view_models/reservation_view_model.dart';
-import 'package:giftrip/features/reservation/screens/reservation_list_screen.dart';
+import 'package:giftrip/features/order_booking/view_models/order_booking_view_model.dart';
+import 'package:giftrip/features/order_booking/screens/order_booking_screen.dart';
 
 // 전역 navigatorKey 설정 (DioClient에서도 사용 가능)
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -134,7 +134,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => LodgingViewModel()),
         ChangeNotifierProvider(create: (_) => CartViewModel()),
         ChangeNotifierProvider(create: (_) => ReviewViewModel()),
-        ChangeNotifierProvider(create: (_) => ReservationViewModel()),
+        ChangeNotifierProvider(create: (_) => OrderBookingViewModel()),
       ],
       child: Builder(
         builder: (context) {
@@ -189,7 +189,7 @@ class _MyAppState extends State<MyApp> {
               '/tester': (ctx) => const TesterScreen(),
               '/event': (ctx) => const EventScreen(),
               '/inquiry': (ctx) => const InquiryScreen(),
-              '/reservation': (ctx) => const ReservationListScreen(),
+              '/order_booking': (ctx) => const OrderBookingScreen(),
             },
           );
         },

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/features/reservation/models/reservation_category.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
 
-class ReservationCategoryBar extends StatefulWidget {
-  final ReservationCategory? selectedCategory;
-  final Function(ReservationCategory?) onCategoryChanged;
+class OrderBookingCategoryBar extends StatefulWidget {
+  final OrderBookingCategory? selectedCategory;
+  final Function(OrderBookingCategory?) onCategoryChanged;
   final int totalCount;
 
-  const ReservationCategoryBar({
+  const OrderBookingCategoryBar({
     super.key,
     required this.selectedCategory,
     required this.onCategoryChanged,
@@ -16,23 +16,18 @@ class ReservationCategoryBar extends StatefulWidget {
   });
 
   @override
-  State<ReservationCategoryBar> createState() => _ReservationCategoryBarState();
+  State<OrderBookingCategoryBar> createState() =>
+      _OrderBookingCategoryBarState();
 }
 
-class _ReservationCategoryBarState extends State<ReservationCategoryBar> {
+class _OrderBookingCategoryBarState extends State<OrderBookingCategoryBar> {
   final List<GlobalKey> _chipKeys = List.generate(
-    ReservationCategory.values.length + 1, // +1 for '전체'
+    OrderBookingCategory.values.length + 1, // +1 for '전체'
     (index) => GlobalKey(),
   );
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final horizontalPadding = 32.0; // 좌우 패딩
-    final availableWidth = screenWidth - horizontalPadding;
-    final categoryCount = ReservationCategory.values.length + 1; // 전체 카테고리 포함
-    final spacing = availableWidth / (categoryCount - 1);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -46,7 +41,7 @@ class _ReservationCategoryBarState extends State<ReservationCategoryBar> {
             onTap: () => widget.onCategoryChanged(null),
           ),
           // 나머지 카테고리들
-          ...ReservationCategory.values.asMap().entries.map((entry) {
+          ...OrderBookingCategory.values.asMap().entries.map((entry) {
             final idx = entry.key;
             final category = entry.value;
             return _CategoryChip(

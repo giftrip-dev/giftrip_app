@@ -60,7 +60,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       },
                       '주문/예약 목록': {
                         'onTap': () =>
-                            myPageViewModel.onTapReservationList(context),
+                            myPageViewModel.onTapOrderBookingList(context),
                       },
                     },
                   ),

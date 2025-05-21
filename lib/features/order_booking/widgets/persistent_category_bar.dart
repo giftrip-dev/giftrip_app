@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/features/reservation/models/reservation_category.dart';
-import 'package:giftrip/features/reservation/widgets/reservation_category_bar.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
+import 'package:giftrip/features/order_booking/widgets/order_booking_category_bar.dart';
 
 class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
-  final ReservationCategory? selectedCategory;
-  final Function(ReservationCategory?) onCategoryChanged;
+  final OrderBookingCategory? selectedCategory;
+  final Function(OrderBookingCategory?) onCategoryChanged;
   final int totalCount;
 
   PersistentCategoryBarDelegate({
@@ -22,7 +22,7 @@ class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       padding: const EdgeInsets.only(top: 16),
       color: Colors.white,
-      child: ReservationCategoryBar(
+      child: OrderBookingCategoryBar(
         selectedCategory: selectedCategory,
         onCategoryChanged: onCategoryChanged,
         totalCount: totalCount,

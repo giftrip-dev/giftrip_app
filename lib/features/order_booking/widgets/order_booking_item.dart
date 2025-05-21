@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
-import 'package:giftrip/features/reservation/models/reservation_model.dart';
-import 'package:giftrip/features/reservation/models/reservation_category.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
+import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
+import 'package:giftrip/features/order_booking/screens/booking_detail_screen.dart';
+import 'package:giftrip/features/order_booking/screens/order_detail_screen.dart';
 import 'package:intl/intl.dart';
 
-class ReservationItem extends StatelessWidget {
-  final ReservationModel reservation;
+class OrderBookingItem extends StatelessWidget {
+  final OrderBookingModel orderBooking;
 
-  const ReservationItem({
+  const OrderBookingItem({
     super.key,
-    required this.reservation,
+    required this.orderBooking,
   });
 
-  bool get isProduct => reservation.category == ReservationCategory.product;
+  bool get isProduct => orderBooking.category == OrderBookingCategory.product;
 
   Widget _buildButtons() {
     if (isProduct) {
-      if (reservation.progress == ReservationProgress.confirmed) {
+      if (orderBooking.progress == OrderBookingProgress.confirmed) {
         return Row(
           children: [
             Expanded(
@@ -44,7 +46,7 @@ class ReservationItem extends StatelessWidget {
             ),
           ],
         );
-      } else if (reservation.progress == ReservationProgress.completed) {
+      } else if (orderBooking.progress == OrderBookingProgress.completed) {
         return Row(
           children: [
             Expanded(
@@ -72,7 +74,7 @@ class ReservationItem extends StatelessWidget {
         );
       }
     } else {
-      if (reservation.progress == ReservationProgress.confirmed) {
+      if (orderBooking.progress == OrderBookingProgress.confirmed) {
         return CTAButton(
           isEnabled: true,
           onPressed: () {},
@@ -81,7 +83,7 @@ class ReservationItem extends StatelessWidget {
           text: '예약 취소',
           textStyle: title_S.copyWith(color: AppColors.labelStrong),
         );
-      } else if (reservation.progress == ReservationProgress.completed) {
+      } else if (orderBooking.progress == OrderBookingProgress.completed) {
         return CTAButton(
           isEnabled: true,
           onPressed: () {},
@@ -102,14 +104,6 @@ class ReservationItem extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: AppColors.line,
-            width: 1,
-          ),
-        ),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -118,13 +112,33 @@ class ReservationItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                reservation.category.label,
+                orderBooking.category.label,
                 style: heading_4.copyWith(
                   color: AppColors.primaryStrong,
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (orderBooking.category == OrderBookingCategory.product) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrderDetailScreen(
+                          orderBooking: orderBooking,
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookingDetailScreen(
+                          orderBooking: orderBooking,
+                        ),
+                      ),
+                    );
+                  }
+                },
                 child: Text(
                   '상세보기',
                   style: body_S.copyWith(
@@ -142,7 +156,7 @@ class ReservationItem extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: Image.asset(
-                  reservation.thumbnailUrl,
+                  orderBooking.thumbnailUrl,
                   width: 60,
                   height: 60,
                   fit: BoxFit.cover,
@@ -154,14 +168,14 @@ class ReservationItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dateFormat.format(reservation.paidAt),
+                      dateFormat.format(orderBooking.paidAt),
                       style: caption.copyWith(
                         color: AppColors.labelAlternative,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      reservation.title,
+                      orderBooking.title,
                       style: body_M.copyWith(
                         color: AppColors.labelStrong,
                       ),
@@ -170,7 +184,7 @@ class ReservationItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${formatter.format(reservation.finalPrice)}원',
+                      '${formatter.format(orderBooking.finalPrice)}원',
                       style: title_M.copyWith(
                         color: AppColors.labelStrong,
                       ),

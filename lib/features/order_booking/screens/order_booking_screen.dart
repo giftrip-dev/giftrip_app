@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
-import 'package:giftrip/features/reservation/view_models/reservation_view_model.dart';
-import 'package:giftrip/features/reservation/widgets/persistent_category_bar.dart';
-import 'package:giftrip/features/reservation/widgets/reservation_list.dart';
-import 'package:giftrip/features/reservation/repositories/mock_reservation_data.dart';
+import 'package:giftrip/features/order_booking/view_models/order_booking_view_model.dart';
+import 'package:giftrip/features/order_booking/widgets/persistent_category_bar.dart';
+import 'package:giftrip/features/order_booking/widgets/order_booking_list.dart';
+import 'package:giftrip/features/order_booking/repositories/mock_order_booking_data.dart';
 
-class ReservationListScreen extends StatefulWidget {
-  const ReservationListScreen({super.key});
+class OrderBookingScreen extends StatefulWidget {
+  const OrderBookingScreen({super.key});
 
   @override
-  _ReservationListScreenState createState() => _ReservationListScreenState();
+  _OrderBookingScreenState createState() => _OrderBookingScreenState();
 }
 
-class _ReservationListScreenState extends State<ReservationListScreen> {
+class _OrderBookingScreenState extends State<OrderBookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const SearchAppBar(title: '주문/예약'),
-      body: Consumer<ReservationViewModel>(
+      body: Consumer<OrderBookingViewModel>(
         builder: (context, vm, child) {
           return RefreshIndicator(
             onRefresh: () async {
-              await vm.fetchReservationList(refresh: true);
+              await vm.fetchOrderBookingList(refresh: true);
             },
             color: AppColors.primary,
             backgroundColor: Colors.transparent,
@@ -41,17 +41,17 @@ class _ReservationListScreenState extends State<ReservationListScreen> {
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
-                      totalCount: mockReservationList.length,
+                      totalCount: mockOrderBookingList.length,
                     ),
                   ),
                 ];
               },
-              body: ReservationList(
-                reservations: vm.reservationList,
+              body: OrderBookingList(
+                orderBookings: vm.orderBookingList,
                 isLoading: vm.isLoading,
                 hasError: vm.hasError,
                 onLoadMore: vm.nextPage != null
-                    ? () => vm.fetchReservationList()
+                    ? () => vm.fetchOrderBookingList()
                     : null,
               ),
             ),
@@ -66,8 +66,8 @@ class _ReservationListScreenState extends State<ReservationListScreen> {
     super.initState();
     // 초기 데이터 로드
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final vm = context.read<ReservationViewModel>();
-      vm.fetchReservationList();
+      final vm = context.read<OrderBookingViewModel>();
+      vm.fetchOrderBookingList();
     });
   }
 }
