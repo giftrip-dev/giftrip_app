@@ -27,6 +27,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:giftrip/core/utils/fcm_service.dart';
 import 'package:giftrip/core/utils/get_device_info.dart';
 import 'package:giftrip/features/review/view_models/review_view_model.dart';
+import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 
 // 전역 navigatorKey 설정 (DioClient에서도 사용 가능)
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -120,6 +121,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CartViewModel()),
         ChangeNotifierProvider(create: (_) => ReviewViewModel()),
         ChangeNotifierProvider(create: (_) => ShoppingViewModel()),
+        ChangeNotifierProvider(create: (_) => PaymentViewModel()),
       ],
       child: Builder(
         builder: (context) {

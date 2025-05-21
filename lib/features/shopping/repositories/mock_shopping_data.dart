@@ -18,6 +18,11 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 128,
     badges: [ProductTagType.bestSeller, ProductTagType.newArrival],
     manufacturer: '제주과일농장',
+    options: [
+      ShoppingOption(name: '감귤 2kg', price: 28000),
+      ShoppingOption(name: '감귤 3kg', price: 38000),
+      ShoppingOption(name: '감귤 5kg', price: 58000),
+    ],
   ),
 
   // 로컬상품
@@ -33,6 +38,12 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 56,
     badges: [ProductTagType.newArrival],
     manufacturer: '평창푸드',
+    options: [
+      ShoppingOption(name: '소포장 100g', price: 12000),
+      ShoppingOption(name: '대포장 300g', price: 32000),
+      ShoppingOption(name: '대대포장 300g', price: 32000),
+      ShoppingOption(name: '대대대포장 300g', price: 32000),
+    ],
   ),
 
   // 기념품
@@ -49,6 +60,10 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 32,
     badges: [ProductTagType.almostSoldOut],
     manufacturer: '한국기념품제작소',
+    options: [
+      ShoppingOption(name: '기본 세트 (3개)', price: 20000),
+      ShoppingOption(name: '프리미엄 세트 (5개)', price: 35000),
+    ],
   ),
 
   // 식품
@@ -65,6 +80,11 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 201,
     badges: [ProductTagType.bestSeller, ProductTagType.newArrival],
     manufacturer: '한과명가',
+    options: [
+      ShoppingOption(name: '소형 세트 (5종)', price: 38000),
+      ShoppingOption(name: '중형 세트 (8종)', price: 58000),
+      ShoppingOption(name: '대형 세트 (12종)', price: 88000),
+    ],
   ),
 
   // 건강식품
@@ -80,6 +100,10 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 89,
     badges: [ProductTagType.newArrival],
     manufacturer: '강화건강식품',
+    options: [
+      ShoppingOption(name: '500ml', price: 28000),
+      ShoppingOption(name: '1L', price: 52000),
+    ],
   ),
 
   // 생활용품/문구
@@ -96,6 +120,10 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 42,
     badges: [ProductTagType.almostSoldOut],
     manufacturer: '한국문구',
+    options: [
+      ShoppingOption(name: '3권 세트', price: 15000),
+      ShoppingOption(name: '5권 세트', price: 24000),
+    ],
   ),
 
   // 주방용품
@@ -112,6 +140,10 @@ final List<ShoppingModel> mockShoppingList = [
     badges: [ProductTagType.soldOut],
     manufacturer: '이천도자기',
     soldOut: true,
+    options: [
+      ShoppingOption(name: '2인용 세트', price: 65000),
+      ShoppingOption(name: '4인용 세트', price: 120000),
+    ],
   ),
 
   // 가구/가전
@@ -128,6 +160,10 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 28,
     badges: [ProductTagType.almostSoldOut],
     manufacturer: '한국전통가구',
+    options: [
+      ShoppingOption(name: '3종 세트', price: 38000),
+      ShoppingOption(name: '5종 세트', price: 58000),
+    ],
   ),
 
   // 의료/뷰티
@@ -144,6 +180,11 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 152,
     badges: [ProductTagType.bestSeller, ProductTagType.newArrival],
     manufacturer: '제주코스메틱',
+    options: [
+      ShoppingOption(name: '10매 세트', price: 24000),
+      ShoppingOption(name: '20매 세트', price: 45000),
+      ShoppingOption(name: '30매 세트', price: 65000),
+    ],
   ),
 
   // 기타
@@ -160,6 +201,10 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 76,
     badges: [ProductTagType.newArrival],
     manufacturer: '트래블기어',
+    options: [
+      ShoppingOption(name: '기본형', price: 29000),
+      ShoppingOption(name: '프리미엄형 (USB-C 포함)', price: 45000),
+    ],
   ),
 
   // 특산품 2
@@ -176,6 +221,11 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 108,
     badges: [ProductTagType.bestSeller],
     manufacturer: '완도해산물',
+    options: [
+      ShoppingOption(name: '소형 (500g)', price: 69000),
+      ShoppingOption(name: '중형 (1kg)', price: 120000),
+      ShoppingOption(name: '대형 (2kg)', price: 220000),
+    ],
   ),
 
   // 로컬상품 2
@@ -192,61 +242,9 @@ final List<ShoppingModel> mockShoppingList = [
     reviewCount: 47,
     badges: [ProductTagType.almostSoldOut],
     manufacturer: '담양죽제품',
-  ),
-  ShoppingModel(
-    id: 'shop_012',
-    title: '담양 대나무 소품 세트',
-    description: '담양 특산품 대나무로 만든 친환경 소품 세트',
-    thumbnailUrl: 'assets/png/shopping.png',
-    originalPrice: 42000,
-    finalPrice: 38000,
-    discountRate: 10,
-    category: ShoppingCategory.local,
-    rating: 4.6,
-    reviewCount: 47,
-    badges: [ProductTagType.almostSoldOut],
-    manufacturer: '담양죽제품',
-  ),
-  ShoppingModel(
-    id: 'shop_012',
-    title: '담양 대나무 소품 세트',
-    description: '담양 특산품 대나무로 만든 친환경 소품 세트',
-    thumbnailUrl: 'assets/png/shopping.png',
-    originalPrice: 42000,
-    finalPrice: 38000,
-    discountRate: 10,
-    category: ShoppingCategory.local,
-    rating: 4.6,
-    reviewCount: 47,
-    badges: [ProductTagType.almostSoldOut],
-    manufacturer: '담양죽제품',
-  ),
-  ShoppingModel(
-    id: 'shop_012',
-    title: '담양 대나무 소품 세트',
-    description: '담양 특산품 대나무로 만든 친환경 소품 세트',
-    thumbnailUrl: 'assets/png/shopping.png',
-    originalPrice: 42000,
-    finalPrice: 38000,
-    discountRate: 10,
-    category: ShoppingCategory.local,
-    rating: 4.6,
-    reviewCount: 47,
-    badges: [ProductTagType.almostSoldOut],
-    manufacturer: '담양죽제품',
-  ),
-  ShoppingModel(
-    id: 'shop_012',
-    title: '담양 대나무 소품 세트',
-    description: '담양 특산품 대나무로 만든 친환경 소품 세트',
-    thumbnailUrl: 'assets/png/shopping.png',
-    originalPrice: 42000,
-    finalPrice: 38000,
-    discountRate: 10,
-    category: ShoppingCategory.local,
-    rating: 4.6,
-    reviewCount: 47,
-    badges: [ProductTagType.almostSoldOut],
-    manufacturer: '담양죽제품',
+    options: [
+      ShoppingOption(name: '소품 3종 세트', price: 38000),
+      ShoppingOption(name: '소품 5종 세트', price: 58000),
+    ],
   ),
 ];

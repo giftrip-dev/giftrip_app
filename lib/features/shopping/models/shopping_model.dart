@@ -8,30 +8,32 @@ class ShoppingModel {
   final String title;
   final String description;
   final String thumbnailUrl;
+  final String manufacturer;
   final int originalPrice;
   final int finalPrice;
   final int? discountRate;
+  final bool soldOut;
+  final List<ShoppingOption> options;
   final ShoppingCategory category;
   final double rating;
   final int reviewCount;
   final List<ProductTagType> badges;
-  final String manufacturer; // 제조사
-  final bool soldOut; // 품절 여부
 
   const ShoppingModel({
     required this.id,
     required this.title,
     required this.description,
     required this.thumbnailUrl,
+    required this.manufacturer,
     required this.originalPrice,
     required this.finalPrice,
+    this.discountRate,
+    this.soldOut = false,
+    required this.options,
     required this.category,
     required this.rating,
     required this.reviewCount,
     required this.badges,
-    required this.manufacturer,
-    this.discountRate,
-    this.soldOut = false, // 기본값은 품절 아님
   });
 
   /// 할인이 적용되었는지 여부
@@ -47,13 +49,18 @@ class ShoppingModel {
       title: json['title'] as String,
       description: json['description'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
+      manufacturer: json['manufacturer'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
+      discountRate: json['discountRate'] as int?,
+      soldOut: json['soldOut'] as bool? ?? false,
+      options: (json['options'] as List<dynamic>)
+          .map((e) => ShoppingOption.fromJson(e as Map<String, dynamic>))
+          .toList(),
       category: ShoppingCategory.fromString(json['category'] as String) ??
           ShoppingCategory.others,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
-      discountRate: json['discountRate'] as int?,
       badges: (json['badges'] as List<dynamic>?)
               ?.map((e) => ProductTagType.values.firstWhere(
                     (type) => type.name == e.toString().toUpperCase(),
@@ -61,8 +68,6 @@ class ShoppingModel {
                   ))
               .toList() ??
           [],
-      manufacturer: json['manufacturer'] as String,
-      soldOut: json['soldOut'] as bool? ?? false,
     );
   }
 
@@ -73,15 +78,40 @@ class ShoppingModel {
       'title': title,
       'description': description,
       'thumbnailUrl': thumbnailUrl,
+      'manufacturer': manufacturer,
       'originalPrice': originalPrice,
       'finalPrice': finalPrice,
+      'discountRate': discountRate,
+      'soldOut': soldOut,
+      'options': options.map((e) => e.toJson()).toList(),
       'category': category.name,
       'rating': rating,
       'reviewCount': reviewCount,
-      'discountRate': discountRate,
       'badges': badges.map((e) => e.name).toList(),
-      'manufacturer': manufacturer,
-      'soldOut': soldOut,
+    };
+  }
+}
+
+class ShoppingOption {
+  final String name;
+  final int price;
+
+  ShoppingOption({
+    required this.name,
+    required this.price,
+  });
+
+  factory ShoppingOption.fromJson(Map<String, dynamic> json) {
+    return ShoppingOption(
+      name: json['name'] as String,
+      price: json['price'] as int,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'price': price,
     };
   }
 }

@@ -127,6 +127,7 @@ class ShoppingRepo {
       ),
       deliveryInfo:
           '• 배송비: 3,000원 (30,000원 이상 구매 시 무료배송)\n• 배송기간: 결제 확인 후 2~5일 이내 발송',
+      options: shopping.options,
     );
   }
 }

@@ -43,6 +43,7 @@ class ShoppingDetailModel extends ShoppingModel {
     required this.inquiryInfo,
     required this.changeInfo,
     required this.deliveryInfo,
+    required super.options,
     super.badges = const [],
     super.discountRate,
     super.soldOut = false,
@@ -85,6 +86,10 @@ class ShoppingDetailModel extends ShoppingModel {
         content: json['changeInfo']['content'] as String,
       ),
       deliveryInfo: json['deliveryInfo'] as String,
+      options: (json['options'] as List<dynamic>?)
+              ?.map((e) => ShoppingOption.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 

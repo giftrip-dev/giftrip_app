@@ -149,10 +149,6 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                 finalPrice: shopping.finalPrice,
                 discountRate: shopping.discountRate,
                 soldOut: shopping.soldOut,
-                onPurchaseTap: () {
-                  // 이미 버튼에서 바텀시트를 표시하므로 여기서는 추가 작업이 필요 없음
-                  // 나중에 여기에 로깅 등의 코드 추가 가능
-                },
               ),
             ],
           );

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
+import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
+import 'package:giftrip/features/payment/screens/payment_screen.dart';
+import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
+import 'package:giftrip/features/shared/widgets/quantity_selector.dart';
 import 'package:giftrip/features/shopping/models/shopping_model.dart';
 import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:giftrip/features/shopping/widgets/shopping_option_selector.dart';
 import 'package:provider/provider.dart';
 
 /// 쇼핑 구매 바텀시트
@@ -36,8 +42,75 @@ class ShoppingPurchaseBottomSheet extends StatefulWidget {
 
 class _ShoppingPurchaseBottomSheetState
     extends State<ShoppingPurchaseBottomSheet> {
-  // 수량 선택 관련 변수
-  int _quantity = 1;
+  // 선택된 옵션과 수량을 관리하는 Map
+  final Map<ShoppingOption, int> _selectedOptions = {};
+
+  // 총 금액 계산
+  int get _totalPrice {
+    return _selectedOptions.entries.fold(
+      0,
+      (sum, entry) => sum + (entry.key.price * entry.value),
+    );
+  }
+
+  int get _shippingFee {
+    return _totalPrice < 30000 ? 2500 : 0;
+  }
+
+  int get _finalPrice {
+    return _totalPrice + _shippingFee;
+  }
+
+  // 옵션 선택 처리
+  void _handleOptionSelected(ShoppingOption option) {
+    setState(() {
+      if (!_selectedOptions.containsKey(option)) {
+        _selectedOptions[option] = 1;
+      }
+    });
+  }
+
+  // 옵션 수량 변경 처리
+  void _handleQuantityChanged(ShoppingOption option, int quantity) {
+    setState(() {
+      _selectedOptions[option] = quantity;
+    });
+  }
+
+  // 장바구니 추가
+  Future<void> _handleAddToCart(ShoppingModel shopping) async {
+    final cartViewModel = context.read<CartViewModel>();
+
+    try {
+      // 선택된 옵션들을 하나의 상품으로 처리
+      await cartViewModel.addToCart(
+        shopping.id,
+        ProductItemType.product,
+        quantity:
+            _selectedOptions.values.fold(0, (sum, quantity) => sum + quantity),
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(
+            message: '상품이 장바구니에 담겼습니다.',
+            icon: Icons.shopping_cart_outlined,
+          ),
+        );
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(
+            message: '장바구니 담기에 실패했습니다.',
+            icon: Icons.error_outline,
+            textColor: AppColors.statusError,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +138,7 @@ class _ShoppingPurchaseBottomSheetState
             children: [
               // 제목
               Text(
-                '구매하기',
+                '상품 구매',
                 style: title_L,
               ),
 
@@ -91,160 +164,153 @@ class _ShoppingPurchaseBottomSheetState
           ),
           const SizedBox(height: 24),
 
-          // 상품 정보 요약
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 상품 이미지
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  shopping.thumbnailUrl,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 12),
-
-              // 상품 정보
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      shopping.title,
-                      style: title_S,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '제조사: ${shopping.manufacturer}',
-                      style: body_S.copyWith(color: AppColors.labelAlternative),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${formatPrice(shopping.finalPrice)}원',
-                      style: title_S.copyWith(color: AppColors.labelStrong),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-
-          // 수량 선택
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('수량', style: body_L),
-              Row(
+          // 스크롤 가능한 영역
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 240, minHeight: 240),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 수량 감소 버튼
-                  _buildQuantityButton(
-                    icon: LucideIcons.minus,
-                    onTap: () {
-                      if (_quantity > 1) {
-                        setState(() {
-                          _quantity--;
-                        });
-                      }
-                    },
-                    isEnabled: _quantity > 1,
+                  // 옵션 선택
+                  ShoppingOptionSelector(
+                    options: shopping.options,
+                    selectedOption: null, // 여러 옵션 선택 가능하므로 null로 설정
+                    onOptionSelected: _handleOptionSelected,
                   ),
 
-                  // 수량 표시
-                  Container(
-                    width: 40,
-                    alignment: Alignment.center,
-                    child: Text(
-                      '$_quantity',
-                      style: title_S,
-                    ),
-                  ),
-
-                  // 수량 증가 버튼
-                  _buildQuantityButton(
-                    icon: LucideIcons.plus,
-                    onTap: () {
-                      setState(() {
-                        _quantity++;
-                      });
-                    },
-                    isEnabled: true,
-                  ),
+                  // 선택된 옵션들과 수량 선택기
+                  ..._selectedOptions.entries.map((entry) {
+                    return Column(
+                      children: [
+                        const SizedBox(height: 12),
+                        // 수량 선택기
+                        QuantitySelector(
+                          productName: entry.key.name,
+                          price: entry.key.price,
+                          quantity: entry.value,
+                          onQuantityChanged: (quantity) =>
+                              _handleQuantityChanged(entry.key, quantity),
+                        ),
+                      ],
+                    );
+                  }).toList(),
                 ],
               ),
-            ],
+            ),
           ),
+
+          // 선택된 옵션이 있을 때만 표시
+          if (_selectedOptions.isNotEmpty) ...[
+            Divider(
+              color: AppColors.line,
+            ),
+
+            // 총 금액
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('총 금액', style: body_S),
+                Text(
+                  '${formatPrice(_totalPrice)}원',
+                  style: body_S.copyWith(color: AppColors.labelStrong),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // 배송비
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('배송비', style: body_S),
+                Text(
+                  '${formatPrice(_shippingFee)}원',
+                  style: body_S.copyWith(color: AppColors.labelStrong),
+                ),
+              ],
+            ),
+
+            Divider(
+              color: AppColors.line,
+            ),
+
+            // 결제 예상 금액
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('결제 예상 금액', style: body_S),
+                Text(
+                  '${formatPrice(_finalPrice)}원',
+                  style: subtitle_L.copyWith(color: AppColors.labelStrong),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 24),
 
-          // 총 금액
+          // 버튼 영역
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('총 금액', style: title_S),
-              Text(
-                '${formatPrice(shopping.finalPrice * _quantity)}원',
-                style: title_L.copyWith(color: AppColors.labelStrong),
+              // 장바구니 버튼
+              Expanded(
+                flex: 120,
+                child: CTAButton(
+                  text: '장바구니',
+                  type: CTAButtonType.outline,
+                  size: CTAButtonSize.extraLarge,
+                  onPressed: _selectedOptions.isNotEmpty
+                      ? () => _handleAddToCart(shopping)
+                      : null,
+                  isEnabled: _selectedOptions.isNotEmpty,
+                ),
+              ),
+              const SizedBox(width: 8),
+              // 구매하기 버튼
+              Expanded(
+                flex: 200,
+                child: CTAButton(
+                  text: '구매하기',
+                  onPressed: _selectedOptions.isNotEmpty
+                      ? () => _processPurchase(shopping)
+                      : null,
+                  isEnabled: _selectedOptions.isNotEmpty,
+                ),
               ),
             ],
-          ),
-          const SizedBox(height: 24),
-
-          // 구매 버튼
-          CTAButton(
-            text: '구매하기',
-            onPressed: () {
-              // 구매 처리 로직
-              _processPurchase(shopping);
-            },
-            isEnabled: true,
           ),
         ],
       ),
     );
   }
 
-  // 수량 조절 버튼 위젯
-  Widget _buildQuantityButton({
-    required IconData icon,
-    required VoidCallback onTap,
-    required bool isEnabled,
-  }) {
-    return GestureDetector(
-      onTap: isEnabled ? onTap : null,
-      child: Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isEnabled ? AppColors.line : AppColors.line.withOpacity(0.5),
-          ),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Icon(
-          icon,
-          size: 16,
-          color: isEnabled ? AppColors.label : AppColors.labelAssistive,
-        ),
-      ),
-    );
-  }
-
   // 구매 처리 로직
   void _processPurchase(ShoppingModel shopping) {
-    // 여기에 구매 처리 로직 추가
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${shopping.title} $_quantity개 구매가 완료되었습니다.'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    final paymentViewModel = context.read<PaymentViewModel>();
+
+    // 선택된 옵션들을 PaymentItem으로 변환
+    final paymentItems = _selectedOptions.entries.map((entry) {
+      return PaymentItem(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        productId: shopping.id,
+        title: '${shopping.title} - ${entry.key.name}',
+        thumbnailUrl: shopping.thumbnailUrl,
+        price: entry.key.price,
+        quantity: entry.value,
+        type: ProductItemType.product,
+      );
+    }).toList();
+
+    // 결제 예정 데이터 설정
+    paymentViewModel.setPaymentItems(paymentItems);
 
     // 바텀시트 닫기
     Navigator.of(context).pop();
+
+    // 결제 페이지로 이동
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const PaymentScreen(),
+      ),
+    );
   }
 }

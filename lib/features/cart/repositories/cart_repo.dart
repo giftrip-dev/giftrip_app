@@ -7,28 +7,7 @@ class CartRepo {
   final Dio _dio = DioClient().to();
 
   // 목업 데이터
-  final List<CartItemModel> _mockCartItems = [
-    CartItemModel(
-      id: '1',
-      productId: 'product1',
-      title: '유기농 사과 3kg',
-      thumbnailUrl: 'assets/png/mock_product1.png',
-      price: 25000,
-      quantity: 1,
-      type: ProductItemType.product,
-      addedAt: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    CartItemModel(
-      id: '2',
-      productId: 'experience1',
-      title: '제주 감귤 따기 체험',
-      thumbnailUrl: 'assets/png/mock_experience1.png',
-      price: 35000,
-      quantity: 2,
-      type: ProductItemType.experience,
-      addedAt: DateTime.now(),
-    ),
-  ];
+  List<CartItemModel> _mockCartItems = [];
 
   /// 장바구니 목록 조회
   Future<List<CartItemModel>> getCartItems() async {
@@ -54,7 +33,6 @@ class CartRepo {
   /// 장바구니에 상품 추가
   Future<void> addToCart(String productId, ProductItemType type,
       {int quantity = 1}) async {
-    // API 호출 코드 (실제 구현시 주석 해제)
     /*try {
       final response = await _dio.post('/api/cart', data: {
         'productId': productId,
@@ -71,6 +49,20 @@ class CartRepo {
 
     // 목업 데이터 사용 (0.2초 딜레이)
     await Future.delayed(const Duration(milliseconds: 200));
+
+    // 새로운 장바구니 아이템 추가
+    _mockCartItems.add(
+      CartItemModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        productId: productId,
+        title: '상품 $productId',
+        thumbnailUrl: 'assets/png/mock_product1.png',
+        price: 25000,
+        quantity: quantity,
+        type: type,
+        addedAt: DateTime.now(),
+      ),
+    );
   }
 
   /// 장바구니에서 상품 제거
@@ -88,5 +80,8 @@ class CartRepo {
 
     // 목업 데이터 사용 (0.2초 딜레이)
     await Future.delayed(const Duration(milliseconds: 200));
+
+    // 장바구니에서 아이템 제거
+    _mockCartItems.removeWhere((item) => item.id == itemId);
   }
 }
