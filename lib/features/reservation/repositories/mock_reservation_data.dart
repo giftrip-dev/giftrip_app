@@ -6,67 +6,93 @@ import 'dart:math';
 final random = Random();
 
 /// 목업 체험 상품 데이터
-final List<ReservationModel> mockReservationList = List.generate(
-  50,
-  (index) {
-    // 카테고리를 순환하면서 할당
-    final categoryIndex = index % ReservationCategory.values.length;
-    final category = ReservationCategory.values[categoryIndex];
-
-    // 5개 중 2개는 할인 적용 (0~50% 할인)
-    final hasDiscount = index % 5 < 2;
-    final originalPrice = 10000 + (index * 1000); // 10,000원부터 1,000원씩 증가
-    final discountRate = hasDiscount ? ((index % 5 + 1) * 10) : null;
-    final finalPrice = discountRate != null
-        ? (originalPrice * (100 - discountRate) ~/ 100)
-        : originalPrice;
-
-    // 구매 가능 기간 설정 (현재로부터 1일 후 ~ 60일 후까지)
-    final now = DateTime.now();
-    final availableFrom = now.add(Duration(days: 1 + (index % 5))); // 1-5일 후부터
-    final availableTo =
-        now.add(Duration(days: 30 + (index % 30))); // 30-59일 후까지
-
-    // 품절 여부 (6번째마다 하나씩 품절)
-    final soldOut = index % 6 == 0;
-
-    // 이용 불가능 날짜 생성 (랜덤으로 3~7일)
-    final unavailableDates = <String>[];
-    if (!soldOut) {
-      // 품절이 아닌 상품만 불가능 날짜 설정
-      final random = index % 5 + 3; // 3~7일
-      final startDay = 5 + (index % 10); // 5~14일 후부터
-
-      for (var i = 0; i < random; i++) {
-        final unavailableDate = now.add(Duration(days: startDay + i * 2));
-        unavailableDates.add(unavailableDate.toIso8601String().split('T')[0]);
-      }
-    }
-
-    final progress = ReservationProgress
-        .values[random.nextInt(ReservationProgress.values.length)];
-
-    // 결제 날짜는 오늘로부터 1~7일 전 중 랜덤하게 설정
-    final paidAt = now.subtract(Duration(days: (index % 7) + 1));
-
-    return ReservationModel(
-      id: 'res_${index + 1}',
-      title: '${category.label} 상품 ${index + 1}',
-      description:
-          '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
+final List<ReservationModel> mockReservationList = [
+  // 숙박 3개
+  for (int i = 0; i < 3; i++)
+    ReservationModel(
+      id: 'res_lodging_${i + 1}',
+      title: '숙박 상품 ${i + 1}',
+      description: '이것은 숙박 상품 ${i + 1}의 상세 설명입니다.',
       thumbnailUrl: 'assets/png/banner.png',
-      originalPrice: originalPrice,
-      finalPrice: finalPrice,
-      category: category,
-      rating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평점
-      reviewCount: 10 + index, // 10개부터 1개씩 증가
-      discountRate: discountRate,
-      availableFrom: availableFrom,
-      availableTo: availableTo,
-      soldOut: soldOut,
-      unavailableDates: unavailableDates.isEmpty ? null : unavailableDates,
-      progress: progress,
-      paidAt: paidAt,
-    );
-  },
-);
+      originalPrice: 10000 + i * 1000,
+      finalPrice: 9000 + i * 1000,
+      category: ReservationCategory.lodging,
+      rating: 4.0 + (i % 2) * 0.5,
+      reviewCount: 10 + i,
+      discountRate: i % 2 == 0 ? 10 : null,
+      availableFrom: DateTime.now().add(Duration(days: 1)),
+      availableTo: DateTime.now().add(Duration(days: 30)),
+      soldOut: false,
+      unavailableDates: null,
+      progress: i % 2 == 0
+          ? ReservationProgress.confirmed
+          : ReservationProgress.completed,
+      paidAt: DateTime.now().subtract(Duration(days: i + 1)),
+    ),
+  // 체험 3개
+  for (int i = 0; i < 3; i++)
+    ReservationModel(
+      id: 'res_experience_${i + 1}',
+      title: '체험 상품 ${i + 1}',
+      description: '이것은 체험 상품 ${i + 1}의 상세 설명입니다.',
+      thumbnailUrl: 'assets/png/banner.png',
+      originalPrice: 12000 + i * 1000,
+      finalPrice: 11000 + i * 1000,
+      category: ReservationCategory.experience,
+      rating: 4.2 + (i % 2) * 0.5,
+      reviewCount: 20 + i,
+      discountRate: i % 2 == 0 ? 15 : null,
+      availableFrom: DateTime.now().add(Duration(days: 2)),
+      availableTo: DateTime.now().add(Duration(days: 32)),
+      soldOut: false,
+      unavailableDates: null,
+      progress: i % 2 == 0
+          ? ReservationProgress.completed
+          : ReservationProgress.confirmed,
+      paidAt: DateTime.now().subtract(Duration(days: i + 2)),
+    ),
+  // 상품 4개
+  for (int i = 0; i < 4; i++)
+    ReservationModel(
+      id: 'res_product_${i + 1}',
+      title: '상품 ${i + 1}',
+      description: '이것은 상품 ${i + 1}의 상세 설명입니다.',
+      thumbnailUrl: 'assets/png/banner.png',
+      originalPrice: 15000 + i * 1000,
+      finalPrice: 14000 + i * 1000,
+      category: ReservationCategory.product,
+      rating: 4.5 + (i % 2) * 0.3,
+      reviewCount: 30 + i,
+      discountRate: i % 2 == 0 ? 20 : null,
+      availableFrom: DateTime.now().add(Duration(days: 3)),
+      availableTo: DateTime.now().add(Duration(days: 33)),
+      soldOut: false,
+      unavailableDates: null,
+      progress: i % 2 == 0
+          ? ReservationProgress.confirmed
+          : ReservationProgress.completed,
+      paidAt: DateTime.now().subtract(Duration(days: i + 3)),
+    ),
+  // 체험단 2개
+  for (int i = 0; i < 2; i++)
+    ReservationModel(
+      id: 'res_exgroup_${i + 1}',
+      title: '체험단 상품 ${i + 1}',
+      description: '이것은 체험단 상품 ${i + 1}의 상세 설명입니다.',
+      thumbnailUrl: 'assets/png/banner.png',
+      originalPrice: 17000 + i * 1000,
+      finalPrice: 16000 + i * 1000,
+      category: ReservationCategory.experienceGroup,
+      rating: 4.7 + (i % 2) * 0.2,
+      reviewCount: 40 + i,
+      discountRate: i % 2 == 0 ? 25 : null,
+      availableFrom: DateTime.now().add(Duration(days: 4)),
+      availableTo: DateTime.now().add(Duration(days: 34)),
+      soldOut: false,
+      unavailableDates: null,
+      progress: i % 2 == 0
+          ? ReservationProgress.completed
+          : ReservationProgress.confirmed,
+      paidAt: DateTime.now().subtract(Duration(days: i + 4)),
+    ),
+];

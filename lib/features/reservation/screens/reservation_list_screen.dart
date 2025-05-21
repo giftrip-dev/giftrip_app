@@ -5,6 +5,7 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/reservation/view_models/reservation_view_model.dart';
 import 'package:giftrip/features/reservation/widgets/persistent_category_bar.dart';
 import 'package:giftrip/features/reservation/widgets/reservation_list.dart';
+import 'package:giftrip/features/reservation/repositories/mock_reservation_data.dart';
 
 class ReservationListScreen extends StatefulWidget {
   const ReservationListScreen({super.key});
@@ -40,7 +41,7 @@ class _ReservationListScreenState extends State<ReservationListScreen> {
                       onCategoryChanged: (category) {
                         vm.changeCategory(category);
                       },
-                      totalCount: vm.reservationList.length,
+                      totalCount: mockReservationList.length,
                     ),
                   ),
                 ];
