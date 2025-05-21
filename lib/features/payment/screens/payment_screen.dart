@@ -9,6 +9,7 @@ import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 import 'package:giftrip/features/payment/widgets/payment_product_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_orderer_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_shipping_section.dart';
+import 'package:giftrip/features/payment/widgets/payment_point_section.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -23,8 +24,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final _shippingNameController = TextEditingController();
   final _shippingPhoneController = TextEditingController();
   final _shippingAddressController = TextEditingController();
+  final _shippingDetailAddressController = TextEditingController();
+  final _pointController = TextEditingController();
   bool _isSameAsOrderer = false;
   bool _saveShippingInfo = false;
+  int _usedPoint = 0;
 
   @override
   void dispose() {
@@ -33,6 +37,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     _shippingNameController.dispose();
     _shippingPhoneController.dispose();
     _shippingAddressController.dispose();
+    _shippingDetailAddressController.dispose();
+    _pointController.dispose();
     super.dispose();
   }
 
@@ -43,6 +49,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
         _shippingNameController.text = _ordererNameController.text;
         _shippingPhoneController.text = _ordererPhoneController.text;
       }
+    });
+  }
+
+  void _handlePointChanged(String value) {
+    setState(() {
+      _usedPoint = int.tryParse(value) ?? 0;
+    });
+  }
+
+  void _handleUseAllPoint() {
+    final viewModel = context.read<PaymentViewModel>();
+    final availablePoint = viewModel.availablePoint;
+    final totalPrice = viewModel.totalProductPrice;
+
+    setState(() {
+      _usedPoint = availablePoint > totalPrice ? totalPrice : availablePoint;
+      _pointController.text = _usedPoint.toString();
     });
   }
 
@@ -106,6 +129,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   nameController: _shippingNameController,
                   phoneController: _shippingPhoneController,
                   addressController: _shippingAddressController,
+                  detailAddressController: _shippingDetailAddressController,
                   isSameAsOrderer: _isSameAsOrderer,
                   saveShippingInfo: _saveShippingInfo,
                   onSameAsOrdererChanged: _handleSameAsOrdererChanged,
@@ -114,6 +138,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       _saveShippingInfo = value;
                     });
                   },
+                ),
+              ),
+              const SectionDivider(),
+
+              // 포인트 사용 섹션
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: PaymentPointSection(
+                  pointController: _pointController,
+                  availablePoint: viewModel.availablePoint,
+                  totalPrice: viewModel.totalProductPrice,
+                  onPointChanged: _handlePointChanged,
+                  onUseAllPoint: _handleUseAllPoint,
                 ),
               ),
               const SectionDivider(),

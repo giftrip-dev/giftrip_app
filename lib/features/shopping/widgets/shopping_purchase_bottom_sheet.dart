@@ -301,7 +301,7 @@ class _ShoppingPurchaseBottomSheetState
     }).toList();
 
     // 결제 예정 데이터 설정
-    paymentViewModel.setPaymentItems(paymentItems);
+    paymentViewModel.setItems(paymentItems);
 
     // 바텀시트 닫기
     Navigator.of(context).pop();

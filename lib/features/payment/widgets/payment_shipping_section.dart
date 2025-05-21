@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/checkbox/custom_checkbox.dart';
 import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
+import 'package:giftrip/features/payment/widgets/shipping_address_input.dart';
 
 class PaymentShippingSection extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController phoneController;
   final TextEditingController addressController;
+  final TextEditingController detailAddressController;
   final bool isSameAsOrderer;
   final bool saveShippingInfo;
   final Function(bool) onSameAsOrdererChanged;
@@ -18,6 +19,7 @@ class PaymentShippingSection extends StatefulWidget {
     required this.nameController,
     required this.phoneController,
     required this.addressController,
+    required this.detailAddressController,
     required this.isSameAsOrderer,
     required this.saveShippingInfo,
     required this.onSameAsOrdererChanged,
@@ -35,6 +37,7 @@ class _PaymentShippingSectionState extends State<PaymentShippingSection> {
     widget.nameController.addListener(_checkIfDifferentFromOrderer);
     widget.phoneController.addListener(_checkIfDifferentFromOrderer);
     widget.addressController.addListener(_checkIfDifferentFromOrderer);
+    widget.detailAddressController.addListener(_checkIfDifferentFromOrderer);
   }
 
   @override
@@ -42,6 +45,7 @@ class _PaymentShippingSectionState extends State<PaymentShippingSection> {
     widget.nameController.removeListener(_checkIfDifferentFromOrderer);
     widget.phoneController.removeListener(_checkIfDifferentFromOrderer);
     widget.addressController.removeListener(_checkIfDifferentFromOrderer);
+    widget.detailAddressController.removeListener(_checkIfDifferentFromOrderer);
     super.dispose();
   }
 
@@ -118,10 +122,9 @@ class _PaymentShippingSectionState extends State<PaymentShippingSection> {
           style: title_S,
         ),
         const SizedBox(height: 12),
-        CustomInputField(
-          controller: widget.addressController,
-          placeholder: '배송지',
-          style: CustomInputFieldStyle.bottomBorder,
+        ShippingAddressInput(
+          addressController: widget.addressController,
+          detailAddressController: widget.detailAddressController,
         ),
       ],
     );

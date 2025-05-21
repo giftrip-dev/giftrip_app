@@ -42,12 +42,14 @@ class PaymentViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   String? _errorMessage;
+  int _availablePoint = 0;
 
   // Getters
   List<PaymentItem> get items => _items;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
   String? get errorMessage => _errorMessage;
+  int get availablePoint => _availablePoint;
 
   /// 총 상품 금액
   int get totalProductPrice {
@@ -65,8 +67,14 @@ class PaymentViewModel extends ChangeNotifier {
   }
 
   /// 결제 예정 상품 설정
-  void setPaymentItems(List<PaymentItem> items) {
+  void setItems(List<PaymentItem> items) {
     _items = items;
+    notifyListeners();
+  }
+
+  /// 사용 가능한 포인트 설정
+  void setAvailablePoint(int point) {
+    _availablePoint = point;
     notifyListeners();
   }
 
