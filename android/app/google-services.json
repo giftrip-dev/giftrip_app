@@ -20,6 +20,10 @@
             "package_name": "kr.co.giftrip.app",
             "certificate_hash": "5fec368589165c7d15433101a230c7e63cdbe100"
           }
+        },
+        {
+          "client_id": "479328366433-i7gnrghirj026aa9ik1trgj18vbre54k.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -31,7 +35,11 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "479328366433-r783jo9n5rvs0g8vdaeku1b4n8m19761.apps.googleusercontent.com",
+              "client_id": "479328366433-i7gnrghirj026aa9ik1trgj18vbre54k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "479328366433-aj2oem0l33cba8aqflpb6fj4ekag6663.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "kr.co.giftrip.app"
