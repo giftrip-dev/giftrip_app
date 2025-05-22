@@ -20,7 +20,15 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479328366433-r783jo9n5rvs0g8vdaeku1b4n8m19761.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.co.giftrip.app"
+              }
+            }
+          ]
         }
       }
     }

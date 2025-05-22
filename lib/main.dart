@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk_talk.dart';
 import 'package:giftrip/core/app.dart';
 import 'package:giftrip/core/constants/font_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,13 +17,6 @@ void main() async {
 
     // Firebase 초기화
     await Firebase.initializeApp();
-
-    // kakao SDK 초기화
-    final kakaoAppKey = dotenv.maybeGet('KAKAO_NATIVE_APP_KEY');
-    if (kakaoAppKey == null || kakaoAppKey.isEmpty) {
-      throw Exception("KAKAO_NATIVE_APP_KEY 환경 변수가 설정되지 않음");
-    }
-    KakaoSdk.init(nativeAppKey: kakaoAppKey);
 
     // 앱 실행
     runApp(const MyApp());

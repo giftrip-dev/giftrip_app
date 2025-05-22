@@ -22,7 +22,6 @@ dependencies:
   lucide_icons: ^0.257.0
   image_picker: ^1.1.2
   flutter_switch: ^0.3.2
-  kakao_flutter_sdk: ^1.9.6
   flutter_dotenv: ^5.2.1
   flutter_svg: ^2.0.17
   flutter_local_notifications: ^18.0.1
@@ -47,6 +46,7 @@ dependencies:
   tosspayments_widget_sdk_flutter: ^2.1.1
   flutter_inappwebview: ^6.0.0
   daum_postcode_search: ^0.0.4
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:
