@@ -65,7 +65,7 @@ class LodgingItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  lodging.location,
+                  lodging.distanceInfo,
                   style: body_S.copyWith(
                     color: AppColors.label,
                   ),

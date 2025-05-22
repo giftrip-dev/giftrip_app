@@ -5,7 +5,7 @@ import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
 import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/auth/widgets/phone_number_verification.dart';
-import 'package:giftrip/features/auth/screens/register_success_screen.dart';
+import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 import 'package:giftrip/features/auth/models/register_model.dart';
 import 'package:giftrip/features/auth/repositories/register_repo.dart';
 
@@ -30,8 +30,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? selectedEmailDomain;
   final List<String> emailDomains = [
+    'gmail.com',
+    'naver.com',
     'kakao.com',
     'hanmail.net',
+    '기타',
   ];
 
   bool isButtonEnabled = true;
@@ -144,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const RegisterSuccessScreen(),
+              builder: (context) => const InfluencerCheckScreen(),
             ),
           );
         }

@@ -59,7 +59,7 @@ class _ExperienceDatePickerState extends State<ExperienceDatePicker> {
                   ),
                 ),
                 const Icon(
-                  LucideIcons.calendar,
+                  LucideIcons.calendarDays,
                   size: 20,
                   color: AppColors.component,
                 ),

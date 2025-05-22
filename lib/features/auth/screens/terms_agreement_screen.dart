@@ -5,7 +5,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/pdf_download.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
-import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
+import 'package:giftrip/features/auth/screens/register_screen.dart';
 import 'package:giftrip/features/auth/models/terms_model.dart';
 import 'package:giftrip/features/auth/repositories/terms_repo.dart';
 
@@ -99,8 +99,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-              builder: (context) => const InfluencerCheckScreen()),
+          MaterialPageRoute(builder: (context) => const RegisterScreen()),
           (route) => false,
         );
       }
@@ -322,7 +321,7 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
                 isEnabled: _required1 && _required2 && !_isLoading,
                 onPressed:
                     _required1 && _required2 ? _submitTermsAgreement : null,
-                text: _isLoading ? '처리중...' : '다음',
+                text: '다음',
               ),
 
               const SizedBox(height: 62),

@@ -30,11 +30,42 @@ class LodgingFilterBar extends StatelessWidget {
             Icon(icon, size: 16, color: AppColors.labelStrong),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                text,
-                style: body_S.copyWith(color: AppColors.labelStrong),
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: text.contains('|')
+                  ? RichText(
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        children: text
+                            .split('|')
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                              final isLast =
+                                  entry.key == text.split('|').length - 1;
+                              return [
+                                TextSpan(
+                                  text: entry.value,
+                                  style: body_S.copyWith(
+                                    color: AppColors.labelStrong,
+                                  ),
+                                ),
+                                if (!isLast)
+                                  TextSpan(
+                                    text: '|',
+                                    style: body_S.copyWith(
+                                      color: AppColors.line,
+                                    ),
+                                  ),
+                              ];
+                            })
+                            .expand((x) => x)
+                            .toList(),
+                      ),
+                    )
+                  : Text(
+                      text,
+                      style: body_S.copyWith(color: AppColors.labelStrong),
+                      overflow: TextOverflow.ellipsis,
+                    ),
             ),
           ],
         ),

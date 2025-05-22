@@ -4,7 +4,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
 import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
-import 'package:giftrip/features/auth/screens/register_screen.dart';
+import 'package:giftrip/features/auth/screens/register_success_screen.dart';
 import 'package:giftrip/features/auth/models/influencer_model.dart';
 import 'package:giftrip/features/auth/repositories/influencer_repo.dart';
 import 'dart:developer' as developer;
@@ -116,7 +116,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const RegisterScreen(),
+            builder: (context) => const RegisterSuccessScreen(),
           ),
           (route) => false,
         );

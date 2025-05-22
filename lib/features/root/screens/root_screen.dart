@@ -5,6 +5,7 @@ import 'package:giftrip/core/enum/community_enum.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/category/category_screen.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
+import 'package:giftrip/features/my/screens/my_page_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({
@@ -36,7 +37,9 @@ class RootScreenState extends State<RootScreen> {
         const HomeScreen(),
         const CategoryScreen(),
         const HomeScreen(),
-        const LoginScreen(),
+        const MyPageScreen(),
+
+        // const LoginScreen(),
       ];
 
   void onItemTapped(int index) async {
@@ -95,17 +98,17 @@ class RootScreenState extends State<RootScreen> {
             ? const Center(child: CircularProgressIndicator())
             : _buildCurrentScreen(),
       ),
-      // bottomNavigationBar: BottomGnb(
-      //   selectedIndex: selectedIndex,
-      //   onTap: onItemTapped,
-      // ),
+      bottomNavigationBar: BottomGnb(
+        selectedIndex: selectedIndex,
+        onTap: onItemTapped,
+      ),
       // 로그인 화면에서는 메뉴바 숨김(시연 영상용)
-      bottomNavigationBar: selectedIndex == 3
-          ? null
-          : BottomGnb(
-              selectedIndex: selectedIndex,
-              onTap: onItemTapped,
-            ),
+      // bottomNavigationBar: selectedIndex == 3
+      //     ? null
+      //     : BottomGnb(
+      //         selectedIndex: selectedIndex,
+      //         onTap: onItemTapped,
+      //       ),
     );
   }
 
@@ -118,7 +121,8 @@ class RootScreenState extends State<RootScreen> {
       case 2:
         return const HomeScreen(key: ValueKey('home'));
       case 3:
-        return const LoginScreen(key: ValueKey('login'));
+        return const MyPageScreen(key: ValueKey('myPage'));
+      // return const LoginScreen(key: ValueKey('login'));
       default:
         return const HomeScreen(key: ValueKey('home'));
     }
