@@ -1,11 +1,8 @@
-// lib/features/payment/pages/payment_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
-import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
@@ -31,8 +28,8 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   /* ───────── selector(id) ───────── */
-  static const _methodSel = 'payment-method';
-  static const _agreeSel = 'agreement';
+  static const String _paymentMethodSelector = '#payment-method';
+  static const String _agreementSelector = '#agreement';
 
   /* ───────── controllers ───────── */
   final _ordererNameController = TextEditingController();
@@ -47,37 +44,89 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _saveShippingInfo = false;
   int _usedPoint = 0;
 
-  late final PaymentWidget _paymentWidget;
+  // 주소 검색 모달이 열렸는지 여부를 추적
+  bool _isAddressSearchActive = false;
 
-  /* ───────── 렌더링 플래그 ───────── */
-  final GlobalKey _methodBoxKey = GlobalKey();
-  bool _renderStarted = false; // 렌더링 “착수” 여부
-  bool _renderDone = false; // 렌더링 “완료” 여부 → 로딩 스피너 제어
+  late final PaymentWidget _paymentWidget;
+  bool _uiReady = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Toss Payments 위젯 초기화
     _paymentWidget = PaymentWidget(
       clientKey: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm',
-      customerKey: 'anonymous',
+      customerKey: 'CUSTOMER_KEY', // TODO: 실제 고객 키로 교체
     );
+
+    // 위젯 렌더링을 위해 WidgetsBinding 사용
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // 첫 프레임 렌더링 후 초기화
+      _initTossPaymentWidgets();
+    });
   }
 
-  /* ── 컨테이너가 생긴 뒤 한 번만 SDK 렌더 ── */
-  Future<void> _tryRenderWidgets() async {
-    if (_renderStarted) return; // 이미 시도 중/완료
-    if (_methodBoxKey.currentContext == null) return; // 컨테이너 아직 없음
+  // 토스 결제 위젯 초기화 함수 분리
+  Future<void> _initTossPaymentWidgets() async {
+    if (!mounted) return;
 
-    _renderStarted = true; // ★ 시도 플래그 ON
-    final vm = context.read<PaymentViewModel>();
+    // 주소 검색 모달이 열려있는 경우 초기화 건너뛰기
+    if (_isAddressSearchActive) {
+      print('주소 검색 활성화 상태: 토스 위젯 초기화 건너뜀');
+      return;
+    }
 
-    await _paymentWidget.renderPaymentMethods(
-      selector: _methodSel,
-      amount: Amount(value: vm.finalPrice, currency: Currency.KRW),
-    );
-    await _paymentWidget.renderAgreement(selector: _agreeSel);
+    final viewModel = context.read<PaymentViewModel>();
 
-    if (mounted) setState(() => _renderDone = true); // 로딩 OFF
+    try {
+      print('토스 결제 위젯 초기화 시작: ${DateTime.now()}');
+      print('결제 금액: ${viewModel.finalPrice - _usedPoint}원');
+      print('결제 방법 셀렉터: $_paymentMethodSelector');
+
+      // UI 상태 먼저 초기화 (로딩 표시)
+      setState(() => _uiReady = false);
+
+      // 약간의 지연 후 렌더링 시도
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      await _paymentWidget.renderPaymentMethods(
+        selector: _paymentMethodSelector,
+        amount: Amount(
+          value: viewModel.finalPrice - _usedPoint,
+          currency: Currency.KRW,
+        ),
+      );
+
+      print('결제 방법 위젯 렌더링 완료');
+
+      // 약간의 지연 후 약관 렌더링 시도
+      await Future.delayed(const Duration(milliseconds: 300));
+
+      await _paymentWidget.renderAgreement(
+        selector: _agreementSelector,
+      );
+
+      print('동의 위젯 렌더링 완료');
+
+      // UI 표시
+      if (mounted) setState(() => _uiReady = true);
+      print('토스 결제 위젯 초기화 성공: ${DateTime.now()}');
+    } catch (e) {
+      print('토스 위젯 초기화 오류: $e');
+      print('스택 트레이스: ${StackTrace.current}');
+
+      // UI 상태 업데이트 (에러 발생해도 로딩 표시 해제)
+      if (mounted) setState(() => _uiReady = false);
+
+      // 오류 발생 시 잠시 후 재시도
+      if (mounted) {
+        Future.delayed(const Duration(seconds: 3), () {
+          print('토스 위젯 초기화 재시도');
+          _initTossPaymentWidgets();
+        });
+      }
+    }
   }
 
   @override
@@ -93,30 +142,77 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   /* ───────── UI 헬퍼 ───────── */
-  void _handleSameAsOrdererChanged(bool v) {
+  void _handleSameAsOrdererChanged(bool value) {
     setState(() {
-      _isSameAsOrderer = v;
-      if (v) {
+      _isSameAsOrderer = value;
+      if (value) {
         _shippingNameController.text = _ordererNameController.text;
         _shippingPhoneController.text = _ordererPhoneController.text;
       }
     });
   }
 
-  void _handlePointChanged(String v) =>
-      setState(() => _usedPoint = int.tryParse(v) ?? 0);
+  void _handlePointChanged(String value) {
+    setState(() {
+      _usedPoint = int.tryParse(value) ?? 0;
+    });
+
+    // 포인트 금액이 변경되면 결제 위젯 업데이트
+    _updatePaymentAmount();
+  }
+
+  // 결제 금액 업데이트 함수 추가
+  void _updatePaymentAmount() {
+    if (_uiReady) {
+      final viewModel = context.read<PaymentViewModel>();
+
+      // 위젯을 다시 렌더링 (updateAmount 메서드가 없으므로)
+      _paymentWidget.renderPaymentMethods(
+        selector: _paymentMethodSelector,
+        amount: Amount(
+          value: viewModel.finalPrice - _usedPoint,
+          currency: Currency.KRW,
+        ),
+      );
+    }
+  }
 
   void _handleUseAllPoint() {
-    final vm = context.read<PaymentViewModel>();
+    final viewModel = context.read<PaymentViewModel>();
+    final availablePoint = viewModel.availablePoint;
+    final totalPrice = viewModel.totalProductPrice;
+
     setState(() {
-      _usedPoint = vm.availablePoint > vm.totalProductPrice
-          ? vm.totalProductPrice
-          : vm.availablePoint;
+      _usedPoint = availablePoint > totalPrice ? totalPrice : availablePoint;
       _pointController.text = _usedPoint.toString();
+    });
+
+    // 전액 사용 시 금액 업데이트
+    _updatePaymentAmount();
+  }
+
+  // 주소 검색 시작 시 호출
+  void _onAddressSearchStart() {
+    setState(() {
+      _isAddressSearchActive = true;
+      _uiReady = false; // 토스 위젯 UI 숨기기
     });
   }
 
-  Future<void> _processPayment(PaymentViewModel vm) async {
+  // 주소 검색 완료 시 호출
+  void _onAddressSearchComplete() {
+    setState(() {
+      _isAddressSearchActive = false;
+    });
+
+    // 주소 검색 후 토스 위젯 다시 초기화
+    Future.delayed(const Duration(seconds: 1), () {
+      _initTossPaymentWidgets();
+    });
+  }
+
+  Future<void> _processPayment(PaymentViewModel viewModel) async {
+    // 필수 입력 검증
     if (_ordererNameController.text.isEmpty ||
         _ordererPhoneController.text.isEmpty ||
         _shippingNameController.text.isEmpty ||
@@ -133,26 +229,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     final orderId = 'order_${DateTime.now().millisecondsSinceEpoch}';
-    final orderName = vm.items.length > 1
-        ? '${vm.items.first.title} 외 ${vm.items.length - 1}건'
-        : vm.items.first.title;
+    final orderName = viewModel.items.length > 1
+        ? "${viewModel.items.first.title} 외 ${viewModel.items.length - 1}건"
+        : viewModel.items.first.title;
 
     try {
       final result = await _paymentWidget.requestPayment(
-        paymentInfo: PaymentInfo(orderId: orderId, orderName: orderName),
+        paymentInfo: PaymentInfo(
+          orderId: orderId,
+          orderName: orderName,
+          customerName: _ordererNameController.text,
+          customerEmail: '',
+          customerMobilePhone: _ordererPhoneController.text,
+        ),
       );
-      logger.i('result: $result');
 
       if (result.success != null) {
-        Navigator.pop(context); // 결제 성공
+        Navigator.pop(context);
       } else {
-        logger.i('result.fail: ${result.fail}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('결제 실패: ${result.fail?.errorMessage}')),
         );
       }
     } catch (e) {
-      logger.e(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('결제 오류: $e')),
       );
@@ -162,8 +261,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
   /* ───────── UI ───────── */
   @override
   Widget build(BuildContext context) {
-    // 매 프레임마다 한 번씩 컨테이너 존재 확인 → 첫 성공 시 렌더
-    WidgetsBinding.instance.addPostFrameCallback((_) => _tryRenderWidgets());
+    // 매 프레임마다 토스 위젯 초기화 시도
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_uiReady && !_isAddressSearchActive && mounted) {
+        _initTossPaymentWidgets();
+      }
+    });
 
     return Scaffold(
       appBar: const BackButtonAppBar(
@@ -171,20 +274,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
         type: BackButtonAppBarType.textCenter,
       ),
       body: Consumer<PaymentViewModel>(
-        builder: (context, vm, _) {
-          if (vm.isLoading)
+        builder: (context, viewModel, _) {
+          if (viewModel.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          if (vm.hasError) {
+          }
+          if (viewModel.hasError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    vm.errorMessage ?? '결제 정보를 불러오는데 실패했습니다.',
+                    viewModel.errorMessage ?? '결제 정보를 불러오는데 실패했습니다.',
                     style: body_M.copyWith(color: AppColors.statusError),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(onPressed: () {}, child: const Text('다시 시도')),
+                  ElevatedButton(
+                    // onPressed: viewModel.retryFetch,
+                    onPressed: () {},
+                    child: const Text('다시 시도'),
+                  ),
                 ],
               ),
             );
@@ -196,7 +304,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               /* 상품 정보 */
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: PaymentProductSection(items: vm.items),
+                child: PaymentProductSection(items: viewModel.items),
               ),
               const SectionDivider(),
 
@@ -223,6 +331,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   onSameAsOrdererChanged: _handleSameAsOrdererChanged,
                   onSaveShippingInfoChanged: (v) =>
                       setState(() => _saveShippingInfo = v),
+                  onAddressSearchStart: _onAddressSearchStart,
+                  onAddressSearchComplete: _onAddressSearchComplete,
                 ),
               ),
               const SectionDivider(),
@@ -232,8 +342,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 padding: const EdgeInsets.all(16),
                 child: PaymentPointSection(
                   pointController: _pointController,
-                  availablePoint: vm.availablePoint,
-                  totalPrice: vm.totalProductPrice,
+                  availablePoint: viewModel.availablePoint,
+                  totalPrice: viewModel.totalProductPrice,
                   onPointChanged: _handlePointChanged,
                   onUseAllPoint: _handleUseAllPoint,
                 ),
@@ -244,47 +354,52 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: PaymentPriceInfoSection(
-                  totalProductPrice: vm.totalProductPrice,
-                  shippingFee: vm.shippingFee,
-                  finalPrice: vm.finalPrice,
+                  totalProductPrice: viewModel.totalProductPrice,
+                  shippingFee: viewModel.shippingFee,
+                  finalPrice: viewModel.finalPrice - _usedPoint,
                 ),
               ),
               const SectionDivider(),
 
               /* 결제 수단 위젯 */
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  key: _methodBoxKey,
-                  height: 180,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      PaymentMethodWidget(
+              Visibility(
+                visible: !_isAddressSearchActive, // 주소 검색 중에는 숨김
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    height: 180,
+                    key: UniqueKey(),
+                    child: Visibility(
+                      visible: _uiReady,
+                      child: PaymentMethodWidget(
                         paymentWidget: _paymentWidget,
-                        selector: _methodSel,
+                        selector: _paymentMethodSelector,
                       ),
-                      if (!_renderDone) const CircularProgressIndicator(),
-                    ],
+                      replacement:
+                          const Center(child: CircularProgressIndicator()),
+                    ),
                   ),
                 ),
               ),
               const SectionDivider(),
 
               /* 약관 동의 위젯 */
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  height: 120,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      AgreementWidget(
+              Visibility(
+                visible: !_isAddressSearchActive, // 주소 검색 중에는 숨김
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    height: 120,
+                    key: UniqueKey(),
+                    child: Visibility(
+                      visible: _uiReady,
+                      child: AgreementWidget(
                         paymentWidget: _paymentWidget,
-                        selector: _agreeSel,
+                        selector: _agreementSelector,
                       ),
-                      if (!_renderDone) const CircularProgressIndicator(),
-                    ],
+                      replacement:
+                          const Center(child: CircularProgressIndicator()),
+                    ),
                   ),
                 ),
               ),
@@ -294,11 +409,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: CTAButton(
-                  onPressed: () => _processPayment(vm),
+                  onPressed: () => _processPayment(viewModel),
                   type: CTAButtonType.primary,
                   size: CTAButtonSize.large,
-                  text: '${formatPrice(vm.finalPrice)}원 결제하기',
-                  isEnabled: true,
+                  text:
+                      '${formatPrice(viewModel.finalPrice - _usedPoint)}원 결제하기',
+                  isEnabled: _uiReady && !_isAddressSearchActive,
                 ),
               ),
             ],

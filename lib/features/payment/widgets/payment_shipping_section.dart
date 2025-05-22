@@ -13,6 +13,8 @@ class PaymentShippingSection extends StatefulWidget {
   final bool saveShippingInfo;
   final Function(bool) onSameAsOrdererChanged;
   final Function(bool) onSaveShippingInfoChanged;
+  final VoidCallback? onAddressSearchStart;
+  final VoidCallback? onAddressSearchComplete;
 
   const PaymentShippingSection({
     super.key,
@@ -24,6 +26,8 @@ class PaymentShippingSection extends StatefulWidget {
     required this.saveShippingInfo,
     required this.onSameAsOrdererChanged,
     required this.onSaveShippingInfoChanged,
+    this.onAddressSearchStart,
+    this.onAddressSearchComplete,
   });
 
   @override
@@ -55,6 +59,17 @@ class _PaymentShippingSectionState extends State<PaymentShippingSection> {
       // 체크박스를 해제
       widget.onSameAsOrdererChanged(false);
     }
+  }
+
+  // 주소 검색 버튼 클릭 핸들러
+  void _handleAddressSearch(BuildContext context) async {
+    // 주소 검색 시작 콜백 호출
+    widget.onAddressSearchStart?.call();
+
+    // 주소 검색 로직...
+
+    // 주소 검색 완료 콜백 호출
+    widget.onAddressSearchComplete?.call();
   }
 
   @override
@@ -125,6 +140,8 @@ class _PaymentShippingSectionState extends State<PaymentShippingSection> {
         ShippingAddressInput(
           addressController: widget.addressController,
           detailAddressController: widget.detailAddressController,
+          onAddressSearchStart: widget.onAddressSearchStart,
+          onAddressSearchComplete: widget.onAddressSearchComplete,
         ),
       ],
     );
