@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:giftrip/core/services/storage_service.dart';
-import 'package:giftrip/features/community/screens/community_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -61,17 +60,17 @@ class FCMService {
       var postId = routeParams['params']['postId'];
       var screen = routeParams['screen'];
 
-      if (screen == 'PostDetail' && navigatorKey.currentState != null) {
-        navigatorKey.currentState?.push(
-          MaterialPageRoute(
-            builder: (context) => CommunityDetailScreen(postId: postId),
-            settings: RouteSettings(name: "/community/$postId"),
-          ),
-        );
-      } else {
-        debugPrint(
-            "The current navigatorState is null or the widget is not mounted.");
-      }
+      // if (screen == 'PostDetail' && navigatorKey.currentState != null) {
+      //   navigatorKey.currentState?.push(
+      //     MaterialPageRoute(
+      //       builder: (context) => CommunityDetailScreen(postId: postId),
+      //       settings: RouteSettings(name: "/community/$postId"),
+      //     ),
+      //   );
+      // } else {
+      //   debugPrint(
+      //       "The current navigatorState is null or the widget is not mounted.");
+      // }
     });
 
     // FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
@@ -103,17 +102,17 @@ class FCMService {
         var postId = routeParams['params']['postId'];
         var screen = routeParams['screen'];
 
-        if (screen == 'PostDetail' && navigatorKey.currentState != null) {
-          navigatorKey.currentState?.push(
-            MaterialPageRoute(
-              builder: (context) => CommunityDetailScreen(postId: postId),
-              settings: RouteSettings(name: "/community/$postId"),
-            ),
-          );
-        } else {
-          debugPrint(
-              "The current navigatorState is null or the widget is not mounted.");
-        }
+        // if (screen == 'PostDetail' && navigatorKey.currentState != null) {
+        //   navigatorKey.currentState?.push(
+        //     MaterialPageRoute(
+        //       builder: (context) => CommunityDetailScreen(postId: postId),
+        //       settings: RouteSettings(name: "/community/$postId"),
+        //     ),
+        //   );
+        // } else {
+        //   debugPrint(
+        //       "The current navigatorState is null or the widget is not mounted.");
+        // }
       },
     );
 

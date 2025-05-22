@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/features/experience/models/experience_model.dart';
-import 'package:giftrip/features/experience/widgets/experience_item.dart';
+import 'package:giftrip/features/shopping/models/shopping_model.dart';
+import 'package:giftrip/features/shopping/widgets/shopping_item.dart';
 
-class ExperienceItemList extends StatelessWidget {
-  final List<ExperienceModel> experiences;
+class ShoppingItemList extends StatelessWidget {
+  final List<ShoppingModel> shoppingItems;
   final bool isLoading;
   final VoidCallback? onLoadMore;
 
-  const ExperienceItemList({
+  const ShoppingItemList({
     super.key,
-    required this.experiences,
+    required this.shoppingItems,
     required this.isLoading,
     this.onLoadMore,
   });
@@ -51,7 +51,7 @@ class ExperienceItemList extends StatelessWidget {
                   // 현재 행의 시작 인덱스
                   final startIndex = rowIndex * columnCount;
                   // 남은 아이템이 없으면 null 반환
-                  if (startIndex >= experiences.length) {
+                  if (startIndex >= shoppingItems.length) {
                     if (isLoading) {
                       return const Center(
                         child: Padding(
@@ -67,15 +67,15 @@ class ExperienceItemList extends StatelessWidget {
                   final rowItems = <Widget>[];
                   for (var i = 0; i < columnCount; i++) {
                     final itemIndex = startIndex + i;
-                    if (itemIndex < experiences.length) {
+                    if (itemIndex < shoppingItems.length) {
                       rowItems.add(
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(
                               left: i > 0 ? itemSpacing : 0,
                             ),
-                            child: ExperienceItem(
-                              experience: experiences[itemIndex],
+                            child: ShoppingItem(
+                              shopping: shoppingItems[itemIndex],
                               imageSize: itemWidth,
                             ),
                           ),
@@ -96,7 +96,7 @@ class ExperienceItemList extends StatelessWidget {
                     ),
                   );
                 },
-                childCount: (experiences.length / columnCount).ceil() +
+                childCount: (shoppingItems.length / columnCount).ceil() +
                     (isLoading ? 1 : 0),
               ),
             ),
