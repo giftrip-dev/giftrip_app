@@ -10,6 +10,7 @@ enum CTAButtonType {
 
 /// 아웃라인 버튼 크기 정의
 enum CTAButtonSize {
+  extraLarge, // 아웃라인 엑스트라 라지 버튼
   large, // 아웃라인 라지 버튼
   medium, // 아웃라인 미디엄 버튼
 }
@@ -57,6 +58,8 @@ class CTAButton extends StatelessWidget {
         return 59; // 프라이머리 버튼 높이 59px
       case CTAButtonType.outline:
         switch (size) {
+          case CTAButtonSize.extraLarge:
+            return 59; // 아웃라인 엑스트라 라지 버튼 높이 59px
           case CTAButtonSize.large:
             return 48; // 아웃라인 라지 버튼 높이 48px
           case CTAButtonSize.medium:
@@ -110,6 +113,11 @@ class CTAButton extends StatelessWidget {
             ? title_L.copyWith(color: AppColors.labelWhite)
             : title_L.copyWith(color: AppColors.labelAlternative);
       case CTAButtonType.outline:
+        if (size == CTAButtonSize.extraLarge) {
+          return isEnabled
+              ? subtitle_L.copyWith(color: AppColors.labelStrong)
+              : subtitle_L.copyWith(color: AppColors.labelAlternative);
+        }
         return isEnabled
             ? title_S.copyWith(color: AppColors.labelStrong)
             : title_S.copyWith(color: AppColors.labelAlternative);
