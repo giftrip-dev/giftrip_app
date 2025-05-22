@@ -4,7 +4,6 @@ import 'package:giftrip/core/services/storage_service.dart';
 // import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 import 'package:giftrip/features/leave/screens/feedback_screen.dart';
-import 'package:giftrip/features/my/screens/my_community_list_screen.dart';
 import 'package:giftrip/features/notice/screens/notice_screen.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
@@ -16,18 +15,6 @@ class MyPageViewModel {
   final AuthRepository _authRepo = AuthRepository();
   final NotificationViewModel _notificationViewModel = NotificationViewModel();
   final GlobalStorage _storage = GlobalStorage();
-
-  void onTapMyPosts(context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MyCommunityListScreen()),
-    );
-    AmplitudeLogger.logClickEvent(
-      'my_community_list_click',
-      'my_community_list_button',
-      'my_page',
-    );
-  }
 
   void onTapAppVersion() {}
 
