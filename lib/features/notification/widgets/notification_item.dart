@@ -5,7 +5,6 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/notification/models/notification_model.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
-import 'package:giftrip/features/community/screens/community_detail_screen.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 
 class NotificationItem extends StatelessWidget {
@@ -83,12 +82,12 @@ class NotificationItem extends StatelessWidget {
             if (notification.action == 'POST_LIKED' ||
                 notification.action == 'COMMENT_CREATED' ||
                 notification.action == 'COMMENT_REPLIED') {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      CommunityDetailScreen(postId: notification.targetId),
-                ),
-              );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) =>
+              //         CommunityDetailScreen(postId: notification.targetId),
+              //   ),
+              // );
               AmplitudeLogger.logClickEvent(
                 'notification_item_click',
                 'notification_item',

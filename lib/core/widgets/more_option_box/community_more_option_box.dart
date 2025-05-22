@@ -4,7 +4,6 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
-import 'package:giftrip/features/community/widgets/report/report_modal.dart';
 import 'package:giftrip/features/user/repositories/user_repo.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
 
@@ -79,7 +78,6 @@ class CommunityMoreOptionBox extends StatelessWidget {
                   text: '신고하기',
                   onTap: () {
                     onClose();
-                    _showReportModal(context, targetId, targetType);
                   },
                   showDivider: false,
                 ),
@@ -154,16 +152,12 @@ class CommunityMoreOptionBox extends StatelessWidget {
   }
 
   // 신고 모달 띄우기
-  void _showReportModal(
-      BuildContext context, String targetId, String targetType) {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // 외부 터치로 닫히지 않도록 설정
-      builder: (context) {
-        return ReportModal(targetId: targetId, targetType: targetType);
-      },
-    );
-  }
+  // void _showReportModal(
+  //     BuildContext context, String targetId, String targetType) {
+  //   showDialog(
+
+  //   );
+  // }
 
   void _showBlockUserModal(BuildContext context) {
     showDialog(

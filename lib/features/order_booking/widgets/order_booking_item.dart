@@ -124,7 +124,7 @@ class OrderBookingItem extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => OrderDetailScreen(
-                          orderBooking: orderBooking,
+                          orderId: orderBooking.id,
                         ),
                       ),
                     );
@@ -133,7 +133,7 @@ class OrderBookingItem extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => BookingDetailScreen(
-                          orderBooking: orderBooking,
+                          bookingId: orderBooking.id,
                         ),
                       ),
                     );

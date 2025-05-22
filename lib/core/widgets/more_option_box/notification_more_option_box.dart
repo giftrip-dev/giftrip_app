@@ -4,9 +4,6 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
-import 'package:giftrip/features/community/widgets/report/report_modal.dart';
-import 'package:giftrip/features/user/repositories/user_repo.dart';
-import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class NotificationMoreOptionBox extends StatelessWidget {
   final String targetType; // 대상 ("COMMENT" | "POST")

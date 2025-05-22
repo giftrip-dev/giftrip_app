@@ -1,6 +1,5 @@
 import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
 import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
-import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 문의/변경 정보 모델
 class InformationSection {
@@ -54,21 +53,19 @@ class AvailablePeriod {
 
 /// 체험 상품 상세 모델
 class OrderBookingDetailModel extends OrderBookingModel {
-  final String thumbnailUrl;
   final String location;
   final String managerPhoneNumber;
-  final String? relatedLink;
-  final String detailImageUrl;
-  final String croppedDetailImageUrl;
-  final InformationSection inquiryInfo;
-  final InformationSection changeInfo;
-  final AvailablePeriod availablePeriod;
-  final int durationInDays;
+  final String reserverName;
+  final String reserverPhoneNumber;
+  final String payMethod;
+  final String? deliveryAddress;
+  final String? deliveryDetail;
 
   const OrderBookingDetailModel({
     required super.id,
     required super.title,
     required super.description,
+    required super.thumbnailUrl,
     required super.originalPrice,
     required super.finalPrice,
     required super.category,
@@ -77,26 +74,20 @@ class OrderBookingDetailModel extends OrderBookingModel {
     required super.availableFrom,
     required super.availableTo,
     required super.progress,
-    required this.thumbnailUrl,
     required this.location,
     required this.managerPhoneNumber,
-    required this.detailImageUrl,
-    required this.croppedDetailImageUrl,
-    required this.inquiryInfo,
-    required this.changeInfo,
-    required this.availablePeriod,
-    required this.durationInDays,
-    this.relatedLink,
+    required this.reserverName,
+    required this.reserverPhoneNumber,
+    required this.payMethod,
     super.discountRate,
     super.soldOut,
     super.unavailableDates,
     required super.paidAt,
-  }) : super(thumbnailUrl: thumbnailUrl);
+    this.deliveryAddress,
+    this.deliveryDetail,
+  });
 
   factory OrderBookingDetailModel.fromJson(Map<String, dynamic> json) {
-    final availablePeriod = AvailablePeriod.fromJson(
-        json['availablePeriod'] as Map<String, dynamic>);
-
     return OrderBookingDetailModel(
       id: json['id'] as String,
       title: json['title'] as String,
@@ -108,8 +99,8 @@ class OrderBookingDetailModel extends OrderBookingModel {
           OrderBookingCategory.lodging,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
-      availableFrom: availablePeriod.startDate,
-      availableTo: availablePeriod.endDate,
+      availableFrom: DateTime.parse(json['availableFrom'] as String),
+      availableTo: DateTime.parse(json['availableTo'] as String),
       soldOut: json['soldOut'] as bool? ?? false,
       unavailableDates: (json['unavailableDates'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -122,15 +113,11 @@ class OrderBookingDetailModel extends OrderBookingModel {
       paidAt: DateTime.parse(json['paidAt'] as String),
       location: json['location'] as String,
       managerPhoneNumber: json['managerPhoneNumber'] as String,
-      relatedLink: json['relatedLink'] as String?,
-      detailImageUrl: json['detailImageUrl'] as String,
-      croppedDetailImageUrl: json['croppedDetailImageUrl'] as String,
-      inquiryInfo: InformationSection.fromJson(
-          json['inquiryInfo'] as Map<String, dynamic>),
-      changeInfo: InformationSection.fromJson(
-          json['changeInfo'] as Map<String, dynamic>),
-      availablePeriod: availablePeriod,
-      durationInDays: json['durationInDays'] as int,
+      reserverName: json['reserverName'] as String,
+      reserverPhoneNumber: json['reserverPhoneNumber'] as String,
+      payMethod: json['payMethod'] as String,
+      deliveryAddress: json['deliveryAddress'] as String?,
+      deliveryDetail: json['deliveryDetail'] as String?,
     );
   }
 
@@ -141,14 +128,9 @@ class OrderBookingDetailModel extends OrderBookingModel {
       ...baseJson,
       'location': location,
       'managerPhoneNumber': managerPhoneNumber,
-      'relatedLink': relatedLink,
-      'detailImageUrl': detailImageUrl,
-      'croppedDetailImageUrl': croppedDetailImageUrl,
-      'inquiryInfo': inquiryInfo.toJson(),
-      'changeInfo': changeInfo.toJson(),
-      'availablePeriod': availablePeriod.toJson(),
-      'durationInDays': durationInDays,
-      'paidAt': paidAt.toIso8601String(),
+      'reserverName': reserverName,
+      'reserverPhoneNumber': reserverPhoneNumber,
+      'payMethod': payMethod,
     };
   }
 }
