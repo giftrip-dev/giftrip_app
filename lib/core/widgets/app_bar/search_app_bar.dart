@@ -3,16 +3,19 @@ import 'package:giftrip/core/widgets/app_bar/custom_app_bar.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final VoidCallback? onBackPressed;
 
   const SearchAppBar({
     super.key,
     required this.title,
+    this.onBackPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
       isBackButton: true,
+      onBackPressed: onBackPressed,
       title: title,
       rightWidget: GestureDetector(
         onTap: () {

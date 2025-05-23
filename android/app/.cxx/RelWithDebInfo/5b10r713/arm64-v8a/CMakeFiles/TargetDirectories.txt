@@ -1,0 +1,2 @@
+/Users/lms/daggle/giftrip_app/android/app/.cxx/RelWithDebInfo/5b10r713/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/lms/daggle/giftrip_app/android/app/.cxx/RelWithDebInfo/5b10r713/arm64-v8a/CMakeFiles/rebuild_cache.dir

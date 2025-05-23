@@ -6,12 +6,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackButton; // 뒤로가기 여부
   final String? title; // 타이틀
   final Widget? rightWidget; // 오른쪽 버튼 (위젯)
+  final VoidCallback? onBackPressed; // 뒤로가기 버튼 클릭 시 콜백
 
   const CustomAppBar({
     super.key,
     this.isBackButton = false,
     this.title,
     this.rightWidget,
+    this.onBackPressed,
   });
 
   @override
@@ -34,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     if (isBackButton) ...[
                       GestureDetector(
-                        onTap: () => Navigator.pop(context),
+                        onTap: onBackPressed ?? () => Navigator.pop(context),
                         behavior: HitTestBehavior.opaque,
                         child: const Icon(
                           Icons.chevron_left,

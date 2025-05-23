@@ -31,7 +31,7 @@ class CartIconButton extends StatelessWidget {
               color: color,
             ),
             // 장바구니 개수 표시
-            if (cartViewModel.itemCount > 0)
+            if (cartViewModel.cartItemCount > 0)
               Positioned(
                 right: 0,
                 top: 0,
@@ -42,7 +42,7 @@ class CartIconButton extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Text(
-                    cartViewModel.itemCount.toString(),
+                    cartViewModel.cartItemCount.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 10,

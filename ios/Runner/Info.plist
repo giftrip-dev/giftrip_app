@@ -29,8 +29,8 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao555640a83939a899620fa05ef738890e</string>
 				<string>giftrip</string>
+				<string>com.googleusercontent.apps.479328366433-r783jo9n5rvs0g8vdaeku1b4n8m19761</string>
 			</array>
 		</dict>
 	</array>
@@ -52,11 +52,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>자격증 인증 및 글쓰기 화면에서 사진을 추가하기 위해 카메라 권한이 필요합니다.</string>
+	<string>리뷰 사진을 추가하기 위해 카메라 권한이 필요합니다.</string>
 	<key>NSLocalNotificationUsageDescription</key>
 	<string>앱이 공지및 서비스 알림을 보내기 위해 권한이 필요합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>자격증 인증 및 글쓰기 화면에서 사진을 추가하기 위해 사진 라이브러리에 접근하려면 권한이 필요합니다.</string>
+	<string>리뷰 사진을 추가하기 위해 사진 라이브러리에 접근하려면 권한이 필요합니다.</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>앱이 공지및 서비스 알림을 보내기 위해 권한이 필요합니다.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

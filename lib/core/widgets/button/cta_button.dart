@@ -6,6 +6,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 enum CTAButtonType {
   primary, // 기본 프라이머리 버튼
   outline, // 아웃라인 버튼
+  fillOutline, // 채운 아웃라인 버튼
 }
 
 /// 아웃라인 버튼 크기 정의
@@ -22,6 +23,7 @@ class CTAButton extends StatelessWidget {
   final TextStyle? textStyle;
   final CTAButtonType type;
   final CTAButtonSize? size; // 아웃라인 버튼일 때만 사용됨
+  final Color? fillColor;
 
   const CTAButton({
     Key? key,
@@ -31,6 +33,7 @@ class CTAButton extends StatelessWidget {
     this.textStyle,
     this.type = CTAButtonType.primary, // 기본값은 프라이머리 버튼
     this.size, // 아웃라인 버튼일 때만 필요
+    this.fillColor,
   }) : super(key: key);
 
   @override
@@ -67,6 +70,8 @@ class CTAButton extends StatelessWidget {
           case null:
             return 48; // 기본값은 large
         }
+      case CTAButtonType.fillOutline:
+        return 48; // 채운 아웃라인 버튼 높이 59px
     }
   }
 
@@ -98,6 +103,19 @@ class CTAButton extends StatelessWidget {
             ),
           ),
         );
+      case CTAButtonType.fillOutline:
+        return ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: fillColor ?? AppColors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
+              color:
+                  isEnabled ? AppColors.lineStrong : AppColors.componentNatural,
+              width: 1,
+            ),
+          ),
+        );
     }
   }
 
@@ -118,6 +136,10 @@ class CTAButton extends StatelessWidget {
               ? subtitle_L.copyWith(color: AppColors.labelStrong)
               : subtitle_L.copyWith(color: AppColors.labelAlternative);
         }
+        return isEnabled
+            ? title_S.copyWith(color: AppColors.labelStrong)
+            : title_S.copyWith(color: AppColors.labelAlternative);
+      case CTAButtonType.fillOutline:
         return isEnabled
             ? title_S.copyWith(color: AppColors.labelStrong)
             : title_S.copyWith(color: AppColors.labelAlternative);

@@ -74,7 +74,8 @@ class AppColors {
   static const Color backgroundAlternative = gray100;
   // line
   static const Color lineStrong = gray400;
-  static const Color line = gray300;
+  static const Color lineNatural = Color(0xFFD6D7DC);
+  static const Color line = gray200;
   // status
   static const Color statusError = Color(0xFFE82929);
   static const Color statusAlarm = Color(0xFFFF6B63);
