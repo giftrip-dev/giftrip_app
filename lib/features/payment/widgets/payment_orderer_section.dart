@@ -12,6 +12,18 @@ class PaymentOrdererSection extends StatelessWidget {
     required this.phoneController,
   });
 
+  String _formatPhoneNumber(String value) {
+    value = value.replaceAll('-', '');
+    if (value.length > 11) return value.substring(0, 11);
+
+    if (value.length >= 8) {
+      return '${value.substring(0, 3)}-${value.substring(3, 7)}-${value.substring(7)}';
+    } else if (value.length >= 4) {
+      return '${value.substring(0, 3)}-${value.substring(3)}';
+    }
+    return value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,6 +60,16 @@ class PaymentOrdererSection extends StatelessWidget {
           placeholder: '연락처',
           keyboardType: TextInputType.phone,
           style: CustomInputFieldStyle.bottomBorder,
+          onChanged: (value) {
+            final formattedValue = _formatPhoneNumber(value);
+            if (value != formattedValue) {
+              phoneController.value = TextEditingValue(
+                text: formattedValue,
+                selection:
+                    TextSelection.collapsed(offset: formattedValue.length),
+              );
+            }
+          },
         ),
       ],
     );
