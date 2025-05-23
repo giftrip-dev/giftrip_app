@@ -25,7 +25,7 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('yyyy.MM.dd');
+    final dateFormat = DateFormat('yyyy.MM.dd (E)', 'ko_KR');
     final formatter = NumberFormat('#,###');
     final isExperience = item.category == CartCategory.experience ||
         item.category == CartCategory.experienceGroup;

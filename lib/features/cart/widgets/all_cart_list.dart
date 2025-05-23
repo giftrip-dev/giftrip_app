@@ -106,12 +106,12 @@ class AllCartList extends StatelessWidget {
       children: [
         if (mainItems.isNotEmpty) ...[
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: AppColors.gray100,
             ),
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,7 +129,7 @@ class AllCartList extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               color: AppColors.gray100,
             ),
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

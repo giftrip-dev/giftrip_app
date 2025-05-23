@@ -3,10 +3,10 @@ import 'package:giftrip/features/category/models/category.dart';
 
 /// 장바구니 카테고리
 enum CartCategory implements CategoryInterface {
-  experience('체험'),
-  product('상품'),
   lodging('숙박'),
-  experienceGroup('체험단');
+  experience('체험'),
+  experienceGroup('체험단'),
+  product('상품');
 
   @override
   final String label;

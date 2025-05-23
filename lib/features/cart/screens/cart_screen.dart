@@ -18,11 +18,13 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    // 초기 데이터 로드
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final vm = context.read<CartViewModel>();
-      vm.fetchCartItems();
-    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final vm = context.read<CartViewModel>();
+    vm.fetchCartItems(refresh: true);
   }
 
   @override

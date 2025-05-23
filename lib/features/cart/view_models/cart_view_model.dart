@@ -59,6 +59,7 @@ class CartViewModel extends ChangeNotifier {
   /// 장바구니 목록 조회
   Future<void> fetchCartItems({bool refresh = false}) async {
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
+    logger.d('refresh: $refresh');
     if ((!refresh && _isLoading) ||
         (!refresh && _cartItems.isNotEmpty && nextPage == null)) {
       return;
@@ -69,7 +70,7 @@ class CartViewModel extends ChangeNotifier {
         _isLoading = true;
         notifyListeners();
       }
-
+      logger.d('fetchCartItems');
       // 새로고침이거나 첫 로드인 경우 페이지 1부터 시작
       final page = refresh || _cartItems.isEmpty ? 1 : (nextPage ?? 1);
 
@@ -86,6 +87,7 @@ class CartViewModel extends ChangeNotifier {
       logger.e('체험 상품 목록 조회 실패: $e');
     } finally {
       _isLoading = false;
+      logger.d('fetchCartItems end');
       notifyListeners();
     }
   }

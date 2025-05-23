@@ -7,9 +7,11 @@ import 'package:giftrip/features/cart/repositories/mock_cart_data.dart';
 
 class CartRepo {
   final Dio _dio = DioClient().to();
+  List<CartItemModel> _mockCartItems = [];
 
-  // 목업 데이터
-  List<CartItemModel> _mockCartItems = mockCartList;
+  CartRepo() {
+    _mockCartItems = generateMockCartList();
+  }
 
   /// 장바구니 목록 조회
   Future<List<CartItemModel>> getCartItems() async {
@@ -29,6 +31,7 @@ class CartRepo {
 
     // 목업 데이터 사용 (0.2초 딜레이)
     await Future.delayed(const Duration(milliseconds: 200));
+    _mockCartItems = generateMockCartList();
     return _mockCartItems;
   }
 
