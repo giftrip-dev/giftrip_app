@@ -61,17 +61,6 @@ class _PaymentShippingSectionState extends State<PaymentShippingSection> {
     }
   }
 
-  // 주소 검색 버튼 클릭 핸들러
-  void _handleAddressSearch(BuildContext context) async {
-    // 주소 검색 시작 콜백 호출
-    widget.onAddressSearchStart?.call();
-
-    // 주소 검색 로직...
-
-    // 주소 검색 완료 콜백 호출
-    widget.onAddressSearchComplete?.call();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(

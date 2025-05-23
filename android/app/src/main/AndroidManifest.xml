@@ -58,10 +58,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- 토스 결제 위젯 설정 -->
-        <meta-data
-            android:name="com.tosspayments.clientKey"
-            android:value="test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm" />
     </application>
 
     <!-- Required to query activities that can process text, see:
