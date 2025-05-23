@@ -222,15 +222,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
                 const SectionDivider(),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: PaymentPriceInfoSection(
-                    totalProductPrice: vm.totalProductPrice,
-                    shippingFee: vm.shippingFee,
-                    finalPrice: vm.finalPrice - _usedPoint,
-                  ),
-                ),
-                const SectionDivider(),
 
                 /* ─── 결제수단+약관 ─── */
                 PaymentMethodSection(
@@ -240,6 +231,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   agreementSelector: _agreementSelector,
                 ),
                 const SectionDivider(),
+
+                /* ─── 결제 금액 정보 ─── */
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: PaymentPriceInfoSection(
+                    items: vm.items,
+                    shippingFee: vm.shippingFee,
+                    finalPrice: vm.finalPrice - _usedPoint,
+                  ),
+                ),
+                const SizedBox(height: 24),
 
                 /* ─── 결제 버튼 ─── */
                 Padding(

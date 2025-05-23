@@ -61,7 +61,6 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
             selector: widget.methodSelector,
           ),
         ),
-        const SizedBox(height: 12),
         SizedBox(
           child: Stack(
             alignment: Alignment.center,

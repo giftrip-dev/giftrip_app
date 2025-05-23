@@ -3,6 +3,7 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/text/price_text.dart';
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 
 class PaymentProductSection extends StatelessWidget {
@@ -68,9 +69,9 @@ class PaymentProductSection extends StatelessWidget {
                   style: body_S,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  '${formatPrice(item.price)}원',
-                  style: title_M,
+                PriceText(
+                  price: item.price,
+                  color: AppColors.labelStrong,
                 ),
               ],
             ),
