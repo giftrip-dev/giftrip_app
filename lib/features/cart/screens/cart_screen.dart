@@ -6,6 +6,8 @@ import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/core/widgets/category/generic_persistent_category_bar.dart';
 import 'package:giftrip/features/cart/models/cart_category.dart';
 import 'package:giftrip/features/cart/widgets/all_cart_list.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -41,6 +43,35 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartViewModel>(
         builder: (context, vm, child) {
+          if (vm.cartItems.isEmpty) {
+            return CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              slivers: [
+                SliverPersistentHeader(
+                  pinned: true,
+                  floating: true,
+                  delegate: GenericPersistentCategoryBarDelegate<CartCategory>(
+                    selectedCategory: vm.selectedCategory,
+                    onCategoryChanged: (category) {
+                      vm.changeCategory(category);
+                    },
+                    categories: CartCategory.values,
+                    getLabelFunc: (category) => category.label,
+                  ),
+                ),
+                SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      '장바구니가 비어있어요',
+                      style: subtitle_M.copyWith(
+                          color: AppColors.labelAlternative),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [

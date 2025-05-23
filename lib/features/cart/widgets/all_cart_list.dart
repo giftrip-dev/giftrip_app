@@ -102,45 +102,52 @@ class AllCartList extends StatelessWidget {
           onDetailTap: () => onDetailTap?.call(item.id),
         );
 
-    return ListView(
-      children: [
-        if (mainItems.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: AppColors.gray100,
+    return items.isEmpty
+        ? Center(
+            child: Text(
+              '장바구니가 비어있어요',
+              style: subtitle_M.copyWith(color: AppColors.labelAlternative),
             ),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                sectionHeader('숙박 / 체험 / 체험단'),
-                sectionSelectBar(mainCategories),
-                ...mainItems.map(buildCartItem),
+          )
+        : ListView(
+            children: [
+              if (mainItems.isNotEmpty) ...[
+                Container(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.gray100,
+                  ),
+                  margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      sectionHeader('숙박 / 체험 / 체험단'),
+                      sectionSelectBar(mainCategories),
+                      ...mainItems.map(buildCartItem),
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ),
-        ],
-        if (shoppingItems.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: AppColors.gray100,
-            ),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                sectionHeader('쇼핑'),
-                sectionSelectBar([CartCategory.product]),
-                ...shoppingItems.map(buildCartItem),
+              if (shoppingItems.isNotEmpty) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.gray100,
+                  ),
+                  margin: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      sectionHeader('쇼핑'),
+                      sectionSelectBar([CartCategory.product]),
+                      ...shoppingItems.map(buildCartItem),
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ),
-        ],
-      ],
-    );
+            ],
+          );
   }
 }
