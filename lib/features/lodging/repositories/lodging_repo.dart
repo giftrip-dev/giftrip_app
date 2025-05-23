@@ -141,8 +141,8 @@ class LodgingRepo {
       distanceInfo: lodging.distanceInfo,
       managerPhoneNumber: '010-1234-5678',
       relatedLink: 'https://example.com/lodging/${lodging.id}',
-      detailImageUrl: 'assets/png/product_detail.png',
-      croppedDetailImageUrl: 'assets/png/product_detail.png',
+      detailImageUrl: 'assets/png/product_detail.jpg',
+      croppedDetailImageUrl: 'assets/png/product_detail.jpg',
       inquiryInfo: const InformationSection(
         title: '문의하기',
         content: '숙박 상품 관련 문의사항이 있으시면 담당자에게 연락 부탁드립니다.',

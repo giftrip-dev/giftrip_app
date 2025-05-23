@@ -116,8 +116,8 @@ class ExperienceRepo {
       location: '서울특별시 강남구 테헤란로 123',
       managerPhoneNumber: '010-1234-5678',
       relatedLink: 'https://example.com/experience/${experience.id}',
-      detailImageUrl: 'assets/png/product_detail.png',
-      croppedDetailImageUrl: 'assets/png/product_detail.png',
+      detailImageUrl: 'assets/png/product_detail.jpg',
+      croppedDetailImageUrl: 'assets/png/product_detail.jpg',
       inquiryInfo: const InformationSection(
         title: '문의하기',
         content: '체험 상품 관련 문의사항이 있으시면 담당자에게 연락 부탁드립니다.',
