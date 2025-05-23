@@ -1,70 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/core/widgets/text/price_text.dart';
+import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 
 class PaymentPriceInfoSection extends StatelessWidget {
-  final int totalProductPrice;
+  final List<PaymentItem> items;
   final int shippingFee;
   final int finalPrice;
 
   const PaymentPriceInfoSection({
     super.key,
-    required this.totalProductPrice,
+    required this.items,
     required this.shippingFee,
     required this.finalPrice,
   });
 
+  int get totalProductPrice =>
+      items.fold(0, (sum, item) => sum + (item.price * item.quantity));
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.line),
-      ),
-      child: Column(
-        children: [
-          // 총 상품 금액
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('총 상품 금액', style: body_M),
-              Text(
-                '${formatPrice(totalProductPrice)}원',
-                style: body_M.copyWith(color: AppColors.labelStrong),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 섹션 제목
+        Text(
+          '결제 금액',
+          style: title_M,
+        ),
+        const SizedBox(height: 16),
 
-          // 배송비
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('배송비', style: body_M),
-              Text(
-                '${formatPrice(shippingFee)}원',
-                style: body_M.copyWith(color: AppColors.labelStrong),
-              ),
-            ],
-          ),
-          const Divider(height: 24),
+        // 개별 상품 목록
+        ...items
+            .asMap()
+            .entries
+            .map((e) => Padding(
+                  padding: EdgeInsets.only(
+                      bottom: e.key == items.length - 1 ? 0 : 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${e.value.title}, ${e.value.quantity}개',
+                          style: body_M,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      PriceText(
+                        price: e.value.price * e.value.quantity,
+                        color: AppColors.labelStrong,
+                      ),
+                    ],
+                  ),
+                ))
+            .toList(),
 
-          // 최종 결제 금액
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('최종 결제 금액', style: title_S),
-              Text(
-                '${formatPrice(finalPrice)}원',
-                style: title_S.copyWith(color: AppColors.primary),
-              ),
-            ],
-          ),
-        ],
-      ),
+        // 배송비
+        const SizedBox(height: 4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('배송비', style: body_M),
+            PriceText(
+              price: totalProductPrice < 30000 ? shippingFee : 0,
+              color: AppColors.labelStrong,
+            ),
+          ],
+        ),
+
+        Divider(
+          color: AppColors.line,
+        ),
+
+        // 최종 결제 금액
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('최종 결제 금액', style: body_M),
+            PriceText(
+              price: finalPrice,
+              color: AppColors.labelStrong,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
