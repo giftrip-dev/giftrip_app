@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/utils/logger.dart';
+import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/payment/widgets/payment_method_section.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-
-import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
-
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 import 'package:giftrip/features/payment/widgets/payment_orderer_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_point_section.dart';
@@ -15,7 +15,6 @@ import 'package:giftrip/features/payment/widgets/payment_price_info_section.dart
 import 'package:giftrip/features/payment/widgets/payment_product_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_shipping_section.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
-
 import 'package:tosspayments_widget_sdk_flutter/payment_widget.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -121,10 +120,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
       _shippingAddressController,
       _shippingDetailAddressController,
     ].any((c) => c.text.isEmpty)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('모든 필수 정보를 입력해주세요.'),
-        backgroundColor: AppColors.statusError,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          message: '모든 필수 정보를 입력해주세요.',
+          icon: LucideIcons.info,
+        ),
+      );
       return;
     }
 
@@ -134,25 +135,35 @@ class _PaymentScreenState extends State<PaymentScreen> {
         : vm.items.first.title;
 
     try {
+      logger.d('결제 요청: $orderId, $orderName');
       final res = await _paymentWidget.requestPayment(
         paymentInfo: PaymentInfo(
           orderId: orderId,
           orderName: orderName,
-          customerName: _ordererNameController.text,
-          customerEmail: '',
-          customerMobilePhone: _ordererPhoneController.text,
+          // customerName: _ordererNameController.text,
+          // customerEmail: '',
+          // customerMobilePhone: _ordererPhoneController.text,
         ),
       );
+      logger.d('결제 응답: ${res.success}');
       if (res.success != null) {
         Navigator.pop(context);
       } else {
+        logger.e('결제 실패: ${res.fail?.errorMessage ?? ''}');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('결제 실패: ${res.fail?.errorMessage ?? ''}')),
+          CustomSnackBar(
+            message: '결제 실패: ${res.fail?.errorMessage ?? ''}',
+            icon: LucideIcons.x,
+          ),
         );
       }
     } catch (e) {
+      logger.e('결제 오류: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('결제 오류: $e')),
+        CustomSnackBar(
+          message: '결제 오류: $e',
+          icon: LucideIcons.x,
+        ),
       );
     }
   }
