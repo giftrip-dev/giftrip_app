@@ -2,12 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/features/cart/models/cart_item_model.dart';
+import 'package:giftrip/features/cart/models/cart_category.dart';
+import 'package:giftrip/features/cart/repositories/mock_cart_data.dart';
 
 class CartRepo {
   final Dio _dio = DioClient().to();
 
   // 목업 데이터
-  List<CartItemModel> _mockCartItems = [];
+  List<CartItemModel> _mockCartItems = mockCartList;
 
   /// 장바구니 목록 조회
   Future<List<CartItemModel>> getCartItems() async {
@@ -55,12 +57,16 @@ class CartRepo {
       CartItemModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         productId: productId,
+        category: CartCategory.product,
         title: '상품 $productId',
         thumbnailUrl: 'assets/png/mock_product1.png',
-        price: 25000,
+        originalPrice: 25000,
+        price: 20000,
+        discountRate: 20,
         quantity: quantity,
         type: type,
         addedAt: DateTime.now(),
+        tags: [],
       ),
     );
   }
