@@ -34,7 +34,7 @@ class CartItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 24),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AppColors.line, width: 1),
+          top: BorderSide(color: AppColors.line, width: 1),
         ),
       ),
       child: Column(

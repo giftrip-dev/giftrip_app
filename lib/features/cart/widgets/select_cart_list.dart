@@ -8,12 +8,12 @@ import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 
-class AllCartList extends StatelessWidget {
+class SelectCartList extends StatelessWidget {
   final List<CartItemModel> items;
   final CartCategory? selectedCategory;
   final Function(String)? onDetailTap;
 
-  const AllCartList({
+  const SelectCartList({
     super.key,
     required this.items,
     this.selectedCategory,
@@ -37,11 +37,6 @@ class AllCartList extends StatelessWidget {
     final mainItems = _getFilteredItemsByCategories(mainCategories);
     // 쇼핑 그룹
     final shoppingItems = _getFilteredItemsByCategories([CartCategory.product]);
-
-    Widget sectionHeader(String title) => Text(
-          title,
-          style: title_L,
-        );
 
     Widget sectionSelectBar(List<CartCategory> categories) => Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -120,17 +115,15 @@ class AllCartList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      sectionHeader('숙박 / 체험 / 체험단'),
                       sectionSelectBar(mainCategories),
                       ...mainItems.map(buildCartItem),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 16),
                       CTAButton(
                         isEnabled: true,
                         type: CTAButtonType.fillOutline,
                         onPressed: () {},
                         text: '결제하기',
                       ),
-                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
@@ -146,10 +139,9 @@ class AllCartList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      sectionHeader('쇼핑'),
                       sectionSelectBar([CartCategory.product]),
                       ...shoppingItems.map(buildCartItem),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 16),
                       CTAButton(
                         isEnabled: true,
                         type: CTAButtonType.fillOutline,

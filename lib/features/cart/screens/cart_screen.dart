@@ -8,6 +8,7 @@ import 'package:giftrip/features/cart/models/cart_category.dart';
 import 'package:giftrip/features/cart/widgets/all_cart_list.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/features/cart/widgets/select_cart_list.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -89,13 +90,23 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ];
             },
-            body: AllCartList(
-              items: vm.cartItems,
-              selectedCategory: vm.selectedCategory,
-              onDetailTap: (id) {
-                // TODO: 상세보기 구현
-              },
-            ),
+            body: vm.selectedCategory == null
+                ? AllCartList(
+                    items: vm.cartItems,
+                    selectedCategory: vm.selectedCategory,
+                    onDetailTap: (id) {
+                      // TODO: 상세보기 구현
+                    },
+                  )
+                : SelectCartList(
+                    items: vm.cartItems
+                        .where((e) => e.category == vm.selectedCategory)
+                        .toList(),
+                    selectedCategory: vm.selectedCategory,
+                    onDetailTap: (id) {
+                      // TODO: 상세보기 구현
+                    },
+                  ),
           );
         },
       ),
