@@ -3,42 +3,91 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/repositories/product_repo.dart';
+import 'package:giftrip/features/shopping/repositories/mock_shopping_data.dart';
 
-/// 목업용 상품 리스트 (30개)
-final List<ProductModel> mockProducts = List.generate(
-  30,
-  (index) {
-    final id = index + 1;
-    final originalPrice = 10000 + (index * 500);
-    // 매 5번째 아이템에는 할인율 적용
-    final discountRate = (index % 5 == 0) ? ((id * 2) % 50 + 10) : null;
-    // 할인율이 있는 경우 최종 가격 계산, 없는 경우 원가와 동일
-    final finalPrice = discountRate != null
-        ? ((originalPrice * (100 - discountRate)) / 100).round()
-        : originalPrice;
+/// 목업용 상품 리스트 (쇼핑 상품 + 기타 상품들)
+final List<ProductModel> mockProducts = () {
+  // 모든 상품을 담을 리스트 생성
+  List<ProductModel> allProducts = [];
 
-    // 랜덤으로 뱃지 할당 (복수 뱃지도 가능하도록)
-    List<ProductTagType> badges = [];
-    if (index % 3 == 0) badges.add(ProductTagType.newArrival);
-    if (index % 4 == 0) badges.add(ProductTagType.bestSeller);
-    if (index % 10 == 9) badges.add(ProductTagType.almostSoldOut);
+  // 쇼핑 상품들을 ProductModel로 변환
+  allProducts.addAll(mockShoppingList.map((shopping) => ProductModel(
+        id: shopping.id,
+        thumbnailUrl: shopping.thumbnailUrl,
+        title: shopping.title,
+        originalPrice: shopping.originalPrice,
+        finalPrice: shopping.finalPrice,
+        discountRate: shopping.discountRate,
+        createdAt: DateTime.now()
+            .subtract(Duration(days: mockShoppingList.indexOf(shopping))),
+        productType: ProductType.product,
+        badges: shopping.badges,
+      )));
 
-    // 상품 타입 랜덤 할당
-    final productTypeIndex = index % ProductType.values.length;
-    final productType = ProductType.values[productTypeIndex];
+  // 체험 상품들 추가
+  allProducts.addAll(List.generate(
+    10,
+    (index) {
+      final id = 'exp_${index + 1}';
+      final originalPrice = 20000 + (index * 1000);
+      final discountRate = (index % 4 == 0) ? ((index * 3) % 40 + 10) : null;
+      final finalPrice = discountRate != null
+          ? ((originalPrice * (100 - discountRate)) / 100).round()
+          : originalPrice;
 
-    return ProductModel(
-      thumbnailUrl: 'assets/png/banner.png',
-      title: '테스트 상품 제목 $id',
-      originalPrice: originalPrice,
-      finalPrice: finalPrice,
-      discountRate: discountRate,
-      createdAt: DateTime.now().subtract(Duration(days: index)),
-      productType: productType,
-      badges: badges.isNotEmpty ? badges : null,
-    );
-  },
-).toList();
+      List<ProductTagType> badges = [];
+      if (index % 3 == 0) badges.add(ProductTagType.newArrival);
+      if (index % 5 == 0) badges.add(ProductTagType.bestSeller);
+      if (index % 8 == 7) badges.add(ProductTagType.almostSoldOut);
+
+      return ProductModel(
+        id: id,
+        thumbnailUrl: 'assets/png/banner.png',
+        title: '체험 상품 제목 ${index + 1}',
+        originalPrice: originalPrice,
+        finalPrice: finalPrice,
+        discountRate: discountRate,
+        createdAt: DateTime.now().subtract(Duration(days: index)),
+        productType: ProductType.experience,
+        badges: badges.isNotEmpty ? badges : null,
+      );
+    },
+  ));
+
+  // 숙소 상품들 추가
+  allProducts.addAll(List.generate(
+    8,
+    (index) {
+      final id = 'lodging_${index + 1}';
+      final originalPrice = 80000 + (index * 5000);
+      final discountRate = (index % 3 == 0) ? ((index * 2) % 30 + 5) : null;
+      final finalPrice = discountRate != null
+          ? ((originalPrice * (100 - discountRate)) / 100).round()
+          : originalPrice;
+
+      List<ProductTagType> badges = [];
+      if (index % 4 == 0) badges.add(ProductTagType.newArrival);
+      if (index % 6 == 0) badges.add(ProductTagType.bestSeller);
+
+      return ProductModel(
+        id: id,
+        thumbnailUrl: 'assets/png/banner.png',
+        title: '숙소 상품 제목 ${index + 1}',
+        originalPrice: originalPrice,
+        finalPrice: finalPrice,
+        discountRate: discountRate,
+        createdAt: DateTime.now().subtract(Duration(days: index)),
+        productType: ProductType.lodging,
+        badges: badges.isNotEmpty ? badges : null,
+      );
+    },
+  ));
+
+  // 리스트를 랜덤하게 섞기
+  allProducts.shuffle();
+
+  return allProducts;
+}();
 
 /// 섹션 구분용 enum
 enum ProductSection { newArrivals, bestSellers, timeDeals, relatedProducts }
