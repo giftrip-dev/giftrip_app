@@ -56,7 +56,6 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
     return Column(
       children: [
         SizedBox(
-          height: 180,
           child: PaymentMethodWidget(
             paymentWidget: widget.paymentWidget,
             selector: widget.methodSelector,
@@ -64,13 +63,16 @@ class _PaymentMethodSectionState extends State<PaymentMethodSection> {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 120,
-          child: _loading
-              ? const Center(child: CircularProgressIndicator())
-              : AgreementWidget(
-                  paymentWidget: widget.paymentWidget,
-                  selector: widget.agreementSelector,
-                ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              AgreementWidget(
+                paymentWidget: widget.paymentWidget,
+                selector: widget.agreementSelector,
+              ),
+              if (_loading) const CircularProgressIndicator(),
+            ],
+          ),
         ),
       ],
     );

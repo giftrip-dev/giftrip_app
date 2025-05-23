@@ -232,15 +232,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 const SectionDivider(),
 
-                /* ─── 결제수단+약관 (원하는 레이아웃 맨 아래) ─── */
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: PaymentMethodSection(
-                    key: _methodKey,
-                    paymentWidget: _paymentWidget,
-                    methodSelector: _methodSelector,
-                    agreementSelector: _agreementSelector,
-                  ),
+                /* ─── 결제수단+약관 ─── */
+                PaymentMethodSection(
+                  key: _methodKey,
+                  paymentWidget: _paymentWidget,
+                  methodSelector: _methodSelector,
+                  agreementSelector: _agreementSelector,
                 ),
                 const SectionDivider(),
 
