@@ -30,7 +30,7 @@ class PaymentItem {
       title: item.title,
       thumbnailUrl: item.thumbnailUrl,
       price: item.price,
-      quantity: item.quantity,
+      quantity: item.quantity ?? 1,
       type: item.type,
     );
   }

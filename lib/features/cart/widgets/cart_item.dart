@@ -100,11 +100,65 @@ class CartItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      dateFormat.format(item.addedAt),
+                      item.category == CartCategory.product
+                          ? item.options ?? ''
+                          : item.category == CartCategory.lodging
+                              ? (item.startDate != null && item.endDate != null
+                                  ? '${dateFormat.format(item.startDate!)} ~ ${dateFormat.format(item.endDate!)}'
+                                  : '')
+                              : item.category == CartCategory.experience ||
+                                      item.category ==
+                                          CartCategory.experienceGroup
+                                  ? (item.startDate != null
+                                      ? dateFormat.format(item.startDate!)
+                                      : '')
+                                  : dateFormat
+                                      .format(item.addedAt ?? DateTime.now()),
                       style: caption.copyWith(
                         color: AppColors.labelNatural,
                       ),
                     ),
+                    if (item.category == CartCategory.lodging) ...[
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          if (item.checkInTime != null &&
+                              item.checkInTime!.isNotEmpty)
+                            Text('체크인 ${item.checkInTime}',
+                                style: caption.copyWith(
+                                    color: AppColors.labelNatural)),
+                          if (item.checkInTime != null &&
+                              item.checkInTime!.isNotEmpty &&
+                              item.checkOutTime != null &&
+                              item.checkOutTime!.isNotEmpty)
+                            Text('  |  ',
+                                style: caption.copyWith(
+                                    color: AppColors.labelNatural)),
+                          if (item.checkOutTime != null &&
+                              item.checkOutTime!.isNotEmpty)
+                            Text('체크아웃 ${item.checkOutTime}',
+                                style: caption.copyWith(
+                                    color: AppColors.labelNatural)),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          if (item.standardPerson != null)
+                            Text('기준 ${item.standardPerson}명',
+                                style: caption.copyWith(
+                                    color: AppColors.labelNatural)),
+                          if (item.standardPerson != null &&
+                              item.maxPerson != null)
+                            Text('  |  ',
+                                style: caption.copyWith(
+                                    color: AppColors.labelNatural)),
+                          if (item.maxPerson != null)
+                            Text('최대 ${item.maxPerson}명',
+                                style: caption.copyWith(
+                                    color: AppColors.labelNatural)),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: 4),
                     Row(
                       children: [
@@ -167,8 +221,9 @@ class CartItem extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 if (onQuantityChanged != null &&
-                                    item.quantity > 1) {
-                                  onQuantityChanged!(item.quantity - 1);
+                                    item.quantity != null &&
+                                    item.quantity! > 1) {
+                                  onQuantityChanged!(item.quantity! - 1);
                                 }
                               },
                               child: Container(
@@ -186,7 +241,7 @@ class CartItem extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 if (onQuantityChanged != null) {
-                                  onQuantityChanged!(item.quantity + 1);
+                                  onQuantityChanged!(item.quantity! + 1);
                                 }
                               },
                               child: Container(

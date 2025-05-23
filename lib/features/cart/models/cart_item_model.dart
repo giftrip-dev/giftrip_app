@@ -10,10 +10,17 @@ class CartItemModel {
   final int originalPrice;
   final int price;
   final int? discountRate;
-  final int quantity;
+  final int? quantity;
   final ProductItemType type; // 상품 타입 (일반상품, 체험상품 등)
-  final DateTime addedAt;
+  final DateTime? addedAt;
   final List<String> tags;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final String? options;
+  final String? checkInTime;
+  final String? checkOutTime;
+  final int? standardPerson;
+  final int? maxPerson;
 
   const CartItemModel({
     required this.id,
@@ -24,10 +31,17 @@ class CartItemModel {
     required this.originalPrice,
     required this.price,
     required this.discountRate,
-    required this.quantity,
+    this.quantity,
     required this.type,
-    required this.addedAt,
+    this.addedAt,
     required this.tags,
+    this.startDate,
+    this.endDate,
+    this.options,
+    this.checkInTime,
+    this.checkOutTime,
+    this.standardPerson,
+    this.maxPerson,
   });
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +60,17 @@ class CartItemModel {
           ProductItemType.product,
       addedAt: DateTime.parse(json['addedAt'] as String),
       tags: json['tags'] as List<String>,
+      startDate: json['startDate'] != null
+          ? DateTime.parse(json['startDate'] as String)
+          : null,
+      endDate: json['endDate'] != null
+          ? DateTime.parse(json['endDate'] as String)
+          : null,
+      options: json['options'] as String?,
+      checkInTime: json['checkInTime'] as String?,
+      checkOutTime: json['checkOutTime'] as String?,
+      standardPerson: json['standardPerson'] as int?,
+      maxPerson: json['maxPerson'] as int?,
     );
   }
 
@@ -60,8 +85,15 @@ class CartItemModel {
       'discountRate': discountRate,
       'quantity': quantity,
       'type': type.value,
-      'addedAt': addedAt.toIso8601String(),
+      'addedAt': addedAt?.toIso8601String(),
       'tags': tags,
+      'startDate': startDate?.toIso8601String(),
+      'endDate': endDate?.toIso8601String(),
+      'options': options,
+      'checkInTime': checkInTime,
+      'checkOutTime': checkOutTime,
+      'standardPerson': standardPerson,
+      'maxPerson': maxPerson,
     };
   }
 
@@ -78,6 +110,13 @@ class CartItemModel {
     ProductItemType? type,
     DateTime? addedAt,
     List<String>? tags,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? options,
+    String? checkInTime,
+    String? checkOutTime,
+    int? standardPerson,
+    int? maxPerson,
   }) {
     return CartItemModel(
       id: id ?? this.id,
@@ -92,6 +131,13 @@ class CartItemModel {
       type: type ?? this.type,
       addedAt: addedAt ?? this.addedAt,
       tags: tags ?? this.tags,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      options: options ?? this.options,
+      checkInTime: checkInTime ?? this.checkInTime,
+      checkOutTime: checkOutTime ?? this.checkOutTime,
+      standardPerson: standardPerson ?? this.standardPerson,
+      maxPerson: maxPerson ?? this.maxPerson,
     );
   }
 }
