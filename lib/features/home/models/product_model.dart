@@ -18,6 +18,7 @@ enum ProductType {
 
 /// 상품
 class ProductModel {
+  final String id;
   final String thumbnailUrl;
   final String title;
   final int originalPrice;
@@ -28,6 +29,7 @@ class ProductModel {
   final List<ProductTagType>? badges;
 
   const ProductModel({
+    required this.id,
     required this.thumbnailUrl,
     required this.title,
     required this.originalPrice,
@@ -63,6 +65,7 @@ class ProductModel {
     }
 
     return ProductModel(
+      id: json['id'] as String? ?? json['title'] as String, // id가 없으면 title 사용
       thumbnailUrl: json['thumbnailUrl'] as String,
       title: json['title'] as String,
       originalPrice: json['originalPrice'] as int,
@@ -78,6 +81,7 @@ class ProductModel {
   /// Product -> JSON
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'thumbnailUrl': thumbnailUrl,
       'title': title,
       'originalPrice': originalPrice,
