@@ -219,16 +219,27 @@ class CartItem extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                if (onQuantityChanged != null &&
-                                    item.quantity != null &&
-                                    item.quantity! > 1) {
-                                  onQuantityChanged!(item.quantity! - 1);
-                                }
-                              },
+                              onTap: item.quantity != null && item.quantity! > 1
+                                  ? () {
+                                      if (onQuantityChanged != null) {
+                                        onQuantityChanged!(item.quantity! - 1);
+                                      }
+                                    }
+                                  : null,
                               child: Container(
                                 padding: const EdgeInsets.all(4),
-                                child: const Icon(Icons.remove, size: 24),
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 24,
+                                  color: item.quantity != null &&
+                                          item.quantity! > 1
+                                      ? AppColors.labelStrong
+                                      : AppColors.gray400,
+                                ),
                               ),
                             ),
                             Container(
