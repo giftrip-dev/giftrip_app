@@ -21,9 +21,11 @@ class GenericPersistentCategoryBarDelegate<T extends Enum>
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: Colors.white,
+      padding: EdgeInsets.zero,
+      margin: EdgeInsets.zero,
       child: Column(
         children: [
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           GenericCategoryBar<T>(
             selectedCategory: selectedCategory,
             onCategoryChanged: onCategoryChanged,

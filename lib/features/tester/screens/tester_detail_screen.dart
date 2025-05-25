@@ -3,37 +3,34 @@ import 'package:giftrip/core/widgets/section_divider.dart';
 import 'package:giftrip/shared/widgets/product/product_detail_image_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
-import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
-import 'package:giftrip/features/experience/widgets/experience_purchase_bottom_bar.dart';
+import 'package:giftrip/features/tester/view_models/tester_view_model.dart';
+import 'package:giftrip/features/tester/widgets/tester_purchase_bottom_bar.dart';
 import 'package:giftrip/shared/widgets/product/product_app_bar.dart';
 import 'package:giftrip/shared/widgets/product/product_basic_info_section.dart';
 import 'package:giftrip/shared/widgets/product/product_policy_section.dart';
-
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/related_products_section.dart';
 import 'package:giftrip/features/review/widgets/review_list.dart';
 
-class ExperienceDetailScreen extends StatefulWidget {
-  final String experienceId;
+class TesterDetailScreen extends StatefulWidget {
+  final String testerId;
 
-  const ExperienceDetailScreen({
-    required this.experienceId,
+  const TesterDetailScreen({
+    required this.testerId,
     super.key,
   });
 
   @override
-  State<ExperienceDetailScreen> createState() => _ExperienceDetailScreenState();
+  State<TesterDetailScreen> createState() => _TesterDetailScreenState();
 }
 
-class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
+class _TesterDetailScreenState extends State<TesterDetailScreen> {
   @override
   void initState() {
     super.initState();
     // 화면 진입 시 상세 정보 로드
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<ExperienceViewModel>()
-          .fetchExperienceDetail(widget.experienceId);
+      context.read<TesterViewModel>().fetchTesterDetail(widget.testerId);
     });
   }
 
@@ -42,12 +39,12 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
     return Scaffold(
       appBar: ProductAppBar(
         title: '',
-        itemId: widget.experienceId,
-        type: ProductItemType.experience,
+        itemId: widget.testerId,
+        type: ProductItemType.experienceGroup,
       ),
-      body: Consumer<ExperienceViewModel>(
+      body: Consumer<TesterViewModel>(
         builder: (context, viewModel, child) {
-          final experience = viewModel.selectedExperience;
+          final tester = viewModel.selectedTester;
 
           // 로딩 중이거나 데이터가 없는 경우
           if (viewModel.isLoading) {
@@ -57,7 +54,7 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
           }
 
           // 에러 발생
-          if (viewModel.hasError || experience == null) {
+          if (viewModel.hasError || tester == null) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -67,8 +64,8 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                   ElevatedButton(
                     onPressed: () {
                       context
-                          .read<ExperienceViewModel>()
-                          .fetchExperienceDetail(widget.experienceId);
+                          .read<TesterViewModel>()
+                          .fetchTesterDetail(widget.testerId);
                     },
                     child: const Text('다시 시도'),
                   ),
@@ -87,54 +84,54 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                     children: [
                       // 기본 정보 섹션
                       ProductBasicInfoSection(
-                        title: experience.title,
-                        thumbnailUrl: experience.thumbnailUrl,
-                        badges: experience.badges,
-                        location: experience.location,
-                        phoneNumber: experience.managerPhoneNumber,
-                        memo: experience.description,
-                        relatedLink: experience.relatedLink,
+                        title: tester.title,
+                        thumbnailUrl: tester.thumbnailUrl,
+                        badges: tester.badges,
+                        location: tester.location,
+                        phoneNumber: tester.managerPhoneNumber,
+                        memo: tester.description,
+                        relatedLink: tester.relatedLink,
                       ),
                       const SectionDivider(),
 
                       // 리뷰 목록
                       ReviewList(
-                        productId: widget.experienceId,
-                        productType: ProductType.experience,
-                        productTitle: experience.title,
-                        productThumbnailUrl: experience.thumbnailUrl,
-                        productPrice: experience.finalPrice,
+                        productId: widget.testerId,
+                        productType: ProductType.experienceGroup,
+                        productTitle: tester.title,
+                        productThumbnailUrl: tester.thumbnailUrl,
+                        productPrice: tester.finalPrice,
                       ),
                       const SectionDivider(),
 
                       // 상세 이미지
                       ProductDetailImageSection(
-                        croppedImageUrl: experience.croppedDetailImageUrl,
-                        detailImageUrl: experience.detailImageUrl,
+                        croppedImageUrl: tester.croppedDetailImageUrl,
+                        detailImageUrl: tester.detailImageUrl,
                       ),
                       const SectionDivider(),
 
                       // 문의하기 섹션
                       ProductPolicySection(
                         title: '문의하기',
-                        sectionTitle: experience.inquiryInfo.title,
-                        sectionContent: experience.inquiryInfo.content,
+                        sectionTitle: tester.inquiryInfo.title,
+                        sectionContent: tester.inquiryInfo.content,
                       ),
                       const SectionDivider(),
 
                       // 변경 및 취소 섹션
                       ProductPolicySection(
                         title: '변경 및 취소',
-                        sectionTitle: experience.changeInfo.title,
-                        sectionContent: experience.changeInfo.content,
+                        sectionTitle: tester.changeInfo.title,
+                        sectionContent: tester.changeInfo.content,
                       ),
                       const SectionDivider(),
 
-                      // 관련 체험 추천 섹션
+                      // 관련 체험단 추천 섹션
                       RelatedProductsSection(
-                        title: '이런 체험 어떠세요?',
-                        productType: ProductType.experience,
-                        productId: widget.experienceId,
+                        title: '이런 체험단 어떠세요?',
+                        productType: ProductType.experienceGroup,
+                        productId: widget.testerId,
                         pageSize: 5,
                       ),
 
@@ -146,30 +143,16 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
               ),
 
               // 구매 바텀바
-              ExperiencePurchaseBottomBar(
-                originalPrice: experience.originalPrice,
-                finalPrice: experience.finalPrice,
-                discountRate: experience.discountRate,
-                soldOut: experience.soldOut,
-                onReserveTap: () {
-                  // 이미 버튼에서 바텀시트를 표시하므로 여기서는 추가 작업이 필요 없음
-                  // 나중에 여기에 로깅 등의 코드 추가 가능
-                },
+              TesterPurchaseBottomBar(
+                originalPrice: tester.originalPrice,
+                finalPrice: tester.finalPrice,
+                discountRate: tester.discountRate,
+                soldOut: tester.soldOut,
               ),
             ],
           );
         },
       ),
-    );
-  }
-}
-
-// int 확장 메서드 - 천 단위 콤마 추가
-extension IntExtension on int {
-  String toLocaleString() {
-    return toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
     );
   }
 }

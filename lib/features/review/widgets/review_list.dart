@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
@@ -9,14 +10,14 @@ import 'package:giftrip/features/review/screens/review_list_screen.dart';
 
 class ReviewList extends StatefulWidget {
   final String productId;
-  final String productType;
+  final ProductType productType;
   final String productTitle;
   final String productThumbnailUrl;
   final int productPrice;
 
   const ReviewList({
     required this.productId,
-    this.productType = 'experience',
+    required this.productType,
     required this.productTitle,
     required this.productThumbnailUrl,
     required this.productPrice,

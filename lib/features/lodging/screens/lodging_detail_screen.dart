@@ -92,7 +92,7 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 // 리뷰 목록
                 ReviewList(
                   productId: widget.lodgingId,
-                  productType: 'lodging',
+                  productType: ProductType.lodging,
                   productTitle: lodging.title,
                   productThumbnailUrl: lodging.thumbnailUrl,
                   productPrice: lodging.finalPrice,

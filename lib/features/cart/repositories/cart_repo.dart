@@ -6,6 +6,7 @@ import 'package:giftrip/features/cart/models/cart_category.dart';
 import 'package:giftrip/features/shopping/repositories/mock_shopping_data.dart';
 import 'package:giftrip/features/experience/repositories/mock_experience_data.dart';
 import 'package:giftrip/features/lodging/repositories/mock_lodging_data.dart';
+import 'package:giftrip/features/tester/repositories/mock_tester_data.dart';
 
 class CartRepo {
   final Dio _dio = DioClient().to();
@@ -112,6 +113,27 @@ class CartRepo {
             type: type,
             addedAt: DateTime.now(),
             tags: lodging.badges.map((badge) => badge.name).toList(),
+          );
+          break;
+
+        case ProductItemType.experienceGroup:
+          final tester = mockTesterList.firstWhere(
+            (item) => item.id == productId,
+            orElse: () => throw Exception('체험단 상품을 찾을 수 없습니다: $productId'),
+          );
+          cartItem = CartItemModel(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            productId: productId,
+            category: CartCategory.experienceGroup,
+            title: tester.title,
+            thumbnailUrl: tester.thumbnailUrl,
+            originalPrice: tester.originalPrice,
+            price: tester.finalPrice,
+            discountRate: tester.discountRate,
+            quantity: quantity,
+            type: type,
+            addedAt: DateTime.now(),
+            tags: tester.badges.map((badge) => badge.name).toList(),
           );
           break;
 

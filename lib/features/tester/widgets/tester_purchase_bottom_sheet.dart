@@ -6,27 +6,27 @@ import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/core/widgets/calendar/common_calendar_widget.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
-import 'package:giftrip/features/experience/models/experience_model.dart';
-import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
 import 'package:giftrip/features/payment/screens/reservation_payment_screen.dart';
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
+import 'package:giftrip/features/tester/models/tester_detail_model.dart';
+import 'package:giftrip/features/tester/view_models/tester_view_model.dart';
 import 'package:giftrip/shared/widgets/common/quantity_selector.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
-/// 체험 예약 바텀시트
-class ExperiencePurchaseBottomSheet extends StatefulWidget {
+/// 체험단 구매 바텀시트
+class TesterPurchaseBottomSheet extends StatefulWidget {
   final VoidCallback? onClose;
 
-  const ExperiencePurchaseBottomSheet({
+  const TesterPurchaseBottomSheet({
     super.key,
     this.onClose,
   });
 
   @override
-  State<ExperiencePurchaseBottomSheet> createState() =>
-      _ExperiencePurchaseBottomSheetState();
+  State<TesterPurchaseBottomSheet> createState() =>
+      _TesterPurchaseBottomSheetState();
 
   /// 바텀시트를 표시하는 정적 메서드
   static Future<void> show(BuildContext context) {
@@ -34,15 +34,14 @@ class ExperiencePurchaseBottomSheet extends StatefulWidget {
       context: context,
       isScrollControlled: true, // 키보드가 올라왔을 때 바텀시트를 밀어올리도록
       backgroundColor: Colors.transparent,
-      builder: (context) => ExperiencePurchaseBottomSheet(
+      builder: (context) => TesterPurchaseBottomSheet(
         onClose: () => Navigator.of(context).pop(),
       ),
     );
   }
 }
 
-class _ExperiencePurchaseBottomSheetState
-    extends State<ExperiencePurchaseBottomSheet> {
+class _TesterPurchaseBottomSheetState extends State<TesterPurchaseBottomSheet> {
   // 날짜 선택 관련 변수
   DateTime? _selectedStartDate;
   DateTime? _selectedEndDate;
@@ -60,11 +59,11 @@ class _ExperiencePurchaseBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    // 체험 상품 정보 가져오기
-    final viewModel = context.watch<ExperienceViewModel>();
-    final experience = viewModel.selectedExperience;
+    // 체험단 상품 정보 가져오기
+    final viewModel = context.watch<TesterViewModel>();
+    final tester = viewModel.selectedTester;
 
-    if (experience == null) {
+    if (tester == null) {
       return const SizedBox();
     }
 
@@ -84,7 +83,7 @@ class _ExperiencePurchaseBottomSheetState
             children: [
               // 제목
               Text(
-                '예약하기',
+                '신청하기',
                 style: title_L,
               ),
 
@@ -148,8 +147,8 @@ class _ExperiencePurchaseBottomSheetState
           // 캘린더 위젯 (토글 가능)
           if (_isCalendarVisible) ...[
             const SizedBox(height: 12),
-            CommonCalendarWidget<ExperienceModel>(
-              model: experience,
+            CommonCalendarWidget<TesterDetailModel>(
+              model: tester,
               selectedStartDate: _selectedStartDate,
               selectedEndDate: _selectedEndDate,
               onRangeSelected: (start, end, focusedDay) {
@@ -157,11 +156,11 @@ class _ExperiencePurchaseBottomSheetState
                 if (start != null) {
                   // 시작일이 이용 불가능 날짜인지 체크
                   bool isStartDateUnavailable = false;
-                  if (experience.unavailableDates != null) {
+                  if (tester.unavailableDates != null) {
                     final startDateString =
                         start.toIso8601String().split('T')[0];
                     isStartDateUnavailable =
-                        experience.unavailableDates!.contains(startDateString);
+                        tester.unavailableDates!.contains(startDateString);
                   }
 
                   if (isStartDateUnavailable) {
@@ -236,8 +235,8 @@ class _ExperiencePurchaseBottomSheetState
           if (_selectedStartDate != null && _selectedEndDate != null) ...[
             const SizedBox(height: 24),
             QuantitySelector(
-              productName: experience.title,
-              price: experience.finalPrice,
+              productName: tester.title,
+              price: tester.finalPrice,
               quantity: _quantity,
               onQuantityChanged: (newQuantity) {
                 setState(() {
@@ -247,7 +246,7 @@ class _ExperiencePurchaseBottomSheetState
             ),
           ],
 
-          // 예약 버튼
+          // 신청 버튼
           const SizedBox(height: 24),
           Row(
             children: [
@@ -260,23 +259,23 @@ class _ExperiencePurchaseBottomSheetState
                   size: CTAButtonSize.extraLarge,
                   onPressed:
                       _selectedStartDate != null && _selectedEndDate != null
-                          ? () => _handleAddToCart(experience)
+                          ? () => _handleAddToCart(tester)
                           : null,
                   isEnabled:
                       _selectedStartDate != null && _selectedEndDate != null,
                 ),
               ),
               const SizedBox(width: 8),
-              // 예약하기 버튼
+              // 신청하기 버튼
               Expanded(
                 flex: 200,
                 child: CTAButton(
-                  text: '예약하기',
+                  text: '신청하기',
                   onPressed:
                       _selectedStartDate != null && _selectedEndDate != null
                           ? () {
-                              // 예약 처리 로직
-                              _processReservation(experience);
+                              // 신청 처리 로직
+                              _processApplication(tester);
                             }
                           : null,
                   isEnabled:
@@ -290,23 +289,23 @@ class _ExperiencePurchaseBottomSheetState
     );
   }
 
-  // 예약 처리 로직
-  void _processReservation(ExperienceModel experience) {
+  // 신청 처리 로직
+  void _processApplication(TesterDetailModel tester) {
     if (_selectedStartDate == null || _selectedEndDate == null) return;
 
     final paymentViewModel = context.read<PaymentViewModel>();
 
-    // 체험 예약을 PaymentItem으로 변환
+    // 체험단 신청을 PaymentItem으로 변환
     final paymentItem = PaymentItem(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      productId: experience.id,
-      title: experience.title,
+      productId: tester.id,
+      title: tester.title,
       optionName:
           '${_dateFormat.format(_selectedStartDate!)} - ${_dateFormat.format(_selectedEndDate!)}',
-      thumbnailUrl: experience.thumbnailUrl,
-      price: experience.finalPrice,
+      thumbnailUrl: tester.thumbnailUrl,
+      price: tester.finalPrice,
       quantity: _quantity,
-      type: ProductItemType.experience,
+      type: ProductItemType.experienceGroup,
       startDate: _selectedStartDate,
       endDate: _selectedEndDate,
     );
@@ -317,7 +316,7 @@ class _ExperiencePurchaseBottomSheetState
     // 바텀시트 닫기
     Navigator.of(context).pop();
 
-    // 예약 결제 페이지로 이동
+    // 예약 결제 페이지로 이동 (체험단도 예약 결제 방식 사용)
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const ReservationPaymentScreen(),
@@ -326,22 +325,22 @@ class _ExperiencePurchaseBottomSheetState
   }
 
   // 장바구니 추가
-  Future<void> _handleAddToCart(ExperienceModel experience) async {
+  Future<void> _handleAddToCart(TesterDetailModel tester) async {
     if (_selectedStartDate == null || _selectedEndDate == null) return;
 
     final cartViewModel = context.read<CartViewModel>();
 
     try {
       await cartViewModel.addToCart(
-        experience.id,
-        ProductItemType.experience,
+        tester.id,
+        ProductItemType.experienceGroup,
         quantity: _quantity,
       );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
-            message: '체험이 장바구니에 담겼습니다.',
+            message: '체험단이 장바구니에 담겼습니다.',
             icon: Icons.shopping_cart_outlined,
           ),
         );
