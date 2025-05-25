@@ -36,9 +36,9 @@ class CartViewModel extends ChangeNotifier {
   }
 
   /// 장바구니 초기화 (앱 시작시 호출)
-  // Future<void> initialize() async {
-  //   await fetchCartItems();
-  // }
+  Future<void> initialize() async {
+    await fetchCartItems();
+  }
 
   /// 카테고리 변경
   Future<void> changeCategory(CartCategory? category) async {
