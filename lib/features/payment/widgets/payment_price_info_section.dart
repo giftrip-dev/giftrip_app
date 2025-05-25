@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/widgets/text/price_text.dart';
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 
@@ -18,6 +19,10 @@ class PaymentPriceInfoSection extends StatelessWidget {
 
   int get totalProductPrice =>
       items.fold(0, (sum, item) => sum + (item.price * item.quantity));
+
+  // 상품 타입이 product인지 확인
+  bool get hasProductItems =>
+      items.any((item) => item.type == ProductItemType.product);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,9 @@ class PaymentPriceInfoSection extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          '${e.value.title}, ${e.value.quantity}개',
+                          hasProductItems
+                              ? '${e.value.title}, ${e.value.quantity}개'
+                              : '${e.value.title} (${e.value.quantity}명)',
                           style: body_M,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -57,22 +64,26 @@ class PaymentPriceInfoSection extends StatelessWidget {
                 ))
             .toList(),
 
-        // 배송비
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('배송비', style: body_M),
-            PriceText(
-              price: totalProductPrice < 30000 ? shippingFee : 0,
-              color: AppColors.labelStrong,
-            ),
-          ],
-        ),
+        // 배송비 (product 타입일 때만 표시)
+        if (hasProductItems) ...[
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('배송비', style: body_M),
+              PriceText(
+                price: totalProductPrice < 30000 ? shippingFee : 0,
+                color: AppColors.labelStrong,
+              ),
+            ],
+          ),
+        ],
 
+        const SizedBox(height: 12),
         Divider(
           color: AppColors.line,
         ),
+        const SizedBox(height: 12),
 
         // 최종 결제 금액
         Row(

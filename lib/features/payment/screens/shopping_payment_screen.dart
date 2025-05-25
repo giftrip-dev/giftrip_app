@@ -14,16 +14,18 @@ import 'package:giftrip/features/payment/widgets/payment_point_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_price_info_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_product_section.dart';
 import 'package:giftrip/features/payment/widgets/payment_shipping_section.dart';
+import 'package:giftrip/features/payment/models/payment_success_model.dart';
+import 'package:giftrip/features/payment/screens/payment_success_screen.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
 import 'package:tosspayments_widget_sdk_flutter/payment_widget.dart';
 
-class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+class ShoppingPaymentScreen extends StatefulWidget {
+  const ShoppingPaymentScreen({super.key});
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<ShoppingPaymentScreen> createState() => _ShoppingPaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class _ShoppingPaymentScreenState extends State<ShoppingPaymentScreen> {
   /* ───────── selector(id) ───────── */
   static const _methodSelector = 'methods';
   static const _agreementSelector = 'agreement';
@@ -135,21 +137,45 @@ class _PaymentScreenState extends State<PaymentScreen> {
         : vm.items.first.title;
 
     try {
-      logger.d('결제 요청: $orderId, $orderName');
+      logger.d('상품 결제 요청: $orderId, $orderName');
       final res = await _paymentWidget.requestPayment(
         paymentInfo: PaymentInfo(
           orderId: orderId,
           orderName: orderName,
-          // customerName: _ordererNameController.text,
-          // customerEmail: '',
-          // customerMobilePhone: _ordererPhoneController.text,
         ),
       );
-      logger.d('결제 응답: ${res.success}');
+      logger.d('상품 결제 응답: ${res.success}');
       if (res.success != null) {
-        Navigator.pop(context);
+        // 결제 성공 데이터 구성
+        final paymentSuccessData = PaymentSuccessModel(
+          orderId: orderId,
+          orderName: orderName,
+          items: vm.items
+              .map((item) => PaymentSuccessItem(
+                    title: item.title,
+                    optionName: item.optionName,
+                    quantity: item.quantity,
+                    price: item.price,
+                    type: item.type,
+                  ))
+              .toList(),
+          paymentMethod: '카드결제',
+          totalAmount: vm.finalPrice,
+          usedPoint: _usedPoint,
+          shippingFee: vm.shippingFee,
+          paymentDate: DateTime.now(),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentSuccessScreen(
+              paymentData: paymentSuccessData,
+            ),
+          ),
+        );
       } else {
-        logger.e('결제 실패: ${res.fail?.errorMessage ?? ''}');
+        logger.e('상품 결제 실패: ${res.fail?.errorMessage ?? ''}');
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
             message: '결제 실패: ${res.fail?.errorMessage ?? ''}',
@@ -158,7 +184,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         );
       }
     } catch (e) {
-      logger.e('결제 오류: $e');
+      logger.e('상품 결제 오류: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
           message: '결제 오류: $e',
@@ -261,7 +287,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     onPressed: () => _processPayment(vm),
                     type: CTAButtonType.primary,
                     size: CTAButtonSize.large,
-                    text: '${formatPrice(vm.finalPrice - _usedPoint)}원 결제하기',
+                    text: '결제하기',
                     isEnabled: !_searchingAddress,
                   ),
                 ),

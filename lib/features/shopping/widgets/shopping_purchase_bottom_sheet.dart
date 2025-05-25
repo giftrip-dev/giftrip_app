@@ -6,7 +6,7 @@ import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
-import 'package:giftrip/features/payment/screens/payment_screen.dart';
+import 'package:giftrip/features/payment/screens/shopping_payment_screen.dart';
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 import 'package:giftrip/features/shared/widgets/quantity_selector.dart';
 import 'package:giftrip/features/shopping/models/shopping_model.dart';
@@ -290,6 +290,7 @@ class _ShoppingPurchaseBottomSheetState
     // 선택된 옵션들을 PaymentItem으로 변환
     final paymentItems = _selectedOptions.entries.map((entry) {
       return PaymentItem(
+        optionName: entry.key.name,
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         productId: shopping.id,
         title: '${shopping.title} - ${entry.key.name}',
@@ -297,6 +298,8 @@ class _ShoppingPurchaseBottomSheetState
         price: entry.key.price,
         quantity: entry.value,
         type: ProductItemType.product,
+        startDate: null,
+        endDate: null,
       );
     }).toList();
 
@@ -309,7 +312,7 @@ class _ShoppingPurchaseBottomSheetState
     // 결제 페이지로 이동
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const PaymentScreen(),
+        builder: (context) => const ShoppingPaymentScreen(),
       ),
     );
   }

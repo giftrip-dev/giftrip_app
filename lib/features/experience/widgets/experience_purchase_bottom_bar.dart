@@ -3,7 +3,7 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
-import 'package:giftrip/features/experience/widgets/experience_reservation_bottom_sheet.dart';
+import 'package:giftrip/features/experience/widgets/experience_purchase_bottom_sheet.dart';
 
 /// 체험 상품 구매 바텀바
 class ExperiencePurchaseBottomBar extends StatelessWidget {
@@ -91,7 +91,7 @@ class ExperiencePurchaseBottomBar extends StatelessWidget {
                   if (soldOut) return;
 
                   // 예약하기 바텀시트 표시
-                  ExperienceReservationBottomSheet.show(context);
+                  ExperiencePurchaseBottomSheet.show(context);
 
                   // 추가로 전달받은 콜백이 있으면 실행
                   if (onReserveTap != null) {

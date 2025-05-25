@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/core/services/storage_service.dart';
-import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
-import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
 import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/auth/repositories/login_repo.dart';
-import 'package:giftrip/features/user/view_models/user_view_model.dart';
 import 'dart:developer' as developer;
 
 class AuthViewModel extends ChangeNotifier {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 
@@ -9,7 +10,7 @@ class PriceText extends StatelessWidget {
   const PriceText({
     super.key,
     required this.price,
-    this.color,
+    this.color = AppColors.labelStrong,
   });
 
   @override
@@ -28,7 +29,7 @@ class PriceText extends StatelessWidget {
           ),
           TextSpan(
             text: '원',
-            style: body_S.copyWith(color: color),
+            style: subtitle_M.copyWith(color: color),
           ),
         ],
       ),
