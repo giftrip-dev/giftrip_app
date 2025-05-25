@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
-import 'package:giftrip/features/shared/widgets/product_detail_image_section.dart';
+import 'package:giftrip/shared/widgets/product/product_detail_image_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
 import 'package:giftrip/features/shopping/widgets/shopping_purchase_bottom_bar.dart';
-import 'package:giftrip/features/shared/widgets/product_app_bar.dart';
-import 'package:giftrip/features/shared/widgets/product_basic_info_section.dart';
-import 'package:giftrip/features/shared/widgets/product_policy_section.dart';
+import 'package:giftrip/shared/widgets/product/product_app_bar.dart';
+import 'package:giftrip/shared/widgets/product/product_basic_info_section.dart';
+import 'package:giftrip/shared/widgets/product/product_policy_section.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/related_products_section.dart';
 import 'package:giftrip/features/review/widgets/review_list.dart';

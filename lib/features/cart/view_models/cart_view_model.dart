@@ -96,14 +96,23 @@ class CartViewModel extends ChangeNotifier {
   Future<void> addToCart(String productId, ProductItemType type,
       {int quantity = 1}) async {
     try {
+      logger.d('장바구니 추가 시작: $productId, $type, $quantity');
       _isLoading = true;
       notifyListeners();
 
       await _repo.addToCart(productId, type, quantity: quantity);
-      await fetchCartItems(); // 장바구니 목록 갱신
+      logger.d('장바구니 추가 완료, 목록 갱신 시작');
+
+      // 장바구니 목록을 다시 가져와서 UI 업데이트
+      await fetchCartItems(refresh: true);
+      logger.d('장바구니 목록 갱신 완료, 현재 아이템 수: ${_cartItems.length}');
+
+      _hasError = false;
     } catch (e) {
       _hasError = true;
       logger.e('장바구니 추가 실패: $e');
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
@@ -115,10 +124,15 @@ class CartViewModel extends ChangeNotifier {
       notifyListeners();
 
       await _repo.removeFromCart(itemId);
-      await fetchCartItems(); // 장바구니 목록 갱신
+
+      // 장바구니 목록을 다시 가져와서 UI 업데이트
+      await fetchCartItems(refresh: true);
+      _hasError = false;
     } catch (e) {
       _hasError = true;
       logger.e('장바구니 제거 실패: $e');
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
@@ -153,16 +167,14 @@ class CartViewModel extends ChangeNotifier {
     return _selectedItemIds.contains(itemId);
   }
 
-  // 수량 변경 메서드 (체험/체험단만)
+  // 수량 변경 메서드
   void changeQuantity(String itemId, int newQuantity) {
     final idx = _cartItems.indexWhere((e) => e.id == itemId);
     if (idx != -1) {
       final item = _cartItems[idx];
-      if (item.category == CartCategory.experience ||
-          item.category == CartCategory.experienceGroup) {
-        _cartItems[idx] = item.copyWith(quantity: newQuantity);
-        notifyListeners();
-      }
+      // 모든 카테고리에서 수량 변경 허용
+      _cartItems[idx] = item.copyWith(quantity: newQuantity);
+      notifyListeners();
     }
   }
 

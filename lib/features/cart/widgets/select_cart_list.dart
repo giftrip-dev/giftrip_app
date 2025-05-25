@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/cart/models/cart_item_model.dart';
-import 'package:giftrip/features/cart/widgets/cart_item.dart';
 import 'package:giftrip/features/cart/models/cart_category.dart';
+import 'package:giftrip/features/cart/widgets/cart_item_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
@@ -46,27 +46,50 @@ class SelectCartList extends StatelessWidget {
           ),
           child: Row(
             children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: Checkbox(
-                  fillColor: WidgetStateProperty.all(AppColors.white),
-                  activeColor: AppColors.primaryStrong,
-                  value: cartViewModel.isAllSelectedByCategories(categories),
-                  onChanged: (checked) {
-                    if (checked == true) {
-                      cartViewModel.selectAllByCategories(categories);
-                    } else {
-                      cartViewModel.deselectAllByCategories(categories);
-                    }
-                  },
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                  side: BorderSide(color: AppColors.lineNatural, width: 1),
+              GestureDetector(
+                onTap: () {
+                  final isAllSelected =
+                      cartViewModel.isAllSelectedByCategories(categories);
+                  if (isAllSelected) {
+                    cartViewModel.deselectAllByCategories(categories);
+                  } else {
+                    cartViewModel.selectAllByCategories(categories);
+                  }
+                },
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: Checkbox(
+                        fillColor: WidgetStateProperty.resolveWith((states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return AppColors.primaryStrong;
+                          }
+                          return AppColors.white;
+                        }),
+                        checkColor: AppColors.white,
+                        activeColor: AppColors.primaryStrong,
+                        value:
+                            cartViewModel.isAllSelectedByCategories(categories),
+                        onChanged: (checked) {
+                          if (checked == true) {
+                            cartViewModel.selectAllByCategories(categories);
+                          } else {
+                            cartViewModel.deselectAllByCategories(categories);
+                          }
+                        },
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
+                        side:
+                            BorderSide(color: AppColors.lineNatural, width: 1),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('전체선택', style: subtitle_S),
+                  ],
                 ),
               ),
-              const SizedBox(width: 8),
-              const Text('전체선택', style: subtitle_S),
               const Spacer(),
               GestureDetector(
                 onTap: () {
@@ -86,7 +109,7 @@ class SelectCartList extends StatelessWidget {
           ),
         );
 
-    Widget buildCartItem(CartItemModel item) => CartItem(
+    Widget buildCartItem(CartItemModel item) => CartItemWrapper(
           item: item,
           isSelected: cartViewModel.isItemSelected(item.id),
           onSelect: () => cartViewModel.toggleSelectItem(item.id),

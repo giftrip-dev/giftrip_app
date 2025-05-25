@@ -8,7 +8,7 @@ import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/features/payment/screens/shopping_payment_screen.dart';
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
-import 'package:giftrip/features/shared/widgets/quantity_selector.dart';
+import 'package:giftrip/shared/widgets/common/quantity_selector.dart';
 import 'package:giftrip/features/shopping/models/shopping_model.dart';
 import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
 import 'package:giftrip/features/shopping/widgets/shopping_option_selector.dart';

@@ -3,7 +3,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/share_url_generator.dart';
 import 'package:giftrip/core/widgets/app_bar/custom_app_bar.dart';
-import 'package:giftrip/features/shared/widgets/cart_icon_button.dart';
+import 'package:giftrip/shared/widgets/cart/cart_icon_button.dart';
 
 class ProductAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
