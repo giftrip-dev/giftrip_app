@@ -19,13 +19,13 @@ import 'package:giftrip/features/payment/screens/payment_success_screen.dart';
 import 'package:tosspayments_widget_sdk_flutter/model/payment_info.dart';
 import 'package:tosspayments_widget_sdk_flutter/payment_widget.dart';
 
-class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+class ShoppingPaymentScreen extends StatefulWidget {
+  const ShoppingPaymentScreen({super.key});
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<ShoppingPaymentScreen> createState() => _ShoppingPaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class _ShoppingPaymentScreenState extends State<ShoppingPaymentScreen> {
   /* ───────── selector(id) ───────── */
   static const _methodSelector = 'methods';
   static const _agreementSelector = 'agreement';
@@ -137,17 +137,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
         : vm.items.first.title;
 
     try {
-      logger.d('결제 요청: $orderId, $orderName');
+      logger.d('상품 결제 요청: $orderId, $orderName');
       final res = await _paymentWidget.requestPayment(
         paymentInfo: PaymentInfo(
           orderId: orderId,
           orderName: orderName,
-          // customerName: _ordererNameController.text,
-          // customerEmail: '',
-          // customerMobilePhone: _ordererPhoneController.text,
         ),
       );
-      logger.d('결제 응답: ${res.success}');
+      logger.d('상품 결제 응답: ${res.success}');
       if (res.success != null) {
         // 결제 성공 데이터 구성
         final paymentSuccessData = PaymentSuccessModel(
@@ -178,7 +175,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
         );
       } else {
-        logger.e('결제 실패: ${res.fail?.errorMessage ?? ''}');
+        logger.e('상품 결제 실패: ${res.fail?.errorMessage ?? ''}');
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
             message: '결제 실패: ${res.fail?.errorMessage ?? ''}',
@@ -187,7 +184,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         );
       }
     } catch (e) {
-      logger.e('결제 오류: $e');
+      logger.e('상품 결제 오류: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
           message: '결제 오류: $e',
@@ -290,7 +287,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     onPressed: () => _processPayment(vm),
                     type: CTAButtonType.primary,
                     size: CTAButtonSize.large,
-                    text: '${formatPrice(vm.finalPrice - _usedPoint)}원 결제하기',
+                    text: '결제하기',
                     isEnabled: !_searchingAddress,
                   ),
                 ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
-import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
 import 'package:lucide_icons/lucide_icons.dart';

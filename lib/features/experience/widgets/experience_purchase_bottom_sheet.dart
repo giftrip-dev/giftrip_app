@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
+import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
-import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/experience/models/experience_model.dart';
 import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
 import 'package:giftrip/features/experience/widgets/experience_calendar_widget.dart';
+import 'package:giftrip/features/payment/screens/reservation_payment_screen.dart';
+import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
+import 'package:giftrip/features/shared/widgets/quantity_selector.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 /// 체험 예약 바텀시트
-class ExperienceReservationBottomSheet extends StatefulWidget {
+class ExperiencePurchaseBottomSheet extends StatefulWidget {
   final VoidCallback? onClose;
 
-  const ExperienceReservationBottomSheet({
+  const ExperiencePurchaseBottomSheet({
     super.key,
     this.onClose,
   });
 
   @override
-  State<ExperienceReservationBottomSheet> createState() =>
-      _ExperienceReservationBottomSheetState();
+  State<ExperiencePurchaseBottomSheet> createState() =>
+      _ExperiencePurchaseBottomSheetState();
 
   /// 바텀시트를 표시하는 정적 메서드
   static Future<void> show(BuildContext context) {
@@ -29,19 +33,22 @@ class ExperienceReservationBottomSheet extends StatefulWidget {
       context: context,
       isScrollControlled: true, // 키보드가 올라왔을 때 바텀시트를 밀어올리도록
       backgroundColor: Colors.transparent,
-      builder: (context) => ExperienceReservationBottomSheet(
+      builder: (context) => ExperiencePurchaseBottomSheet(
         onClose: () => Navigator.of(context).pop(),
       ),
     );
   }
 }
 
-class _ExperienceReservationBottomSheetState
-    extends State<ExperienceReservationBottomSheet> {
+class _ExperiencePurchaseBottomSheetState
+    extends State<ExperiencePurchaseBottomSheet> {
   // 날짜 선택 관련 변수
   DateTime? _selectedStartDate;
   DateTime? _selectedEndDate;
   bool _isCalendarVisible = false;
+
+  // 수량 선택 관련 변수
+  int _quantity = 1;
 
   // 포맷터
   final DateFormat _dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
@@ -221,6 +228,21 @@ class _ExperienceReservationBottomSheetState
             ),
           ],
 
+          // 수량 선택 위젯 (날짜가 선택된 경우에만 표시)
+          if (_selectedStartDate != null && _selectedEndDate != null) ...[
+            const SizedBox(height: 24),
+            QuantitySelector(
+              productName: experience.title,
+              price: experience.finalPrice,
+              quantity: _quantity,
+              onQuantityChanged: (newQuantity) {
+                setState(() {
+                  _quantity = newQuantity;
+                });
+              },
+            ),
+          ],
+
           // 예약 버튼
           const SizedBox(height: 24),
           CTAButton(
@@ -242,16 +264,34 @@ class _ExperienceReservationBottomSheetState
   void _processReservation(ExperienceModel experience) {
     if (_selectedStartDate == null || _selectedEndDate == null) return;
 
-    // 여기에 예약 처리 로직 추가
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            '${_dateFormat.format(_selectedStartDate!)} - ${_dateFormat.format(_selectedEndDate!)} 예약이 완료되었습니다.'),
-        duration: const Duration(seconds: 2),
-      ),
+    final paymentViewModel = context.read<PaymentViewModel>();
+
+    // 체험 예약을 PaymentItem으로 변환
+    final paymentItem = PaymentItem(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      productId: experience.id,
+      title: experience.title,
+      optionName:
+          '${_dateFormat.format(_selectedStartDate!)} - ${_dateFormat.format(_selectedEndDate!)}',
+      thumbnailUrl: experience.thumbnailUrl,
+      price: experience.finalPrice,
+      quantity: _quantity,
+      type: ProductItemType.experience,
+      startDate: _selectedStartDate,
+      endDate: _selectedEndDate,
     );
+
+    // 결제 예정 데이터 설정
+    paymentViewModel.setItems([paymentItem]);
 
     // 바텀시트 닫기
     Navigator.of(context).pop();
+
+    // 예약 결제 페이지로 이동
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ReservationPaymentScreen(),
+      ),
+    );
   }
 }

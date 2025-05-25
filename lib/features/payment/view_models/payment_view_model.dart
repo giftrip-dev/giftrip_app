@@ -12,6 +12,8 @@ class PaymentItem {
   final int quantity;
   final ProductItemType type;
   final String optionName;
+  final DateTime? startDate; // 체험/숙소 시작일
+  final DateTime? endDate; // 체험/숙소 종료일
 
   const PaymentItem({
     required this.id,
@@ -22,6 +24,8 @@ class PaymentItem {
     required this.quantity,
     required this.type,
     required this.optionName,
+    this.startDate,
+    this.endDate,
   });
 
   /// CartItemModel을 PaymentItem으로 변환
@@ -35,6 +39,8 @@ class PaymentItem {
       quantity: item.quantity ?? 1,
       type: item.type,
       optionName: item.options ?? '기본 옵션',
+      startDate: null,
+      endDate: null,
     );
   }
 }
@@ -107,6 +113,8 @@ class PaymentViewModel extends ChangeNotifier {
         quantity: quantity,
         type: item.type,
         optionName: item.optionName,
+        startDate: item.startDate,
+        endDate: item.endDate,
       );
       notifyListeners();
     }
