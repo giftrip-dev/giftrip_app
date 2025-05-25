@@ -100,7 +100,7 @@ class QuantitySelector extends StatelessWidget {
               ),
 
               // 가격
-              PriceText(price: price),
+              PriceText(price: price * quantity),
             ],
           ),
         ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'package:giftrip/features/payment/models/payment_success_model.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
@@ -103,6 +105,15 @@ class PaymentSuccessScreen extends StatelessWidget {
 
   /// 상품 정보
   Widget _buildProductInfo() {
+    // 상품을 타입별로 그룹화
+    final groupedItems = <ProductItemType, List<PaymentSuccessItem>>{};
+    for (final item in paymentData.items) {
+      if (!groupedItems.containsKey(item.type)) {
+        groupedItems[item.type] = [];
+      }
+      groupedItems[item.type]!.add(item);
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -122,27 +133,61 @@ class PaymentSuccessScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ...paymentData.items.map((item) => Padding(
-                      padding: EdgeInsets.only(
-                          bottom: item != paymentData.items.last ? 12 : 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              item.title,
-                              style: body_M.copyWith(color: AppColors.label),
-                            ),
-                          ),
-                          Text(
-                            '${item.quantity}개',
-                            style: body_M.copyWith(
-                                color: AppColors.labelAlternative),
-                          ),
-                        ],
+                ...groupedItems.entries.expand((entry) {
+                  final type = entry.key;
+                  final items = entry.value;
+                  final isLast = entry.key == groupedItems.keys.last;
+
+                  return [
+                    // 상품 타입이 product가 아닐 때만 타입 제목 표시
+                    if (type != ProductItemType.product) ...[
+                      Text(
+                        type.label,
+                        style:
+                            subtitle_M.copyWith(color: AppColors.primaryStrong),
                       ),
-                    )),
+                      const SizedBox(height: 16),
+                    ],
+
+                    // 해당 타입의 상품들
+                    ...items.asMap().entries.map((itemEntry) {
+                      final item = itemEntry.value;
+                      final isLastItem = itemEntry.key == items.length - 1;
+
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: isLastItem ? 0 : 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                item.title,
+                                style: body_M.copyWith(color: AppColors.label),
+                              ),
+                            ),
+                            Text(
+                              '${item.quantity}개',
+                              style: body_M.copyWith(
+                                  color: AppColors.labelAlternative),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+
+                    // 마지막 타입이 아니면 구분선 추가
+                    if (!isLast) ...[
+                      const SizedBox(height: 16),
+                      Divider(
+                        color: AppColors.line,
+                        height: 1,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ];
+                }).toList(),
               ],
             ),
           ),
@@ -200,7 +245,15 @@ class PaymentSuccessScreen extends StatelessWidget {
             child: CTAButton(
               isEnabled: true,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RootScreen(
+                      selectedIndex: 0,
+                    ),
+                  ),
+                  (route) => false,
+                );
               },
               type: CTAButtonType.whiteFill,
               size: CTAButtonSize.extraLarge,
@@ -212,7 +265,6 @@ class PaymentSuccessScreen extends StatelessWidget {
             child: CTAButton(
               isEnabled: true,
               onPressed: () {
-                // 홈으로 이동
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               type: CTAButtonType.primary,

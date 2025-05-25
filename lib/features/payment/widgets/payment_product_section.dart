@@ -77,7 +77,7 @@ class PaymentProductSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     PriceText(
-                      price: item.price,
+                      price: item.price * item.quantity,
                       color: AppColors.labelStrong,
                     ),
                   ],

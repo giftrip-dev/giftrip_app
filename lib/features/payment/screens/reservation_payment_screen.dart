@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/payment/widgets/payment_method_section.dart';
@@ -52,10 +53,20 @@ class _ReservationPaymentScreenState extends State<ReservationPaymentScreen> {
       clientKey: 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm',
       customerKey: 'CUSTOMER_KEY', // TODO: prod 에선 실제 고객 키
     );
+
+    // 텍스트 컨트롤러 변경 감지
+    _ordererNameController.addListener(_onFormChanged);
+    _ordererPhoneController.addListener(_onFormChanged);
+    _userNameController.addListener(_onFormChanged);
+    _userPhoneController.addListener(_onFormChanged);
   }
 
   @override
   void dispose() {
+    _ordererNameController.removeListener(_onFormChanged);
+    _ordererPhoneController.removeListener(_onFormChanged);
+    _userNameController.removeListener(_onFormChanged);
+    _userPhoneController.removeListener(_onFormChanged);
     _ordererNameController.dispose();
     _ordererPhoneController.dispose();
     _userNameController.dispose();
@@ -68,7 +79,18 @@ class _ReservationPaymentScreenState extends State<ReservationPaymentScreen> {
   void _updateAmount() {
     final vm = context.read<PaymentViewModel>();
     (_methodKey.currentState as dynamic)
-        ?.updateAmount(vm.totalProductPrice - _usedPoint);
+        ?.updateAmount(vm.totalProductPrice - _usedPoint); // 예약은 배송비 없음
+  }
+
+  void _onFormChanged() {
+    setState(() {}); // 폼 상태 변경 시 UI 업데이트
+  }
+
+  bool get _isFormValid {
+    return _ordererNameController.text.isNotEmpty &&
+        _ordererPhoneController.text.isNotEmpty &&
+        _userNameController.text.isNotEmpty &&
+        _userPhoneController.text.isNotEmpty;
   }
 
   /* ───────── handlers ───────── */
@@ -272,8 +294,9 @@ class _ReservationPaymentScreenState extends State<ReservationPaymentScreen> {
                   onPressed: () => _processPayment(vm),
                   type: CTAButtonType.primary,
                   size: CTAButtonSize.large,
-                  text: '결제하기',
-                  isEnabled: true,
+                  text:
+                      '${formatPrice(vm.totalProductPrice - _usedPoint)}원 결제하기',
+                  isEnabled: _isFormValid,
                 ),
               ),
             ],
