@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/experience/models/experience_model.dart';
 import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
+import 'package:giftrip/features/experience/widgets/experience_calendar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 /// 체험 예약 바텀시트
 class ExperienceReservationBottomSheet extends StatefulWidget {
@@ -139,7 +140,85 @@ class _ExperienceReservationBottomSheetState
           // 캘린더 위젯 (토글 가능)
           if (_isCalendarVisible) ...[
             const SizedBox(height: 12),
-            _buildCalendar(experience),
+            ExperienceCalendarWidget(
+              experience: experience,
+              selectedStartDate: _selectedStartDate,
+              selectedEndDate: _selectedEndDate,
+              onRangeSelected: (start, end, focusedDay) {
+                // 날짜 선택 처리
+                if (start != null) {
+                  // 시작일이 이용 불가능 날짜인지 체크
+                  bool isStartDateUnavailable = false;
+                  if (experience.unavailableDates != null) {
+                    final startDateString =
+                        start.toIso8601String().split('T')[0];
+                    isStartDateUnavailable =
+                        experience.unavailableDates!.contains(startDateString);
+                  }
+
+                  if (isStartDateUnavailable) {
+                    // 시작일이 이용 불가능한 경우에만 에러 처리
+                    setState(() {
+                      _selectedStartDate = null;
+                      _selectedEndDate = null;
+                    });
+
+                    // 토스트 메시지 표시 (바텀시트 위에 표시)
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      final overlay = Overlay.of(context, rootOverlay: true);
+                      final overlayEntry = OverlayEntry(
+                        builder: (context) => Positioned(
+                          top: MediaQuery.of(context).size.height * 0.1,
+                          left: 16,
+                          right: 16,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: AppColors.gray800,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    LucideIcons.info,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      '선택하신 날짜는 이용할 수 없습니다. 다른 날짜를 선택해주세요.',
+                                      style:
+                                          body_S.copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+
+                      overlay.insert(overlayEntry);
+
+                      // 3초 후 제거
+                      Future.delayed(const Duration(seconds: 3), () {
+                        overlayEntry.remove();
+                      });
+                    });
+                  } else {
+                    // 시작일이 이용 가능한 경우 정상 처리
+                    setState(() {
+                      _selectedStartDate = start;
+                      _selectedEndDate = start.add(const Duration(days: 1));
+                    });
+                  }
+                }
+              },
+            ),
           ],
 
           // 예약 버튼
@@ -174,181 +253,5 @@ class _ExperienceReservationBottomSheetState
 
     // 바텀시트 닫기
     Navigator.of(context).pop();
-  }
-
-  // 캘린더 위젯 빌더
-  Widget _buildCalendar(ExperienceModel experience) {
-    final today = DateTime.now();
-
-    // 날짜 선택 범위 설정 (오늘부터 구매 가능 종료일까지)
-    final firstDay = today;
-    final lastDay = experience.availableTo;
-
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.lineStrong),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TableCalendar(
-        firstDay: firstDay,
-        lastDay: lastDay,
-        focusedDay: _selectedStartDate ?? today,
-        calendarFormat: CalendarFormat.month,
-        rangeStartDay: _selectedStartDate,
-        rangeEndDay: _selectedEndDate,
-        rangeSelectionMode: RangeSelectionMode.enforced,
-        headerStyle: HeaderStyle(
-          headerPadding: const EdgeInsets.only(top: 10, bottom: 14),
-          titleCentered: true,
-          formatButtonVisible: false,
-          titleTextStyle: title_M.copyWith(color: AppColors.calendarText),
-          leftChevronIcon: const Icon(
-            LucideIcons.chevronLeft,
-            size: 24,
-            color: AppColors.calendarText,
-          ),
-          leftChevronMargin: const EdgeInsets.only(left: 0),
-          leftChevronPadding: const EdgeInsets.only(left: 12),
-          rightChevronIcon: const Icon(
-            LucideIcons.chevronRight,
-            size: 24,
-            color: AppColors.calendarText,
-          ),
-          rightChevronMargin: const EdgeInsets.only(right: 0),
-          rightChevronPadding: const EdgeInsets.only(right: 12),
-        ),
-        calendarStyle: CalendarStyle(
-          defaultDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          defaultTextStyle: body_S.copyWith(
-            color: AppColors.calendarText,
-          ),
-          outsideDaysVisible: true,
-          weekendTextStyle: body_S.copyWith(color: AppColors.calendarText),
-          todayDecoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: AppColors.labelStrong),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          todayTextStyle: body_S.copyWith(color: AppColors.calendarText),
-          selectedDecoration: BoxDecoration(
-            color: AppColors.primaryStrong,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          rangeStartDecoration: BoxDecoration(
-            color: AppColors.primaryStrong,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          rangeEndDecoration: BoxDecoration(
-            color: AppColors.primaryStrong,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          withinRangeDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          rowDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          markerDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          holidayDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          outsideDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          weekendDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          disabledDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          disabledTextStyle: body_S.copyWith(color: AppColors.calendarDisabled),
-          rangeHighlightColor: AppColors.calendarSelected,
-        ),
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: body_S.copyWith(
-            color: AppColors.calendarDay,
-          ),
-          weekendStyle: body_S.copyWith(
-            color: AppColors.calendarDay,
-          ),
-        ),
-        selectedDayPredicate: (day) {
-          return isSameDay(_selectedStartDate, day);
-        },
-        enabledDayPredicate: (day) {
-          // 오늘 이전 날짜 비활성화
-          if (day.isBefore(today)) {
-            return false;
-          }
-
-          // 구매 가능 기간 체크
-          if (day.isBefore(experience.availableFrom) ||
-              day.isAfter(experience.availableTo)) {
-            return false;
-          }
-
-          // 이용 불가능 날짜 체크
-          if (experience.unavailableDates != null) {
-            final dateString =
-                day.toIso8601String().split('T')[0]; // YYYY-MM-DD 형식
-            if (experience.unavailableDates!.contains(dateString)) {
-              return false;
-            }
-          }
-
-          return true;
-        },
-        onRangeSelected: (start, end, focusedDay) {
-          // 날짜 선택 처리
-          if (start != null) {
-            // 시작일 선택
-            setState(() {
-              _selectedStartDate = start;
-
-              // 종료일은 시작일 + 1일로 설정
-              _selectedEndDate = start.add(const Duration(days: 1));
-
-              // 이용 불가능 날짜 체크
-              if (experience.unavailableDates != null) {
-                final dateString =
-                    _selectedEndDate!.toIso8601String().split('T')[0];
-                if (experience.unavailableDates!.contains(dateString)) {
-                  // 토스트 메시지 표시
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('구매 불가 날짜가 포함되어 있습니다. 다른 일정을 선택해주세요.'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-
-                  // 선택 초기화
-                  _selectedStartDate = null;
-                  _selectedEndDate = null;
-                }
-              }
-            });
-          }
-        },
-        locale: 'ko_KR',
-        startingDayOfWeek: StartingDayOfWeek.monday,
-      ),
-    );
   }
 }

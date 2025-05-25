@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/utils/formatter.dart';
+import 'package:giftrip/core/widgets/text/price_text.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class QuantitySelector extends StatelessWidget {
@@ -99,7 +100,7 @@ class QuantitySelector extends StatelessWidget {
               ),
 
               // 가격
-              Text('${formatPrice(price * quantity)}원', style: body_M),
+              PriceText(price: price),
             ],
           ),
         ],

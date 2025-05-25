@@ -290,6 +290,7 @@ class _ShoppingPurchaseBottomSheetState
     // 선택된 옵션들을 PaymentItem으로 변환
     final paymentItems = _selectedOptions.entries.map((entry) {
       return PaymentItem(
+        optionName: entry.key.name,
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         productId: shopping.id,
         title: '${shopping.title} - ${entry.key.name}',

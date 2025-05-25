@@ -58,7 +58,7 @@ class PaymentPriceInfoSection extends StatelessWidget {
             .toList(),
 
         // 배송비
-        const SizedBox(height: 4),
+        const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -70,9 +70,11 @@ class PaymentPriceInfoSection extends StatelessWidget {
           ],
         ),
 
+        const SizedBox(height: 12),
         Divider(
           color: AppColors.line,
         ),
+        const SizedBox(height: 12),
 
         // 최종 결제 금액
         Row(

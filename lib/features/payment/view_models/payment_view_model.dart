@@ -11,6 +11,7 @@ class PaymentItem {
   final int price;
   final int quantity;
   final ProductItemType type;
+  final String optionName;
 
   const PaymentItem({
     required this.id,
@@ -20,6 +21,7 @@ class PaymentItem {
     required this.price,
     required this.quantity,
     required this.type,
+    required this.optionName,
   });
 
   /// CartItemModel을 PaymentItem으로 변환
@@ -32,6 +34,7 @@ class PaymentItem {
       price: item.price,
       quantity: item.quantity ?? 1,
       type: item.type,
+      optionName: item.options ?? '기본 옵션',
     );
   }
 }
@@ -103,6 +106,7 @@ class PaymentViewModel extends ChangeNotifier {
         price: item.price,
         quantity: quantity,
         type: item.type,
+        optionName: item.optionName,
       );
       notifyListeners();
     }
