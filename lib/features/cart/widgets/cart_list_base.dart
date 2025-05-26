@@ -13,15 +13,13 @@ import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 class CartListBase extends StatelessWidget {
   final List<CartItemModel> items;
   final CartCategory? selectedCategory;
-  final Function(String)? onDetailTap;
-  final bool showSectionHeaders; // 섹션 헤더 표시 여부
+  final bool useGroupHeaders; // true: 그룹별 헤더, false: 개별 카테고리별 헤더
 
   const CartListBase({
     super.key,
     required this.items,
     this.selectedCategory,
-    this.onDetailTap,
-    this.showSectionHeaders = true,
+    this.useGroupHeaders = true,
   });
 
   List<CartItemModel> _getFilteredItemsByCategories(
@@ -33,44 +31,80 @@ class CartListBase extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartViewModel = Provider.of<CartViewModel>(context);
 
-    // 숙소/체험/체험단 그룹
+    if (items.isEmpty) {
+      return Center(
+        child: Text(
+          '장바구니가 비어있어요',
+          style: subtitle_M.copyWith(color: AppColors.labelAlternative),
+        ),
+      );
+    }
+
+    if (useGroupHeaders) {
+      // 그룹별 헤더 (FullCartList용)
+      return _buildGroupSections(context, cartViewModel);
+    } else {
+      // 개별 카테고리별 헤더 (CategoryCartList용)
+      return _buildCategorySections(context, cartViewModel);
+    }
+  }
+
+  /// 그룹별 섹션 구성 (숙박/체험/체험단, 쇼핑)
+  Widget _buildGroupSections(
+      BuildContext context, CartViewModel cartViewModel) {
     final mainCategories = [
       CartCategory.lodging,
       CartCategory.experience,
       CartCategory.experienceGroup,
     ];
     final mainItems = _getFilteredItemsByCategories(mainCategories);
-
-    // 쇼핑 그룹
     final shoppingItems = _getFilteredItemsByCategories([CartCategory.product]);
 
-    return items.isEmpty
-        ? Center(
-            child: Text(
-              '장바구니가 비어있어요',
-              style: subtitle_M.copyWith(color: AppColors.labelAlternative),
-            ),
-          )
-        : ListView(
-            children: [
-              if (mainItems.isNotEmpty)
-                _buildSection(
-                  context: context,
-                  cartViewModel: cartViewModel,
-                  categories: mainCategories,
-                  items: mainItems,
-                  title: showSectionHeaders ? '숙박 / 체험 / 체험단' : null,
-                ),
-              if (shoppingItems.isNotEmpty)
-                _buildSection(
-                  context: context,
-                  cartViewModel: cartViewModel,
-                  categories: [CartCategory.product],
-                  items: shoppingItems,
-                  title: showSectionHeaders ? '쇼핑' : null,
-                ),
-            ],
-          );
+    return ListView(
+      children: [
+        if (mainItems.isNotEmpty)
+          _buildSection(
+            context: context,
+            cartViewModel: cartViewModel,
+            categories: mainCategories,
+            items: mainItems,
+            title: '숙박 / 체험 / 체험단',
+          ),
+        if (shoppingItems.isNotEmpty)
+          _buildSection(
+            context: context,
+            cartViewModel: cartViewModel,
+            categories: [CartCategory.product],
+            items: shoppingItems,
+            title: '쇼핑',
+          ),
+      ],
+    );
+  }
+
+  /// 개별 카테고리별 섹션 구성 (숙박, 체험, 체험단, 쇼핑)
+  Widget _buildCategorySections(
+      BuildContext context, CartViewModel cartViewModel) {
+    final sections = <Widget>[];
+
+    // 각 카테고리별로 개별 섹션 생성
+    for (final category in CartCategory.values) {
+      final categoryItems =
+          items.where((item) => item.category == category).toList();
+      if (categoryItems.isNotEmpty) {
+        sections.add(
+          _buildSection(
+            context: context,
+            cartViewModel: cartViewModel,
+            categories: [category],
+            items: categoryItems,
+            title: category.label,
+          ),
+        );
+      }
+    }
+
+    return ListView(children: sections);
   }
 
   Widget _buildSection({
@@ -230,7 +264,6 @@ class CartListBase extends StatelessWidget {
         );
       },
       onQuantityChanged: (q) => cartViewModel.changeQuantity(item.id, q),
-      onDetailTap: () => onDetailTap?.call(item.id),
     );
   }
 }

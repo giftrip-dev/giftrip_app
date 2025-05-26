@@ -7,13 +7,11 @@ import 'package:giftrip/features/cart/widgets/cart_list_base.dart';
 class CategoryCartList extends StatelessWidget {
   final List<CartItemModel> items;
   final CartCategory? selectedCategory;
-  final Function(String)? onDetailTap;
 
   const CategoryCartList({
     super.key,
     required this.items,
     this.selectedCategory,
-    this.onDetailTap,
   });
 
   @override
@@ -21,7 +19,7 @@ class CategoryCartList extends StatelessWidget {
     return CartListBase(
       items: items,
       selectedCategory: selectedCategory,
-      onDetailTap: onDetailTap,
+      useGroupHeaders: false, // 개별 카테고리별 헤더 사용 (숙박, 체험, 체험단, 쇼핑)
     );
   }
 }

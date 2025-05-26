@@ -127,16 +127,12 @@ class _CartScreenState extends State<CartScreen> {
                 ? FullCartList(
                     items: vm.cartItems,
                     selectedCategory: vm.selectedCategory,
-                    onDetailTap: (id) {},
                   )
                 : CategoryCartList(
                     items: vm.cartItems
                         .where((e) => e.category == vm.selectedCategory)
                         .toList(),
                     selectedCategory: vm.selectedCategory,
-                    onDetailTap: (id) {
-                      // TODO: 상세보기 구현
-                    },
                   ),
           );
         },
