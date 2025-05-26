@@ -9,6 +9,7 @@ class GenericCategoryBar<T extends Enum> extends StatefulWidget {
   final Function(T?) onCategoryChanged;
   final List<T> categories;
   final String Function(T) getLabelFunc;
+  final int Function(T?)? getCountFunc;
 
   const GenericCategoryBar({
     super.key,
@@ -16,6 +17,7 @@ class GenericCategoryBar<T extends Enum> extends StatefulWidget {
     required this.onCategoryChanged,
     required this.categories,
     required this.getLabelFunc,
+    this.getCountFunc,
   });
 
   @override
@@ -92,7 +94,9 @@ class _GenericCategoryBarState<T extends Enum>
             // 전체 카테고리
             _CategoryChip(
               key: _chipKeys[0],
-              label: '전체',
+              label: widget.getCountFunc != null
+                  ? '전체(${widget.getCountFunc!(null)})'
+                  : '전체',
               isSelected: widget.selectedCategory == null,
               onTap: () => widget.onCategoryChanged(null),
             ),
@@ -101,11 +105,16 @@ class _GenericCategoryBarState<T extends Enum>
             ...widget.categories.asMap().entries.map((entry) {
               final idx = entry.key;
               final category = entry.value;
+              final categoryLabel = widget.getLabelFunc(category);
+              final labelWithCount = widget.getCountFunc != null
+                  ? '$categoryLabel(${widget.getCountFunc!(category)})'
+                  : categoryLabel;
+
               return Padding(
                 padding: const EdgeInsets.only(right: 32),
                 child: _CategoryChip(
                   key: _chipKeys[idx + 1],
-                  label: widget.getLabelFunc(category),
+                  label: labelWithCount,
                   isSelected: widget.selectedCategory == category,
                   onTap: () => widget.onCategoryChanged(category),
                 ),

@@ -44,6 +44,35 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartViewModel>(
         builder: (context, vm, child) {
+          // 로딩 중일 때 로딩 인디케이터 표시
+          if (vm.isLoading) {
+            return CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              slivers: [
+                SliverPersistentHeader(
+                  pinned: true,
+                  floating: true,
+                  delegate: GenericPersistentCategoryBarDelegate<CartCategory>(
+                    selectedCategory: vm.selectedCategory,
+                    onCategoryChanged: (category) {
+                      vm.changeCategory(category);
+                    },
+                    categories: CartCategory.values,
+                    getLabelFunc: (category) => category.label,
+                    getCountFunc: (category) =>
+                        vm.getItemCountByCategory(category),
+                  ),
+                ),
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // 장바구니가 비어있을 때
           if (vm.cartItems.isEmpty) {
             return CustomScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -58,6 +87,8 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     categories: CartCategory.values,
                     getLabelFunc: (category) => category.label,
+                    getCountFunc: (category) =>
+                        vm.getItemCountByCategory(category),
                   ),
                 ),
                 SliverFillRemaining(
@@ -86,6 +117,8 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     categories: CartCategory.values,
                     getLabelFunc: (category) => category.label,
+                    getCountFunc: (category) =>
+                        vm.getItemCountByCategory(category),
                   ),
                 ),
               ];

@@ -3,10 +3,8 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:giftrip/features/lodging/widgets/stay_option_bottom_sheet.dart';
-import 'package:giftrip/features/lodging/widgets/room_item.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
-import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
 import 'package:giftrip/features/lodging/repositories/mock_room_data.dart';
 import 'package:giftrip/features/lodging/widgets/room_list.dart';
 

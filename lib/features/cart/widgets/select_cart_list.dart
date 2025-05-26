@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 
 class SelectCartList extends StatelessWidget {
   final List<CartItemModel> items;
@@ -99,9 +100,20 @@ class SelectCartList extends StatelessWidget {
                           cartViewModel.isItemSelected(e.id))
                       .map((e) => e.id)
                       .toList();
-                  for (final id in ids) {
-                    cartViewModel.removeFromCart(id);
-                  }
+
+                  if (ids.isEmpty) return; // 선택된 아이템이 없으면 리턴
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => TwoButtonModal(
+                      title: '상품 삭제',
+                      desc: '선택한 ${ids.length}개의 상품을 장바구니에서 삭제할까요?',
+                      onConfirm: () {
+                        Navigator.of(context).pop();
+                        cartViewModel.removeMultipleFromCart(ids);
+                      },
+                    ),
+                  );
                 },
                 child: const Text('선택 삭제', style: body_S),
               ),
@@ -113,7 +125,19 @@ class SelectCartList extends StatelessWidget {
           item: item,
           isSelected: cartViewModel.isItemSelected(item.id),
           onSelect: () => cartViewModel.toggleSelectItem(item.id),
-          onDelete: () => cartViewModel.removeFromCart(item.id),
+          onDelete: () {
+            showDialog(
+              context: context,
+              builder: (context) => TwoButtonModal(
+                title: '상품 삭제',
+                desc: '장바구니에서 해당 상품을 삭제할까요?',
+                onConfirm: () {
+                  Navigator.of(context).pop();
+                  cartViewModel.removeFromCart(item.id);
+                },
+              ),
+            );
+          },
           onQuantityChanged: (q) => cartViewModel.changeQuantity(item.id, q),
           onDetailTap: () => onDetailTap?.call(item.id),
         );

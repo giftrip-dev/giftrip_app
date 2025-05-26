@@ -2,6 +2,7 @@ import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
 
 final List<RoomViewModel> mockRoomList = [
   RoomViewModel(
+    id: '1',
     roomName: '슈퍼 트윈룸',
     baseOccupancy: 2,
     maxOccupancy: 2,
@@ -18,6 +19,7 @@ final List<RoomViewModel> mockRoomList = [
     ],
   ),
   RoomViewModel(
+    id: '2',
     roomName: '디럭스 더블룸',
     baseOccupancy: 2,
     maxOccupancy: 3,

@@ -39,8 +39,8 @@ class PaymentItem {
       quantity: item.quantity ?? 1,
       type: item.type,
       optionName: item.options ?? '기본 옵션',
-      startDate: null,
-      endDate: null,
+      startDate: item.startDate,
+      endDate: item.endDate,
     );
   }
 }

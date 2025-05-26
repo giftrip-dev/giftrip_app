@@ -8,12 +8,14 @@ class GenericPersistentCategoryBarDelegate<T extends Enum>
   final Function(T?) onCategoryChanged;
   final List<T> categories;
   final String Function(T) getLabelFunc;
+  final int Function(T?)? getCountFunc;
 
   GenericPersistentCategoryBarDelegate({
     required this.selectedCategory,
     required this.onCategoryChanged,
     required this.categories,
     required this.getLabelFunc,
+    this.getCountFunc,
   });
 
   @override
@@ -31,6 +33,7 @@ class GenericPersistentCategoryBarDelegate<T extends Enum>
             onCategoryChanged: onCategoryChanged,
             categories: categories,
             getLabelFunc: getLabelFunc,
+            getCountFunc: getCountFunc,
           ),
         ],
       ),

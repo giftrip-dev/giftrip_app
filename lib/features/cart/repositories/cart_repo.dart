@@ -42,7 +42,7 @@ class CartRepo {
 
   /// 장바구니에 상품 추가
   Future<void> addToCart(String productId, ProductItemType type,
-      {int quantity = 1}) async {
+      {int quantity = 1, DateTime? startDate, DateTime? endDate}) async {
     if (_useMockData) {
       // 목업 데이터 사용
       await Future.delayed(const Duration(milliseconds: 200));
@@ -92,6 +92,8 @@ class CartRepo {
             type: type,
             addedAt: DateTime.now(),
             tags: experience.badges.map((badge) => badge.name).toList(),
+            startDate: startDate,
+            endDate: endDate,
           );
           break;
 
@@ -113,6 +115,8 @@ class CartRepo {
             type: type,
             addedAt: DateTime.now(),
             tags: lodging.badges.map((badge) => badge.name).toList(),
+            startDate: startDate,
+            endDate: endDate,
           );
           break;
 
@@ -134,6 +138,8 @@ class CartRepo {
             type: type,
             addedAt: DateTime.now(),
             tags: tester.badges.map((badge) => badge.name).toList(),
+            startDate: startDate,
+            endDate: endDate,
           );
           break;
 
@@ -149,6 +155,8 @@ class CartRepo {
           'productId': productId,
           'type': type.value,
           'quantity': quantity,
+          'startDate': startDate?.toIso8601String(),
+          'endDate': endDate?.toIso8601String(),
         });
 
         if (response.statusCode != 200) {

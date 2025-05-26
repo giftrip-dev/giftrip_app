@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
+import 'package:giftrip/shared/widgets/cart/cart_icon_button.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 class RoomItem extends StatefulWidget {
   final RoomViewModel room;
@@ -215,24 +219,12 @@ class _RoomItemState extends State<RoomItem> {
                   Spacer(),
                   Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.line),
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              LucideIcons.shoppingCart,
-                              color: AppColors.labelStrong,
-                              size: 24,
-                            ),
-                          ),
-                        ),
+                      CartIconButton(
+                        productId: widget.room.id,
+                        productType: ProductItemType.lodging,
+                        startDate: context.read<LodgingViewModel>().startDate,
+                        endDate: context.read<LodgingViewModel>().endDate,
+                        isOutlined: true,
                       ),
                       const SizedBox(width: 16),
                       SizedBox(
