@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
 import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
 import 'package:giftrip/features/order_booking/models/order_booking_detail_model.dart';
@@ -17,6 +19,7 @@ class OrderBookingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   OrderBookingCategory? _selectedCategory;
+  bool _isCanceling = false; // 취소 진행 중 상태
 
   // 외부 접근용 Getter
   List<OrderBookingModel> get orderBookingList => _orderBookingList;
@@ -25,6 +28,7 @@ class OrderBookingViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
   OrderBookingCategory? get selectedCategory => _selectedCategory;
+  bool get isCanceling => _isCanceling;
 
   /// 다음 페이지 번호 계산
   int? get nextPage {
@@ -102,6 +106,112 @@ class OrderBookingViewModel extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  /// 예약/구매 취소
+  Future<bool> _cancelOrderBooking(String id, {String? reason}) async {
+    try {
+      _isCanceling = true;
+      notifyListeners();
+
+      // 취소 API 호출
+      await _repo.cancelOrderBooking(id, reason: reason);
+
+      // 목록에서 해당 아이템 찾아서 상태 업데이트
+      final index = _orderBookingList.indexWhere((item) => item.id == id);
+      if (index != -1) {
+        final updatedItem = _orderBookingList[index];
+        _orderBookingList[index] = OrderBookingModel(
+          id: updatedItem.id,
+          title: updatedItem.title,
+          thumbnailUrl: updatedItem.thumbnailUrl,
+          originalPrice: updatedItem.originalPrice,
+          finalPrice: updatedItem.finalPrice,
+          category: updatedItem.category,
+          rating: updatedItem.rating,
+          reviewCount: updatedItem.reviewCount,
+          availableFrom: updatedItem.availableFrom,
+          availableTo: updatedItem.availableTo,
+          progress: OrderBookingProgress.canceled, // 상태를 취소로 변경
+          discountRate: updatedItem.discountRate,
+          soldOut: updatedItem.soldOut,
+          unavailableDates: updatedItem.unavailableDates,
+          paidAt: updatedItem.paidAt,
+        );
+      }
+
+      // 선택된 상품이 있다면 그것도 업데이트
+      if (_selectedOrderBooking?.id == id) {
+        _selectedOrderBooking = OrderBookingDetailModel(
+          id: _selectedOrderBooking!.id,
+          title: _selectedOrderBooking!.title,
+          thumbnailUrl: _selectedOrderBooking!.thumbnailUrl,
+          originalPrice: _selectedOrderBooking!.originalPrice,
+          finalPrice: _selectedOrderBooking!.finalPrice,
+          category: _selectedOrderBooking!.category,
+          rating: _selectedOrderBooking!.rating,
+          reviewCount: _selectedOrderBooking!.reviewCount,
+          availableFrom: _selectedOrderBooking!.availableFrom,
+          availableTo: _selectedOrderBooking!.availableTo,
+          progress: OrderBookingProgress.canceled, // 상태를 취소로 변경
+          location: _selectedOrderBooking!.location,
+          managerPhoneNumber: _selectedOrderBooking!.managerPhoneNumber,
+          reserverName: _selectedOrderBooking!.reserverName,
+          reserverPhoneNumber: _selectedOrderBooking!.reserverPhoneNumber,
+          payMethod: _selectedOrderBooking!.payMethod,
+          discountRate: _selectedOrderBooking!.discountRate,
+          soldOut: _selectedOrderBooking!.soldOut,
+          unavailableDates: _selectedOrderBooking!.unavailableDates,
+          paidAt: _selectedOrderBooking!.paidAt,
+          deliveryAddress: _selectedOrderBooking!.deliveryAddress,
+          deliveryDetail: _selectedOrderBooking!.deliveryDetail,
+        );
+      }
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      logger.e('예약/구매 취소 실패: $e');
+      return false;
+    } finally {
+      _isCanceling = false;
+      notifyListeners();
+    }
+  }
+
+  /// 예약/구매 취소 처리
+  Future<void> handleCancel(
+      BuildContext context, OrderBookingModel orderBooking) async {
+    final success = await _cancelOrderBooking(orderBooking.id);
+
+    if (context.mounted) {
+      if (success) {
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => TwoButtonModal(
+            title: '취소 완료',
+            desc:
+                '${orderBooking.title} ${orderBooking.category == OrderBookingCategory.product ? '구매' : '예약'}가 취소되었습니다.',
+            cancelText: '닫기',
+            confirmText: '확인',
+            onConfirm: () => Navigator.of(context).pop(),
+          ),
+        );
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => TwoButtonModal(
+            title: '취소 실패',
+            desc: '취소 중 오류가 발생했습니다. 다시 시도해주세요.',
+            cancelText: '닫기',
+            confirmText: '확인',
+            onConfirm: () => Navigator.of(context).pop(),
+          ),
+        );
+      }
     }
   }
 

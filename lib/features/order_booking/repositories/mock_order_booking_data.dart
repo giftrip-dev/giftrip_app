@@ -12,7 +12,6 @@ final List<OrderBookingModel> mockOrderBookingList = [
     OrderBookingModel(
       id: 'res_lodging_${i + 1}',
       title: '숙박 상품 ${i + 1}',
-      description: '이것은 숙박 상품 ${i + 1}의 상세 설명입니다.',
       thumbnailUrl: 'assets/png/banner.png',
       originalPrice: 10000 + i * 1000,
       finalPrice: 9000 + i * 1000,
@@ -24,9 +23,7 @@ final List<OrderBookingModel> mockOrderBookingList = [
       availableTo: DateTime.now().add(Duration(days: 30)),
       soldOut: false,
       unavailableDates: null,
-      progress: i % 2 == 0
-          ? OrderBookingProgress.confirmed
-          : OrderBookingProgress.completed,
+      progress: OrderBookingProgress.values[i % 3],
       paidAt: DateTime.now().subtract(Duration(days: i + 1)),
     ),
   // 체험 3개
@@ -34,7 +31,6 @@ final List<OrderBookingModel> mockOrderBookingList = [
     OrderBookingModel(
       id: 'res_experience_${i + 1}',
       title: '체험 상품 ${i + 1}',
-      description: '이것은 체험 상품 ${i + 1}의 상세 설명입니다.',
       thumbnailUrl: 'assets/png/banner.png',
       originalPrice: 12000 + i * 1000,
       finalPrice: 11000 + i * 1000,
@@ -46,9 +42,7 @@ final List<OrderBookingModel> mockOrderBookingList = [
       availableTo: DateTime.now().add(Duration(days: 32)),
       soldOut: false,
       unavailableDates: null,
-      progress: i % 2 == 0
-          ? OrderBookingProgress.completed
-          : OrderBookingProgress.confirmed,
+      progress: OrderBookingProgress.values[i % 3],
       paidAt: DateTime.now().subtract(Duration(days: i + 2)),
     ),
   // 상품 4개
@@ -56,7 +50,6 @@ final List<OrderBookingModel> mockOrderBookingList = [
     OrderBookingModel(
       id: 'res_product_${i + 1}',
       title: '상품 ${i + 1}',
-      description: '이것은 상품 ${i + 1}의 상세 설명입니다.',
       thumbnailUrl: 'assets/png/banner.png',
       originalPrice: 15000 + i * 1000,
       finalPrice: 14000 + i * 1000,
@@ -68,9 +61,7 @@ final List<OrderBookingModel> mockOrderBookingList = [
       availableTo: DateTime.now().add(Duration(days: 33)),
       soldOut: false,
       unavailableDates: null,
-      progress: i % 2 == 0
-          ? OrderBookingProgress.confirmed
-          : OrderBookingProgress.completed,
+      progress: OrderBookingProgress.values[i % 3],
       paidAt: DateTime.now().subtract(Duration(days: i + 3)),
     ),
   // 체험단 2개
@@ -78,7 +69,6 @@ final List<OrderBookingModel> mockOrderBookingList = [
     OrderBookingModel(
       id: 'res_exgroup_${i + 1}',
       title: '체험단 상품 ${i + 1}',
-      description: '이것은 체험단 상품 ${i + 1}의 상세 설명입니다.',
       thumbnailUrl: 'assets/png/banner.png',
       originalPrice: 17000 + i * 1000,
       finalPrice: 16000 + i * 1000,
@@ -90,9 +80,7 @@ final List<OrderBookingModel> mockOrderBookingList = [
       availableTo: DateTime.now().add(Duration(days: 34)),
       soldOut: false,
       unavailableDates: null,
-      progress: i % 2 == 0
-          ? OrderBookingProgress.completed
-          : OrderBookingProgress.confirmed,
+      progress: OrderBookingProgress.values[i % 3],
       paidAt: DateTime.now().subtract(Duration(days: i + 4)),
     ),
 ];

@@ -6,6 +6,9 @@ import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
 import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
 import 'package:giftrip/features/order_booking/screens/booking_detail_screen.dart';
 import 'package:giftrip/features/order_booking/screens/order_detail_screen.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
+import 'package:giftrip/features/order_booking/view_models/order_booking_view_model.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class OrderBookingItem extends StatelessWidget {
@@ -18,7 +21,19 @@ class OrderBookingItem extends StatelessWidget {
 
   bool get isProduct => orderBooking.category == OrderBookingCategory.product;
 
-  Widget _buildButtons() {
+  Widget _buildButtons(BuildContext context) {
+    // 취소된 상태일 때는 모든 카테고리에서 취소완료 버튼 표시
+    if (orderBooking.progress == OrderBookingProgress.canceled) {
+      return CTAButton(
+        isEnabled: false,
+        onPressed: null,
+        type: CTAButtonType.outline,
+        size: CTAButtonSize.medium,
+        text: '취소 완료',
+        textStyle: title_S.copyWith(color: AppColors.labelAlternative),
+      );
+    }
+
     if (isProduct) {
       if (orderBooking.progress == OrderBookingProgress.confirmed) {
         return Row(
@@ -37,7 +52,21 @@ class OrderBookingItem extends StatelessWidget {
             Expanded(
               child: CTAButton(
                 isEnabled: true,
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => TwoButtonModal(
+                      title: '구매를 취소하시나요?',
+                      desc:
+                          '${orderBooking.title} 구매를 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
+                      cancelText: '닫기',
+                      confirmText: '구매 취소',
+                      onConfirm: () => context
+                          .read<OrderBookingViewModel>()
+                          .handleCancel(context, orderBooking),
+                    ),
+                  );
+                },
                 type: CTAButtonType.outline,
                 size: CTAButtonSize.medium,
                 text: '구매 취소',
@@ -77,7 +106,20 @@ class OrderBookingItem extends StatelessWidget {
       if (orderBooking.progress == OrderBookingProgress.confirmed) {
         return CTAButton(
           isEnabled: true,
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => TwoButtonModal(
+                title: '예약을 취소하시나요?',
+                desc: '${orderBooking.title} 예약을 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
+                cancelText: '닫기',
+                confirmText: '예약 취소',
+                onConfirm: () => context
+                    .read<OrderBookingViewModel>()
+                    .handleCancel(context, orderBooking),
+              ),
+            );
+          },
           type: CTAButtonType.outline,
           size: CTAButtonSize.medium,
           text: '예약 취소',
@@ -198,7 +240,7 @@ class OrderBookingItem extends StatelessWidget {
           // 하단 버튼
           SizedBox(
             width: double.infinity,
-            child: _buildButtons(),
+            child: _buildButtons(context),
           ),
         ],
       ),
