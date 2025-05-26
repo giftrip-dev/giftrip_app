@@ -83,6 +83,36 @@ final List<ProductModel> mockProducts = () {
     },
   ));
 
+  // 체험단 상품들 추가
+  allProducts.addAll(List.generate(
+    6,
+    (index) {
+      final id = 'tester_${index + 1}';
+      final originalPrice = 25000 + (index * 3000);
+      final discountRate = (index % 4 == 0) ? ((index * 2) % 25 + 10) : null;
+      final finalPrice = discountRate != null
+          ? ((originalPrice * (100 - discountRate)) / 100).round()
+          : originalPrice;
+
+      List<ProductTagType> badges = [];
+      if (index % 3 == 0) badges.add(ProductTagType.newArrival);
+      if (index % 5 == 0) badges.add(ProductTagType.bestSeller);
+      if (index % 7 == 6) badges.add(ProductTagType.almostSoldOut);
+
+      return ProductModel(
+        id: id,
+        thumbnailUrl: 'assets/png/banner.png',
+        title: '체험단 상품 제목 ${index + 1}',
+        originalPrice: originalPrice,
+        finalPrice: finalPrice,
+        discountRate: discountRate,
+        createdAt: DateTime.now().subtract(Duration(days: index)),
+        productType: ProductType.experienceGroup,
+        badges: badges.isNotEmpty ? badges : null,
+      );
+    },
+  ));
+
   // 리스트를 랜덤하게 섞기
   allProducts.shuffle();
 

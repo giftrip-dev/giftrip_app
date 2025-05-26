@@ -1,40 +1,24 @@
 import 'package:giftrip/features/tester/models/tester_category.dart';
 import 'package:giftrip/features/tester/models/tester_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/home/view_models/product_view_model.dart';
 
 /// 목업 체험단 상품 데이터
-final List<TesterModel> mockTesterList = List.generate(
-  50,
-  (index) {
+/// 홈스크린의 목업 데이터에서 체험단 타입만 필터링해서 TesterModel로 변환
+final List<TesterModel> mockTesterList = () {
+  // 홈스크린 목업 데이터에서 체험단 타입만 필터링
+  final testerProducts = mockProducts
+      .where((product) => product.productType == ProductType.experienceGroup)
+      .toList();
+
+  // ProductModel을 TesterModel로 변환
+  return testerProducts.map((product) {
+    // ID에서 인덱스 추출 (tester_1 -> 0, tester_2 -> 1, ...)
+    final index = int.parse(product.id.split('_')[1]) - 1;
+
     // 카테고리를 순환하면서 할당
     final categoryIndex = index % TesterCategory.values.length;
     final category = TesterCategory.values[categoryIndex];
-
-    // 5개 중 2개는 할인 적용 (0~50% 할인)
-    final hasDiscount = index % 5 < 2;
-    final originalPrice = 15000 + (index * 1500); // 15,000원부터 1,500원씩 증가
-    final discountRate = hasDiscount ? ((index % 5 + 1) * 10) : null;
-    final finalPrice = discountRate != null
-        ? (originalPrice * (100 - discountRate) ~/ 100)
-        : originalPrice;
-
-    // 뱃지 설정
-    final badges = <ProductTagType>[];
-
-    // 첫 10개 상품은 NEW 뱃지
-    if (index < 10) {
-      badges.add(ProductTagType.newArrival);
-    }
-
-    // 인덱스가 3의 배수인 상품은 BEST 뱃지
-    if (index % 3 == 0) {
-      badges.add(ProductTagType.bestSeller);
-    }
-
-    // 인덱스가 7의 배수인 상품은 품절임박 뱃지
-    if (index % 7 == 0) {
-      badges.add(ProductTagType.almostSoldOut);
-    }
 
     // 구매 가능 기간 설정 (현재로부터 1일 후 ~ 60일 후까지)
     final now = DateTime.now();
@@ -59,22 +43,22 @@ final List<TesterModel> mockTesterList = List.generate(
     }
 
     return TesterModel(
-      id: 'tester_${index + 1}',
+      id: product.id, // 홈스크린과 동일한 ID 사용
       title: '${category.label} 체험단 ${index + 1}',
       description:
           '이것은 ${category.label} 체험단 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
-      thumbnailUrl: 'assets/png/banner.png',
-      originalPrice: originalPrice,
-      finalPrice: finalPrice,
+      thumbnailUrl: product.thumbnailUrl,
+      originalPrice: product.originalPrice,
+      finalPrice: product.finalPrice,
       category: category,
       rating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평점
       reviewCount: 10 + index, // 10개부터 1개씩 증가
-      discountRate: discountRate,
-      badges: badges,
+      discountRate: product.discountRate,
+      badges: product.badges ?? [],
       availableFrom: availableFrom,
       availableTo: availableTo,
       soldOut: soldOut,
       unavailableDates: unavailableDates.isEmpty ? null : unavailableDates,
     );
-  },
-);
+  }).toList();
+}();
