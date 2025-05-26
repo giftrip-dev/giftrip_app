@@ -6,7 +6,9 @@ import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/item_badge.dart';
 import 'package:giftrip/features/experience/screens/experience_detail_screen.dart';
+import 'package:giftrip/features/lodging/screens/lodging_detail_screen.dart';
 import 'package:giftrip/features/shopping/screens/shopping_detail_screen.dart';
+import 'package:giftrip/features/tester/screens/tester_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
   final ProductModel product;
@@ -25,12 +27,21 @@ class ProductItem extends StatelessWidget {
   void _onTap(BuildContext context) {
     switch (product.productType) {
       case ProductType.experience:
-      case ProductType.experienceGroup:
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ExperienceDetailScreen(
               experienceId: product.id,
+            ),
+          ),
+        );
+        break;
+      case ProductType.experienceGroup:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TesterDetailScreen(
+              testerId: product.id,
             ),
           ),
         );
@@ -46,11 +57,14 @@ class ProductItem extends StatelessWidget {
         );
         break;
       case ProductType.lodging:
-        // TODO: 숙소 상세 페이지가 구현되면 추가
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('숙소 상세 페이지 준비 중입니다.')),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LodgingDetailScreen(
+              lodgingId: product.id,
+            ),
+          ),
         );
-        break;
     }
   }
 
