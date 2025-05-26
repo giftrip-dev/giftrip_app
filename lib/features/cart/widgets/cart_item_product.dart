@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 class CartItemProduct extends StatelessWidget {
   final CartItemModel item;
   final VoidCallback? onDetailTap;
+  final VoidCallback? onTitleTap;
   final bool isSelected;
   final VoidCallback? onSelect;
   final VoidCallback? onDelete;
@@ -20,6 +21,7 @@ class CartItemProduct extends StatelessWidget {
     super.key,
     required this.item,
     this.onDetailTap,
+    this.onTitleTap,
     this.isSelected = false,
     this.onSelect,
     this.onDelete,
@@ -66,7 +68,7 @@ class CartItemProduct extends StatelessWidget {
                   children: [
                     Expanded(
                       child: GestureDetector(
-                        onTap: onSelect,
+                        onTap: onTitleTap,
                         child: Text(
                           item.title,
                           style:

@@ -3,6 +3,10 @@ import 'package:giftrip/features/cart/models/cart_item_model.dart';
 import 'package:giftrip/features/cart/models/cart_category.dart';
 import 'package:giftrip/features/cart/widgets/cart_item_product.dart';
 import 'package:giftrip/features/cart/widgets/cart_item_reservation.dart';
+import 'package:giftrip/features/experience/screens/experience_detail_screen.dart';
+import 'package:giftrip/features/lodging/screens/lodging_detail_screen.dart';
+import 'package:giftrip/features/shopping/screens/shopping_detail_screen.dart';
+import 'package:giftrip/features/tester/screens/tester_detail_screen.dart';
 
 class CartItemWrapper extends StatelessWidget {
   final CartItemModel item;
@@ -22,6 +26,52 @@ class CartItemWrapper extends StatelessWidget {
     this.onQuantityChanged,
   });
 
+  /// 상품명 클릭 시 상세 페이지로 이동하는 핸들러
+  void _navigateToDetail(BuildContext context) {
+    switch (item.category) {
+      case CartCategory.lodging:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LodgingDetailScreen(
+              lodgingId: item.id,
+            ),
+          ),
+        );
+        break;
+      case CartCategory.experience:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExperienceDetailScreen(
+              experienceId: item.id,
+            ),
+          ),
+        );
+        break;
+      case CartCategory.experienceGroup:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TesterDetailScreen(
+              testerId: item.id,
+            ),
+          ),
+        );
+        break;
+      case CartCategory.product:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShoppingDetailScreen(
+              shoppingId: item.id,
+            ),
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (item.category) {
@@ -31,6 +81,7 @@ class CartItemWrapper extends StatelessWidget {
         return CartItemReservation(
           item: item,
           onDetailTap: onDetailTap,
+          onTitleTap: () => _navigateToDetail(context),
           isSelected: isSelected,
           onSelect: onSelect,
           onDelete: onDelete,
@@ -40,6 +91,7 @@ class CartItemWrapper extends StatelessWidget {
         return CartItemProduct(
           item: item,
           onDetailTap: onDetailTap,
+          onTitleTap: () => _navigateToDetail(context),
           isSelected: isSelected,
           onSelect: onSelect,
           onDelete: onDelete,
