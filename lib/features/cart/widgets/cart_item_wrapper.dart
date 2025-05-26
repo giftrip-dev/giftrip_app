@@ -34,7 +34,7 @@ class CartItemWrapper extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => LodgingDetailScreen(
-              lodgingId: item.id,
+              lodgingId: item.productId, // 장바구니 아이템 ID가 아닌 실제 상품 ID 사용
             ),
           ),
         );
@@ -44,7 +44,7 @@ class CartItemWrapper extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ExperienceDetailScreen(
-              experienceId: item.id,
+              experienceId: item.productId, // 장바구니 아이템 ID가 아닌 실제 상품 ID 사용
             ),
           ),
         );
@@ -54,7 +54,7 @@ class CartItemWrapper extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => TesterDetailScreen(
-              testerId: item.id,
+              testerId: item.productId, // 장바구니 아이템 ID가 아닌 실제 상품 ID 사용
             ),
           ),
         );
@@ -64,7 +64,7 @@ class CartItemWrapper extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ShoppingDetailScreen(
-              shoppingId: item.id,
+              shoppingId: item.productId, // 장바구니 아이템 ID가 아닌 실제 상품 ID 사용
             ),
           ),
         );
