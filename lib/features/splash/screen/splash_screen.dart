@@ -60,9 +60,10 @@ class _SplashScreenState extends State<SplashScreen> {
         color: AppColors.white,
         child: Center(
             child: CustomImage(
-          imageUrl: 'assets/png/logo.png',
-          width: 183,
-          height: 50,
+          imageUrl: 'assets/webp/splash.webp',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
         )),
       ),
     );
