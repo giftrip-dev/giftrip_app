@@ -12,7 +12,20 @@
           "package_name": "kr.co.giftrip.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "479328366433-lu3pff6hh7695k0jueii7d427sois277.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.co.giftrip.app",
+            "certificate_hash": "5fec368589165c7d15433101a230c7e63cdbe100"
+          }
+        },
+        {
+          "client_id": "479328366433-i7gnrghirj026aa9ik1trgj18vbre54k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCVOBt-RzZEt-kgFct9G90e4fosmA6XigE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479328366433-i7gnrghirj026aa9ik1trgj18vbre54k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "479328366433-aj2oem0l33cba8aqflpb6fj4ekag6663.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.co.giftrip.app"
+              }
+            }
+          ]
         }
       }
     }

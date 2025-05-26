@@ -3,7 +3,7 @@ description: "기프트립"
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.6.1
@@ -22,7 +22,6 @@ dependencies:
   lucide_icons: ^0.257.0
   image_picker: ^1.1.2
   flutter_switch: ^0.3.2
-  kakao_flutter_sdk: ^1.9.6
   flutter_dotenv: ^5.2.1
   flutter_svg: ^2.0.17
   flutter_local_notifications: ^18.0.1
@@ -45,8 +44,9 @@ dependencies:
   dropdown_button2: ^2.3.9
   table_calendar: ^3.1.0
   tosspayments_widget_sdk_flutter: ^2.1.1
-  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview: ^6.1.5
   daum_postcode_search: ^0.0.4
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/widgets/banner/event_banner.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
+import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 import 'package:giftrip/features/home/widgets/home_app_bar.dart';
 import 'package:giftrip/features/home/widgets/home_feature_tab.dart';
@@ -15,6 +16,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // 홈 화면 로드 시 장바구니 데이터 초기화
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CartViewModel>().initialize();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

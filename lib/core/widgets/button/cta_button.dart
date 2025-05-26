@@ -6,6 +6,8 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 enum CTAButtonType {
   primary, // 기본 프라이머리 버튼
   outline, // 아웃라인 버튼
+  whiteFill, // 화이트 채운 버튼
+  fillOutline, // 채운 아웃라인 버튼
 }
 
 /// 아웃라인 버튼 크기 정의
@@ -22,6 +24,7 @@ class CTAButton extends StatelessWidget {
   final TextStyle? textStyle;
   final CTAButtonType type;
   final CTAButtonSize? size; // 아웃라인 버튼일 때만 사용됨
+  final Color? fillColor;
 
   const CTAButton({
     Key? key,
@@ -31,6 +34,7 @@ class CTAButton extends StatelessWidget {
     this.textStyle,
     this.type = CTAButtonType.primary, // 기본값은 프라이머리 버튼
     this.size, // 아웃라인 버튼일 때만 필요
+    this.fillColor,
   }) : super(key: key);
 
   @override
@@ -67,6 +71,19 @@ class CTAButton extends StatelessWidget {
           case null:
             return 48; // 기본값은 large
         }
+      case CTAButtonType.whiteFill:
+        switch (size) {
+          case CTAButtonSize.extraLarge:
+            return 59; // 화이트 채운 엑스트라 라지 버튼 높이 59px
+          case CTAButtonSize.large:
+            return 48; // 화이트 채운 라지 버튼 높이 48px
+          case CTAButtonSize.medium:
+            return 37; // 화이트 채운 미디엄 버튼 높이 37px
+          case null:
+            return 48; // 기본값은 large
+        }
+      case CTAButtonType.fillOutline:
+        return 48; // 채운 아웃라인 버튼 높이 59px
     }
   }
 
@@ -82,6 +99,14 @@ class CTAButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
         );
+      case CTAButtonType.whiteFill:
+        return ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: AppColors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        );
       case CTAButtonType.outline:
         final verticalPadding = size == CTAButtonSize.medium ? 8.0 : 13.5;
         return ElevatedButton.styleFrom(
@@ -90,7 +115,20 @@ class CTAButton extends StatelessWidget {
           disabledBackgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color:
+                  isEnabled ? AppColors.lineStrong : AppColors.componentNatural,
+              width: 1,
+            ),
+          ),
+        );
+      case CTAButtonType.fillOutline:
+        return ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: fillColor ?? AppColors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
             side: BorderSide(
               color:
                   isEnabled ? AppColors.lineStrong : AppColors.componentNatural,
@@ -118,6 +156,19 @@ class CTAButton extends StatelessWidget {
               ? subtitle_L.copyWith(color: AppColors.labelStrong)
               : subtitle_L.copyWith(color: AppColors.labelAlternative);
         }
+        return isEnabled
+            ? title_S.copyWith(color: AppColors.labelStrong)
+            : title_S.copyWith(color: AppColors.labelAlternative);
+      case CTAButtonType.whiteFill:
+        if (size == CTAButtonSize.extraLarge) {
+          return isEnabled
+              ? subtitle_L.copyWith(color: AppColors.labelStrong)
+              : subtitle_L.copyWith(color: AppColors.labelAlternative);
+        }
+        return isEnabled
+            ? title_S.copyWith(color: AppColors.labelStrong)
+            : title_S.copyWith(color: AppColors.labelAlternative);
+      case CTAButtonType.fillOutline:
         return isEnabled
             ? title_S.copyWith(color: AppColors.labelStrong)
             : title_S.copyWith(color: AppColors.labelAlternative);

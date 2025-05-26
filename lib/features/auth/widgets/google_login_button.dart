@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
-import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
 import 'package:giftrip/features/auth/repositories/social_login_repo.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
@@ -14,26 +13,15 @@ GestureDetector googleLoginButton({
 
   return GestureDetector(
     onTap: () async {
-      final result = await socialLoginRepo.postAppleLogin();
+      final result = await socialLoginRepo.postGoogleLogin();
 
       if (!result.isSuccess && context.mounted) {
-        if (result.errorMessage == "ANDROID") {
-          showDialog(
-            context: context,
-            builder: (context) => OneButtonModal(
-              title: '애플 로그인 안내',
-              desc: "안드로이드 기기의 앱에서는 애플 계정으로 로그인할 수 없습니다.",
-              onConfirm: () => Navigator.of(context).pop(),
-            ),
-          );
-        } else {
-          showDialog(
-            context: context,
-            builder: (context) => RequestFailModal(
-              onConfirm: () => Navigator.of(context).pop(),
-            ),
-          );
-        }
+        showDialog(
+          context: context,
+          builder: (context) => RequestFailModal(
+            onConfirm: () => Navigator.of(context).pop(),
+          ),
+        );
       } else {
         if (!context.mounted) return;
         if (result.user?.isTermsOfServiceConsent == false) {

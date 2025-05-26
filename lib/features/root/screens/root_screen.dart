@@ -4,7 +4,7 @@ import 'package:giftrip/features/home/screens/home_screen.dart';
 import 'package:giftrip/core/enum/community_enum.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/category/category_screen.dart';
-import 'package:giftrip/features/auth/screens/login_screen.dart';
+import 'package:giftrip/features/cart/screens/cart_screen.dart';
 import 'package:giftrip/features/my/screens/my_page_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -36,10 +36,8 @@ class RootScreenState extends State<RootScreen> {
   List<Widget> get pages => [
         const HomeScreen(),
         const CategoryScreen(),
-        const HomeScreen(),
+        const CartScreen(),
         const MyPageScreen(),
-
-        // const LoginScreen(),
       ];
 
   void onItemTapped(int index) async {
@@ -98,10 +96,10 @@ class RootScreenState extends State<RootScreen> {
             ? const Center(child: CircularProgressIndicator())
             : _buildCurrentScreen(),
       ),
-      bottomNavigationBar: BottomGnb(
-        selectedIndex: selectedIndex,
-        onTap: onItemTapped,
-      ),
+      // bottomNavigationBar: BottomGnb(
+      //   selectedIndex: selectedIndex,
+      //   onTap: onItemTapped,
+      // ),
       // 로그인 화면에서는 메뉴바 숨김(시연 영상용)
       // bottomNavigationBar: selectedIndex == 3
       //     ? null
@@ -109,6 +107,12 @@ class RootScreenState extends State<RootScreen> {
       //         selectedIndex: selectedIndex,
       //         onTap: onItemTapped,
       //       ),
+      bottomNavigationBar: selectedIndex == 2
+          ? null
+          : BottomGnb(
+              selectedIndex: selectedIndex,
+              onTap: onItemTapped,
+            ),
     );
   }
 
@@ -119,7 +123,7 @@ class RootScreenState extends State<RootScreen> {
       case 1:
         return const CategoryScreen(key: ValueKey('category'));
       case 2:
-        return const HomeScreen(key: ValueKey('home'));
+        return const CartScreen(key: ValueKey('cart'));
       case 3:
         return const MyPageScreen(key: ValueKey('myPage'));
       // return const LoginScreen(key: ValueKey('login'));

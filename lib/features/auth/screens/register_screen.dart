@@ -28,15 +28,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController();
   final FocusScopeNode focusScopeNode = FocusScopeNode();
 
-  String? selectedEmailDomain;
-  final List<String> emailDomains = [
-    'gmail.com',
-    'naver.com',
-    'kakao.com',
-    'hanmail.net',
-    '기타',
-  ];
-
   bool isButtonEnabled = true;
   bool isPhoneVerified = false;
   bool isLoading = false;
@@ -73,8 +64,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (emailController.text.isEmpty) {
         emailError = '이메일을 입력해주세요.';
-      } else if (selectedEmailDomain == null) {
-        emailError = '이메일 도메인을 선택해주세요.';
+      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+          .hasMatch(emailController.text)) {
+        emailError = '올바른 이메일 형식이 아닙니다.';
       } else {
         emailError = null;
       }
@@ -131,11 +123,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         passwordError == null &&
         passwordConfirmError == null &&
         isPhoneVerified) {
-      final email = '${emailController.text}@$selectedEmailDomain';
-
       final request = RegisterRequest(
         name: nameController.text,
-        email: email,
+        email: emailController.text,
         password: passwordController.text,
         phoneNumber: phoneController.text,
       );
@@ -193,74 +183,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 4),
               CustomInputField(
                 controller: nameController,
-                placeholder: '아이디',
+                placeholder: '이름',
                 errorText: nameError,
                 isError: nameError != null,
               ),
               const SizedBox(height: 24),
               Text('이메일', style: h2_S.copyWith(color: AppColors.labelStrong)),
               const SizedBox(height: 4),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: SizedBox(
-                          height: 48, // TextField 고정 높이
-                          child: CustomInputField(
-                            controller: emailController,
-                            placeholder: '이메일',
-                            isError: emailError != null,
-                            errorText: null, // 에러 텍스트를 별도로 표시
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      SizedBox(
-                        height: 48, // TextField와 같은 높이
-                        child: Center(
-                          child: Text('@',
-                              style: body_S.copyWith(
-                                  color: AppColors.labelStrong)),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        flex: 2,
-                        child: SizedBox(
-                          height: 48, // TextField 고정 높이
-                          child: CustomDropdown(
-                            items: emailDomains,
-                            value: selectedEmailDomain,
-                            onChanged: (val) {
-                              setState(() {
-                                selectedEmailDomain = val;
-                                _validateForm();
-                              });
-                            },
-                            hintText: '선택',
-                            height: 96,
-                            isError: emailError != null &&
-                                selectedEmailDomain == null,
-                            errorText: null, // 에러 텍스트를 별도로 표시
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (emailError != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, left: 8),
-                      child: Text(
-                        emailError!,
-                        style:
-                            subtitle_S.copyWith(color: AppColors.statusError),
-                      ),
-                    ),
-                ],
+              CustomInputField(
+                controller: emailController,
+                placeholder: '이메일',
+                errorText: emailError,
+                isError: emailError != null,
               ),
               const SizedBox(height: 24),
               Text('비밀번호', style: h2_S.copyWith(color: AppColors.labelStrong)),
