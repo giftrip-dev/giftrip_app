@@ -95,7 +95,7 @@ class TwoButtonModal extends StatelessWidget {
                     ),
                     child: Text(
                       confirmText,
-                      style: title_S.copyWith(color: AppColors.primary),
+                      style: title_S.copyWith(color: AppColors.primaryStrong),
                     ),
                   ),
                 ),
