@@ -8,12 +8,14 @@ class GenericPersistentCategoryBarDelegate<T extends Enum>
   final Function(T?) onCategoryChanged;
   final List<T> categories;
   final String Function(T) getLabelFunc;
+  final int Function(T?)? getCountFunc;
 
   GenericPersistentCategoryBarDelegate({
     required this.selectedCategory,
     required this.onCategoryChanged,
     required this.categories,
     required this.getLabelFunc,
+    this.getCountFunc,
   });
 
   @override
@@ -21,14 +23,17 @@ class GenericPersistentCategoryBarDelegate<T extends Enum>
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: Colors.white,
+      padding: EdgeInsets.zero,
+      margin: EdgeInsets.zero,
       child: Column(
         children: [
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           GenericCategoryBar<T>(
             selectedCategory: selectedCategory,
             onCategoryChanged: onCategoryChanged,
             categories: categories,
             getLabelFunc: getLabelFunc,
+            getCountFunc: getCountFunc,
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
@@ -22,7 +23,7 @@ class ProductSummaryModel {
 
 class ReviewListScreen extends StatefulWidget {
   final String productId;
-  final String productType;
+  final ProductType productType;
   final ProductSummaryModel productSummary;
 
   const ReviewListScreen({

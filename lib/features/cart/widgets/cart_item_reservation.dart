@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/core/widgets/input/quantity_input.dart';
 import 'package:giftrip/features/cart/models/cart_item_model.dart';
@@ -120,8 +121,8 @@ class CartItemReservation extends StatelessWidget {
                       const SizedBox(height: 2),
                       _buildLodgingInfoRow(),
                       _buildPersonInfoRow(),
+                      const SizedBox(height: 4),
                     ],
-                    const SizedBox(height: 4),
                     // 할인/가격
                     _buildPriceBlock(formatter),
                     // 태그
@@ -160,15 +161,23 @@ class CartItemReservation extends StatelessWidget {
   }
 
   String _reservationSubText(DateFormat dateFormat) {
+    // 숙소인 경우
     if (item.category == CartCategory.lodging) {
       if (item.startDate != null && item.endDate != null) {
         return '${dateFormat.format(item.startDate!)} ~ ${dateFormat.format(item.endDate!)}';
       }
       return '';
     } else {
-      // experience / experienceGroup
       if (item.startDate != null) {
-        return dateFormat.format(item.startDate!);
+        if (item.type == ProductItemType.experience) {
+          // 체험인 경우 시작일 ~ 종료일 표시
+          if (item.endDate != null) {
+            return '${dateFormat.format(item.startDate!)} ~ ${dateFormat.format(item.endDate!)}';
+          }
+        } else {
+          // 체험단인 경우 시작일만 표시
+          return dateFormat.format(item.startDate!);
+        }
       }
       return '';
     }

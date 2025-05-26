@@ -45,8 +45,6 @@ class CartItemWrapper extends StatelessWidget {
           onDelete: onDelete,
           onQuantityChanged: onQuantityChanged,
         );
-      default:
-        return const SizedBox.shrink();
     }
   }
 }

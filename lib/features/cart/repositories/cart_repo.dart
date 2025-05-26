@@ -6,6 +6,7 @@ import 'package:giftrip/features/cart/models/cart_category.dart';
 import 'package:giftrip/features/shopping/repositories/mock_shopping_data.dart';
 import 'package:giftrip/features/experience/repositories/mock_experience_data.dart';
 import 'package:giftrip/features/lodging/repositories/mock_lodging_data.dart';
+import 'package:giftrip/features/tester/repositories/mock_tester_data.dart';
 
 class CartRepo {
   final Dio _dio = DioClient().to();
@@ -41,7 +42,7 @@ class CartRepo {
 
   /// 장바구니에 상품 추가
   Future<void> addToCart(String productId, ProductItemType type,
-      {int quantity = 1}) async {
+      {int quantity = 1, DateTime? startDate, DateTime? endDate}) async {
     if (_useMockData) {
       // 목업 데이터 사용
       await Future.delayed(const Duration(milliseconds: 200));
@@ -91,6 +92,8 @@ class CartRepo {
             type: type,
             addedAt: DateTime.now(),
             tags: experience.badges.map((badge) => badge.name).toList(),
+            startDate: startDate,
+            endDate: endDate,
           );
           break;
 
@@ -112,6 +115,31 @@ class CartRepo {
             type: type,
             addedAt: DateTime.now(),
             tags: lodging.badges.map((badge) => badge.name).toList(),
+            startDate: startDate,
+            endDate: endDate,
+          );
+          break;
+
+        case ProductItemType.experienceGroup:
+          final tester = mockTesterList.firstWhere(
+            (item) => item.id == productId,
+            orElse: () => throw Exception('체험단 상품을 찾을 수 없습니다: $productId'),
+          );
+          cartItem = CartItemModel(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            productId: productId,
+            category: CartCategory.experienceGroup,
+            title: tester.title,
+            thumbnailUrl: tester.thumbnailUrl,
+            originalPrice: tester.originalPrice,
+            price: tester.finalPrice,
+            discountRate: tester.discountRate,
+            quantity: quantity,
+            type: type,
+            addedAt: DateTime.now(),
+            tags: tester.badges.map((badge) => badge.name).toList(),
+            startDate: startDate,
+            endDate: endDate,
           );
           break;
 
@@ -127,6 +155,8 @@ class CartRepo {
           'productId': productId,
           'type': type.value,
           'quantity': quantity,
+          'startDate': startDate?.toIso8601String(),
+          'endDate': endDate?.toIso8601String(),
         });
 
         if (response.statusCode != 200) {

@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 class RoomViewModel {
   final String roomName;
+  final String id;
   final int baseOccupancy;
   final int maxOccupancy;
   final String bedType;
@@ -16,6 +15,7 @@ class RoomViewModel {
 
   RoomViewModel({
     required this.roomName,
+    required this.id,
     required this.baseOccupancy,
     required this.maxOccupancy,
     required this.bedType,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/review/models/review_model.dart';
 import 'package:giftrip/features/review/repositories/review_repo.dart';
 
@@ -38,7 +39,7 @@ class ReviewViewModel extends ChangeNotifier {
   /// 리뷰 목록 조회
   Future<void> fetchReviews({
     required String productId,
-    String productType = 'experience',
+    required ProductType productType,
     int page = 1,
     int limit = 10,
     bool refresh = false,
@@ -57,7 +58,7 @@ class ReviewViewModel extends ChangeNotifier {
     try {
       final response = await _reviewRepo.getReviews(
         productId: productId,
-        productType: productType,
+        productType: productType.name,
         page: page,
         limit: limit,
       );
@@ -95,7 +96,7 @@ class ReviewViewModel extends ChangeNotifier {
   /// 리뷰 작성
   Future<void> createReview({
     required String productId,
-    required String productType,
+    required ProductType productType,
     required String title,
     required String content,
     required double rating,
@@ -107,7 +108,7 @@ class ReviewViewModel extends ChangeNotifier {
     try {
       await _reviewRepo.createReview(
         productId: productId,
-        productType: productType,
+        productType: productType.name,
         title: title,
         content: content,
         rating: rating,
@@ -130,7 +131,7 @@ class ReviewViewModel extends ChangeNotifier {
   Future<void> updateReview({
     required String reviewId,
     required String productId,
-    required String productType,
+    required ProductType productType,
     String? title,
     String? content,
     double? rating,
@@ -164,7 +165,7 @@ class ReviewViewModel extends ChangeNotifier {
   Future<void> deleteReview({
     required String reviewId,
     required String productId,
-    required String productType,
+    required ProductType productType,
   }) async {
     _setLoading(true);
     _clearError();

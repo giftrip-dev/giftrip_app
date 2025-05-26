@@ -4,6 +4,8 @@ import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/share_url_generator.dart';
 import 'package:giftrip/core/widgets/app_bar/custom_app_bar.dart';
 import 'package:giftrip/shared/widgets/cart/cart_icon_button.dart';
+import 'package:provider/provider.dart';
+import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 
 class ProductAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -81,9 +83,26 @@ class _ProductAppBarState extends State<ProductAppBar> {
           ),
           const SizedBox(width: 16),
           // 장바구니 버튼
-          const CartIconButton(
-            color: Colors.black,
-            size: 24,
+          Consumer<LodgingViewModel>(
+            builder: (context, lodgingViewModel, child) {
+              // 숙소 타입일 때만 상품 정보를 전달
+              if (widget.type == ProductItemType.lodging) {
+                return CartIconButton(
+                  color: Colors.black,
+                  size: 24,
+                  productId: widget.itemId,
+                  productType: widget.type,
+                  startDate: lodgingViewModel.startDate,
+                  endDate: lodgingViewModel.endDate,
+                );
+              } else {
+                // 다른 타입은 기본 동작 (장바구니 화면으로 이동)
+                return const CartIconButton(
+                  color: Colors.black,
+                  size: 24,
+                );
+              }
+            },
           ),
         ],
       ),

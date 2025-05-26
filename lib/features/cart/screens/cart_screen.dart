@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:giftrip/features/cart/view_models/cart_view_model.dart';
 import 'package:giftrip/core/widgets/category/generic_persistent_category_bar.dart';
 import 'package:giftrip/features/cart/models/cart_category.dart';
-import 'package:giftrip/features/cart/widgets/all_cart_list.dart';
+import 'package:giftrip/features/cart/widgets/full_cart_list.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
-import 'package:giftrip/features/cart/widgets/select_cart_list.dart';
+import 'package:giftrip/features/cart/widgets/category_cart_list.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -44,6 +44,35 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartViewModel>(
         builder: (context, vm, child) {
+          // 로딩 중일 때 로딩 인디케이터 표시
+          if (vm.isLoading) {
+            return CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              slivers: [
+                SliverPersistentHeader(
+                  pinned: true,
+                  floating: true,
+                  delegate: GenericPersistentCategoryBarDelegate<CartCategory>(
+                    selectedCategory: vm.selectedCategory,
+                    onCategoryChanged: (category) {
+                      vm.changeCategory(category);
+                    },
+                    categories: CartCategory.values,
+                    getLabelFunc: (category) => category.label,
+                    getCountFunc: (category) =>
+                        vm.getItemCountByCategory(category),
+                  ),
+                ),
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // 장바구니가 비어있을 때
           if (vm.cartItems.isEmpty) {
             return CustomScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -58,6 +87,8 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     categories: CartCategory.values,
                     getLabelFunc: (category) => category.label,
+                    getCountFunc: (category) =>
+                        vm.getItemCountByCategory(category),
                   ),
                 ),
                 SliverFillRemaining(
@@ -86,19 +117,21 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     categories: CartCategory.values,
                     getLabelFunc: (category) => category.label,
+                    getCountFunc: (category) =>
+                        vm.getItemCountByCategory(category),
                   ),
                 ),
               ];
             },
             body: vm.selectedCategory == null
-                ? AllCartList(
+                ? FullCartList(
                     items: vm.cartItems,
                     selectedCategory: vm.selectedCategory,
                     onDetailTap: (id) {
                       // TODO: 상세보기 구현
                     },
                   )
-                : SelectCartList(
+                : CategoryCartList(
                     items: vm.cartItems
                         .where((e) => e.category == vm.selectedCategory)
                         .toList(),
