@@ -1,27 +1,17 @@
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
-import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 예약 진행 상태
 enum OrderBookingProgress {
   confirmed, // 예약/구매 완료
-  completed; // 사용/배송 완료
-
-  String get label {
-    switch (this) {
-      case OrderBookingProgress.confirmed:
-        return '예약 확정';
-      case OrderBookingProgress.completed:
-        return '이용 완료';
-    }
-  }
+  completed, // 사용/배송 완료
+  canceled; // 취소
 }
 
 /// 체험 상품 모델
 class OrderBookingModel {
   final String id;
   final String title;
-  final String description;
   final String thumbnailUrl;
   final int originalPrice;
   final int finalPrice;
@@ -39,7 +29,6 @@ class OrderBookingModel {
   const OrderBookingModel({
     required this.id,
     required this.title,
-    required this.description,
     required this.thumbnailUrl,
     required this.originalPrice,
     required this.finalPrice,
@@ -91,7 +80,6 @@ class OrderBookingModel {
     return OrderBookingModel(
       id: json['id'] as String,
       title: json['title'] as String,
-      description: json['description'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
@@ -119,7 +107,6 @@ class OrderBookingModel {
     return {
       'id': id,
       'title': title,
-      'description': description,
       'thumbnailUrl': thumbnailUrl,
       'originalPrice': originalPrice,
       'finalPrice': finalPrice,

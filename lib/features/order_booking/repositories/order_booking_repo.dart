@@ -58,35 +58,41 @@ class OrderBookingRepo {
   Future<OrderBookingDetailModel> getOrderBookingDetail(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
-    final orderBooking = mockOrderBookingList.firstWhere(
+    final item = mockOrderBookingList.firstWhere(
       (item) => item.id == id,
       orElse: () => throw Exception('상품을 찾을 수 없습니다.'),
     );
 
     return OrderBookingDetailModel(
-      id: orderBooking.id,
-      title: orderBooking.title,
-      description: orderBooking.description,
-      thumbnailUrl: orderBooking.thumbnailUrl,
-      originalPrice: orderBooking.originalPrice,
-      finalPrice: orderBooking.finalPrice,
-      category: orderBooking.category,
-      rating: orderBooking.rating,
-      reviewCount: orderBooking.reviewCount,
-      discountRate: orderBooking.discountRate,
-      availableFrom: orderBooking.availableFrom ?? DateTime.now(),
-      availableTo: orderBooking.availableTo ?? DateTime.now(),
-      soldOut: orderBooking.soldOut,
-      unavailableDates: orderBooking.unavailableDates,
-      location: '서울특별시 강남구 테헤란로 123',
+      id: item.id,
+      title: item.title,
+      thumbnailUrl: item.thumbnailUrl,
+      originalPrice: item.originalPrice,
+      finalPrice: item.finalPrice,
+      category: item.category,
+      rating: item.rating,
+      reviewCount: item.reviewCount,
+      availableFrom: item.availableFrom,
+      availableTo: item.availableTo,
+      progress: item.progress,
+      discountRate: item.discountRate,
+      soldOut: item.soldOut,
+      unavailableDates: item.unavailableDates,
+      paidAt: item.paidAt,
+      location: '서울시 강남구',
       managerPhoneNumber: '010-1234-5678',
-      progress: orderBooking.progress,
-      paidAt: orderBooking.paidAt,
       reserverName: '홍길동',
-      reserverPhoneNumber: '010-1234-5678',
-      payMethod: '네이버페이',
-      deliveryAddress: '서울 논현로 98길 28',
-      deliveryDetail: '오피스타워 1층',
+      reserverPhoneNumber: '010-9876-5432',
+      payMethod: '신용카드',
     );
+  }
+
+  /// 예약/구매 취소
+  Future<void> cancelOrderBooking(String id, {String? reason}) async {
+    // 실제 API 호출 대신 목업 데이터 처리
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // 실제 구현에서는 아래와 같은 API 호출을 수행합니다
+    // await _dio.post('/api/order-bookings/$id/cancel', data: {'reason': reason});
   }
 }

@@ -19,6 +19,18 @@ class OrderBookingItem extends StatelessWidget {
   bool get isProduct => orderBooking.category == OrderBookingCategory.product;
 
   Widget _buildButtons() {
+    // 취소된 상태일 때는 모든 카테고리에서 취소완료 버튼 표시
+    if (orderBooking.progress == OrderBookingProgress.canceled) {
+      return CTAButton(
+        isEnabled: false,
+        onPressed: null,
+        type: CTAButtonType.outline,
+        size: CTAButtonSize.medium,
+        text: '취소 완료',
+        textStyle: title_S.copyWith(color: AppColors.labelAlternative),
+      );
+    }
+
     if (isProduct) {
       if (orderBooking.progress == OrderBookingProgress.confirmed) {
         return Row(

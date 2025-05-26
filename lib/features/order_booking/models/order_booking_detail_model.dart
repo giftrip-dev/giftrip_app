@@ -64,7 +64,6 @@ class OrderBookingDetailModel extends OrderBookingModel {
   const OrderBookingDetailModel({
     required super.id,
     required super.title,
-    required super.description,
     required super.thumbnailUrl,
     required super.originalPrice,
     required super.finalPrice,
@@ -91,7 +90,6 @@ class OrderBookingDetailModel extends OrderBookingModel {
     return OrderBookingDetailModel(
       id: json['id'] as String,
       title: json['title'] as String,
-      description: json['description'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
