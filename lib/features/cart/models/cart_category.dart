@@ -6,7 +6,7 @@ enum CartCategory implements CategoryInterface {
   lodging('숙박'),
   experience('체험'),
   experienceGroup('체험단'),
-  product('상품');
+  product('쇼핑');
 
   @override
   final String label;
