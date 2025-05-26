@@ -98,7 +98,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                       // 리뷰 목록
                       ReviewList(
                         productId: widget.shoppingId,
-                        productType: 'shopping',
+                        productType: ProductType.experienceGroup,
                         productTitle: shopping.title,
                         productThumbnailUrl: shopping.thumbnailUrl,
                         productPrice: shopping.finalPrice,

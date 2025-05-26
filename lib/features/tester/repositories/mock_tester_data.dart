@@ -1,24 +1,24 @@
-import 'package:giftrip/features/experience/models/experience_category.dart';
-import 'package:giftrip/features/experience/models/experience_model.dart';
+import 'package:giftrip/features/tester/models/tester_category.dart';
+import 'package:giftrip/features/tester/models/tester_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 
-/// 목업 체험 상품 데이터
-/// 홈스크린의 목업 데이터에서 체험 타입만 필터링해서 ExperienceModel로 변환
-final List<ExperienceModel> mockExperienceList = () {
-  // 홈스크린 목업 데이터에서 체험 타입만 필터링
-  final experienceProducts = mockProducts
-      .where((product) => product.productType == ProductType.experience)
+/// 목업 체험단 상품 데이터
+/// 홈스크린의 목업 데이터에서 체험단 타입만 필터링해서 TesterModel로 변환
+final List<TesterModel> mockTesterList = () {
+  // 홈스크린 목업 데이터에서 체험단 타입만 필터링
+  final testerProducts = mockProducts
+      .where((product) => product.productType == ProductType.experienceGroup)
       .toList();
 
-  // ProductModel을 ExperienceModel로 변환
-  return experienceProducts.map((product) {
-    // ID에서 인덱스 추출 (exp_1 -> 0, exp_2 -> 1, ...)
+  // ProductModel을 TesterModel로 변환
+  return testerProducts.map((product) {
+    // ID에서 인덱스 추출 (tester_1 -> 0, tester_2 -> 1, ...)
     final index = int.parse(product.id.split('_')[1]) - 1;
 
     // 카테고리를 순환하면서 할당
-    final categoryIndex = index % ExperienceCategory.values.length;
-    final category = ExperienceCategory.values[categoryIndex];
+    final categoryIndex = index % TesterCategory.values.length;
+    final category = TesterCategory.values[categoryIndex];
 
     // 구매 가능 기간 설정 (현재로부터 1일 후 ~ 60일 후까지)
     final now = DateTime.now();
@@ -42,11 +42,11 @@ final List<ExperienceModel> mockExperienceList = () {
       }
     }
 
-    return ExperienceModel(
+    return TesterModel(
       id: product.id, // 홈스크린과 동일한 ID 사용
-      title: '${category.label} 상품 ${index + 1}',
+      title: '${category.label} 체험단 ${index + 1}',
       description:
-          '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
+          '이것은 ${category.label} 체험단 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
       thumbnailUrl: product.thumbnailUrl,
       originalPrice: product.originalPrice,
       finalPrice: product.finalPrice,

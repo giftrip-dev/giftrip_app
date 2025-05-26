@@ -73,7 +73,7 @@ class TwoButtonModal extends StatelessWidget {
                     ),
                     child: Text(
                       cancelText,
-                      style: title_S.copyWith(color: AppColors.labelNatural),
+                      style: title_M.copyWith(color: AppColors.labelNatural),
                     ),
                   ),
                 ),

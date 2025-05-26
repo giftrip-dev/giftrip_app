@@ -27,6 +27,15 @@ class CartViewModel extends ChangeNotifier {
   bool get hasError => _hasError;
   CartCategory? get selectedCategory => _selectedCategory;
 
+  /// 카테고리별 상품 개수 계산
+  int getItemCountByCategory(CartCategory? category) {
+    if (category == null) {
+      // 전체 개수
+      return _cartItems.length;
+    }
+    return _cartItems.where((item) => item.category == category).length;
+  }
+
   /// 다음 페이지 번호 계산
   int? get nextPage {
     if (_meta == null) return null;
@@ -44,16 +53,13 @@ class CartViewModel extends ChangeNotifier {
   Future<void> changeCategory(CartCategory? category) async {
     if (_selectedCategory == category) return;
 
-    // 로딩 상태 시작
+    // 로딩 상태 시작 (cartItems는 초기화하지 않음)
     _isLoading = true;
-    _cartItems = [];
     notifyListeners();
 
-    // 0.2초 딜레이
-    await Future.delayed(const Duration(milliseconds: 200));
-
     _selectedCategory = category;
-    await fetchCartItems(refresh: true);
+    _isLoading = false;
+    notifyListeners();
   }
 
   /// 장바구니 목록 조회
@@ -94,13 +100,14 @@ class CartViewModel extends ChangeNotifier {
 
   /// 장바구니에 상품 추가
   Future<void> addToCart(String productId, ProductItemType type,
-      {int quantity = 1}) async {
+      {int quantity = 1, DateTime? startDate, DateTime? endDate}) async {
     try {
       logger.d('장바구니 추가 시작: $productId, $type, $quantity');
       _isLoading = true;
       notifyListeners();
 
-      await _repo.addToCart(productId, type, quantity: quantity);
+      await _repo.addToCart(productId, type,
+          quantity: quantity, startDate: startDate, endDate: endDate);
       logger.d('장바구니 추가 완료, 목록 갱신 시작');
 
       // 장바구니 목록을 다시 가져와서 UI 업데이트
@@ -111,6 +118,8 @@ class CartViewModel extends ChangeNotifier {
     } catch (e) {
       _hasError = true;
       logger.e('장바구니 추가 실패: $e');
+      // 에러를 다시 던져서 UI에서 처리할 수 있도록 함
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -120,20 +129,42 @@ class CartViewModel extends ChangeNotifier {
   /// 장바구니에서 상품 제거
   Future<void> removeFromCart(String itemId) async {
     try {
-      _isLoading = true;
+      // 로컬에서 먼저 아이템 제거 (즉시 UI 업데이트)
+      _cartItems.removeWhere((item) => item.id == itemId);
+      // 선택된 아이템 목록에서도 제거
+      _selectedItemIds.remove(itemId);
       notifyListeners();
 
+      // API 호출
       await _repo.removeFromCart(itemId);
-
-      // 장바구니 목록을 다시 가져와서 UI 업데이트
-      await fetchCartItems(refresh: true);
       _hasError = false;
     } catch (e) {
       _hasError = true;
       logger.e('장바구니 제거 실패: $e');
-    } finally {
-      _isLoading = false;
+      // 실패 시 데이터를 다시 가져와서 복구
+      await fetchCartItems(refresh: true);
+    }
+  }
+
+  /// 장바구니에서 여러 상품 제거
+  Future<void> removeMultipleFromCart(List<String> itemIds) async {
+    try {
+      // 로컬에서 먼저 아이템들 제거 (즉시 UI 업데이트)
+      _cartItems.removeWhere((item) => itemIds.contains(item.id));
+      // 선택된 아이템 목록에서도 제거
+      _selectedItemIds.removeWhere((id) => itemIds.contains(id));
       notifyListeners();
+
+      // API 호출 (각 아이템별로)
+      for (final itemId in itemIds) {
+        await _repo.removeFromCart(itemId);
+      }
+      _hasError = false;
+    } catch (e) {
+      _hasError = true;
+      logger.e('장바구니 여러 아이템 제거 실패: $e');
+      // 실패 시 데이터를 다시 가져와서 복구
+      await fetchCartItems(refresh: true);
     }
   }
 
