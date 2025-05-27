@@ -16,6 +16,7 @@ class ShoppingModel {
   final List<ShoppingOption> options;
   final ShoppingCategory category;
   final double rating;
+  final double averageRating;
   final int reviewCount;
   final List<ProductTagType> badges;
 
@@ -32,6 +33,7 @@ class ShoppingModel {
     required this.options,
     required this.category,
     required this.rating,
+    required this.averageRating,
     required this.reviewCount,
     required this.badges,
   });
@@ -60,6 +62,7 @@ class ShoppingModel {
       category: ShoppingCategory.fromString(json['category'] as String) ??
           ShoppingCategory.others,
       rating: (json['rating'] as num).toDouble(),
+      averageRating: (json['averageRating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       badges: (json['badges'] as List<dynamic>?)
               ?.map((e) => ProductTagType.values.firstWhere(
@@ -86,6 +89,7 @@ class ShoppingModel {
       'options': options.map((e) => e.toJson()).toList(),
       'category': category.name,
       'rating': rating,
+      'averageRating': averageRating,
       'reviewCount': reviewCount,
       'badges': badges.map((e) => e.name).toList(),
     };

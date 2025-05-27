@@ -16,6 +16,7 @@ class LodgingModel {
   final int? discountRate;
   final LodgingCategory category;
   final double rating;
+  final double averageRating; // 평균 별점
   final int reviewCount;
   final List<ProductTagType> badges;
   final DateTime availableFrom; // 구매 가능 시작일
@@ -33,6 +34,7 @@ class LodgingModel {
     required this.finalPrice,
     required this.category,
     required this.rating,
+    required this.averageRating,
     required this.reviewCount,
     required this.badges,
     required this.availableFrom,
@@ -64,6 +66,7 @@ class LodgingModel {
       category: LodgingCategory.fromString(json['category'] as String) ??
           LodgingCategory.hotel,
       rating: (json['rating'] as num).toDouble(),
+      averageRating: (json['averageRating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       discountRate: json['discountRate'] as int?,
       badges: (json['badges'] as List<dynamic>?)
@@ -92,6 +95,7 @@ class LodgingModel {
       'finalPrice': finalPrice,
       'category': category.name,
       'rating': rating,
+      'averageRating': averageRating,
       'reviewCount': reviewCount,
       'discountRate': discountRate,
       'badges': badges.map((e) => e.name).toList(),

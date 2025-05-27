@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/rating/star_rating.dart';
 import 'package:giftrip/features/review/models/review_model.dart';
 import 'dart:ui' as ui;
 
@@ -28,6 +29,49 @@ class _ReviewItemState extends State<ReviewItem> {
     return formatter.format(date);
   }
 
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.zero,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // 딤 처리된 배경
+            Container(
+              color: Colors.black.withOpacity(0.7),
+            ),
+            // 이미지
+            InteractiveViewer(
+              child: Center(
+                child: CustomImage(
+                  width: double.infinity,
+                  height: double.infinity,
+                  imageUrl: imageUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            // 닫기 버튼
+            Positioned(
+              top: 40,
+              right: 20,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final createdAtFormatted = _formatDate(widget.review.createdAt);
@@ -46,20 +90,12 @@ class _ReviewItemState extends State<ReviewItem> {
             children: [
               Text(widget.review.userNickname, style: subtitle_S),
               const SizedBox(width: 9),
-              Row(
-                children: List.generate(
-                  widget.review.rating.toInt(),
-                  (index) => Padding(
-                    padding: EdgeInsets.only(
-                      right: index < widget.review.rating.toInt() - 1 ? 2 : 0,
-                    ),
-                    child: const Icon(
-                      Icons.star,
-                      color: AppColors.primarySoft,
-                      size: 13,
-                    ),
-                  ),
-                ),
+              StarRating(
+                rating: widget.review.rating,
+                size: 13,
+                color: AppColors.primarySoft,
+                spacing: 2,
+                showHalfStars: false,
               ),
               const Spacer(),
               Text(
@@ -138,13 +174,17 @@ class _ReviewItemState extends State<ReviewItem> {
           ),
         ),
         const SizedBox(width: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: CustomImage(
-            imageUrl: widget.review.thumbnailUrl!,
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
+        GestureDetector(
+          onTap: () =>
+              _showFullScreenImage(context, widget.review.thumbnailUrl!),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: CustomImage(
+              imageUrl: widget.review.thumbnailUrl!,
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ],

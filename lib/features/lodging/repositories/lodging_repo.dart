@@ -131,6 +131,7 @@ class LodgingRepo {
       finalPrice: lodging.finalPrice,
       category: lodging.category,
       rating: lodging.rating,
+      averageRating: lodging.averageRating,
       reviewCount: lodging.reviewCount,
       badges: lodging.badges,
       discountRate: lodging.discountRate,

@@ -101,7 +101,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                         productType: ProductType.experienceGroup,
                         productTitle: shopping.title,
                         productThumbnailUrl: shopping.thumbnailUrl,
-                        productPrice: shopping.finalPrice,
+                        averageRating: shopping.averageRating,
                       ),
                       const SectionDivider(),
 
