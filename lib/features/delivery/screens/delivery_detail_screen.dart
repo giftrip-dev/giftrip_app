@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
+import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 import 'package:giftrip/features/delivery/models/delivery_detail_model.dart';
+import 'package:giftrip/features/delivery/models/delivery_status.dart';
 import 'package:giftrip/features/delivery/repositories/delivery_repo.dart';
 import 'package:giftrip/features/delivery/widgets/delivery_info_container.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:intl/intl.dart';
 
@@ -74,7 +75,16 @@ class DeliveryDetailScreen extends StatelessWidget {
                       ),
                     ],
                     onTextTap: () {
-                      // 배송 문제 신고 처리
+                      showDialog(
+                        context: context,
+                        builder: (context) => TwoButtonModal(
+                          title: '배송에 문제가 있으신가요?',
+                          desc: '카카오톡 플러스 친구를 통해\n관리자에게 문의해주세요.',
+                          cancelText: '닫기',
+                          confirmText: '1:1 문의하기',
+                          onConfirm: () => Navigator.of(context).pop(),
+                        ),
+                      );
                     },
                     tapText: '배송에 문제가 있으신가요?',
                   ),
@@ -114,14 +124,18 @@ class DeliveryDetailScreen extends StatelessWidget {
                         value: delivery.address,
                       ),
                     ],
-                    bottomButton: CTAButton(
-                      text: '배송지 수정하기',
-                      onPressed: () {},
-                      isEnabled: true,
-                      type: CTAButtonType.outline,
-                      size: CTAButtonSize.medium,
-                      textStyle: title_S.copyWith(color: AppColors.labelStrong),
-                    ),
+                    bottomButton: delivery.deliveryStatus ==
+                            DeliveryStatus.preparing
+                        ? CTAButton(
+                            text: '배송지 수정하기',
+                            onPressed: () {},
+                            isEnabled: true,
+                            type: CTAButtonType.outline,
+                            size: CTAButtonSize.medium,
+                            textStyle:
+                                title_S.copyWith(color: AppColors.labelStrong),
+                          )
+                        : null,
                   ),
                   const SizedBox(height: 24),
                 ],
