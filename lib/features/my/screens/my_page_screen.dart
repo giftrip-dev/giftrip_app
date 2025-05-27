@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/my/widgets/my_page_box.dart';
+import 'package:giftrip/features/my/widgets/switch_box.dart';
+import 'package:giftrip/features/my/widgets/user_info_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
 
@@ -56,6 +58,12 @@ class _MyPageScreenState extends State<MyPageScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  UserInfoBox(
+                    isInfluencer: true,
+                    nickname: '홍길동',
+                    point: 123456,
+                    couponCount: 2,
+                  ),
                   MyPageBox(
                     title: '주문 관리',
                     myPageInfo: {
@@ -92,6 +100,24 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       },
                     },
                   ),
+                  SwitchBox(),
+                  MyPageBox(
+                    title: '기타',
+                    showIcon: false,
+                    myPageInfo: {
+                      '공지사항': {
+                        'onTap': () =>
+                            // myPageViewModel.onTapReviewWrite(context),
+                            () {},
+                      },
+                      '로그아웃': {
+                        'onTap': () =>
+                            // myPageViewModel.onTapReviewWrite(context),
+                            () {},
+                      },
+                    },
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

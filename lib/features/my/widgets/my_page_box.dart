@@ -6,11 +6,13 @@ import 'package:giftrip/core/constants/app_colors.dart';
 class MyPageBox extends StatelessWidget {
   final String title;
   final Map<String, Map<String, dynamic>> myPageInfo;
+  final bool showIcon;
 
   const MyPageBox({
     Key? key,
     required this.title,
     required this.myPageInfo,
+    this.showIcon = true,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,6 @@ class MyPageBox extends StatelessWidget {
             style: title_S.copyWith(color: AppColors.labelStrong),
           ),
           ...myPageInfo.entries.map((entry) {
-            final showIcon = entry.value['showIcon'] ?? true;
             return Column(
               children: [
                 GestureDetector(

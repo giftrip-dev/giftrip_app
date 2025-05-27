@@ -10,18 +10,19 @@ import 'package:giftrip/core/utils/check_permission.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 
-class ConfigBox extends StatefulWidget {
-  const ConfigBox({
+class SwitchBox extends StatefulWidget {
+  const SwitchBox({
     super.key,
   });
 
   @override
-  State<ConfigBox> createState() => _ConfigBoxState();
+  State<SwitchBox> createState() => _SwitchBoxState();
 }
 
-class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
+class _SwitchBoxState extends State<SwitchBox> with WidgetsBindingObserver {
   bool status = false;
   bool isToggleEnabled = true;
+  bool marketingAgree = false;
   final GlobalStorage _storage = GlobalStorage();
 
   @override
@@ -117,13 +118,18 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundAlternative,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '앱설정',
-            style: subtitle_L,
+            '알림 설정',
+            style: title_S.copyWith(color: AppColors.labelStrong),
           ),
           const SizedBox(height: 24),
           Column(
@@ -132,21 +138,7 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
               Row(
                 children: [
                   Text(
-                    '다크모드',
-                    style: body_M.copyWith(color: AppColors.label),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '시스템설정',
-                    style: body_M.copyWith(color: AppColors.labelAlternative),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Text(
-                    '알림설정',
+                    '앱 내 푸시 알림 설정',
                     style: body_M.copyWith(color: AppColors.label),
                   ),
                   const Spacer(),
@@ -157,11 +149,36 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
                     value: status,
                     borderRadius: 30,
                     padding: 2,
-                    activeColor: AppColors.primary,
+                    activeColor: AppColors.primaryStrong,
                     inactiveColor: AppColors.componentNatural,
                     onToggle: (val) {
                       if (!isToggleEnabled) return; // 이미 비활성화된 경우
                       _showNotificationDialog(val); // 모달 표시
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Text(
+                    '마케팅 수신 동의',
+                    style: body_M.copyWith(color: AppColors.label),
+                  ),
+                  const Spacer(),
+                  FlutterSwitch(
+                    width: 51,
+                    height: 31,
+                    toggleSize: 27,
+                    value: marketingAgree,
+                    borderRadius: 30,
+                    padding: 2,
+                    activeColor: AppColors.primaryStrong,
+                    inactiveColor: AppColors.componentNatural,
+                    onToggle: (val) {
+                      setState(() {
+                        marketingAgree = val;
+                      });
                     },
                   ),
                 ],
