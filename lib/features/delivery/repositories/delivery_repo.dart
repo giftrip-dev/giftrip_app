@@ -18,7 +18,9 @@ class DeliveryRepo {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final filteredList = status != null
-        ? mockDeliveryList.where((item) => item.status == status).toList()
+        ? mockDeliveryList
+            .where((item) => item.deliveryStatus == status)
+            .toList()
         : mockDeliveryList;
 
     final startIndex = (page - 1) * limit;
@@ -52,38 +54,16 @@ class DeliveryRepo {
     );
   }
 
-  /// 체험 상품 상세 정보 조회
+  /// 상품 상세 정보 조회
   Future<DeliveryDetailModel> getDeliveryDetail(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
-    final item = mockDeliveryList.firstWhere(
+    final detail = mockDeliveryDetailList.firstWhere(
       (item) => item.id == id,
-      orElse: () => throw Exception('상품을 찾을 수 없습니다.'),
+      orElse: () => throw Exception('상세 정보를 찾을 수 없습니다.'),
     );
 
-    return DeliveryDetailModel(
-      id: item.id,
-      title: item.title,
-      thumbnailUrl: item.thumbnailUrl,
-      originalPrice: item.originalPrice,
-      finalPrice: item.finalPrice,
-      status: item.status,
-      rating: item.rating,
-      reviewCount: item.reviewCount,
-      availableFrom: item.availableFrom,
-      availableTo: item.availableTo,
-      discountRate: item.discountRate,
-      soldOut: item.soldOut,
-      unavailableDates: item.unavailableDates,
-      paidAt: item.paidAt,
-      option: item.option,
-      quantity: item.quantity,
-      location: '서울시 강남구',
-      managerPhoneNumber: '010-1234-5678',
-      reserverName: '홍길동',
-      reserverPhoneNumber: '010-9876-5432',
-      payMethod: '신용카드',
-    );
+    return detail;
   }
 
   /// 예약/구매 취소

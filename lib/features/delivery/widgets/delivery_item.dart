@@ -17,7 +17,7 @@ class DeliveryItem extends StatelessWidget {
     required this.delivery,
   });
 
-  bool get isProduct => delivery.status == DeliveryStatus.preparing;
+  bool get isProduct => delivery.deliveryStatus == DeliveryStatus.preparing;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class DeliveryItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  delivery.status.label,
+                  delivery.deliveryStatus.label,
                   style: subtitle_XS.copyWith(
                     color: AppColors.gray900,
                   ),

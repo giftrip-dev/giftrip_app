@@ -14,7 +14,7 @@ class DeliveryViewModel extends ChangeNotifier {
 
   // 상태 저장
   List<DeliveryModel> _deliveryList = [];
-  DeliveryDetailModel? _selectedDelivery;
+  DeliveryDetailModel? _deliveryDetail;
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
@@ -23,7 +23,7 @@ class DeliveryViewModel extends ChangeNotifier {
 
   // 외부 접근용 Getter
   List<DeliveryModel> get deliveryList => _deliveryList;
-  DeliveryDetailModel? get selectedDelivery => _selectedDelivery;
+  DeliveryDetailModel? get deliveryDetail => _deliveryDetail;
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
@@ -83,7 +83,7 @@ class DeliveryViewModel extends ChangeNotifier {
       _hasError = false;
       notifyListeners();
 
-      _selectedDelivery = await _repo.getDeliveryDetail(id);
+      _deliveryDetail = await _repo.getDeliveryDetail(id);
     } catch (e) {
       _hasError = true;
       logger.e('체험 상품 상세 정보 조회 실패: $e');
@@ -94,7 +94,7 @@ class DeliveryViewModel extends ChangeNotifier {
   }
 
   /// 예약/구매 취소
-  Future<bool> _cancelOrderBooking(String id, {String? reason}) async {
+  Future<bool> _cancelDelivery(String id, {String? reason}) async {
     try {
       _isCanceling = true;
       notifyListeners();
@@ -112,14 +112,7 @@ class DeliveryViewModel extends ChangeNotifier {
           thumbnailUrl: updatedItem.thumbnailUrl,
           originalPrice: updatedItem.originalPrice,
           finalPrice: updatedItem.finalPrice,
-          status: updatedItem.status,
-          rating: updatedItem.rating,
-          reviewCount: updatedItem.reviewCount,
-          availableFrom: updatedItem.availableFrom,
-          availableTo: updatedItem.availableTo,
-          discountRate: updatedItem.discountRate,
-          soldOut: updatedItem.soldOut,
-          unavailableDates: updatedItem.unavailableDates,
+          deliveryStatus: updatedItem.deliveryStatus,
           paidAt: updatedItem.paidAt,
           option: updatedItem.option,
           quantity: updatedItem.quantity,
@@ -127,31 +120,21 @@ class DeliveryViewModel extends ChangeNotifier {
       }
 
       // 선택된 상품이 있다면 그것도 업데이트
-      if (_selectedDelivery?.id == id) {
-        _selectedDelivery = DeliveryDetailModel(
-          id: _selectedDelivery!.id,
-          title: _selectedDelivery!.title,
-          thumbnailUrl: _selectedDelivery!.thumbnailUrl,
-          originalPrice: _selectedDelivery!.originalPrice,
-          finalPrice: _selectedDelivery!.finalPrice,
-          status: _selectedDelivery!.status,
-          rating: _selectedDelivery!.rating,
-          reviewCount: _selectedDelivery!.reviewCount,
-          availableFrom: _selectedDelivery!.availableFrom,
-          availableTo: _selectedDelivery!.availableTo,
-          discountRate: _selectedDelivery!.discountRate,
-          soldOut: _selectedDelivery!.soldOut,
-          unavailableDates: _selectedDelivery!.unavailableDates,
-          paidAt: _selectedDelivery!.paidAt,
-          location: _selectedDelivery!.location,
-          managerPhoneNumber: _selectedDelivery!.managerPhoneNumber,
-          reserverName: _selectedDelivery!.reserverName,
-          reserverPhoneNumber: _selectedDelivery!.reserverPhoneNumber,
-          payMethod: _selectedDelivery!.payMethod,
-          deliveryAddress: _selectedDelivery!.deliveryAddress,
-          deliveryDetail: _selectedDelivery!.deliveryDetail,
-          option: _selectedDelivery!.option,
-          quantity: _selectedDelivery!.quantity,
+      if (_deliveryDetail?.deliveryNumber == id) {
+        _deliveryDetail = DeliveryDetailModel(
+          id: id,
+          deliveryNumber: _deliveryDetail!.deliveryNumber,
+          deliveryStatus: _deliveryDetail!.deliveryStatus,
+          product: _deliveryDetail!.product,
+          shippingFee: _deliveryDetail!.shippingFee,
+          invoiceNumber: _deliveryDetail!.invoiceNumber,
+          ordererName: _deliveryDetail!.ordererName,
+          ordererPhone: _deliveryDetail!.ordererPhone,
+          ordererEmail: _deliveryDetail!.ordererEmail,
+          recipientName: _deliveryDetail!.recipientName,
+          recipientPhone: _deliveryDetail!.recipientPhone,
+          address: _deliveryDetail!.address,
+          addressDetail: _deliveryDetail!.addressDetail,
         );
       }
 
@@ -169,7 +152,7 @@ class DeliveryViewModel extends ChangeNotifier {
   /// 예약/구매 취소 처리
   Future<void> handleCancel(
       BuildContext context, DeliveryModel delivery) async {
-    final success = await _cancelOrderBooking(delivery.id);
+    final success = await _cancelDelivery(delivery.id);
 
     if (context.mounted) {
       if (success) {
@@ -179,7 +162,7 @@ class DeliveryViewModel extends ChangeNotifier {
           builder: (context) => TwoButtonModal(
             title: '취소가 완료되었습니다',
             desc:
-                '${delivery.status == DeliveryStatus.preparing ? '구매' : '예약'}금 환불 기간은 \n 카드사 영업일 기준 2~3일 정도 소요됩니다.',
+                '${delivery.deliveryStatus == DeliveryStatus.preparing ? '구매' : '예약'}금 환불 기간은 \n 카드사 영업일 기준 2~3일 정도 소요됩니다.',
             cancelText: '닫기',
             confirmText: '확인',
             onConfirm: () => Navigator.of(context).pop(),
@@ -203,7 +186,7 @@ class DeliveryViewModel extends ChangeNotifier {
 
   /// 선택된 상품 초기화
   void clearSelectedDelivery() {
-    _selectedDelivery = null;
+    _deliveryDetail = null;
     notifyListeners();
   }
 }

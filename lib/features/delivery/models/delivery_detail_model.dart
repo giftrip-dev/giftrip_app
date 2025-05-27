@@ -52,80 +52,77 @@ class AvailablePeriod {
 }
 
 /// 체험 상품 상세 모델
-class DeliveryDetailModel extends DeliveryModel {
-  final String location;
-  final String managerPhoneNumber;
-  final String reserverName;
-  final String reserverPhoneNumber;
-  final String payMethod;
-  final String? deliveryAddress;
-  final String? deliveryDetail;
+class DeliveryDetailModel {
+  final String id;
+  // 배송 정보
+  final String deliveryNumber;
+  final DeliveryStatus deliveryStatus;
+  final String product;
+  final int shippingFee;
+  final String invoiceNumber;
+
+  // 주문자 정보
+  final String ordererName;
+  final String ordererPhone;
+  final String ordererEmail;
+
+  // 배송지 정보
+  final String recipientName;
+  final String recipientPhone;
+  final String address;
+  final String addressDetail;
 
   const DeliveryDetailModel({
-    required super.id,
-    required super.title,
-    required super.thumbnailUrl,
-    required super.originalPrice,
-    required super.finalPrice,
-    required super.status,
-    required super.rating,
-    required super.reviewCount,
-    required super.availableFrom,
-    required super.availableTo,
-    required super.option,
-    required super.quantity,
-    required this.location,
-    required this.managerPhoneNumber,
-    required this.reserverName,
-    required this.reserverPhoneNumber,
-    required this.payMethod,
-    super.discountRate,
-    super.soldOut,
-    super.unavailableDates,
-    required super.paidAt,
-    this.deliveryAddress,
-    this.deliveryDetail,
+    required this.id,
+    required this.deliveryNumber,
+    required this.deliveryStatus,
+    required this.product,
+    required this.shippingFee,
+    required this.invoiceNumber,
+    required this.ordererName,
+    required this.ordererPhone,
+    required this.ordererEmail,
+    required this.recipientName,
+    required this.recipientPhone,
+    required this.address,
+    required this.addressDetail,
   });
 
   factory DeliveryDetailModel.fromJson(Map<String, dynamic> json) {
     return DeliveryDetailModel(
       id: json['id'] as String,
-      title: json['title'] as String,
-      thumbnailUrl: json['thumbnailUrl'] as String,
-      originalPrice: json['originalPrice'] as int,
-      finalPrice: json['finalPrice'] as int,
-      status: DeliveryStatus.fromString(json['status'] as String) ??
-          DeliveryStatus.preparing,
-      rating: (json['rating'] as num).toDouble(),
-      reviewCount: json['reviewCount'] as int,
-      availableFrom: DateTime.parse(json['availableFrom'] as String),
-      availableTo: DateTime.parse(json['availableTo'] as String),
-      soldOut: json['soldOut'] as bool? ?? false,
-      unavailableDates: (json['unavailableDates'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      discountRate: json['discountRate'] as int?,
-      paidAt: DateTime.parse(json['paidAt'] as String),
-      option: json['option'] as String? ?? '',
-      quantity: json['quantity'] as int? ?? 1,
-      location: json['location'] as String,
-      managerPhoneNumber: json['managerPhoneNumber'] as String,
-      reserverName: json['reserverName'] as String,
-      reserverPhoneNumber: json['reserverPhoneNumber'] as String,
-      payMethod: json['payMethod'] as String,
-      deliveryAddress: json['deliveryAddress'] as String?,
-      deliveryDetail: json['deliveryDetail'] as String?,
+      deliveryNumber: json['deliveryNumber'] as String,
+      deliveryStatus:
+          DeliveryStatus.fromString(json['deliveryStatus'] as String) ??
+              DeliveryStatus.preparing,
+      product: json['product'] as String,
+      shippingFee: json['shippingFee'] as int,
+      invoiceNumber: json['invoiceNumber'] as String,
+      ordererName: json['ordererName'] as String,
+      ordererPhone: json['ordererPhone'] as String,
+      ordererEmail: json['ordererEmail'] as String,
+      recipientName: json['recipientName'] as String,
+      recipientPhone: json['recipientPhone'] as String,
+      address: json['address'] as String,
+      addressDetail: json['addressDetail'] as String,
     );
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
-      'location': location,
-      'managerPhoneNumber': managerPhoneNumber,
-      'reserverName': reserverName,
-      'reserverPhoneNumber': reserverPhoneNumber,
-      'payMethod': payMethod,
+      'id': id,
+      'deliveryNumber': deliveryNumber,
+      'deliveryStatus': deliveryStatus.name,
+      'product': product,
+      'shippingFee': shippingFee,
+      'invoiceNumber': invoiceNumber,
+      'ordererName': ordererName,
+      'ordererPhone': ordererPhone,
+      'ordererEmail': ordererEmail,
+      'recipientName': recipientName,
+      'recipientPhone': recipientPhone,
+      'address': address,
+      'addressDetail': addressDetail,
     };
   }
 }

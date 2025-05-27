@@ -54,23 +54,23 @@ class DeliveryDetailScreen extends StatelessWidget {
                     items: [
                       DeliveryInfoItem(
                         label: '배송 번호',
-                        value: delivery.id,
+                        value: delivery.deliveryNumber,
                       ),
                       DeliveryInfoItem(
                         label: '배송 상태',
-                        value: delivery.status.label,
+                        value: delivery.deliveryStatus.label,
                       ),
                       DeliveryInfoItem(
                         label: '상품',
-                        value: delivery.title,
+                        value: delivery.product,
                       ),
                       DeliveryInfoItem(
                         label: '배송비',
-                        value: '${formatter.format(delivery.finalPrice)}원',
+                        value: '${formatter.format(delivery.shippingFee)}원',
                       ),
                       DeliveryInfoItem(
                         label: '송장 번호',
-                        value: '-',
+                        value: delivery.invoiceNumber,
                       ),
                     ],
                     onTextTap: () {
@@ -85,15 +85,15 @@ class DeliveryDetailScreen extends StatelessWidget {
                     items: [
                       DeliveryInfoItem(
                         label: '이름',
-                        value: delivery.id,
+                        value: delivery.ordererName,
                       ),
                       DeliveryInfoItem(
                         label: '연락처',
-                        value: delivery.status.label,
+                        value: delivery.deliveryStatus.label,
                       ),
                       DeliveryInfoItem(
                         label: '이메일',
-                        value: delivery.title,
+                        value: delivery.ordererEmail,
                       ),
                     ],
                   ),
@@ -103,15 +103,15 @@ class DeliveryDetailScreen extends StatelessWidget {
                     items: [
                       DeliveryInfoItem(
                         label: '이름',
-                        value: delivery.id,
+                        value: delivery.recipientName,
                       ),
                       DeliveryInfoItem(
                         label: '연락처',
-                        value: delivery.status.label,
+                        value: delivery.recipientPhone,
                       ),
                       DeliveryInfoItem(
                         label: '이메일',
-                        value: delivery.title,
+                        value: delivery.address,
                       ),
                     ],
                     bottomButton: CTAButton(
