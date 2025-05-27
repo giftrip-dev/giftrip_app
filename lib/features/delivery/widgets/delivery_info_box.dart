@@ -4,14 +4,14 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class DeliveryInfoContainer extends StatelessWidget {
+class DeliveryInfoBox extends StatelessWidget {
   final String title;
   final List<DeliveryInfoItem> items;
   final VoidCallback? onTextTap;
   final CTAButton? bottomButton;
   final String tapText;
 
-  const DeliveryInfoContainer({
+  const DeliveryInfoBox({
     super.key,
     required this.title,
     required this.items,

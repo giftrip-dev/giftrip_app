@@ -6,7 +6,7 @@ import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 import 'package:giftrip/features/delivery/models/delivery_detail_model.dart';
 import 'package:giftrip/features/delivery/models/delivery_status.dart';
 import 'package:giftrip/features/delivery/repositories/delivery_repo.dart';
-import 'package:giftrip/features/delivery/widgets/delivery_info_container.dart';
+import 'package:giftrip/features/delivery/widgets/delivery_info_box.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:intl/intl.dart';
 
@@ -50,7 +50,7 @@ class DeliveryDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DeliveryInfoContainer(
+                  DeliveryInfoBox(
                     title: '배송 정보',
                     items: [
                       DeliveryInfoItem(
@@ -90,7 +90,7 @@ class DeliveryDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   // 주문자 정보
-                  DeliveryInfoContainer(
+                  DeliveryInfoBox(
                     title: '주문자 정보',
                     items: [
                       DeliveryInfoItem(
@@ -108,7 +108,7 @@ class DeliveryDetailScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  DeliveryInfoContainer(
+                  DeliveryInfoBox(
                     title: '배송지 정보',
                     items: [
                       DeliveryInfoItem(
