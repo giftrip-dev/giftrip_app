@@ -10,6 +10,7 @@ import 'package:giftrip/features/notification/view_models/notification_view_mode
 import 'package:giftrip/features/order_booking/screens/order_booking_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
+import 'package:giftrip/features/delivery/screens/delivery_screen.dart';
 
 class MyPageViewModel {
   final AuthRepository _authRepo = AuthRepository();
@@ -95,6 +96,13 @@ class MyPageViewModel {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const OrderBookingScreen()),
+    );
+  }
+
+  void onTapDeliveryList(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const DeliveryScreen()),
     );
   }
 
