@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/rating/star_rating.dart';
 import 'package:giftrip/features/review/models/review_model.dart';
 import 'dart:ui' as ui;
 
@@ -89,20 +90,12 @@ class _ReviewItemState extends State<ReviewItem> {
             children: [
               Text(widget.review.userNickname, style: subtitle_S),
               const SizedBox(width: 9),
-              Row(
-                children: List.generate(
-                  widget.review.rating.toInt(),
-                  (index) => Padding(
-                    padding: EdgeInsets.only(
-                      right: index < widget.review.rating.toInt() - 1 ? 2 : 0,
-                    ),
-                    child: const Icon(
-                      Icons.star,
-                      color: AppColors.primarySoft,
-                      size: 13,
-                    ),
-                  ),
-                ),
+              StarRating(
+                rating: widget.review.rating,
+                size: 13,
+                color: AppColors.primarySoft,
+                spacing: 2,
+                showHalfStars: false,
               ),
               const Spacer(),
               Text(

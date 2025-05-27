@@ -106,6 +106,7 @@ class ExperienceRepo {
       finalPrice: experience.finalPrice,
       category: experience.category,
       rating: experience.rating,
+      averageRating: experience.averageRating,
       reviewCount: experience.reviewCount,
       badges: experience.badges,
       discountRate: experience.discountRate,

@@ -33,6 +33,7 @@ class ShoppingDetailModel extends ShoppingModel {
     required super.finalPrice,
     required super.category,
     required super.rating,
+    required super.averageRating,
     required super.reviewCount,
     required super.manufacturer,
     required this.location,
@@ -61,6 +62,7 @@ class ShoppingDetailModel extends ShoppingModel {
       category: ShoppingCategory.fromString(json['category'] as String) ??
           ShoppingCategory.others,
       rating: (json['rating'] as num).toDouble(),
+      averageRating: (json['averageRating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       discountRate: json['discountRate'] as int?,
       badges: (json['badges'] as List<dynamic>?)

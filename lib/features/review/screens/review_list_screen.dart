@@ -3,21 +3,21 @@ import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/rating/rating_display.dart';
 import 'package:giftrip/features/review/view_models/review_view_model.dart';
 import 'package:giftrip/features/review/widgets/review_item.dart';
 
 class ProductSummaryModel {
   final String thumbnailUrl;
   final String title;
-  final int price;
+  final double averageRating;
 
   const ProductSummaryModel({
     required this.thumbnailUrl,
     required this.title,
-    required this.price,
+    required this.averageRating,
   });
 }
 
@@ -153,7 +153,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
         children: [
           // 썸네일
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
             child: CustomImage(
               imageUrl: widget.productSummary.thumbnailUrl,
               width: 60,
@@ -164,7 +164,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
 
           const SizedBox(width: 12),
 
-          // 상품명 및 가격
+          // 상품명 및 평균 별점
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,9 +176,13 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  '(${formatPrice(widget.productSummary.price)}원)',
-                  style: title_M,
+                // 평균 별점 표시
+                RatingDisplay(
+                  rating: widget.productSummary.averageRating,
+                  starSize: 16,
+                  starColor: AppColors.primarySoft,
+                  ratingTextStyle:
+                      subtitle_S.copyWith(color: AppColors.labelStrong),
                 ),
               ],
             ),

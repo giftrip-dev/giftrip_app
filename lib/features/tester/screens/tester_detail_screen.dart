@@ -100,7 +100,7 @@ class _TesterDetailScreenState extends State<TesterDetailScreen> {
                         productType: ProductType.experienceGroup,
                         productTitle: tester.title,
                         productThumbnailUrl: tester.thumbnailUrl,
-                        productPrice: tester.finalPrice,
+                        averageRating: tester.averageRating,
                       ),
                       const SectionDivider(),
 

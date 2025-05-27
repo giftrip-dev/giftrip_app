@@ -103,7 +103,7 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                         productType: ProductType.experience,
                         productTitle: experience.title,
                         productThumbnailUrl: experience.thumbnailUrl,
-                        productPrice: experience.finalPrice,
+                        averageRating: experience.averageRating,
                       ),
                       const SectionDivider(),
 

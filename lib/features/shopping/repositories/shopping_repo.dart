@@ -106,6 +106,7 @@ class ShoppingRepo {
       finalPrice: shopping.finalPrice,
       category: shopping.category,
       rating: shopping.rating,
+      averageRating: shopping.averageRating,
       reviewCount: shopping.reviewCount,
       badges: shopping.badges,
       manufacturer: shopping.manufacturer,
