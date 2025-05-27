@@ -4,10 +4,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/features/delivery/models/delivery_model.dart';
 import 'package:giftrip/features/delivery/models/delivery_status.dart';
-import 'package:giftrip/features/order_booking/screens/order_detail_screen.dart';
-import 'package:giftrip/features/order_booking/screens/booking_detail_screen.dart';
-import 'package:giftrip/features/delivery/view_models/delivery_view_model.dart';
-import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
+import 'package:giftrip/features/delivery/screens/delivery_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:intl/intl.dart';
@@ -116,24 +113,14 @@ class DeliveryItem extends StatelessWidget {
             child: CTAButton(
               isEnabled: true,
               onPressed: () {
-                if (delivery.status == DeliveryStatus.preparing) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrderDetailScreen(
-                        orderId: delivery.id,
-                      ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeliveryDetailScreen(
+                      deliveryId: delivery.id,
                     ),
-                  );
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          BookingDetailScreen(bookingId: delivery.id),
-                    ),
-                  );
-                }
+                  ),
+                );
               },
               type: CTAButtonType.outline,
               size: CTAButtonSize.medium,

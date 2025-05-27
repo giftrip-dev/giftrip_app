@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
+import 'package:giftrip/features/delivery/models/delivery_detail_model.dart';
+import 'package:giftrip/features/delivery/repositories/delivery_repo.dart';
+import 'package:giftrip/features/delivery/widgets/delivery_info_container.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:intl/intl.dart';
+
+class DeliveryDetailScreen extends StatelessWidget {
+  final String deliveryId;
+
+  const DeliveryDetailScreen({
+    super.key,
+    required this.deliveryId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const HomeAppBar(title: '배송 상세'),
+      body: FutureBuilder<DeliveryDetailModel>(
+        future: DeliveryRepo().getDeliveryDetail(deliveryId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('데이터를 불러오는데 실패했습니다.'),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text('데이터가 없습니다.'),
+            );
+          }
+
+          final delivery = snapshot.data!;
+          final formatter = NumberFormat('#,###');
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DeliveryInfoContainer(
+                    title: '배송 정보',
+                    items: [
+                      DeliveryInfoItem(
+                        label: '배송 번호',
+                        value: delivery.id,
+                      ),
+                      DeliveryInfoItem(
+                        label: '배송 상태',
+                        value: delivery.status.label,
+                      ),
+                      DeliveryInfoItem(
+                        label: '상품',
+                        value: delivery.title,
+                      ),
+                      DeliveryInfoItem(
+                        label: '배송비',
+                        value: '${formatter.format(delivery.finalPrice)}원',
+                      ),
+                      DeliveryInfoItem(
+                        label: '송장 번호',
+                        value: '-',
+                      ),
+                    ],
+                    onTextTap: () {
+                      // 배송 문제 신고 처리
+                    },
+                    tapText: '배송에 문제가 있으신가요?',
+                  ),
+                  const SizedBox(height: 24),
+                  // 주문자 정보
+                  DeliveryInfoContainer(
+                    title: '주문자 정보',
+                    items: [
+                      DeliveryInfoItem(
+                        label: '이름',
+                        value: delivery.id,
+                      ),
+                      DeliveryInfoItem(
+                        label: '연락처',
+                        value: delivery.status.label,
+                      ),
+                      DeliveryInfoItem(
+                        label: '이메일',
+                        value: delivery.title,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  DeliveryInfoContainer(
+                    title: '배송지 정보',
+                    items: [
+                      DeliveryInfoItem(
+                        label: '이름',
+                        value: delivery.id,
+                      ),
+                      DeliveryInfoItem(
+                        label: '연락처',
+                        value: delivery.status.label,
+                      ),
+                      DeliveryInfoItem(
+                        label: '이메일',
+                        value: delivery.title,
+                      ),
+                    ],
+                    bottomButton: CTAButton(
+                      text: '배송지 수정하기',
+                      onPressed: () {},
+                      isEnabled: true,
+                      type: CTAButtonType.outline,
+                      size: CTAButtonSize.medium,
+                      textStyle: title_S.copyWith(color: AppColors.labelStrong),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
