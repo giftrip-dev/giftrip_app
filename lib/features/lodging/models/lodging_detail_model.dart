@@ -75,6 +75,7 @@ class LodgingDetailModel extends LodgingModel {
     required super.finalPrice,
     required super.category,
     required super.rating,
+    required super.averageRating,
     required super.reviewCount,
     required super.badges,
     required super.availableFrom,
@@ -112,6 +113,7 @@ class LodgingDetailModel extends LodgingModel {
       category: LodgingCategory.fromString(json['category'] as String) ??
           LodgingCategory.hotel,
       rating: (json['rating'] as num).toDouble(),
+      averageRating: (json['averageRating'] as num).toDouble(),
       reviewCount: json['reviewCount'] as int,
       badges: (json['badges'] as List<dynamic>?)
               ?.map((e) => ProductTagType.values.firstWhere(

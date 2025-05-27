@@ -106,6 +106,7 @@ class TesterRepo {
       finalPrice: tester.finalPrice,
       category: tester.category,
       rating: tester.rating,
+      averageRating: tester.averageRating,
       reviewCount: tester.reviewCount,
       badges: tester.badges,
       discountRate: tester.discountRate,

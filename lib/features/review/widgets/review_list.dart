@@ -13,14 +13,14 @@ class ReviewList extends StatefulWidget {
   final ProductType productType;
   final String productTitle;
   final String productThumbnailUrl;
-  final int productPrice;
+  final double averageRating;
 
   const ReviewList({
     required this.productId,
     required this.productType,
     required this.productTitle,
     required this.productThumbnailUrl,
-    required this.productPrice,
+    required this.averageRating,
     super.key,
   });
 
@@ -63,7 +63,7 @@ class _ReviewListState extends State<ReviewList> {
           productSummary: ProductSummaryModel(
             thumbnailUrl: widget.productThumbnailUrl,
             title: widget.productTitle,
-            price: widget.productPrice,
+            averageRating: widget.averageRating,
           ),
         ),
       ),

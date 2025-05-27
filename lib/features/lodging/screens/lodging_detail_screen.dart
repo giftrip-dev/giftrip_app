@@ -95,7 +95,7 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                   productType: ProductType.lodging,
                   productTitle: lodging.title,
                   productThumbnailUrl: lodging.thumbnailUrl,
-                  productPrice: lodging.finalPrice,
+                  averageRating: lodging.averageRating,
                 ),
                 const SectionDivider(),
 

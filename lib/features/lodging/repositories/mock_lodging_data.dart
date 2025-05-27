@@ -49,6 +49,7 @@ final List<LodgingModel> mockLodgingList = () {
       finalPrice: product.finalPrice,
       category: category,
       rating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평점
+      averageRating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평균 별점
       reviewCount: 10 + index, // 10개부터 1개씩 증가
       discountRate: product.discountRate,
       badges: product.badges ?? [],
