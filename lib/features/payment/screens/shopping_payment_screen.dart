@@ -4,7 +4,6 @@ import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:giftrip/features/payment/widgets/payment_method_section.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';

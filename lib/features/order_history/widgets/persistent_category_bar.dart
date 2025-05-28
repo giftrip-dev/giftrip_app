@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
-import 'package:giftrip/features/order_booking/widgets/order_booking_category_bar.dart';
+import 'package:giftrip/core/constants/item_type.dart';
+import 'package:giftrip/features/order_history/widgets/order_history_category_bar.dart';
 
 class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
-  final OrderBookingCategory? selectedCategory;
-  final Function(OrderBookingCategory?) onCategoryChanged;
+  final ProductItemType? selectedCategory;
+  final Function(ProductItemType?) onCategoryChanged;
   final int totalCount;
 
   PersistentCategoryBarDelegate({
@@ -20,9 +20,9 @@ class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: 16, bottom: 0),
       color: Colors.white,
-      child: OrderBookingCategoryBar(
+      child: OrderHistoryCategoryBar(
         selectedCategory: selectedCategory,
         onCategoryChanged: onCategoryChanged,
         totalCount: totalCount,
@@ -31,10 +31,10 @@ class PersistentCategoryBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 56;
+  double get maxExtent => 45;
 
   @override
-  double get minExtent => 56;
+  double get minExtent => 45;
 
   @override
   bool shouldRebuild(covariant PersistentCategoryBarDelegate oldDelegate) {

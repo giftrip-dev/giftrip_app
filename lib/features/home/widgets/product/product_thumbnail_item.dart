@@ -10,14 +10,14 @@ import 'package:giftrip/features/lodging/screens/lodging_detail_screen.dart';
 import 'package:giftrip/features/shopping/screens/shopping_detail_screen.dart';
 import 'package:giftrip/features/tester/screens/tester_detail_screen.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductThumbnailItem extends StatelessWidget {
   final ProductModel product;
   final ProductTagType? badgeType;
 
   /// 홈 화면이 아닌 곳에서는 상품 자체의 배지를 사용하려면 true로 설정
   final bool useProductBadges;
 
-  const ProductItem({
+  const ProductThumbnailItem({
     super.key,
     required this.product,
     this.badgeType,

@@ -115,7 +115,9 @@ class CTAButton extends StatelessWidget {
           disabledBackgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: size == CTAButtonSize.medium
+                ? BorderRadius.circular(6)
+                : BorderRadius.circular(12),
             side: BorderSide(
               color:
                   isEnabled ? AppColors.lineStrong : AppColors.componentNatural,
