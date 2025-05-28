@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/my/widgets/my_page_box.dart';
 import 'package:giftrip/features/my/widgets/switch_box.dart';
 import 'package:giftrip/features/my/widgets/user_info_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
-import 'package:giftrip/features/user/view_models/user_view_model.dart';
 import 'package:giftrip/core/widgets/modal/outline_two_button_modal.dart';
+import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -17,17 +16,19 @@ class MyPageScreen extends StatefulWidget {
 
 class _MyPageScreenState extends State<MyPageScreen> {
   late MyPageViewModel myPageViewModel;
-  late UserViewModel userViewModel;
-
+  late MyPageViewModel userViewModel;
   // userInfo 변수를 추가합니다.
-  String? userNickname;
-  String? userEmail;
+  bool userIsInfluencer = false;
+  String userName = '';
+  int userPoint = 0;
+  int userCoponCount = 0;
+  bool marketingAgree = false;
 
   @override
   void initState() {
     super.initState();
-    myPageViewModel = MyPageViewModel();
-    userViewModel = UserViewModel();
+    myPageViewModel = Provider.of<MyPageViewModel>(context, listen: false);
+    userViewModel = Provider.of<MyPageViewModel>(context, listen: false);
     // getUserInfo 호출하여 사용자 정보를 가져옵니다.
     _loadUserInfo();
   }
@@ -37,8 +38,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
     var userInfo = await userViewModel.getUserInfo();
     if (userInfo != null) {
       setState(() {
-        userNickname = userInfo.nickname; // 닉네임 저장
-        userEmail = userInfo.email; // 이메일 저장
+        userName = userInfo.name; // 닉네임 저장
+        userPoint = userInfo.point; // 포인트
+        userCoponCount = userInfo.coponCount; // 쿠폰 개수
+        userIsInfluencer = userInfo.isInfluencer; // 인플루언서 여부
+        marketingAgree = userInfo.isMarketingAgree; // 마케팅 동의 여부
       });
     }
   }
@@ -60,10 +64,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UserInfoBox(
-                    isInfluencer: true,
-                    nickname: '홍길동',
-                    point: 123456,
-                    couponCount: 2,
+                    isInfluencer: userIsInfluencer,
+                    nickname: userName,
+                    point: userPoint,
+                    couponCount: userCoponCount,
                   ),
                   MyPageBox(
                     title: '주문 관리',
@@ -101,7 +105,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       },
                     },
                   ),
-                  SwitchBox(),
+                  SwitchBox(
+                    marketingAgree: marketingAgree,
+                  ),
                   MyPageBox(
                     title: '기타',
                     showIcon: false,

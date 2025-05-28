@@ -11,8 +11,10 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 
 class SwitchBox extends StatefulWidget {
+  final bool marketingAgree;
   const SwitchBox({
     super.key,
+    required this.marketingAgree,
   });
 
   @override
@@ -163,7 +165,7 @@ class _SwitchBoxState extends State<SwitchBox> with WidgetsBindingObserver {
                     width: 51,
                     height: 31,
                     toggleSize: 27,
-                    value: marketingAgree,
+                    value: widget.marketingAgree,
                     borderRadius: 30,
                     padding: 2,
                     activeColor: AppColors.primaryStrong,

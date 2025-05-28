@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/utils/pdf_download.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 // import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
+import 'package:giftrip/features/my/screens/user_detail_screen.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 import 'package:giftrip/features/leave/screens/feedback_screen.dart';
 import 'package:giftrip/features/notice/screens/notice_screen.dart';
@@ -11,8 +12,10 @@ import 'package:giftrip/features/order_booking/screens/order_booking_screen.dart
 import 'package:url_launcher/url_launcher.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/delivery/screens/delivery_screen.dart';
+import 'package:giftrip/features/my/repositories/user_repo.dart';
+import 'package:giftrip/features/my/models/user_model.dart';
 
-class MyPageViewModel {
+class MyPageViewModel extends ChangeNotifier {
   final AuthRepository _authRepo = AuthRepository();
   final NotificationViewModel _notificationViewModel = NotificationViewModel();
   final GlobalStorage _storage = GlobalStorage();
@@ -38,6 +41,18 @@ class MyPageViewModel {
       'kakao_contact_click',
       'kakao_contact_button',
       'my_page',
+    );
+  }
+
+  Future<UserModel> getUserInfo() async {
+    final userInfo = await UserRepository().getUserInfo();
+    return userInfo;
+  }
+
+  void onTapUserDetail(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const UserDetailScreen()),
     );
   }
 
