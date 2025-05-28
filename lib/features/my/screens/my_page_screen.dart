@@ -6,6 +6,7 @@ import 'package:giftrip/features/my/widgets/switch_box.dart';
 import 'package:giftrip/features/my/widgets/user_info_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
+import 'package:giftrip/core/widgets/modal/outline_two_button_modal.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -111,9 +112,22 @@ class _MyPageScreenState extends State<MyPageScreen> {
                             () {},
                       },
                       '로그아웃': {
-                        'onTap': () =>
-                            // myPageViewModel.onTapReviewWrite(context),
-                            () {},
+                        'onTap': () => showDialog(
+                              context: context,
+                              builder: (context) {
+                                return OutlineTwoButtonModal(
+                                  title: '로그아웃을 진행하시나요?',
+                                  cancelText: '취소',
+                                  confirmText: '로그아웃',
+                                  onConfirm: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  onCancel: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                              },
+                            ),
                       },
                     },
                   ),
