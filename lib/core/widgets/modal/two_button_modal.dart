@@ -68,6 +68,8 @@ class TwoButtonModal extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.5),
+                      overlayColor: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(12),
@@ -90,6 +92,8 @@ class TwoButtonModal extends StatelessWidget {
                     onPressed: isLoading ? null : onConfirm,
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.5),
+                      overlayColor: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(12),

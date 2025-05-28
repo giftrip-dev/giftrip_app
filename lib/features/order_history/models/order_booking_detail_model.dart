@@ -50,7 +50,7 @@ class AvailablePeriod {
 }
 
 /// 체험 상품 상세 모델
-class OrderBookingDetailModel extends OrderBookingModel {
+class OrderBookingDetailModel extends OrderHistoryModel {
   final String location;
   final String managerPhoneNumber;
   final String reserverName;

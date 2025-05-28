@@ -78,7 +78,7 @@ class OrderHistoryRepo {
   }
 
   /// 구매 내역 상세 정보 조회
-  Future<OrderBookingDetailModel> getOrderBookingDetail(String id) async {
+  Future<OrderHistoryModel> getOrderBookingDetail(String id) async {
     // 실제 API 호출 코드 (현재 주석 처리)
     // try {
     //   final response = await _dio.get('/api/order-history/$id');
@@ -95,18 +95,13 @@ class OrderHistoryRepo {
       orElse: () => throw Exception('구매 내역을 찾을 수 없습니다.'),
     );
 
-    return OrderBookingDetailModel(
+    return OrderHistoryModel(
       id: item.id,
       orderName: item.orderName,
       items: item.items,
       totalAmount: item.totalAmount,
       progress: item.progress,
       paidAt: item.paidAt,
-      location: '서울시 강남구',
-      managerPhoneNumber: '010-1234-5678',
-      reserverName: '홍길동',
-      reserverPhoneNumber: '010-9876-5432',
-      payMethod: '신용카드',
       transactionId: 'TXN${item.id.toUpperCase()}240101',
     );
   }

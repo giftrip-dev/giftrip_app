@@ -69,7 +69,7 @@ class OrderHistoryItemModel {
 }
 
 /// 구매 내역 모델 (주문 단위)
-class OrderBookingModel {
+class OrderHistoryModel {
   final String id;
   final String orderName; // 주문명 (예: "제주 감귤 선물세트 외 2개")
   final List<OrderHistoryItemModel> items; // 주문 상품 목록
@@ -78,7 +78,7 @@ class OrderBookingModel {
   final DateTime paidAt; // 결제 완료 날짜
   final String transactionId; // 거래 ID
 
-  const OrderBookingModel({
+  const OrderHistoryModel({
     required this.id,
     required this.orderName,
     required this.items,
@@ -100,9 +100,9 @@ class OrderBookingModel {
   /// 할인이 적용되었는지 여부
   bool get hasDiscount => items.any((item) => item.hasDiscount);
 
-  factory OrderBookingModel.fromJson(Map<String, dynamic> json) {
+  factory OrderHistoryModel.fromJson(Map<String, dynamic> json) {
     final itemsJson = json['items'] as List<dynamic>;
-    return OrderBookingModel(
+    return OrderHistoryModel(
       id: json['id'] as String,
       orderName: json['orderName'] as String,
       items: itemsJson.map((e) => OrderHistoryItemModel.fromJson(e)).toList(),
@@ -131,7 +131,7 @@ class OrderBookingModel {
 
 /// 페이징 응답
 class OrderBookingPageResponse {
-  final List<OrderBookingModel> items;
+  final List<OrderHistoryModel> items;
   final PageMeta meta;
 
   OrderBookingPageResponse({
@@ -142,7 +142,7 @@ class OrderBookingPageResponse {
   factory OrderBookingPageResponse.fromJson(Map<String, dynamic> json) {
     final itemsJson = json['items'] as List<dynamic>;
     return OrderBookingPageResponse(
-      items: itemsJson.map((e) => OrderBookingModel.fromJson(e)).toList(),
+      items: itemsJson.map((e) => OrderHistoryModel.fromJson(e)).toList(),
       meta: PageMeta.fromJson(json['meta']),
     );
   }

@@ -8,13 +8,11 @@ import 'package:giftrip/core/widgets/text/price_text.dart';
 import 'package:giftrip/features/order_history/models/order_history_model.dart';
 import 'package:giftrip/features/order_history/screens/booking_order_detail_screen.dart';
 import 'package:giftrip/features/order_history/screens/product_order_detail_screen.dart';
-import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
-import 'package:giftrip/features/order_history/view_models/order_history_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:giftrip/features/order_history/widgets/payment_cancel_button.dart';
 import 'package:intl/intl.dart';
 
 class OrderHistoryListItem extends StatelessWidget {
-  final OrderBookingModel orderBooking;
+  final OrderHistoryModel orderBooking;
 
   const OrderHistoryListItem({
     super.key,
@@ -88,37 +86,7 @@ class OrderHistoryListItem extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: CTAButton(
-                isEnabled: true,
-                onPressed: () {
-                  bool isLoading = false;
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (dialogContext) => StatefulBuilder(
-                      builder: (context, setState) => TwoButtonModal(
-                        title: '구매를 취소하시나요?',
-                        desc: '취소 후에는 복구할 수 없습니다.',
-                        cancelText: '닫기',
-                        confirmText: '구매 취소',
-                        isLoading: isLoading,
-                        onConfirm: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          await context
-                              .read<OrderHistoryViewModel>()
-                              .handleCancel(context, orderBooking);
-                        },
-                      ),
-                    ),
-                  );
-                },
-                type: CTAButtonType.outline,
-                size: CTAButtonSize.medium,
-                text: '구매 취소',
-                textStyle: title_S.copyWith(color: AppColors.labelStrong),
-              ),
+              child: PaymentCancelButton(orderBooking: orderBooking),
             ),
           ],
         );
@@ -131,66 +99,20 @@ class OrderHistoryListItem extends StatelessWidget {
                 onPressed: () {},
                 type: CTAButtonType.outline,
                 size: CTAButtonSize.medium,
-                text: '리뷰 작성',
+                text: '배송지 변경',
                 textStyle: title_S.copyWith(color: AppColors.labelStrong),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: CTAButton(
-                isEnabled: true,
-                onPressed: () {},
-                type: CTAButtonType.outline,
-                size: CTAButtonSize.medium,
-                text: '배송 조회',
-                textStyle: title_S.copyWith(color: AppColors.labelStrong),
-              ),
+              child: PaymentCancelButton(orderBooking: orderBooking),
             ),
           ],
         );
       }
     } else {
       if (orderBooking.progress == OrderBookingProgress.confirmed) {
-        return CTAButton(
-          isEnabled: true,
-          onPressed: () {
-            bool isLoading = false;
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (dialogContext) => StatefulBuilder(
-                builder: (context, setState) => TwoButtonModal(
-                  title: '예약을 취소하시나요?',
-                  desc: '취소 후에는 복구할 수 없습니다.',
-                  cancelText: '닫기',
-                  confirmText: '예약 취소',
-                  isLoading: isLoading,
-                  onConfirm: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await context
-                        .read<OrderHistoryViewModel>()
-                        .handleCancel(context, orderBooking);
-                  },
-                ),
-              ),
-            );
-          },
-          type: CTAButtonType.outline,
-          size: CTAButtonSize.medium,
-          text: '예약 취소',
-          textStyle: title_S.copyWith(color: AppColors.labelStrong),
-        );
-      } else if (orderBooking.progress == OrderBookingProgress.completed) {
-        return CTAButton(
-          isEnabled: true,
-          onPressed: () {},
-          type: CTAButtonType.outline,
-          size: CTAButtonSize.medium,
-          text: '리뷰 작성',
-          textStyle: title_S.copyWith(color: AppColors.labelStrong),
-        );
+        return PaymentCancelButton(orderBooking: orderBooking);
       }
     }
     return const SizedBox.shrink();

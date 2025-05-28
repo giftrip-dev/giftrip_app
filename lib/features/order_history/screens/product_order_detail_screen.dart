@@ -4,7 +4,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/product/product_item_row.dart';
-import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
+import 'package:giftrip/features/order_history/models/order_history_model.dart';
 import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
 import 'package:giftrip/features/order_history/widgets/info_row.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +21,7 @@ class ProductOrderDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppBar(title: '주문 상세'),
-      body: FutureBuilder<OrderBookingDetailModel>(
+      body: FutureBuilder<OrderHistoryModel>(
         future: OrderHistoryRepo().getOrderBookingDetail(orderId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -44,12 +44,12 @@ class ProductOrderDetailScreen extends StatelessWidget {
           final formatter = NumberFormat('#,###');
           final dateFormat = DateFormat('yy.MM.dd');
 
-          final String userName = orderBooking.reserverName;
-          final String phoneNumber = orderBooking.reserverPhoneNumber;
+          final String userName = orderBooking.items.first.title;
+          final String phoneNumber = orderBooking.items.first.title;
           final int totalPrice = orderBooking.totalAmount;
-          final String payMethod = orderBooking.payMethod;
-          final String deliveryAddress = orderBooking.deliveryAddress ?? '';
-          final String deliveryDetail = orderBooking.deliveryDetail ?? '';
+          final String payMethod = orderBooking.items.first.title;
+          final String deliveryAddress = orderBooking.items.first.title;
+          final String deliveryDetail = orderBooking.items.first.title;
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),

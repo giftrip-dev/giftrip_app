@@ -7,9 +7,9 @@ import 'dart:math';
 final random = Random();
 
 /// 목업 구매 내역 데이터
-final List<OrderBookingModel> mockOrderBookingList = () {
+final List<OrderHistoryModel> mockOrderBookingList = () {
   final now = DateTime.now();
-  final orders = <OrderBookingModel>[];
+  final orders = <OrderHistoryModel>[];
 
   // 쇼핑 상품들 가져오기
   final shoppingProducts =
@@ -45,7 +45,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
       quantity: i + 1,
     );
 
-    orders.add(OrderBookingModel(
+    orders.add(OrderHistoryModel(
       id: 'order_${orders.length + 1}',
       orderName: product.title,
       items: [item],
@@ -72,7 +72,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
       quantity: 1,
     );
 
-    orders.add(OrderBookingModel(
+    orders.add(OrderHistoryModel(
       id: 'order_${orders.length + 1}',
       orderName: product.title,
       items: [item],
@@ -98,7 +98,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     quantity: 1,
   );
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: lodgingProduct.title,
     items: [lodgingItem],
@@ -135,7 +135,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     ),
   ];
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: '${mixedItems1[0].title} 외 1개',
     items: mixedItems1,
@@ -183,7 +183,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     ),
   ];
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: '${shoppingItems[0].title} 외 2개',
     items: shoppingItems,
@@ -220,7 +220,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     ),
   ];
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: '${testerMixItems[0].title} 외 1개',
     items: testerMixItems,
@@ -244,7 +244,7 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     quantity: 1,
   );
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: testerItem.title,
     items: [testerItem],
