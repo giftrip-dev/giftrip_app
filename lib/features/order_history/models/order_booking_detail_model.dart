@@ -66,6 +66,7 @@ class OrderBookingDetailModel extends OrderBookingModel {
     required super.totalAmount,
     required super.progress,
     required super.paidAt,
+    required super.transactionId,
     required this.location,
     required this.managerPhoneNumber,
     required this.reserverName,
@@ -93,6 +94,7 @@ class OrderBookingDetailModel extends OrderBookingModel {
       reserverName: json['reserverName'] as String,
       reserverPhoneNumber: json['reserverPhoneNumber'] as String,
       payMethod: json['payMethod'] as String,
+      transactionId: json['transactionId'] as String,
       deliveryAddress: json['deliveryAddress'] as String?,
       deliveryDetail: json['deliveryDetail'] as String?,
     );
@@ -108,6 +110,7 @@ class OrderBookingDetailModel extends OrderBookingModel {
       'reserverName': reserverName,
       'reserverPhoneNumber': reserverPhoneNumber,
       'payMethod': payMethod,
+      'transactionId': transactionId,
     };
   }
 }

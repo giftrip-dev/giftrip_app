@@ -52,6 +52,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
       totalAmount: item.totalPrice,
       progress: OrderBookingProgress.values[i % 3],
       paidAt: now.subtract(Duration(days: i + 1)),
+      transactionId:
+          'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
     ));
   }
 
@@ -77,6 +79,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
       totalAmount: item.totalPrice,
       progress: OrderBookingProgress.values[i % 3],
       paidAt: now.subtract(Duration(days: i + 3)),
+      transactionId:
+          'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
     ));
   }
 
@@ -101,6 +105,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     totalAmount: lodgingItem.totalPrice,
     progress: OrderBookingProgress.confirmed,
     paidAt: now.subtract(Duration(days: 5)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 2. 공동구매 주문들 (숙소+체험)
@@ -136,6 +142,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     totalAmount: mixedItems1.fold(0, (sum, item) => sum + item.totalPrice),
     progress: OrderBookingProgress.completed,
     paidAt: now.subtract(Duration(days: 7)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 3. 쇼핑 상품 다중 주문
@@ -182,6 +190,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     totalAmount: shoppingItems.fold(0, (sum, item) => sum + item.totalPrice),
     progress: OrderBookingProgress.confirmed,
     paidAt: now.subtract(Duration(days: 10)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 4. 체험단 + 체험 공동구매
@@ -217,6 +227,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     totalAmount: testerMixItems.fold(0, (sum, item) => sum + item.totalPrice),
     progress: OrderBookingProgress.canceled,
     paidAt: now.subtract(Duration(days: 15)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 5. 체험단 단일 주문
@@ -239,6 +251,8 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     totalAmount: testerItem.totalPrice,
     progress: OrderBookingProgress.completed,
     paidAt: now.subtract(Duration(days: 20)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   return orders;

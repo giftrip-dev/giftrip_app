@@ -162,6 +162,11 @@ class BookingOrderDetailScreen extends StatelessWidget {
                           label: '결제수단',
                           value: payMethod,
                         ),
+                        const SizedBox(height: 12),
+                        InfoRow(
+                          label: '거래 ID',
+                          value: orderBooking.transactionId,
+                        ),
                       ],
                     ),
                   ),

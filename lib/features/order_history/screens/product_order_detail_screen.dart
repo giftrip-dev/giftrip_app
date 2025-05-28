@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/product/product_item_row.dart';
 import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
 import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
@@ -88,6 +89,14 @@ class ProductOrderDetailScreen extends StatelessWidget {
                                 quantity: item.quantity,
                                 price: item.totalPrice,
                                 type: item.category,
+                              ),
+                              const SizedBox(height: 12),
+                              CTAButton(
+                                isEnabled: true,
+                                onPressed: () {},
+                                text: '리뷰 작성',
+                                size: CTAButtonSize.medium,
+                                type: CTAButtonType.fillOutline,
                               ),
                               if (!isLast) const SizedBox(height: 16),
                             ],
@@ -189,6 +198,11 @@ class ProductOrderDetailScreen extends StatelessWidget {
                         InfoRow(
                           label: '결제수단',
                           value: payMethod,
+                        ),
+                        const SizedBox(height: 12),
+                        InfoRow(
+                          label: '거래 ID',
+                          value: orderBooking.transactionId,
                         ),
                       ],
                     ),

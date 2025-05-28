@@ -91,17 +91,26 @@ class OrderHistoryListItem extends StatelessWidget {
               child: CTAButton(
                 isEnabled: true,
                 onPressed: () {
+                  bool isLoading = false;
                   showDialog(
                     context: context,
-                    builder: (context) => TwoButtonModal(
-                      title: '구매를 취소하시나요?',
-                      desc:
-                          '${orderBooking.orderName} 구매를 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
-                      cancelText: '닫기',
-                      confirmText: '구매 취소',
-                      onConfirm: () => context
-                          .read<OrderHistoryViewModel>()
-                          .handleCancel(context, orderBooking),
+                    barrierDismissible: false,
+                    builder: (dialogContext) => StatefulBuilder(
+                      builder: (context, setState) => TwoButtonModal(
+                        title: '구매를 취소하시나요?',
+                        desc: '취소 후에는 복구할 수 없습니다.',
+                        cancelText: '닫기',
+                        confirmText: '구매 취소',
+                        isLoading: isLoading,
+                        onConfirm: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await context
+                              .read<OrderHistoryViewModel>()
+                              .handleCancel(context, orderBooking);
+                        },
+                      ),
                     ),
                   );
                 },
@@ -145,17 +154,26 @@ class OrderHistoryListItem extends StatelessWidget {
         return CTAButton(
           isEnabled: true,
           onPressed: () {
+            bool isLoading = false;
             showDialog(
               context: context,
-              builder: (context) => TwoButtonModal(
-                title: '예약을 취소하시나요?',
-                desc:
-                    '${orderBooking.orderName} 예약을 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
-                cancelText: '닫기',
-                confirmText: '예약 취소',
-                onConfirm: () => context
-                    .read<OrderHistoryViewModel>()
-                    .handleCancel(context, orderBooking),
+              barrierDismissible: false,
+              builder: (dialogContext) => StatefulBuilder(
+                builder: (context, setState) => TwoButtonModal(
+                  title: '예약을 취소하시나요?',
+                  desc: '취소 후에는 복구할 수 없습니다.',
+                  cancelText: '닫기',
+                  confirmText: '예약 취소',
+                  isLoading: isLoading,
+                  onConfirm: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await context
+                        .read<OrderHistoryViewModel>()
+                        .handleCancel(context, orderBooking);
+                  },
+                ),
               ),
             );
           },

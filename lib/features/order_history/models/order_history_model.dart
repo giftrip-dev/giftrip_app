@@ -76,6 +76,7 @@ class OrderBookingModel {
   final int totalAmount; // 총 주문 금액
   final OrderBookingProgress progress; // 예약 진행 상태
   final DateTime paidAt; // 결제 완료 날짜
+  final String transactionId; // 거래 ID
 
   const OrderBookingModel({
     required this.id,
@@ -84,6 +85,7 @@ class OrderBookingModel {
     required this.totalAmount,
     required this.progress,
     required this.paidAt,
+    required this.transactionId,
   });
 
   /// 주 카테고리 (첫 번째 상품의 카테고리)
@@ -110,6 +112,7 @@ class OrderBookingModel {
         orElse: () => OrderBookingProgress.confirmed,
       ),
       paidAt: DateTime.parse(json['paidAt'] as String),
+      transactionId: json['transactionId'] as String,
     );
   }
 
@@ -121,6 +124,7 @@ class OrderBookingModel {
       'totalAmount': totalAmount,
       'progress': progress.name,
       'paidAt': paidAt.toIso8601String(),
+      'transactionId': transactionId,
     };
   }
 }

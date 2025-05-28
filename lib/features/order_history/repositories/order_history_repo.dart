@@ -107,6 +107,7 @@ class OrderHistoryRepo {
       reserverName: '홍길동',
       reserverPhoneNumber: '010-9876-5432',
       payMethod: '신용카드',
+      transactionId: 'TXN${item.id.toUpperCase()}240101',
     );
   }
 
