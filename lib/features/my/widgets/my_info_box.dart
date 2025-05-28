@@ -3,14 +3,15 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:giftrip/features/my/screens/user_management_screen.dart';
 
-class UserInfoBox extends StatelessWidget {
+class MyInfoBox extends StatelessWidget {
   final bool isInfluencer;
   final String nickname;
   final int point;
   final int couponCount;
 
-  const UserInfoBox({
+  const MyInfoBox({
     Key? key,
     required this.isInfluencer,
     required this.nickname,
@@ -45,26 +46,37 @@ class UserInfoBox extends StatelessWidget {
               ),
             ),
           if (isInfluencer) const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    nickname,
-                    style: subtitle_L.copyWith(color: AppColors.labelStrong),
-                  ),
-                  Text(
-                    '님 안녕하세요',
-                    style: body_L.copyWith(color: AppColors.label),
-                  ),
-                ],
-              ),
-              const Icon(
-                LucideIcons.chevronRight,
-                color: AppColors.component,
-              ),
-            ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserManagementScreen(),
+                ),
+              );
+            },
+            behavior: HitTestBehavior.opaque,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      nickname,
+                      style: subtitle_L.copyWith(color: AppColors.labelStrong),
+                    ),
+                    Text(
+                      '님 안녕하세요',
+                      style: body_L.copyWith(color: AppColors.label),
+                    ),
+                  ],
+                ),
+                const Icon(
+                  LucideIcons.chevronRight,
+                  color: AppColors.component,
+                ),
+              ],
+            ),
           ),
 
           const SizedBox(height: 16),

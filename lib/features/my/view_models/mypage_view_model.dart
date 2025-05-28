@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/utils/pdf_download.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 // import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
-import 'package:giftrip/features/my/screens/user_detail_screen.dart';
+import 'package:giftrip/features/my/screens/user_management_screen.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 import 'package:giftrip/features/leave/screens/feedback_screen.dart';
 import 'package:giftrip/features/notice/screens/notice_screen.dart';
@@ -49,10 +49,15 @@ class MyPageViewModel extends ChangeNotifier {
     return userInfo;
   }
 
+  Future<UserModel> getUserManagement() async {
+    final userDetail = await UserRepository().getUserManagement();
+    return userDetail;
+  }
+
   void onTapUserDetail(context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const UserDetailScreen()),
+      MaterialPageRoute(builder: (context) => const UserManagementScreen()),
     );
   }
 

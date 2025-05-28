@@ -18,4 +18,14 @@ class UserRepository {
       throw Exception('유저 정보 조회 실패: $e');
     }
   }
+
+  Future<UserModel> getUserManagement() async {
+    try {
+      // final response = await _dio.get('/api/user/management');
+      // return UserModel.fromJson(response.data);
+      return mockUserManagement;
+    } catch (e) {
+      throw Exception('회원 관리 정보 조회 실패: $e');
+    }
+  }
 }

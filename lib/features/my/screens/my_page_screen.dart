@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/features/my/widgets/my_page_box.dart';
 import 'package:giftrip/features/my/widgets/switch_box.dart';
-import 'package:giftrip/features/my/widgets/user_info_box.dart';
+import 'package:giftrip/features/my/widgets/my_info_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
 import 'package:giftrip/core/widgets/modal/outline_two_button_modal.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,6 @@ class MyPageScreen extends StatefulWidget {
 class _MyPageScreenState extends State<MyPageScreen> {
   late MyPageViewModel myPageViewModel;
   late MyPageViewModel userViewModel;
-  // userInfo 변수를 추가합니다.
   bool userIsInfluencer = false;
   String userName = '';
   int userPoint = 0;
@@ -29,20 +28,18 @@ class _MyPageScreenState extends State<MyPageScreen> {
     super.initState();
     myPageViewModel = Provider.of<MyPageViewModel>(context, listen: false);
     userViewModel = Provider.of<MyPageViewModel>(context, listen: false);
-    // getUserInfo 호출하여 사용자 정보를 가져옵니다.
     _loadUserInfo();
   }
 
-  // 사용자 정보를 로드하는 메서드
   void _loadUserInfo() async {
     var userInfo = await userViewModel.getUserInfo();
     if (userInfo != null) {
       setState(() {
-        userName = userInfo.name; // 닉네임 저장
-        userPoint = userInfo.point; // 포인트
-        userCoponCount = userInfo.coponCount; // 쿠폰 개수
-        userIsInfluencer = userInfo.isInfluencer; // 인플루언서 여부
-        marketingAgree = userInfo.isMarketingAgree; // 마케팅 동의 여부
+        userName = userInfo.name ?? '';
+        userPoint = int.parse(userInfo.point ?? '0');
+        userCoponCount = int.parse(userInfo.coponCount ?? '0');
+        userIsInfluencer = userInfo.isInfluencer ?? false;
+        marketingAgree = userInfo.isMarketingAgree ?? false;
       });
     }
   }
@@ -63,11 +60,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserInfoBox(
+                  MyInfoBox(
                     isInfluencer: userIsInfluencer,
                     nickname: userName,
-                    point: userPoint,
-                    couponCount: userCoponCount,
+                    point: int.parse(userPoint.toString()),
+                    couponCount: int.parse(userCoponCount.toString()),
                   ),
                   MyPageBox(
                     title: '주문 관리',
