@@ -1,25 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
-import 'package:giftrip/features/order_booking/screens/booking_detail_screen.dart';
-import 'package:giftrip/features/order_booking/screens/order_detail_screen.dart';
+import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/text/price_text.dart';
+import 'package:giftrip/features/order_history/models/order_history_model.dart';
+import 'package:giftrip/features/order_history/screens/booking_detail_screen.dart';
+import 'package:giftrip/features/order_history/screens/order_detail_screen.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
-import 'package:giftrip/features/order_booking/view_models/order_booking_view_model.dart';
+import 'package:giftrip/features/order_history/view_models/order_history_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class OrderBookingItem extends StatelessWidget {
+class OrderHistoryListItem extends StatelessWidget {
   final OrderBookingModel orderBooking;
 
-  const OrderBookingItem({
+  const OrderHistoryListItem({
     super.key,
     required this.orderBooking,
   });
 
-  bool get isProduct => orderBooking.category == OrderBookingCategory.product;
+  bool get isProduct =>
+      orderBooking.items.first.category == ProductItemType.product;
+
+  Widget _buildProductItem(OrderHistoryItemModel item) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // 상품 썸네일
+        CustomImage(
+          imageUrl: item.thumbnailUrl,
+          width: 60,
+          height: 60,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        const SizedBox(width: 12),
+        // 상품 정보
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.category == ProductItemType.product
+                    ? '${item.title}, ${item.quantity}개'
+                    : item.title,
+                style: body_S,
+              ),
+              const SizedBox(height: 4),
+              PriceText(
+                price: item.totalPrice,
+                color: AppColors.labelStrong,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildButtons(BuildContext context) {
     // 취소된 상태일 때는 모든 카테고리에서 취소완료 버튼 표시
@@ -58,11 +96,11 @@ class OrderBookingItem extends StatelessWidget {
                     builder: (context) => TwoButtonModal(
                       title: '구매를 취소하시나요?',
                       desc:
-                          '${orderBooking.title} 구매를 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
+                          '${orderBooking.orderName} 구매를 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
                       cancelText: '닫기',
                       confirmText: '구매 취소',
                       onConfirm: () => context
-                          .read<OrderBookingViewModel>()
+                          .read<OrderHistoryViewModel>()
                           .handleCancel(context, orderBooking),
                     ),
                   );
@@ -111,11 +149,12 @@ class OrderBookingItem extends StatelessWidget {
               context: context,
               builder: (context) => TwoButtonModal(
                 title: '예약을 취소하시나요?',
-                desc: '${orderBooking.title} 예약을 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
+                desc:
+                    '${orderBooking.orderName} 예약을 취소하시나요? \n취소 후에는 복구할 수 없습니다.',
                 cancelText: '닫기',
                 confirmText: '예약 취소',
                 onConfirm: () => context
-                    .read<OrderBookingViewModel>()
+                    .read<OrderHistoryViewModel>()
                     .handleCancel(context, orderBooking),
               ),
             );
@@ -141,27 +180,31 @@ class OrderBookingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = NumberFormat('#,###');
-    final dateFormat = DateFormat('yyyy.MM.dd');
+    final dateFormat = DateFormat('yy.MM.dd');
 
     return Container(
       padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.line),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 상단: 카테고리, 상세보기
+          // 상단: 구매날짜, 상세보기
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                orderBooking.category.label,
-                style: heading_4.copyWith(
-                  color: AppColors.primaryStrong,
+                dateFormat.format(orderBooking.paidAt),
+                style: subtitle_L.copyWith(
+                  color: AppColors.labelStrong,
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  if (orderBooking.category == OrderBookingCategory.product) {
+                  if (orderBooking.items.first.category ==
+                      ProductItemType.product) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -181,62 +224,39 @@ class OrderBookingItem extends StatelessWidget {
                     );
                   }
                 },
-                child: Text(
-                  '상세보기',
-                  style: body_S.copyWith(
-                    color: AppColors.labelAlternative,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          // 본문: 이미지 + 정보
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: Image.asset(
-                  orderBooking.thumbnailUrl,
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
                     Text(
-                      dateFormat.format(orderBooking.paidAt),
-                      style: caption.copyWith(
-                        color: AppColors.labelAlternative,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      orderBooking.title,
-                      style: body_M.copyWith(
+                      '상세보기',
+                      style: body_S.copyWith(
                         color: AppColors.labelStrong,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${formatter.format(orderBooking.finalPrice)}원',
-                      style: title_M.copyWith(
-                        color: AppColors.labelStrong,
-                      ),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 18,
+                      color: AppColors.labelStrong,
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
+
+          // 구매 아이템들 (24px 간격으로 세로 나열)
+          Column(
+            children: orderBooking.items
+                .map((item) => Padding(
+                      padding: EdgeInsets.only(
+                        bottom: item == orderBooking.items.last ? 0 : 24,
+                      ),
+                      child: _buildProductItem(item),
+                    ))
+                .toList(),
+          ),
+
+          const SizedBox(height: 24),
           // 하단 버튼
           SizedBox(
             width: double.infinity,

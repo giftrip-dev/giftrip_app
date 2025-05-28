@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_detail_model.dart';
-import 'package:giftrip/features/order_booking/repositories/order_booking_repo.dart';
+import 'package:giftrip/features/order_history/models/order_history_model.dart';
+import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
+import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
 
-/// 체험 상품 뷰모델
-class OrderBookingViewModel extends ChangeNotifier {
-  final OrderBookingRepo _repo = OrderBookingRepo();
+/// 구매 내역 뷰모델
+class OrderHistoryViewModel extends ChangeNotifier {
+  final OrderHistoryRepo _repo = OrderHistoryRepo();
 
   // 상태 저장
   List<OrderBookingModel> _orderBookingList = [];
@@ -18,7 +18,7 @@ class OrderBookingViewModel extends ChangeNotifier {
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
-  OrderBookingCategory? _selectedCategory;
+  ProductItemType? _selectedCategory;
   bool _isCanceling = false; // 취소 진행 중 상태
 
   // 외부 접근용 Getter
@@ -27,7 +27,7 @@ class OrderBookingViewModel extends ChangeNotifier {
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
-  OrderBookingCategory? get selectedCategory => _selectedCategory;
+  ProductItemType? get selectedCategory => _selectedCategory;
   bool get isCanceling => _isCanceling;
 
   /// 다음 페이지 번호 계산
@@ -39,7 +39,7 @@ class OrderBookingViewModel extends ChangeNotifier {
   }
 
   /// 카테고리 변경
-  Future<void> changeCategory(OrderBookingCategory? category) async {
+  Future<void> changeCategory(ProductItemType? category) async {
     if (_selectedCategory == category) return;
 
     // 로딩 상태 시작
@@ -51,11 +51,11 @@ class OrderBookingViewModel extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 200));
 
     _selectedCategory = category;
-    await fetchOrderBookingList(refresh: true);
+    await fetchOrderHistoryList(refresh: true);
   }
 
-  /// 체험 상품 목록 조회
-  Future<void> fetchOrderBookingList({bool refresh = false}) async {
+  /// 구매 목록 조회
+  Future<void> fetchOrderHistoryList({bool refresh = false}) async {
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
     if ((!refresh && _isLoading) ||
         (!refresh && _orderBookingList.isNotEmpty && nextPage == null)) {
@@ -124,19 +124,10 @@ class OrderBookingViewModel extends ChangeNotifier {
         final updatedItem = _orderBookingList[index];
         _orderBookingList[index] = OrderBookingModel(
           id: updatedItem.id,
-          title: updatedItem.title,
-          thumbnailUrl: updatedItem.thumbnailUrl,
-          originalPrice: updatedItem.originalPrice,
-          finalPrice: updatedItem.finalPrice,
-          category: updatedItem.category,
-          rating: updatedItem.rating,
-          reviewCount: updatedItem.reviewCount,
-          availableFrom: updatedItem.availableFrom,
-          availableTo: updatedItem.availableTo,
-          progress: OrderBookingProgress.canceled, // 상태를 취소로 변경
-          discountRate: updatedItem.discountRate,
-          soldOut: updatedItem.soldOut,
-          unavailableDates: updatedItem.unavailableDates,
+          orderName: updatedItem.orderName,
+          items: updatedItem.items,
+          totalAmount: updatedItem.totalAmount,
+          progress: updatedItem.progress,
           paidAt: updatedItem.paidAt,
         );
       }
@@ -145,25 +136,16 @@ class OrderBookingViewModel extends ChangeNotifier {
       if (_selectedOrderBooking?.id == id) {
         _selectedOrderBooking = OrderBookingDetailModel(
           id: _selectedOrderBooking!.id,
-          title: _selectedOrderBooking!.title,
-          thumbnailUrl: _selectedOrderBooking!.thumbnailUrl,
-          originalPrice: _selectedOrderBooking!.originalPrice,
-          finalPrice: _selectedOrderBooking!.finalPrice,
-          category: _selectedOrderBooking!.category,
-          rating: _selectedOrderBooking!.rating,
-          reviewCount: _selectedOrderBooking!.reviewCount,
-          availableFrom: _selectedOrderBooking!.availableFrom,
-          availableTo: _selectedOrderBooking!.availableTo,
-          progress: OrderBookingProgress.canceled, // 상태를 취소로 변경
+          orderName: _selectedOrderBooking!.orderName,
+          items: _selectedOrderBooking!.items,
+          totalAmount: _selectedOrderBooking!.totalAmount,
+          progress: _selectedOrderBooking!.progress,
+          paidAt: _selectedOrderBooking!.paidAt,
           location: _selectedOrderBooking!.location,
           managerPhoneNumber: _selectedOrderBooking!.managerPhoneNumber,
           reserverName: _selectedOrderBooking!.reserverName,
           reserverPhoneNumber: _selectedOrderBooking!.reserverPhoneNumber,
           payMethod: _selectedOrderBooking!.payMethod,
-          discountRate: _selectedOrderBooking!.discountRate,
-          soldOut: _selectedOrderBooking!.soldOut,
-          unavailableDates: _selectedOrderBooking!.unavailableDates,
-          paidAt: _selectedOrderBooking!.paidAt,
           deliveryAddress: _selectedOrderBooking!.deliveryAddress,
           deliveryDetail: _selectedOrderBooking!.deliveryDetail,
         );
@@ -193,7 +175,7 @@ class OrderBookingViewModel extends ChangeNotifier {
           builder: (context) => TwoButtonModal(
             title: '취소 완료',
             desc:
-                '${orderBooking.title} ${orderBooking.category == OrderBookingCategory.product ? '구매' : '예약'}가 취소되었습니다.',
+                '${orderBooking.orderName} ${orderBooking.items.first.category == ProductItemType.product ? '구매' : '예약'}가 취소되었습니다.',
             cancelText: '닫기',
             confirmText: '확인',
             onConfirm: () => Navigator.of(context).pop(),

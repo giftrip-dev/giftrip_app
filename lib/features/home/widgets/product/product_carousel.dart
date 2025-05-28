@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
-import 'package:giftrip/features/home/widgets/product/product_item.dart';
+import 'package:giftrip/features/home/widgets/product/product_thumbnail_item.dart';
 
 /// 가로 슬라이드 & 무한 페칭 캐러셀
 class ProductCarousel extends StatefulWidget {
@@ -91,8 +91,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
         return ProductTagType.bestSeller;
       case ProductSection.timeDeals:
       case ProductSection.relatedProducts:
-      default:
-        return ProductTagType.almostSoldOut; // 타임딜이나 기타 섹션
+        return ProductTagType.newArrival;
     }
   }
 
@@ -133,7 +132,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               for (var i = 0; i < items.length; i++) ...[
-                ProductItem(
+                ProductThumbnailItem(
                   product: items[i],
                   // 홈 화면에서는 섹션 기반 배지 사용, 다른 화면에서는 상품 자체 배지 사용
                   badgeType:

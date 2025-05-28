@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/item_type.dart';
-import 'package:giftrip/core/widgets/image/custom_image.dart';
-import 'package:giftrip/core/widgets/text/price_text.dart';
+import 'package:giftrip/core/widgets/product/product_item_row.dart';
 import 'package:giftrip/features/payment/view_models/payment_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -23,7 +22,7 @@ class PaymentProductSection extends StatelessWidget {
       children: [
         // 섹션 제목
         Text(
-          '예약 상품 (${items.length})',
+          '주문 상품 (${items.length})',
           style: title_M,
         ),
         const SizedBox(height: 12),
@@ -53,39 +52,13 @@ class PaymentProductSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 상품 썸네일
-              CustomImage(
-                imageUrl: item.thumbnailUrl,
-                width: 60,
-                height: 60,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              const SizedBox(width: 12),
-              // 상품 정보
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.type == ProductItemType.product
-                          ? '${item.title}, ${item.quantity}개'
-                          : item.title,
-                      style: body_S,
-                    ),
-                    const SizedBox(height: 4),
-                    PriceText(
-                      price: item.price * item.quantity,
-                      color: AppColors.labelStrong,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          ProductItemRow(
+            thumbnailUrl: item.thumbnailUrl,
+            title: item.title,
+            quantity: item.quantity,
+            price: item.price,
+            type: item.type,
           ),
-
           // 체험 상품일 때 날짜 정보 표시
           if (item.type == ProductItemType.experience) ...[
             const SizedBox(height: 12),

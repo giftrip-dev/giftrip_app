@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 
-class OrderBookingCategoryBar extends StatefulWidget {
-  final OrderBookingCategory? selectedCategory;
-  final Function(OrderBookingCategory?) onCategoryChanged;
+class OrderHistoryCategoryBar extends StatefulWidget {
+  final ProductItemType? selectedCategory;
+  final Function(ProductItemType?) onCategoryChanged;
   final int totalCount;
 
-  const OrderBookingCategoryBar({
+  const OrderHistoryCategoryBar({
     super.key,
     required this.selectedCategory,
     required this.onCategoryChanged,
@@ -16,13 +16,13 @@ class OrderBookingCategoryBar extends StatefulWidget {
   });
 
   @override
-  State<OrderBookingCategoryBar> createState() =>
-      _OrderBookingCategoryBarState();
+  State<OrderHistoryCategoryBar> createState() =>
+      _OrderHistoryCategoryBarState();
 }
 
-class _OrderBookingCategoryBarState extends State<OrderBookingCategoryBar> {
+class _OrderHistoryCategoryBarState extends State<OrderHistoryCategoryBar> {
   final List<GlobalKey> _chipKeys = List.generate(
-    OrderBookingCategory.values.length + 1, // +1 for '전체'
+    ProductItemType.values.length + 1, // +1 for '전체'
     (index) => GlobalKey(),
   );
 
@@ -41,7 +41,7 @@ class _OrderBookingCategoryBarState extends State<OrderBookingCategoryBar> {
             onTap: () => widget.onCategoryChanged(null),
           ),
           // 나머지 카테고리들
-          ...OrderBookingCategory.values.asMap().entries.map((entry) {
+          ...ProductItemType.values.asMap().entries.map((entry) {
             final idx = entry.key;
             final category = entry.value;
             return _CategoryChip(

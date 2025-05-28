@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_detail_model.dart';
-import 'package:giftrip/features/order_booking/repositories/order_booking_repo.dart';
+import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
+import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
 import 'package:intl/intl.dart';
 
-class OrderDetailScreen extends StatelessWidget {
-  final String orderId;
+class BookingDetailScreen extends StatelessWidget {
+  final String bookingId;
 
-  const OrderDetailScreen({
+  const BookingDetailScreen({
     super.key,
-    required this.orderId,
+    required this.bookingId,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBar(title: '주문 상세'),
+      appBar: const HomeAppBar(title: '예약 상세'),
       body: FutureBuilder<OrderBookingDetailModel>(
-        future: OrderBookingRepo().getOrderBookingDetail(orderId),
+        future: OrderHistoryRepo().getOrderBookingDetail(bookingId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -44,19 +44,18 @@ class OrderDetailScreen extends StatelessWidget {
           // 예약자 정보
           final String userName = orderBooking.reserverName;
           final String phoneNumber = orderBooking.reserverPhoneNumber;
-          final int productPrice = orderBooking.finalPrice;
-          final int totalPrice = orderBooking.finalPrice;
+          final int productPrice = orderBooking.totalAmount;
+          final int totalPrice = orderBooking.totalAmount;
           final String payMethod = orderBooking.payMethod;
-          final String deliveryAddress = orderBooking.deliveryAddress ?? '';
-          final String deliveryDetail = orderBooking.deliveryDetail ?? '';
+
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 주문 상품
-                  const Text('주문 상품', style: title_M),
+                  // 예약 상품
+                  const Text('예약 상품', style: title_M),
                   const SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
@@ -70,7 +69,7 @@ class OrderDetailScreen extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: Image.asset(
-                            orderBooking.thumbnailUrl,
+                            orderBooking.items.first.thumbnailUrl,
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
@@ -88,14 +87,14 @@ class OrderDetailScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                orderBooking.title,
+                                orderBooking.orderName,
                                 style: body_M.copyWith(
                                   color: AppColors.labelStrong,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '${formatter.format(orderBooking.finalPrice)}원',
+                                '${formatter.format(orderBooking.totalAmount)}원',
                                 style: title_M.copyWith(
                                   color: AppColors.labelStrong,
                                 ),
@@ -140,40 +139,6 @@ class OrderDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // 배송 정보
-                  const Text(
-                    '결제 금액',
-                    style: title_M,
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundAlternative,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('기본 배송지', style: body_S),
-                            Text(deliveryAddress, style: subtitle_S),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('상세 정보', style: body_S),
-                            Text(deliveryDetail, style: subtitle_S),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
                   // 결제 금액
                   const Text(
                     '결제 금액',
