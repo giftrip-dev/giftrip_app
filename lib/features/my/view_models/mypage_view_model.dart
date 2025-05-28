@@ -8,7 +8,7 @@ import 'package:giftrip/features/leave/screens/feedback_screen.dart';
 import 'package:giftrip/features/notice/screens/notice_screen.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
-import 'package:giftrip/features/order_booking/screens/order_booking_screen.dart';
+import 'package:giftrip/features/order_history/screens/order_history_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/delivery/screens/delivery_screen.dart';
@@ -115,7 +115,7 @@ class MyPageViewModel extends ChangeNotifier {
   void onTapOrderBookingList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const OrderBookingScreen()),
+      MaterialPageRoute(builder: (context) => const OrderHistoryScreen()),
     );
   }
 

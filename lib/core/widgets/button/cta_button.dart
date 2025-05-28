@@ -57,33 +57,15 @@ class CTAButton extends StatelessWidget {
 
   /// 버튼 높이 계산
   double _getButtonHeight() {
-    switch (type) {
-      case CTAButtonType.primary:
-        return 59; // 프라이머리 버튼 높이 59px
-      case CTAButtonType.outline:
-        switch (size) {
-          case CTAButtonSize.extraLarge:
-            return 59; // 아웃라인 엑스트라 라지 버튼 높이 59px
-          case CTAButtonSize.large:
-            return 48; // 아웃라인 라지 버튼 높이 48px
-          case CTAButtonSize.medium:
-            return 37; // 아웃라인 미디엄 버튼 높이 37px
-          case null:
-            return 48; // 기본값은 large
-        }
-      case CTAButtonType.whiteFill:
-        switch (size) {
-          case CTAButtonSize.extraLarge:
-            return 59; // 화이트 채운 엑스트라 라지 버튼 높이 59px
-          case CTAButtonSize.large:
-            return 48; // 화이트 채운 라지 버튼 높이 48px
-          case CTAButtonSize.medium:
-            return 37; // 화이트 채운 미디엄 버튼 높이 37px
-          case null:
-            return 48; // 기본값은 large
-        }
-      case CTAButtonType.fillOutline:
-        return 48; // 채운 아웃라인 버튼 높이 59px
+    switch (size) {
+      case CTAButtonSize.extraLarge:
+        return 59;
+      case CTAButtonSize.large:
+        return 48;
+      case CTAButtonSize.medium:
+        return 37;
+      case null:
+        return 48;
     }
   }
 
@@ -115,7 +97,9 @@ class CTAButton extends StatelessWidget {
           disabledBackgroundColor: Colors.transparent,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: size == CTAButtonSize.medium
+                ? BorderRadius.circular(6)
+                : BorderRadius.circular(12),
             side: BorderSide(
               color:
                   isEnabled ? AppColors.lineStrong : AppColors.componentNatural,
@@ -125,10 +109,12 @@ class CTAButton extends StatelessWidget {
         );
       case CTAButtonType.fillOutline:
         return ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 0),
           backgroundColor: fillColor ?? AppColors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: size == CTAButtonSize.medium
+                ? BorderRadius.circular(6)
+                : BorderRadius.circular(12),
             side: BorderSide(
               color:
                   isEnabled ? AppColors.lineStrong : AppColors.componentNatural,

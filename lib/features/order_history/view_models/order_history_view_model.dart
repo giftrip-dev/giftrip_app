@@ -1,33 +1,34 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_category.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_model.dart';
-import 'package:giftrip/features/order_booking/models/order_booking_detail_model.dart';
-import 'package:giftrip/features/order_booking/repositories/order_booking_repo.dart';
+import 'package:giftrip/features/order_history/models/order_history_model.dart';
+import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
+import 'package:giftrip/features/payment/repositories/payment_repo.dart';
 
-/// 체험 상품 뷰모델
-class OrderBookingViewModel extends ChangeNotifier {
-  final OrderBookingRepo _repo = OrderBookingRepo();
+/// 구매 내역 뷰모델
+class OrderHistoryViewModel extends ChangeNotifier {
+  final OrderHistoryRepo _repo = OrderHistoryRepo();
+  final PaymentRepo _paymentRepo = PaymentRepo();
 
   // 상태 저장
-  List<OrderBookingModel> _orderBookingList = [];
-  OrderBookingDetailModel? _selectedOrderBooking;
+  List<OrderHistoryModel> _orderBookingList = [];
+  OrderHistoryModel? _selectedOrderBooking;
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
-  OrderBookingCategory? _selectedCategory;
+  ProductItemType? _selectedCategory;
   bool _isCanceling = false; // 취소 진행 중 상태
 
   // 외부 접근용 Getter
-  List<OrderBookingModel> get orderBookingList => _orderBookingList;
-  OrderBookingDetailModel? get selectedOrderBooking => _selectedOrderBooking;
+  List<OrderHistoryModel> get orderBookingList => _orderBookingList;
+  OrderHistoryModel? get selectedOrderBooking => _selectedOrderBooking;
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
-  OrderBookingCategory? get selectedCategory => _selectedCategory;
+  ProductItemType? get selectedCategory => _selectedCategory;
   bool get isCanceling => _isCanceling;
 
   /// 다음 페이지 번호 계산
@@ -39,7 +40,7 @@ class OrderBookingViewModel extends ChangeNotifier {
   }
 
   /// 카테고리 변경
-  Future<void> changeCategory(OrderBookingCategory? category) async {
+  Future<void> changeCategory(ProductItemType? category) async {
     if (_selectedCategory == category) return;
 
     // 로딩 상태 시작
@@ -51,11 +52,11 @@ class OrderBookingViewModel extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 200));
 
     _selectedCategory = category;
-    await fetchOrderBookingList(refresh: true);
+    await fetchOrderHistoryList(refresh: true);
   }
 
-  /// 체험 상품 목록 조회
-  Future<void> fetchOrderBookingList({bool refresh = false}) async {
+  /// 구매 목록 조회
+  Future<void> fetchOrderHistoryList({bool refresh = false}) async {
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
     if ((!refresh && _isLoading) ||
         (!refresh && _orderBookingList.isNotEmpty && nextPage == null)) {
@@ -110,62 +111,29 @@ class OrderBookingViewModel extends ChangeNotifier {
   }
 
   /// 예약/구매 취소
-  Future<bool> _cancelOrderBooking(String id, {String? reason}) async {
+  Future<bool> _cancelOrderBooking(
+    String id,
+    String transactionId,
+  ) async {
     try {
       _isCanceling = true;
       notifyListeners();
 
-      // 취소 API 호출
-      await _repo.cancelOrderBooking(id, reason: reason);
+      // 2. 결제 취소 API 호출
+      await _paymentRepo.cancelPayment(transactionId);
 
       // 목록에서 해당 아이템 찾아서 상태 업데이트
       final index = _orderBookingList.indexWhere((item) => item.id == id);
       if (index != -1) {
         final updatedItem = _orderBookingList[index];
-        _orderBookingList[index] = OrderBookingModel(
+        _orderBookingList[index] = OrderHistoryModel(
           id: updatedItem.id,
-          title: updatedItem.title,
-          thumbnailUrl: updatedItem.thumbnailUrl,
-          originalPrice: updatedItem.originalPrice,
-          finalPrice: updatedItem.finalPrice,
-          category: updatedItem.category,
-          rating: updatedItem.rating,
-          reviewCount: updatedItem.reviewCount,
-          availableFrom: updatedItem.availableFrom,
-          availableTo: updatedItem.availableTo,
-          progress: OrderBookingProgress.canceled, // 상태를 취소로 변경
-          discountRate: updatedItem.discountRate,
-          soldOut: updatedItem.soldOut,
-          unavailableDates: updatedItem.unavailableDates,
+          orderName: updatedItem.orderName,
+          items: updatedItem.items,
+          totalAmount: updatedItem.totalAmount,
+          progress: OrderBookingProgress.canceled, // 상태를 canceled로 변경
           paidAt: updatedItem.paidAt,
-        );
-      }
-
-      // 선택된 상품이 있다면 그것도 업데이트
-      if (_selectedOrderBooking?.id == id) {
-        _selectedOrderBooking = OrderBookingDetailModel(
-          id: _selectedOrderBooking!.id,
-          title: _selectedOrderBooking!.title,
-          thumbnailUrl: _selectedOrderBooking!.thumbnailUrl,
-          originalPrice: _selectedOrderBooking!.originalPrice,
-          finalPrice: _selectedOrderBooking!.finalPrice,
-          category: _selectedOrderBooking!.category,
-          rating: _selectedOrderBooking!.rating,
-          reviewCount: _selectedOrderBooking!.reviewCount,
-          availableFrom: _selectedOrderBooking!.availableFrom,
-          availableTo: _selectedOrderBooking!.availableTo,
-          progress: OrderBookingProgress.canceled, // 상태를 취소로 변경
-          location: _selectedOrderBooking!.location,
-          managerPhoneNumber: _selectedOrderBooking!.managerPhoneNumber,
-          reserverName: _selectedOrderBooking!.reserverName,
-          reserverPhoneNumber: _selectedOrderBooking!.reserverPhoneNumber,
-          payMethod: _selectedOrderBooking!.payMethod,
-          discountRate: _selectedOrderBooking!.discountRate,
-          soldOut: _selectedOrderBooking!.soldOut,
-          unavailableDates: _selectedOrderBooking!.unavailableDates,
-          paidAt: _selectedOrderBooking!.paidAt,
-          deliveryAddress: _selectedOrderBooking!.deliveryAddress,
-          deliveryDetail: _selectedOrderBooking!.deliveryDetail,
+          transactionId: updatedItem.transactionId,
         );
       }
 
@@ -182,8 +150,11 @@ class OrderBookingViewModel extends ChangeNotifier {
 
   /// 예약/구매 취소 처리
   Future<void> handleCancel(
-      BuildContext context, OrderBookingModel orderBooking) async {
-    final success = await _cancelOrderBooking(orderBooking.id);
+      BuildContext context, OrderHistoryModel orderBooking) async {
+    final success = await _cancelOrderBooking(
+      orderBooking.id,
+      orderBooking.transactionId,
+    );
 
     if (context.mounted) {
       if (success) {
@@ -193,7 +164,7 @@ class OrderBookingViewModel extends ChangeNotifier {
           builder: (context) => TwoButtonModal(
             title: '취소가 완료되었습니다',
             desc:
-                '${orderBooking.category == OrderBookingCategory.product ? '구매' : '예약'}금 환불 기간은 \n 카드사 영업일 기준 2~3일 정도 소요됩니다.',
+                '${orderBooking.items.first.category == ProductItemType.product ? '구매' : '예약'}금 환불 기간은 \n 카드사 영업일 기준 2~3일 정도 소요됩니다.',
             cancelText: '닫기',
             confirmText: '확인',
             onConfirm: () => Navigator.of(context).pop(),

@@ -8,6 +8,8 @@ class TwoButtonModal extends StatelessWidget {
   final VoidCallback onConfirm;
   final String cancelText;
   final String confirmText;
+  final bool isLoading;
+
   const TwoButtonModal({
     super.key,
     required this.title,
@@ -15,6 +17,7 @@ class TwoButtonModal extends StatelessWidget {
     required this.onConfirm,
     this.cancelText = '취소',
     this.confirmText = '확인',
+    this.isLoading = false,
   });
 
   @override
@@ -65,6 +68,8 @@ class TwoButtonModal extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.5),
+                      overlayColor: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(12),
@@ -84,19 +89,34 @@ class TwoButtonModal extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: onConfirm,
+                    onPressed: isLoading ? null : onConfirm,
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.5),
+                      overlayColor: Colors.transparent,
+                      splashFactory: NoSplash.splashFactory,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(12),
                         ),
                       ),
                     ),
-                    child: Text(
-                      confirmText,
-                      style: title_S.copyWith(color: AppColors.primaryStrong),
-                    ),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColors.primaryStrong,
+                              ),
+                            ),
+                          )
+                        : Text(
+                            confirmText,
+                            style: title_S.copyWith(
+                              color: AppColors.primaryStrong,
+                            ),
+                          ),
                   ),
                 ),
               ],
