@@ -6,8 +6,8 @@ import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/core/widgets/text/price_text.dart';
 import 'package:giftrip/features/order_history/models/order_history_model.dart';
-import 'package:giftrip/features/order_history/screens/booking_detail_screen.dart';
-import 'package:giftrip/features/order_history/screens/order_detail_screen.dart';
+import 'package:giftrip/features/order_history/screens/booking_order_detail_screen.dart';
+import 'package:giftrip/features/order_history/screens/product_order_detail_screen.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 import 'package:giftrip/features/order_history/view_models/order_history_view_model.dart';
 import 'package:provider/provider.dart';
@@ -208,7 +208,7 @@ class OrderHistoryListItem extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OrderDetailScreen(
+                        builder: (context) => ProductOrderDetailScreen(
                           orderId: orderBooking.id,
                         ),
                       ),
@@ -217,7 +217,7 @@ class OrderHistoryListItem extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookingDetailScreen(
+                        builder: (context) => BookingOrderDetailScreen(
                           bookingId: orderBooking.id,
                         ),
                       ),

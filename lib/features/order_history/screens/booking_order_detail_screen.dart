@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
+import 'package:giftrip/core/widgets/product/product_item_row.dart';
 import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
 import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
+import 'package:giftrip/features/order_history/widgets/info_row.dart';
 import 'package:intl/intl.dart';
 
-class BookingDetailScreen extends StatelessWidget {
+class BookingOrderDetailScreen extends StatelessWidget {
   final String bookingId;
 
-  const BookingDetailScreen({
+  const BookingOrderDetailScreen({
     super.key,
     required this.bookingId,
   });
@@ -39,12 +41,10 @@ class BookingDetailScreen extends StatelessWidget {
 
           final orderBooking = snapshot.data!;
           final formatter = NumberFormat('#,###');
-          final dateFormat = DateFormat('yyyy.MM.dd');
+          final dateFormat = DateFormat('yy.MM.dd');
 
-          // 예약자 정보
           final String userName = orderBooking.reserverName;
           final String phoneNumber = orderBooking.reserverPhoneNumber;
-          final int productPrice = orderBooking.totalAmount;
           final int totalPrice = orderBooking.totalAmount;
           final String payMethod = orderBooking.payMethod;
 
@@ -55,7 +55,10 @@ class BookingDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 예약 상품
-                  const Text('예약 상품', style: title_M),
+                  Text(
+                    '예약 상품',
+                    style: title_M,
+                  ),
                   const SizedBox(height: 12),
                   Container(
                     decoration: BoxDecoration(
@@ -63,45 +66,33 @@ class BookingDetailScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     padding: const EdgeInsets.all(16),
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: Image.asset(
-                            orderBooking.items.first.thumbnailUrl,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
+                        // 구매 일자
+                        Text(
+                          dateFormat.format(orderBooking.paidAt),
+                          style: subtitle_L,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        const SizedBox(height: 16),
+                        // 상품 리스트
+                        ...orderBooking.items.asMap().entries.map((entry) {
+                          final item = entry.value;
+                          final isLast =
+                              entry.key == orderBooking.items.length - 1;
+                          return Column(
                             children: [
-                              Text(
-                                dateFormat.format(orderBooking.paidAt),
-                                style: caption.copyWith(
-                                    color: AppColors.labelAlternative),
+                              ProductItemRow(
+                                thumbnailUrl: item.thumbnailUrl,
+                                title: item.title,
+                                quantity: item.quantity,
+                                price: item.totalPrice,
+                                type: item.category,
                               ),
-                              const SizedBox(height: 2),
-                              Text(
-                                orderBooking.orderName,
-                                style: body_M.copyWith(
-                                  color: AppColors.labelStrong,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${formatter.format(orderBooking.totalAmount)}원',
-                                style: title_M.copyWith(
-                                  color: AppColors.labelStrong,
-                                ),
-                              ),
+                              if (!isLast) const SizedBox(height: 16),
                             ],
-                          ),
-                        ),
+                          );
+                        }).toList(),
                       ],
                     ),
                   ),
@@ -120,20 +111,14 @@ class BookingDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('이름', style: body_S),
-                            Text(userName, style: subtitle_S),
-                          ],
+                        InfoRow(
+                          label: '이름',
+                          value: userName,
                         ),
                         const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('휴대폰 번호', style: body_S),
-                            Text(phoneNumber, style: subtitle_S),
-                          ],
+                        InfoRow(
+                          label: '휴대폰 번호',
+                          value: phoneNumber,
                         ),
                       ],
                     ),
@@ -153,32 +138,29 @@ class BookingDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('상품 금액', style: body_S),
-                            Text('${formatter.format(productPrice)}원',
-                                style: subtitle_S),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
+                        // 개별 상품 가격들
+                        ...orderBooking.items
+                            .map((item) => Column(
+                                  children: [
+                                    InfoRow(
+                                      label: item.title,
+                                      value:
+                                          '${formatter.format(item.totalPrice)}원',
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
+                                ))
+                            .toList(),
                         const Divider(height: 1, color: AppColors.line),
                         const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('총 결제 금액', style: body_S),
-                            Text('${formatter.format(totalPrice)}원',
-                                style: subtitle_S),
-                          ],
+                        InfoRow(
+                          label: '총 결제 금액',
+                          value: '${formatter.format(totalPrice)}원',
                         ),
                         const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('결제수단', style: body_S),
-                            Text(payMethod, style: subtitle_S),
-                          ],
+                        InfoRow(
+                          label: '결제수단',
+                          value: payMethod,
                         ),
                       ],
                     ),
