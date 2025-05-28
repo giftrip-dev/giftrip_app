@@ -3,7 +3,7 @@ import 'package:giftrip/features/order_history/models/order_history_model.dart';
 import 'package:giftrip/features/order_history/widgets/order_history_list_item.dart';
 
 class OrderHistoryList extends StatefulWidget {
-  final List<OrderBookingModel> orderBookings;
+  final List<OrderHistoryModel> orderBookings;
   final bool isLoading;
   final bool hasError;
   final VoidCallback? onLoadMore;

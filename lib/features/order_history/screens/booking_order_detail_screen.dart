@@ -3,7 +3,7 @@ import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/home_app_bar.dart';
 import 'package:giftrip/core/widgets/product/product_item_row.dart';
-import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
+import 'package:giftrip/features/order_history/models/order_history_model.dart';
 import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
 import 'package:giftrip/features/order_history/widgets/info_row.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +20,7 @@ class BookingOrderDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppBar(title: '예약 상세'),
-      body: FutureBuilder<OrderBookingDetailModel>(
+      body: FutureBuilder<OrderHistoryModel>(
         future: OrderHistoryRepo().getOrderBookingDetail(bookingId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -43,10 +43,10 @@ class BookingOrderDetailScreen extends StatelessWidget {
           final formatter = NumberFormat('#,###');
           final dateFormat = DateFormat('yy.MM.dd');
 
-          final String userName = orderBooking.reserverName;
-          final String phoneNumber = orderBooking.reserverPhoneNumber;
+          final String userName = orderBooking.items.first.title;
+          final String phoneNumber = orderBooking.items.first.title;
           final int totalPrice = orderBooking.totalAmount;
-          final String payMethod = orderBooking.payMethod;
+          final String payMethod = orderBooking.items.first.title;
 
           return SingleChildScrollView(
             child: Padding(
@@ -161,6 +161,11 @@ class BookingOrderDetailScreen extends StatelessWidget {
                         InfoRow(
                           label: '결제수단',
                           value: payMethod,
+                        ),
+                        const SizedBox(height: 12),
+                        InfoRow(
+                          label: '거래 ID',
+                          value: orderBooking.transactionId,
                         ),
                       ],
                     ),

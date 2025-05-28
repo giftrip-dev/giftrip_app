@@ -5,16 +5,17 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
 import 'package:giftrip/features/order_history/models/order_history_model.dart';
-import 'package:giftrip/features/order_history/models/order_booking_detail_model.dart';
 import 'package:giftrip/features/order_history/repositories/order_history_repo.dart';
+import 'package:giftrip/features/payment/repositories/payment_repo.dart';
 
 /// 구매 내역 뷰모델
 class OrderHistoryViewModel extends ChangeNotifier {
   final OrderHistoryRepo _repo = OrderHistoryRepo();
+  final PaymentRepo _paymentRepo = PaymentRepo();
 
   // 상태 저장
-  List<OrderBookingModel> _orderBookingList = [];
-  OrderBookingDetailModel? _selectedOrderBooking;
+  List<OrderHistoryModel> _orderBookingList = [];
+  OrderHistoryModel? _selectedOrderBooking;
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
@@ -22,8 +23,8 @@ class OrderHistoryViewModel extends ChangeNotifier {
   bool _isCanceling = false; // 취소 진행 중 상태
 
   // 외부 접근용 Getter
-  List<OrderBookingModel> get orderBookingList => _orderBookingList;
-  OrderBookingDetailModel? get selectedOrderBooking => _selectedOrderBooking;
+  List<OrderHistoryModel> get orderBookingList => _orderBookingList;
+  OrderHistoryModel? get selectedOrderBooking => _selectedOrderBooking;
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
@@ -110,44 +111,29 @@ class OrderHistoryViewModel extends ChangeNotifier {
   }
 
   /// 예약/구매 취소
-  Future<bool> _cancelOrderBooking(String id, {String? reason}) async {
+  Future<bool> _cancelOrderBooking(
+    String id,
+    String transactionId,
+  ) async {
     try {
       _isCanceling = true;
       notifyListeners();
 
-      // 취소 API 호출
-      await _repo.cancelOrderBooking(id, reason: reason);
+      // 2. 결제 취소 API 호출
+      await _paymentRepo.cancelPayment(transactionId);
 
       // 목록에서 해당 아이템 찾아서 상태 업데이트
       final index = _orderBookingList.indexWhere((item) => item.id == id);
       if (index != -1) {
         final updatedItem = _orderBookingList[index];
-        _orderBookingList[index] = OrderBookingModel(
+        _orderBookingList[index] = OrderHistoryModel(
           id: updatedItem.id,
           orderName: updatedItem.orderName,
           items: updatedItem.items,
           totalAmount: updatedItem.totalAmount,
-          progress: updatedItem.progress,
+          progress: OrderBookingProgress.canceled, // 상태를 canceled로 변경
           paidAt: updatedItem.paidAt,
-        );
-      }
-
-      // 선택된 상품이 있다면 그것도 업데이트
-      if (_selectedOrderBooking?.id == id) {
-        _selectedOrderBooking = OrderBookingDetailModel(
-          id: _selectedOrderBooking!.id,
-          orderName: _selectedOrderBooking!.orderName,
-          items: _selectedOrderBooking!.items,
-          totalAmount: _selectedOrderBooking!.totalAmount,
-          progress: _selectedOrderBooking!.progress,
-          paidAt: _selectedOrderBooking!.paidAt,
-          location: _selectedOrderBooking!.location,
-          managerPhoneNumber: _selectedOrderBooking!.managerPhoneNumber,
-          reserverName: _selectedOrderBooking!.reserverName,
-          reserverPhoneNumber: _selectedOrderBooking!.reserverPhoneNumber,
-          payMethod: _selectedOrderBooking!.payMethod,
-          deliveryAddress: _selectedOrderBooking!.deliveryAddress,
-          deliveryDetail: _selectedOrderBooking!.deliveryDetail,
+          transactionId: updatedItem.transactionId,
         );
       }
 
@@ -164,8 +150,11 @@ class OrderHistoryViewModel extends ChangeNotifier {
 
   /// 예약/구매 취소 처리
   Future<void> handleCancel(
-      BuildContext context, OrderBookingModel orderBooking) async {
-    final success = await _cancelOrderBooking(orderBooking.id);
+      BuildContext context, OrderHistoryModel orderBooking) async {
+    final success = await _cancelOrderBooking(
+      orderBooking.id,
+      orderBooking.transactionId,
+    );
 
     if (context.mounted) {
       if (success) {

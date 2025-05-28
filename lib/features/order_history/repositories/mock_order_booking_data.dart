@@ -7,9 +7,9 @@ import 'dart:math';
 final random = Random();
 
 /// 목업 구매 내역 데이터
-final List<OrderBookingModel> mockOrderBookingList = () {
+final List<OrderHistoryModel> mockOrderBookingList = () {
   final now = DateTime.now();
-  final orders = <OrderBookingModel>[];
+  final orders = <OrderHistoryModel>[];
 
   // 쇼핑 상품들 가져오기
   final shoppingProducts =
@@ -45,13 +45,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
       quantity: i + 1,
     );
 
-    orders.add(OrderBookingModel(
+    orders.add(OrderHistoryModel(
       id: 'order_${orders.length + 1}',
       orderName: product.title,
       items: [item],
       totalAmount: item.totalPrice,
       progress: OrderBookingProgress.values[i % 3],
       paidAt: now.subtract(Duration(days: i + 1)),
+      transactionId:
+          'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
     ));
   }
 
@@ -70,13 +72,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
       quantity: 1,
     );
 
-    orders.add(OrderBookingModel(
+    orders.add(OrderHistoryModel(
       id: 'order_${orders.length + 1}',
       orderName: product.title,
       items: [item],
       totalAmount: item.totalPrice,
       progress: OrderBookingProgress.values[i % 3],
       paidAt: now.subtract(Duration(days: i + 3)),
+      transactionId:
+          'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
     ));
   }
 
@@ -94,13 +98,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     quantity: 1,
   );
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: lodgingProduct.title,
     items: [lodgingItem],
     totalAmount: lodgingItem.totalPrice,
     progress: OrderBookingProgress.confirmed,
     paidAt: now.subtract(Duration(days: 5)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 2. 공동구매 주문들 (숙소+체험)
@@ -129,13 +135,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     ),
   ];
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: '${mixedItems1[0].title} 외 1개',
     items: mixedItems1,
     totalAmount: mixedItems1.fold(0, (sum, item) => sum + item.totalPrice),
     progress: OrderBookingProgress.completed,
     paidAt: now.subtract(Duration(days: 7)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 3. 쇼핑 상품 다중 주문
@@ -175,13 +183,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     ),
   ];
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: '${shoppingItems[0].title} 외 2개',
     items: shoppingItems,
     totalAmount: shoppingItems.fold(0, (sum, item) => sum + item.totalPrice),
     progress: OrderBookingProgress.confirmed,
     paidAt: now.subtract(Duration(days: 10)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 4. 체험단 + 체험 공동구매
@@ -210,13 +220,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     ),
   ];
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: '${testerMixItems[0].title} 외 1개',
     items: testerMixItems,
     totalAmount: testerMixItems.fold(0, (sum, item) => sum + item.totalPrice),
     progress: OrderBookingProgress.canceled,
     paidAt: now.subtract(Duration(days: 15)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   // 5. 체험단 단일 주문
@@ -232,13 +244,15 @@ final List<OrderBookingModel> mockOrderBookingList = () {
     quantity: 1,
   );
 
-  orders.add(OrderBookingModel(
+  orders.add(OrderHistoryModel(
     id: 'order_${orders.length + 1}',
     orderName: testerItem.title,
     items: [testerItem],
     totalAmount: testerItem.totalPrice,
     progress: OrderBookingProgress.completed,
     paidAt: now.subtract(Duration(days: 20)),
+    transactionId:
+        'TXN_ORDER_${orders.length + 1}_${now.millisecondsSinceEpoch}',
   ));
 
   return orders;
