@@ -173,9 +173,9 @@ class OrderHistoryViewModel extends ChangeNotifier {
         showDialog(
           context: context,
           builder: (context) => TwoButtonModal(
-            title: '취소 완료',
+            title: '취소가 완료되었습니다',
             desc:
-                '${orderBooking.orderName} ${orderBooking.items.first.category == ProductItemType.product ? '구매' : '예약'}가 취소되었습니다.',
+                '${orderBooking.items.first.category == ProductItemType.product ? '구매' : '예약'}금 환불 기간은 \n 카드사 영업일 기준 2~3일 정도 소요됩니다.',
             cancelText: '닫기',
             confirmText: '확인',
             onConfirm: () => Navigator.of(context).pop(),

@@ -62,6 +62,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
                         'onTap': () =>
                             myPageViewModel.onTapOrderBookingList(context),
                       },
+                      '배송 목록': {
+                        'onTap': () =>
+                            myPageViewModel.onTapDeliveryList(context),
+                      },
                     },
                   ),
                 ],
