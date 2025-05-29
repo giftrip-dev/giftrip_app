@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/models/auth_result_model.dart';
 import 'package:giftrip/features/auth/models/user_model.dart';
+import 'package:giftrip/features/auth/models/register_model.dart';
+import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:giftrip/features/notification/models/notification_model.dart';
 import 'package:giftrip/features/user/models/dto/user_dto.dart';
@@ -114,6 +117,23 @@ class AuthRepository {
       }
     } catch (e) {
       throw Exception('로그아웃 API 요청 실패: $e');
+    }
+  }
+
+  Future<CompleteSignUpResponse> completeSignUp(
+      CompleteSignUpRequest request) async {
+    try {
+      final response = await _dio.patch(
+        '/api/v1/auth/complete-sign-up',
+        data: request.toJson(),
+      );
+      if (response.statusCode == 200) {
+        return CompleteSignUpResponse.fromJson(response.data);
+      } else {
+        throw Exception('회원가입 완료 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

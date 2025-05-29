@@ -55,6 +55,12 @@ class SocialLoginRepo {
     logger.d('구글 로그인 시작');
     try {
       logger.d('구글 로그인 시도');
+
+      // iOS에서 구글 로그인 시도 전에 현재 로그인된 계정이 있다면 로그아웃
+      if (Platform.isIOS) {
+        await _googleSignIn.signOut();
+      }
+
       final GoogleSignInAccount? result = await _googleSignIn.signIn();
 
       if (result == null) {
@@ -81,7 +87,15 @@ class SocialLoginRepo {
               isInfluencerChecked: loginResult.isInfluencerChecked));
     } catch (e) {
       logger.e('구글 로그인 실패: $e');
-      return AuthRes(isSuccess: false, errorMessage: e.toString());
+      String errorMessage = '로그인 중 오류가 발생했습니다.';
+      if (e.toString().contains('network_error')) {
+        errorMessage = '네트워크 연결을 확인해주세요.';
+      } else if (e.toString().contains('sign_in_canceled')) {
+        errorMessage = '로그인이 취소되었습니다.';
+      } else if (e.toString().contains('sign_in_failed')) {
+        errorMessage = '구글 로그인에 실패했습니다.';
+      }
+      return AuthRes(isSuccess: false, errorMessage: errorMessage);
     } finally {
       AmplitudeLogger.logClickEvent(
           "google_login", "google_login", "login_screen");

@@ -4,24 +4,27 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/services/storage_service.dart';
-import 'package:giftrip/core/widgets/modal/two_button_modal.dart';
+import 'package:giftrip/core/widgets/modal/outline_two_button_modal.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:giftrip/core/utils/check_permission.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
 
-class ConfigBox extends StatefulWidget {
-  const ConfigBox({
+class SwitchBox extends StatefulWidget {
+  final bool marketingAgree;
+  const SwitchBox({
     super.key,
+    required this.marketingAgree,
   });
 
   @override
-  State<ConfigBox> createState() => _ConfigBoxState();
+  State<SwitchBox> createState() => _SwitchBoxState();
 }
 
-class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
+class _SwitchBoxState extends State<SwitchBox> with WidgetsBindingObserver {
   bool status = false;
   bool isToggleEnabled = true;
+  bool marketingAgree = false;
   final GlobalStorage _storage = GlobalStorage();
 
   @override
@@ -80,35 +83,24 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
   }
 
   void _showNotificationDialog(bool newStatus) {
-    String title;
-    String desc;
-    String confirmText;
-
-    if (!newStatus) {
-      title = '알림을 해제하시나요?';
-      desc = '알림을 해제하면 내 게시글과\n 새로운 오늘묭해 소식을 받을 수 없어요';
-      confirmText = '알림 해제하기';
-    } else {
-      title = '알림을 허용해 주세요';
-      desc = '알림을 허용하면 내 게시글과\n 새로운 오늘묭해 소식을 알려드려요';
-      confirmText = '알림 설정하기';
-    }
-
     showDialog(
       context: context,
       builder: (context) {
-        return TwoButtonModal(
-          title: title,
-          desc: desc,
-          onConfirm: () {
+        return OutlineTwoButtonModal(
+          title: '앱 내 푸시 알림 설정을\n 해제하시나요?',
+          desc: '원할한 주문/예약/배송을 위해 앱 푸시 알림을\n 켜놓는 것을 권장해드려요.',
+          onCancel: () {
             _openAppSettings(); // 앱 설정 열기
             setState(() {
               status = newStatus;
             });
             Navigator.of(context).pop();
           },
-          cancelText: '취소',
-          confirmText: confirmText,
+          onConfirm: () {
+            Navigator.of(context).pop();
+          },
+          cancelText: '해제하기',
+          confirmText: '알림 받기',
         );
       },
     );
@@ -117,13 +109,18 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 40),
+      margin: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundAlternative,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '앱설정',
-            style: subtitle_L,
+            '알림 설정',
+            style: title_S.copyWith(color: AppColors.labelStrong),
           ),
           const SizedBox(height: 24),
           Column(
@@ -132,21 +129,7 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
               Row(
                 children: [
                   Text(
-                    '다크모드',
-                    style: body_M.copyWith(color: AppColors.label),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '시스템설정',
-                    style: body_M.copyWith(color: AppColors.labelAlternative),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Text(
-                    '알림설정',
+                    '앱 내 푸시 알림 설정',
                     style: body_M.copyWith(color: AppColors.label),
                   ),
                   const Spacer(),
@@ -157,11 +140,63 @@ class _ConfigBoxState extends State<ConfigBox> with WidgetsBindingObserver {
                     value: status,
                     borderRadius: 30,
                     padding: 2,
-                    activeColor: AppColors.primary,
+                    activeColor: AppColors.primaryStrong,
                     inactiveColor: AppColors.componentNatural,
                     onToggle: (val) {
-                      if (!isToggleEnabled) return; // 이미 비활성화된 경우
-                      _showNotificationDialog(val); // 모달 표시
+                      if (!isToggleEnabled) return;
+                      if (val) {
+                        _openAppSettings();
+                      } else {
+                        _showNotificationDialog(val);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Text(
+                    '마케팅 수신 동의',
+                    style: body_M.copyWith(color: AppColors.label),
+                  ),
+                  const Spacer(),
+                  FlutterSwitch(
+                    width: 51,
+                    height: 31,
+                    toggleSize: 27,
+                    value: widget.marketingAgree,
+                    borderRadius: 30,
+                    padding: 2,
+                    activeColor: AppColors.primaryStrong,
+                    inactiveColor: AppColors.componentNatural,
+                    onToggle: (val) {
+                      if (!val) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return OutlineTwoButtonModal(
+                              title: '기프트립의 새로운 소식을\n 더이상 받지 않으시나요?',
+                              desc: '알림을 해제하시면 특가 가격의 상품들을\n 놓칠 수 있는데 괜찮으신가요?',
+                              onCancel: () {
+                                setState(() {
+                                  marketingAgree = val;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                              onConfirm: () {
+                                Navigator.of(context).pop();
+                              },
+                              cancelText: '해제하기',
+                              confirmText: '알림 받기',
+                            );
+                          },
+                        );
+                      } else {
+                        setState(() {
+                          marketingAgree = val;
+                        });
+                      }
                     },
                   ),
                 ],

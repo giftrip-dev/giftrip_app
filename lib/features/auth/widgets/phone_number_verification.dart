@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
@@ -117,10 +118,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
 
     final success = await _verificationRepo.sendVerificationCode(
       widget.phoneNumberController.text,
-      widget.type,
     );
-
-    if (success) {
+    // 휴대폰 인증 조건 (문자 메시지 기능 활성화 시 && success.isSended! 로 변경)
+    if (success.isSended != null) {
       setState(() {
         _isResend = _isPhoneNumberSent;
         _hasEverSentCode = true;
@@ -141,6 +141,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
         _startTimer();
       }
     } else {
+      logger.e(success.error?.message);
       if (context.mounted) {
         showDialog(
           context: context,
@@ -155,10 +156,6 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   }
 
   Future<void> _verifyCode() async {
-    setState(() {
-      _isVerificationAttempted = true;
-    });
-
     if (widget.verificationCodeController.text.isEmpty) {
       setState(() {
         widget.verificationCodeController.text = '';
@@ -168,15 +165,15 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
 
     final result = await _verificationRepo.verifyCode(
       VerificationCode(
-        phoneNumber: widget.phoneNumberController.text,
-        type: widget.type,
+        phone: widget.phoneNumberController.text,
         code: widget.verificationCodeController.text,
       ),
     );
 
-    if (result.isVerified) {
+    if (result.isVerified != null && result.isVerified!) {
       setState(() {
         _isVerificationSuccessful = true;
+        _isVerificationAttempted = false;
       });
       widget.onVerificationSuccess();
 
@@ -190,6 +187,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
         );
       }
     } else {
+      setState(() {
+        _isVerificationAttempted = true;
+      });
       widget.onVerificationFailure();
 
       if (context.mounted) {
@@ -197,7 +197,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
           context: context,
           builder: (context) => OneButtonModal(
             title: "인증 실패",
-            desc: result.errorMessage ?? "인증번호를 확인해주세요",
+            desc: result.error?.message ?? "인증번호를 확인해주세요",
             onConfirm: () => Navigator.pop(context),
           ),
         );

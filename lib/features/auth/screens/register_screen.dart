@@ -7,17 +7,28 @@ import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/auth/widgets/phone_number_verification.dart';
 import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 import 'package:giftrip/features/auth/models/register_model.dart';
-import 'package:giftrip/features/auth/repositories/register_repo.dart';
+import 'package:giftrip/features/auth/repositories/auth_repo.dart';
+import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final bool isTermsAgreed;
+  final bool isPrivacyAgreed;
+  final bool isMarketingAgreed;
+
+  const RegisterScreen({
+    super.key,
+    required this.isTermsAgreed,
+    required this.isPrivacyAgreed,
+    required this.isMarketingAgreed,
+  });
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final RegisterRepository _registerRepo = RegisterRepository();
+  // final AuthRepository _authRepo = AuthRepository();
+  final AuthViewModel _authViewModel = AuthViewModel();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -128,11 +139,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: emailController.text,
         password: passwordController.text,
         phoneNumber: phoneController.text,
+        isMarketingAgreed: widget.isMarketingAgreed,
+        isTermsAgreed: widget.isTermsAgreed,
+        isPrivacyAgreed: widget.isPrivacyAgreed,
+        passwordConfirm: passwordConfirmController.text,
       );
 
-      final response = await _registerRepo.register(request);
+      final response = await _authViewModel.signUp(request);
 
-      if (response.isSuccess) {
+      if (response) {
         if (mounted) {
           Navigator.pushReplacement(
             context,
@@ -145,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(response.errorMessage ?? '회원가입에 실패했습니다.'),
+              content: Text('회원가입에 실패했습니다.'),
               backgroundColor: AppColors.statusError,
             ),
           );

@@ -23,8 +23,6 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
   @override
   void initState() {
     super.initState();
-    AmplitudeLogger.logViewEvent(
-        "app_terms_agreement_screen_view", "app_terms_agreement_screen");
   }
 
   /// 전체 약관 동의 상태
@@ -99,7 +97,13 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const RegisterScreen()),
+          MaterialPageRoute(
+            builder: (context) => RegisterScreen(
+              isTermsAgreed: _required1,
+              isPrivacyAgreed: _required2,
+              isMarketingAgreed: _optional,
+            ),
+          ),
           (route) => false,
         );
       }
