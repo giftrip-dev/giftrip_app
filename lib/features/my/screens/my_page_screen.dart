@@ -96,9 +96,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     title: '고객센터',
                     myPageInfo: {
                       '1:1 문의하기': {
-                        'onTap': () =>
-                            // myPageViewModel.onTapReviewWrite(context),
-                            () {},
+                        'onTap': () => myPageViewModel.onTapLogin(context),
+                        // () {},
                       },
                     },
                   ),
