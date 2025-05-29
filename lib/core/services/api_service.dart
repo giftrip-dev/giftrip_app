@@ -47,7 +47,7 @@ class DioClient {
       RequestOptions options, RequestInterceptorHandler handler) async {
     logger.d('Request: ${options.method} ${options.path}');
 
-    if (options.path.contains("/api/auth/refresh")) {
+    if (options.path.contains("/auth/rotate-tokens")) {
       options.headers.remove('Authorization');
     } else if (!_pathsWithoutToken.any((path) => options.path.contains(path))) {
       String? accessToken = await _authStorage.getAccessToken();
@@ -81,7 +81,7 @@ class DioClient {
 
     // 만료된 토큰일 경우
     if (statusCode == 401 || errorMessage == 'token-expired') {
-      if (requestPath.contains('/api/auth/refresh')) {
+      if (requestPath.contains('/auth/rotate-tokens')) {
         _handleRefreshFail();
         return handler.reject(err);
       }
@@ -99,14 +99,14 @@ class DioClient {
       }
     }
 
-    if (statusCode == 599 && requestPath.contains('/api/auth/refresh')) {
-      logger.d('599 Error on /api/auth/refresh: ${requestPath}');
+    if (statusCode == 599 && requestPath.contains('/auth/rotate-tokens')) {
+      logger.d('599 Error on /auth/rotate-tokens: ${requestPath}');
       _handleRefreshFail();
       return handler.reject(err);
     }
 
     if (statusCode == 409) {
-      logger.d('409 Error on /api/auth/send-code: ${requestPath}');
+      logger.d('409 Error on /auth/send-code: ${requestPath}');
       return handler.reject(err);
     }
 

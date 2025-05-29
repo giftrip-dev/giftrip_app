@@ -5,6 +5,7 @@ import 'package:giftrip/features/my/widgets/switch_box.dart';
 import 'package:giftrip/features/my/widgets/my_info_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
 import 'package:giftrip/core/widgets/modal/outline_two_button_modal.dart';
+import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class MyPageScreen extends StatefulWidget {
 class _MyPageScreenState extends State<MyPageScreen> {
   late MyPageViewModel myPageViewModel;
   late MyPageViewModel userViewModel;
+  late AuthViewModel authViewModel;
   bool userIsInfluencer = false;
   String userName = '';
   int userPoint = 0;
@@ -28,6 +30,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
     super.initState();
     myPageViewModel = Provider.of<MyPageViewModel>(context, listen: false);
     userViewModel = Provider.of<MyPageViewModel>(context, listen: false);
+    authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     _loadUserInfo();
   }
 
@@ -118,8 +121,17 @@ class _MyPageScreenState extends State<MyPageScreen> {
                                   title: '로그아웃을 진행하시나요?',
                                   cancelText: '취소',
                                   confirmText: '로그아웃',
-                                  onConfirm: () {
+                                  onConfirm: () async {
                                     Navigator.of(context).pop();
+                                    final nextScreen =
+                                        await authViewModel.logout();
+                                    if (nextScreen != null) {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                            builder: (context) => nextScreen),
+                                        (route) => false,
+                                      );
+                                    }
                                   },
                                   onCancel: () {
                                     Navigator.of(context).pop();
