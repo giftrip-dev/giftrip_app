@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/storage/auth_storage.dart';
-import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
-import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/auth/models/register_model.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 import 'package:giftrip/features/user/models/dto/user_dto.dart';
@@ -23,27 +21,25 @@ class AuthViewModel extends ChangeNotifier {
   Future<Widget> checkAutoLogin() async {
     final autoLoginStatus = await _authStorage.getAutoLogin();
 
-    return const LoginScreen();
+    if (autoLoginStatus) {
+      final user = await _authStorage.getUserInfo();
 
-    // if (autoLoginStatus) {
-    //   final user = await _authStorage.getUserInfo();
+      // 유저 정보가 없으면 로그인 화면으로 이동
+      if (user == null) {
+        return const LoginScreen();
+      }
 
-    //   // 유저 정보가 없으면 로그인 화면으로 이동
-    //   if (user == null) {
-    //     return const LoginScreen();
-    //   }
-
-    //   // 인플루언서 인증 여부 확인
-    //   if (user.isInfluencerChecked) {
-    //     return const RootScreen(
-    //       selectedIndex: 0,
-    //     );
-    //   } else {
-    //     return const InfluencerCheckScreen();
-    //   }
-    // } else {
-    //   return const LoginScreen();
-    // }
+      // 인플루언서 인증 여부 확인
+      if (user.isInfluencerChecked) {
+        return const RootScreen(
+          selectedIndex: 0,
+        );
+      } else {
+        return const InfluencerCheckScreen();
+      }
+    } else {
+      return const LoginScreen();
+    }
   }
 
   // 로그인
