@@ -29,7 +29,7 @@ Future<String> determinePosition() async {
 
   if (placemarks.isNotEmpty) {
     Placemark place = placemarks.first;
-    return "${place.country} ${place.administrativeArea} ${place.locality} ${place.subLocality}";
+    return "${place.country} ${place.administrativeArea} ${place.locality} ${place.subLocality} ${place.street}";
     // 예: 대한민국 서울특별시 강남구 역삼동
   } else {
     return "주소 정보를 찾을 수 없습니다.";

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
 import 'package:giftrip/features/lodging/repositories/mock_lodging_data.dart';
@@ -11,10 +12,13 @@ class LodgingRepo {
 
   /// 숙박 상품 목록 조회
   Future<LodgingPageResponse> getLodgingList({
-    LodgingCategory? category,
     int page = 1,
     int limit = 10,
-    String? location,
+    LodgingCategory? category,
+    MainLocation? mainLocation,
+    String? subLocation,
+    int? minPrice = 0,
+    int? maxPrice = 1000000,
     DateTime? startDate,
     DateTime? endDate,
   }) async {
@@ -31,9 +35,10 @@ class LodgingRepo {
     }
 
     // 지역 필터링
-    if (location != null && location.isNotEmpty) {
-      filteredList =
-          filteredList.where((item) => item.subLocation == location).toList();
+    if (subLocation != null && subLocation.isNotEmpty) {
+      filteredList = filteredList
+          .where((item) => item.subLocation == subLocation)
+          .toList();
     }
 
     // 날짜 필터링

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
 import 'package:giftrip/features/lodging/repositories/lodging_repo.dart';
@@ -18,7 +19,7 @@ class LodgingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   LodgingCategory? _selectedCategory;
-  String _locationText = '강남/역삼/삼성';
+  String _locationText = '강남/역삼/삼성'; // 기본 지역 설정
   String _stayOptionText = '';
   String _stayDateText = '';
   int _adultCount = 2;
@@ -100,7 +101,10 @@ class LodgingViewModel extends ChangeNotifier {
       final response = await _repo.getLodgingList(
         category: _selectedCategory,
         page: page,
-        location: _locationText,
+        mainLocation: MainLocation.seoul,
+        subLocation: _locationText,
+        minPrice: 0,
+        maxPrice: 1000000,
         startDate: _startDate,
         endDate: _endDate,
       );
