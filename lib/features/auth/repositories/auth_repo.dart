@@ -48,6 +48,7 @@ class AuthRepository {
   // 회원가입 요청
   Future<RegisterResponse> postSignUp(RegisterRequest request) async {
     try {
+      logger.d('회원가입 요청 데이터: ${request.toJson()}');
       final response = await _dio.post(
         '/auth/sign-up',
         data: request.toJson(),
@@ -72,6 +73,9 @@ class AuthRepository {
       return RegisterResponse.fromJson(data);
     } catch (e) {
       logger.e('회원가입 중 오류: $e');
+      if (e is DioException) {
+        logger.e('DioException 응답 데이터: ${e.response?.data}');
+      }
       rethrow;
     }
   }
@@ -203,9 +207,11 @@ class AuthRepository {
   }
 
   /// 로그아웃 요청
-  Future<bool> logout() async {
+  Future<bool> logout(String refreshToken) async {
     try {
-      final response = await _dio.post('/auth/logout');
+      final response = await _dio.post('/auth/logout', data: {
+        'refreshToken': refreshToken,
+      });
 
       if (response.statusCode == 201) {
         await _authStorage.deleteUserInfo();
