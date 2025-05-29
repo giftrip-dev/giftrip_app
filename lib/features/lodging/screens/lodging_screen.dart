@@ -9,6 +9,8 @@ import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dar
 import 'package:giftrip/features/lodging/screens/location_screen.dart';
 import 'package:giftrip/features/lodging/widgets/stay_option_bottom_sheet.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_category_bar.dart';
+import 'package:giftrip/core/utils/determine_position.dart';
+import 'dart:developer' as developer;
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -146,6 +148,10 @@ class _LodgingScreenState extends State<LodgingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final vm = context.read<LodgingViewModel>();
       vm.fetchLodgingList();
+    });
+    // 위치 권한 요청 및 주소 확인
+    determinePosition().then((address) {
+      developer.log('현재 위치 주소: $address', name: 'LodgingScreen');
     });
   }
 }
