@@ -10,7 +10,7 @@ class VerificationRepository {
     // TODO: 실제 API 구현 시 아래 주석 해제
     try {
       final response = await _dio.post(
-        '/api/v1/auth/phone-verifications',
+        '/auth/phone-verifications',
         data: {
           'phone': phoneNumber,
         },
@@ -40,7 +40,7 @@ class VerificationRepository {
   Future<VerificationResult> verifyCode(VerificationCode code) async {
     try {
       final response = await _dio.put(
-        '/api/v1/auth/phone-verifications',
+        '/auth/phone-verifications',
         data: code.toJson(),
       );
       return VerificationResult.fromJson(response.data);
