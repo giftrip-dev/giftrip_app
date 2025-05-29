@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/models/auth_result_model.dart';
+import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/auth/models/user_model.dart';
 import 'package:giftrip/features/auth/models/register_model.dart';
-import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:giftrip/features/notification/models/notification_model.dart';
 import 'package:giftrip/features/user/models/dto/user_dto.dart';
@@ -43,6 +42,107 @@ class AuthRepository {
     } catch (e) {
       logger.e("토큰 갱신 중 오류 발생: $e");
       rethrow;
+    }
+  }
+
+  // 회원가입 요청
+  Future<RegisterResponse> postSignUp(RegisterRequest request) async {
+    try {
+      final response = await _dio.post(
+        '/auth/sign-up',
+        data: request.toJson(),
+      );
+
+      final data = response.data;
+      logger.d('회원가입 응답 데이터: $data');
+      final accessToken = data['tokens']['accessToken'];
+      final refreshToken = data['tokens']['refreshToken'];
+
+      // 유저 스토리지 업데이트
+      await _authStorage.setUserInfo(UserModel.fromJson(data));
+
+      // 토큰 스토리지 업데이트
+      if (accessToken != null && refreshToken != null) {
+        await _authStorage.setToken(accessToken, refreshToken);
+      } else {
+        logger.e(
+            '토큰이 null입니다. accessToken: $accessToken, refreshToken: $refreshToken');
+      }
+
+      return RegisterResponse.fromJson(data);
+    } catch (e) {
+      logger.e('회원가입 중 오류: $e');
+      rethrow;
+    }
+  }
+
+  // 로그인 요청
+  Future<LoginResponse> postLogin(String email, String password) async {
+    try {
+      final response = await _dio.post(
+        '/auth/login',
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
+      logger.i('로그인 응답 데이터: ${response.data}');
+
+      if (response.statusCode == 201) {
+        final data = response.data as Map<String, dynamic>;
+
+        // 1) 토큰 저장
+        final accessToken = data['tokens']?['accessToken'] as String?;
+        final refreshToken = data['tokens']?['refreshToken'] as String?;
+        if (accessToken != null && refreshToken != null) {
+          await _authStorage.setToken(accessToken, refreshToken);
+        } else {
+          logger.e(
+            '토큰 누락: access=$accessToken, refresh=$refreshToken',
+          );
+        }
+
+        // 2) 유저 정보 저장 (이름 + 인플루언서 체크 여부)
+        final name = data['name'] as String?;
+        final isInfluencer = data['isInfluencerChecked'] as bool? ?? false;
+
+        final user = UserModel(
+          name: name,
+          isInfluencerChecked: isInfluencer,
+        );
+        await _authStorage.setUserInfo(user);
+
+        // 3) LoginResponse 반환
+        return LoginResponse(
+          isSuccess: true,
+          errorMessage: null,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          name: data['name'] as String,
+          isInfluencerChecked: isInfluencer,
+        );
+      }
+
+      return LoginResponse(
+        isSuccess: false,
+        errorMessage: '로그인에 실패했습니다.',
+        isInfluencerChecked: false,
+      );
+    } catch (e, st) {
+      logger.e('로그인 중 오류 발생', error: e, stackTrace: st);
+      if (e is DioException &&
+          (e.response?.statusCode == 401 || e.response?.statusCode == 404)) {
+        return LoginResponse(
+          isSuccess: false,
+          errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.',
+          isInfluencerChecked: false,
+        );
+      }
+      return LoginResponse(
+        isSuccess: false,
+        errorMessage: '로그인 중 오류가 발생했습니다.',
+        isInfluencerChecked: false,
+      );
     }
   }
 
@@ -124,7 +224,7 @@ class AuthRepository {
       CompleteSignUpRequest request) async {
     try {
       final response = await _dio.patch(
-        '/api/v1/auth/complete-sign-up',
+        '/auth/complete-sign-up',
         data: request.toJson(),
       );
       if (response.statusCode == 200) {

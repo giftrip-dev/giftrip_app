@@ -1,15 +1,15 @@
 class LoginRequest {
-  final String id;
+  final String email;
   final String password;
 
   LoginRequest({
-    required this.id,
+    required this.email,
     required this.password,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'email': email,
       'password': password,
     };
   }
@@ -20,14 +20,16 @@ class LoginResponse {
   final String? errorMessage;
   final String? accessToken;
   final String? refreshToken;
-  final String? userId;
+  final String? name;
+  final bool isInfluencerChecked;
 
   LoginResponse({
     required this.isSuccess,
     this.errorMessage,
     this.accessToken,
     this.refreshToken,
-    this.userId,
+    this.name,
+    required this.isInfluencerChecked,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
@@ -36,7 +38,8 @@ class LoginResponse {
       errorMessage: json['errorMessage'],
       accessToken: json['accessToken'],
       refreshToken: json['refreshToken'],
-      userId: json['userId'],
+      name: json['name'],
+      isInfluencerChecked: json['isInfluencerChecked'],
     );
   }
 }
