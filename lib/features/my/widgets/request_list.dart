@@ -21,11 +21,9 @@ class RequestList extends StatelessWidget {
         ),
       );
     }
-    return ListView.builder(
-      itemCount: requests.length,
-      itemBuilder: (context, index) {
-        return RequestItem(request: requests[index]);
-      },
+    return Column(
+      children:
+          requests.map((request) => RequestItem(request: request)).toList(),
     );
   }
 }

@@ -21,6 +21,7 @@ class MyPageViewModel extends ChangeNotifier {
   final AuthRepository _authRepo = AuthRepository();
   final NotificationViewModel _notificationViewModel = NotificationViewModel();
   final GlobalStorage _storage = GlobalStorage();
+  final MyPageRepository _repository = MyPageRepository();
 
   void onTapAppVersion() {}
 
@@ -47,18 +48,21 @@ class MyPageViewModel extends ChangeNotifier {
   }
 
   Future<UserModel> getUserInfo() async {
-    final userInfo = await MyPageRepository().getUserInfo();
-    return userInfo;
+    return await _repository.getUserInfo();
   }
 
   Future<UserModel> getUserManagement() async {
-    final userDetail = await MyPageRepository().getUserManagement();
-    return userDetail;
+    return await _repository.getUserManagement();
   }
 
-  Future<List<RequestModel>> getRequestList() async {
-    final requestList = await MyPageRepository().getRequestList();
-    return requestList;
+  Future<RequestPageResponse> getRequestList({
+    int page = 1,
+    int limit = 10,
+  }) async {
+    return await _repository.getRequestList(
+      page: page,
+      limit: limit,
+    );
   }
 
   void onTapUserDetail(context) {

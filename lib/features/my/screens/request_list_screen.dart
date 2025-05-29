@@ -15,40 +15,115 @@ class RequestListScreen extends StatefulWidget {
 }
 
 class _RequestListScreenState extends State<RequestListScreen> {
-  Future<List<RequestModel>>? _requestListFuture;
+  final ScrollController _scrollController = ScrollController();
+  final List<RequestModel> _requests = [];
+  bool _isLoading = false;
+  bool _hasMore = true;
+  int _currentPage = 1;
+  static const int _limit = 10;
 
   @override
   void initState() {
     super.initState();
-    _requestListFuture = MyPageViewModel().getRequestList();
+    _loadInitialData();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadInitialData() async {
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
+
+    try {
+      final response = await MyPageViewModel()
+          .getRequestList(page: _currentPage, limit: _limit);
+      setState(() {
+        _requests.addAll(response.items);
+        _hasMore = _currentPage < response.meta.totalPages;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('데이터를 불러오지 못했습니다.')),
+        );
+      }
+    }
+  }
+
+  Future<void> _loadMoreData() async {
+    if (_isLoading || !_hasMore) return;
+    setState(() => _isLoading = true);
+
+    try {
+      _currentPage++;
+      final response = await MyPageViewModel()
+          .getRequestList(page: _currentPage, limit: _limit);
+      setState(() {
+        _requests.addAll(response.items);
+        _hasMore = _currentPage < response.meta.totalPages;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('추가 데이터를 불러오지 못했습니다.')),
+        );
+      }
+    }
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.8) {
+      _loadMoreData();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_requestListFuture == null) {
-      // 혹시 모를 예외 처리
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
     return Scaffold(
       appBar: const BackButtonAppBar(
         type: BackButtonAppBarType.textCenter,
         title: '취소,반품,교환 목록',
       ),
-      body: FutureBuilder<List<RequestModel>>(
-        future: _requestListFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text('데이터를 불러오지 못했습니다.'));
-          }
-          final requests = snapshot.data ?? [];
-          return RequestList(requests: requests);
-        },
-      ),
+      body: _requests.isEmpty && _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  _requests.clear();
+                  _currentPage = 1;
+                  _hasMore = true;
+                });
+                await _loadInitialData();
+              },
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _requests.length + (_hasMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == _requests.length) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: RequestList(requests: [_requests[index]]),
+                  );
+                },
+              ),
+            ),
     );
   }
 }
