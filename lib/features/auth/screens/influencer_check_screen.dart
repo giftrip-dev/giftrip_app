@@ -5,8 +5,8 @@ import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
 import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/auth/screens/register_success_screen.dart';
-import 'package:giftrip/features/auth/models/influencer_model.dart';
-import 'package:giftrip/features/auth/repositories/influencer_repo.dart';
+import 'package:giftrip/features/auth/repositories/auth_repo.dart';
+import 'package:giftrip/features/auth/models/register_model.dart';
 import 'dart:developer' as developer;
 
 class InfluencerCheckScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class InfluencerCheckScreen extends StatefulWidget {
 }
 
 class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
-  final InfluencerRepository _influencerRepo = InfluencerRepository();
+  final AuthRepository _authRepo = AuthRepository();
   bool _isLoading = false;
 
   @override
@@ -102,16 +102,17 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
       _isLoading = true;
     });
 
-    final request = InfluencerInfoRequest(
+    final request = CompleteSignUpRequest(
       isInfluencer: _yes,
-      domain: _selectedDomain,
-      customDomain: _selectedDomain == '기타' ? _customDomain : null,
-      accountName: _accountName,
+      influencerInfo: InfluencerInfo(
+        platform: _selectedDomain ?? '',
+        platformId: _selectedDomain == '기타' ? _customDomain : '',
+      ),
     );
 
-    final response = await _influencerRepo.updateInfluencerInfo(request);
+    final response = await _authRepo.completeSignUp(request);
 
-    if (response.isSuccess) {
+    if (response.isInfluencerChecked) {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
@@ -125,7 +126,7 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.errorMessage ?? '인플루언서 정보 저장에 실패했습니다.'),
+            content: Text('잠시후 다시 시도해주세요.'),
             backgroundColor: AppColors.statusError,
           ),
         );

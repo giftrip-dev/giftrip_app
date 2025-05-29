@@ -80,16 +80,16 @@ class InfluencerInfo {
 }
 
 class CompleteSignUpRequest {
-  final bool isMarketingAgreed;
-  final bool isTermsAgreed;
-  final bool isPrivacyAgreed;
+  final bool? isMarketingAgreed;
+  final bool? isTermsAgreed;
+  final bool? isPrivacyAgreed;
   final bool isInfluencer;
   final InfluencerInfo influencerInfo;
 
   CompleteSignUpRequest({
-    required this.isMarketingAgreed,
-    required this.isTermsAgreed,
-    required this.isPrivacyAgreed,
+    this.isMarketingAgreed = false,
+    this.isTermsAgreed = false,
+    this.isPrivacyAgreed = false,
     required this.isInfluencer,
     required this.influencerInfo,
   });

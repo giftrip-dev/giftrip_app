@@ -80,9 +80,9 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<bool> completeSignUp({
-    required bool isMarketingAgreed,
-    required bool isTermsAgreed,
-    required bool isPrivacyAgreed,
+    bool? isMarketingAgreed,
+    bool? isTermsAgreed,
+    bool? isPrivacyAgreed,
     required bool isInfluencer,
     required String platform,
     required String platformId,
