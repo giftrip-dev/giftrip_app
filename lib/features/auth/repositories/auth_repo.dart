@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 import 'package:giftrip/core/utils/logger.dart';
@@ -96,22 +97,24 @@ class AuthRepository {
         data: request.toJson(),
       );
 
-      if (response.statusCode == 201) {
-        final data = response.data;
-        await GlobalStorage().setToken(
-          data['accessToken'],
-          data['refreshToken'],
-        );
-        return RegisterResponse.fromJson(data);
+      final data = response.data;
+      logger.d('회원가입 응답 데이터: $data');
+      final accessToken = data['tokens']['accessToken'];
+      final refreshToken = data['tokens']['refreshToken'];
+
+      if (accessToken != null && refreshToken != null) {
+        await GlobalStorage().setToken(accessToken, refreshToken);
+        logger.d('토큰 저장 완료: $accessToken');
+        logger.d('토큰 저장 완료: $refreshToken');
       } else {
-        return RegisterResponse(
-          tokens: null,
-        );
+        logger.e(
+            '토큰이 null입니다. accessToken: $accessToken, refreshToken: $refreshToken');
       }
+
+      return RegisterResponse.fromJson(data);
     } catch (e) {
-      return RegisterResponse(
-        tokens: null,
-      );
+      logger.e('회원가입 중 오류: $e');
+      rethrow;
     }
   }
 

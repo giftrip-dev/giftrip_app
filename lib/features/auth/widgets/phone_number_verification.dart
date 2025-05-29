@@ -156,10 +156,6 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   }
 
   Future<void> _verifyCode() async {
-    setState(() {
-      _isVerificationAttempted = true;
-    });
-
     if (widget.verificationCodeController.text.isEmpty) {
       setState(() {
         widget.verificationCodeController.text = '';
@@ -177,6 +173,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
     if (result.isVerified != null && result.isVerified!) {
       setState(() {
         _isVerificationSuccessful = true;
+        _isVerificationAttempted = false;
       });
       widget.onVerificationSuccess();
 
@@ -190,6 +187,9 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
         );
       }
     } else {
+      setState(() {
+        _isVerificationAttempted = true;
+      });
       widget.onVerificationFailure();
 
       if (context.mounted) {
