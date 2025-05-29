@@ -1,1 +1,1 @@
-const baseUrl = 'https://api.myong.me/';
+const baseUrl = 'https://dev-api.giftrip.co.kr/';

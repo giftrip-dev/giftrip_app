@@ -33,6 +33,8 @@ import 'package:giftrip/features/tester/view_models/tester_view_model.dart';
 import 'package:giftrip/features/tester/screens/tester_screen.dart';
 import 'package:giftrip/features/delivery/view_models/delivery_view_model.dart';
 import 'package:giftrip/features/delivery/screens/delivery_screen.dart';
+import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
+import 'package:giftrip/features/my/screens/my_page_screen.dart';
 
 // 전역 navigatorKey 설정 (DioClient에서도 사용 가능)
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -130,6 +132,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => OrderHistoryViewModel()),
         ChangeNotifierProvider(create: (_) => TesterViewModel()),
         ChangeNotifierProvider(create: (_) => DeliveryViewModel()),
+        ChangeNotifierProvider(create: (_) => MyPageViewModel()),
       ],
       child: Builder(
         builder: (context) {
@@ -185,6 +188,7 @@ class _MyAppState extends State<MyApp> {
               '/inquiry': (ctx) => const InquiryScreen(),
               '/order_history': (ctx) => const OrderHistoryScreen(),
               '/delivery': (ctx) => const DeliveryScreen(),
+              '/mypage': (ctx) => const MyPageScreen(),
             },
           );
         },
