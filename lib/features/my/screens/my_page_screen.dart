@@ -82,8 +82,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       },
                       '취소,반품,교환 목록': {
                         'onTap': () =>
-                            // myPageViewModel.onTapCancelRefundExchangeList(context),
-                            () {},
+                            myPageViewModel.onTapRequestList(context),
                       },
                       '리뷰 작성': {
                         'onTap': () =>

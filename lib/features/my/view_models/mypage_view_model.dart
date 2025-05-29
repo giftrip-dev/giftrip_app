@@ -9,11 +9,13 @@ import 'package:giftrip/features/notice/screens/notice_screen.dart';
 import 'package:giftrip/features/auth/screens/login_screen.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:giftrip/features/order_history/screens/order_history_screen.dart';
+import 'package:giftrip/features/my/screens/request_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/delivery/screens/delivery_screen.dart';
-import 'package:giftrip/features/my/repositories/user_repo.dart';
+import 'package:giftrip/features/my/repositories/mypage_repo.dart';
 import 'package:giftrip/features/my/models/user_model.dart';
+import 'package:giftrip/features/my/models/request_model.dart';
 
 class MyPageViewModel extends ChangeNotifier {
   final AuthRepository _authRepo = AuthRepository();
@@ -45,13 +47,18 @@ class MyPageViewModel extends ChangeNotifier {
   }
 
   Future<UserModel> getUserInfo() async {
-    final userInfo = await UserRepository().getUserInfo();
+    final userInfo = await MyPageRepository().getUserInfo();
     return userInfo;
   }
 
   Future<UserModel> getUserManagement() async {
-    final userDetail = await UserRepository().getUserManagement();
+    final userDetail = await MyPageRepository().getUserManagement();
     return userDetail;
+  }
+
+  Future<List<RequestModel>> getRequestList() async {
+    final requestList = await MyPageRepository().getRequestList();
+    return requestList;
   }
 
   void onTapUserDetail(context) {
@@ -123,6 +130,13 @@ class MyPageViewModel extends ChangeNotifier {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const DeliveryScreen()),
+    );
+  }
+
+  void onTapRequestList(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RequestListScreen()),
     );
   }
 
