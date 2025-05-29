@@ -3,12 +3,16 @@ class UserUpdateRequestDto {
   final bool? isTermsOfServiceConsent;
   final bool? isPersonalInfoConsent;
   final bool? isAdvConsent;
+  final bool? isInfluencerChecked;
+  final String? name;
 
   UserUpdateRequestDto({
     this.nickname,
     this.isTermsOfServiceConsent,
     this.isPersonalInfoConsent,
     this.isAdvConsent,
+    this.isInfluencerChecked,
+    this.name,
   });
 
   Map<String, dynamic> toJson() {
@@ -17,6 +21,8 @@ class UserUpdateRequestDto {
       'isTermsOfServiceConsent': isTermsOfServiceConsent,
       'isPersonalInfoConsent': isPersonalInfoConsent,
       'isAdvConsent': isAdvConsent,
+      'isInfluencerChecked': isInfluencerChecked,
+      'name': name,
     };
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:giftrip/core/app.dart';
 import 'package:giftrip/core/constants/font_manager.dart';
+import 'package:giftrip/core/utils/env_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -14,6 +15,9 @@ void main() async {
 
     // 환경 변수 로드
     await dotenv.load(fileName: '.env');
+
+    // 환경 변수 디버그 출력
+    EnvConfig.printEnvVars();
 
     // Firebase 초기화
     await Firebase.initializeApp();

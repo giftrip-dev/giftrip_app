@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/features/user/models/dto/user_dto.dart';
 import 'package:giftrip/features/user/repositories/user_repo.dart';
-import 'package:giftrip/core/services/storage_service.dart'; // GlobalStorage 임포트
+import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/features/auth/models/user_model.dart';
 
 class UserViewModel extends ChangeNotifier {
   final UserRepository _repository = UserRepository();
-  final GlobalStorage _storage = GlobalStorage(); // GlobalStorage 인스턴스 생성
+  final AuthStorage _authStorage = AuthStorage();
   bool _isLoading = false; // 로딩 상태 추가
 
   bool get isLoading => _isLoading; // 로딩 상태 getter
@@ -46,8 +46,8 @@ class UserViewModel extends ChangeNotifier {
     try {
       final userInfo = await _repository.getUserInfo();
       if (userInfo != null) {
-        print('유저 정보: ${userInfo.nickname}, ${userInfo.email}');
-        await _storage.setUserInfo(userInfo); // 유저 정보를 GlobalStorage에 저장
+        print('유저 정보(이름): ${userInfo.name}');
+        await _authStorage.setUserInfo(userInfo); // 유저 정보를 AuthStorage에 저장
         return userInfo; // UserResponseDto를 UserModel로 변환하여 반환
       }
       return null; // 조회 실패

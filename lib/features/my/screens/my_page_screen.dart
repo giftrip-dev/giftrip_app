@@ -33,12 +33,12 @@ class _MyPageScreenState extends State<MyPageScreen> {
   // 사용자 정보를 로드하는 메서드
   void _loadUserInfo() async {
     var userInfo = await userViewModel.getUserInfo();
-    if (userInfo != null) {
-      setState(() {
-        userNickname = userInfo.nickname; // 닉네임 저장
-        userEmail = userInfo.email; // 이메일 저장
-      });
-    }
+    // if (userInfo != null) {
+    //   setState(() {
+    //     userNickname = userInfo.nickname; // 닉네임 저장
+    //     userEmail = userInfo.email; // 이메일 저장
+    //   });
+    // }
   }
 
   @override

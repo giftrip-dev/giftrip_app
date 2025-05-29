@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:giftrip/core/services/api_service.dart';
-import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/core/utils/logger.dart';
 
 // 피드백 DTO
@@ -20,7 +20,7 @@ class FeedbackDto {
 
 class LeaveRepo {
   final Dio _dio = DioClient().to();
-  final GlobalStorage _storage = GlobalStorage();
+  final AuthStorage _authStorage = AuthStorage();
 
   /// 회원 탈퇴 요청
   Future<bool> deleteUser() async {
@@ -28,9 +28,9 @@ class LeaveRepo {
       final response = await _dio.delete('/api/users/withdrawal');
 
       if (response.statusCode == 200) {
-        await _storage.deleteUserInfo();
-        await _storage.deleteLoginToken();
-        await _storage.removeAutoLogin();
+        await _authStorage.deleteUserInfo();
+        await _authStorage.deleteLoginToken();
+        await _authStorage.removeAutoLogin();
         return true;
       } else {
         logger.e('회원탈퇴 실패: ${response.statusCode}');
