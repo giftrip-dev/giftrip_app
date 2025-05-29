@@ -12,16 +12,24 @@ class AuthRes {
   });
 }
 
-class LoginRes {
-  final String statusCode;
+class TokenModel {
   final String refreshToken;
   final String accessToken;
-  final UserModel user;
 
-  LoginRes({
-    required this.statusCode,
+  TokenModel({
     required this.refreshToken,
     required this.accessToken,
-    required this.user,
+  });
+}
+
+class LoginRes {
+  final TokenModel tokens;
+  final String? name;
+  final bool isInfluencerChecked;
+
+  LoginRes({
+    required this.tokens,
+    required this.name,
+    required this.isInfluencerChecked,
   });
 }

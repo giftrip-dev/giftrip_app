@@ -31,6 +31,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<!-- Google Sign-In 용 reversed client id -->
 				<string>com.googleusercontent.apps.479328366433-aj2oem0l33cba8aqflpb6fj4ekag6663</string>
 			</array>
 		</dict>

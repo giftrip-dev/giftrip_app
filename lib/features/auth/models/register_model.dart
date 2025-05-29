@@ -44,21 +44,22 @@ class Tokens {
 }
 
 class RegisterResponse {
-  final Tokens? tokens;
+  final Tokens tokens;
+  final String? name;
   final bool isInfluencerChecked;
   RegisterResponse({
-    this.tokens,
+    required this.tokens,
+    this.name,
     this.isInfluencerChecked = false,
   });
 
   factory RegisterResponse.fromJson(Map<String, dynamic> json) {
     return RegisterResponse(
-      tokens: json['tokens'] != null
-          ? Tokens(
-              accessToken: json['tokens']['accessToken'],
-              refreshToken: json['tokens']['refreshToken'],
-            )
-          : null,
+      tokens: Tokens(
+        accessToken: json['tokens']['accessToken'],
+        refreshToken: json['tokens']['refreshToken'],
+      ),
+      name: json['name'],
       isInfluencerChecked: json['isInfluencerChecked'],
     );
   }

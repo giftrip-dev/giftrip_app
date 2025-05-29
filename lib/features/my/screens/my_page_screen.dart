@@ -33,15 +33,12 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   void _loadUserInfo() async {
     var userInfo = await userViewModel.getUserInfo();
-    if (userInfo != null) {
-      setState(() {
-        userName = userInfo.name ?? '';
-        userPoint = int.parse(userInfo.point ?? '0');
-        userCoponCount = int.parse(userInfo.coponCount ?? '0');
-        userIsInfluencer = userInfo.isInfluencer ?? false;
-        marketingAgree = userInfo.isMarketingAgree ?? false;
-      });
-    }
+    // if (userInfo != null) {
+    //   setState(() {
+    //     userNickname = userInfo.nickname; // 닉네임 저장
+    //     userEmail = userInfo.email; // 이메일 저장
+    //   });
+    // }
   }
 
   @override

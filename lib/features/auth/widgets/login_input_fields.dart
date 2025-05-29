@@ -44,39 +44,26 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
       );
       return;
     }
-    setState(() {
-      // _idError = _idController.text.isEmpty ? '아이디를 입력해주세요' : null;
-      // _pwError = _pwController.text.isEmpty ? '비밀번호를 입력해주세요' : null;
-    });
-
-    if (_idError != null || _pwError != null) {
-      developer.log(
-        '''로그인 유효성 검사 실패:
-        - 아이디 에러: ${_idError ?? '없음'}
-        - 비밀번호 에러: ${_pwError ?? '없음'}''',
-        name: 'LoginInputFields',
-      );
-      return;
-    }
 
     final authViewModel = context.read<AuthViewModel>();
-    final success = await authViewModel.login(
+    final nextScreen = await authViewModel.login(
       _idController.text,
       _pwController.text,
     );
 
-    if (success && mounted) {
+    // 인플루언서 여부에 따라 라우팅 결정
+    if (nextScreen != null && mounted) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => const RootScreen(),
+          builder: (context) => nextScreen,
         ),
         (route) => false,
       );
-    } else if (!success && mounted) {
+    } else if (nextScreen == null && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+          message: authViewModel.errorMessage ?? '로그인에 실패했습니다.',
           icon: LucideIcons.logIn,
         ),
       );

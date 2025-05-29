@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:giftrip/core/utils/logger.dart';
-import 'package:giftrip/features/auth/models/user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:giftrip/core/utils/logger.dart';
 
 class GlobalStorage {
   static const _storage = FlutterSecureStorage();
@@ -30,46 +28,6 @@ class GlobalStorage {
   // [공통 메서드] - 삭제
   Future<void> _delete(String key) async {
     await _storage.delete(key: key);
-  }
-
-  // 🔹 유저 정보 저장
-  Future<void> setUserInfo(UserModel user) async {
-    await write("userInfo", jsonEncode(user.toJson()));
-  }
-
-  // 🔹 유저 정보 조회
-  Future<UserModel?> getUserInfo() async {
-    final jsonString = await _read("userInfo");
-    return jsonString != null
-        ? UserModel.fromJson(jsonDecode(jsonString))
-        : null;
-  }
-
-  // 🔹 유저 정보 삭제
-  Future<void> deleteUserInfo() async => _delete("userInfo");
-
-  // 🔹 자동 로그인 저장, 조회, 삭제
-  Future<void> setAutoLogin() async => write("autoLogin", "T");
-  Future<bool> getAutoLogin() async => (await _read("autoLogin")) == "T";
-  Future<void> removeAutoLogin() async => write("autoLogin", "N");
-
-  // 🔹 토큰 저장, 조회, 삭제
-  Future<void> setToken(String accessToken, String refreshToken) async {
-    await write("accessToken", accessToken);
-    await write("refreshToken", refreshToken);
-  }
-
-  Future<String?> getAccessToken() async => _read("accessToken");
-  Future<String?> getRefreshToken() async => _read("refreshToken");
-
-  Future<void> deleteLoginToken() async {
-    await _delete("accessToken");
-    await _delete("refreshToken");
-  }
-
-  Future<void> deleteAccessToken() async {
-    await _delete("accessToken");
-    logger.d("accessToken delete: ${await getAccessToken()}");
   }
 
   // 🔹 특정 키 삭제

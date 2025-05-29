@@ -1,91 +1,47 @@
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/models/auth_result_model.dart';
+import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/auth/models/user_model.dart';
 import 'package:giftrip/features/auth/models/register_model.dart';
-import 'package:giftrip/features/auth/models/login_model.dart';
 import 'package:giftrip/features/notification/view_models/notification_view_model.dart';
 import 'package:giftrip/features/notification/models/notification_model.dart';
-import 'dart:developer' as developer;
+import 'package:giftrip/features/user/models/dto/user_dto.dart';
+import 'package:giftrip/features/user/view_models/user_view_model.dart';
 
 class AuthRepository {
   final Dio _dio = DioClient().to();
   final Map<String, dynamic> resultMap = <String, dynamic>{};
-  final GlobalStorage _storage = GlobalStorage();
+  final AuthStorage _authStorage = AuthStorage();
+  final GlobalStorage _globalStorage = GlobalStorage();
 
-  // 임시 로그인 계정
-  static const String _tempId = 'test';
-  static const String _tempPassword = '1234';
-
-  // 로그인 요청
-  Future<LoginResponse> postLogin(LoginRequest request) async {
+  // 리프레쉬 토큰으로 액세스 토큰 재발급
+  Future<void> refreshAccessToken() async {
     try {
-      developer.log(
-        '''로그인 요청:
-        - 아이디: ${request.id}
-        - 비밀번호: ${'*' * request.password.length}''',
-        name: 'AuthRepository',
-      );
-
-      // 임시 로그인 계정 확인
-      if (request.id == _tempId && request.password == _tempPassword) {
-        developer.log(
-          '임시 계정 로그인 성공',
-          name: 'AuthRepository',
-        );
-        return LoginResponse(
-          isSuccess: true,
-          accessToken: 'temp_access_token',
-          refreshToken: 'temp_refresh_token',
-          userId: 'temp_user_id',
-        );
+      String? refreshToken = await _authStorage.getRefreshToken();
+      if (refreshToken == null) {
+        throw Exception("리프레시 토큰이 없음");
       }
 
-      developer.log(
-        '로그인 실패: 잘못된 아이디 또는 비밀번호',
-        name: 'AuthRepository',
-      );
-      return LoginResponse(
-        isSuccess: false,
-        errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.',
+      final response = await _dio.post(
+        '/auth/refresh',
+        data: {'refreshToken': refreshToken},
       );
 
-      // TODO: 실제 API 구현 시 아래 주석 해제
-      // final response = await _dio.post(
-      //   '/api/auth/login',
-      //   data: request.toJson(),
-      // );
-      //
-      // if (response.statusCode == 200) {
-      //   final data = response.data;
-      //   // 토큰 저장
-      //   if (data['accessToken'] != null) {
-      //     await GlobalStorage().setAccessToken(data['accessToken']);
-      //   }
-      //   if (data['refreshToken'] != null) {
-      //     await GlobalStorage().setRefreshToken(data['refreshToken']);
-      //   }
-      //   return LoginResponse.fromJson(data);
-      // } else {
-      //   return LoginResponse(
-      //     isSuccess: false,
-      //     errorMessage: '로그인에 실패했습니다.',
-      //   );
-      // }
-    } catch (e, stackTrace) {
-      developer.log(
-        '로그인 중 오류 발생',
-        name: 'AuthRepository',
-        error: e,
-        stackTrace: stackTrace,
-      );
-      return LoginResponse(
-        isSuccess: false,
-        errorMessage: '로그인 중 오류가 발생했습니다.',
-      );
+      if (response.statusCode == 201) {
+        final tokenInfo = response.data;
+        await _authStorage.setToken(
+            tokenInfo['accessToken'], tokenInfo['refreshToken']);
+        logger.d('새로운 액세스 토큰 저장 완료: ${tokenInfo['accessToken']}');
+      } else {
+        throw Exception("토큰 갱신 실패: ${response.statusCode}");
+      }
+    } catch (e) {
+      logger.e("토큰 갱신 중 오류 발생: $e");
+      rethrow;
     }
   }
 
@@ -93,7 +49,7 @@ class AuthRepository {
   Future<RegisterResponse> postSignUp(RegisterRequest request) async {
     try {
       final response = await _dio.post(
-        '/api/v1/auth/sign-up',
+        '/auth/sign-up',
         data: request.toJson(),
       );
 
@@ -102,10 +58,12 @@ class AuthRepository {
       final accessToken = data['tokens']['accessToken'];
       final refreshToken = data['tokens']['refreshToken'];
 
+      // 유저 스토리지 업데이트
+      await _authStorage.setUserInfo(UserModel.fromJson(data));
+
+      // 토큰 스토리지 업데이트
       if (accessToken != null && refreshToken != null) {
-        await GlobalStorage().setToken(accessToken, refreshToken);
-        logger.d('토큰 저장 완료: $accessToken');
-        logger.d('토큰 저장 완료: $refreshToken');
+        await _authStorage.setToken(accessToken, refreshToken);
       } else {
         logger.e(
             '토큰이 null입니다. accessToken: $accessToken, refreshToken: $refreshToken');
@@ -118,43 +76,73 @@ class AuthRepository {
     }
   }
 
-  // 이메일 중복 체크
-  Future<bool> checkEmailDuplicate(String email) async {
+  // 로그인 요청
+  Future<LoginResponse> postLogin(String email, String password) async {
     try {
-      final response = await _dio.get(
-        '/api/auth/check-email',
-        queryParameters: {'email': email},
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // 리프레쉬 토큰으로 액세스 토큰 재발급
-  Future<void> refreshAccessToken() async {
-    try {
-      String? refreshToken = await GlobalStorage().getRefreshToken();
-      if (refreshToken == null) {
-        throw Exception("리프레시 토큰이 없음");
-      }
-
       final response = await _dio.post(
-        '/api/auth/refresh',
-        data: {'refreshToken': refreshToken},
+        '/auth/login',
+        data: {
+          'email': email,
+          'password': password,
+        },
       );
+      logger.i('로그인 응답 데이터: ${response.data}');
 
       if (response.statusCode == 201) {
-        final tokenInfo = response.data;
-        await GlobalStorage()
-            .setToken(tokenInfo['accessToken'], tokenInfo['refreshToken']);
-        logger.d('새로운 액세스 토큰 저장 완료: ${tokenInfo['accessToken']}');
-      } else {
-        throw Exception("토큰 갱신 실패: ${response.statusCode}");
+        final data = response.data as Map<String, dynamic>;
+
+        // 1) 토큰 저장
+        final accessToken = data['tokens']?['accessToken'] as String?;
+        final refreshToken = data['tokens']?['refreshToken'] as String?;
+        if (accessToken != null && refreshToken != null) {
+          await _authStorage.setToken(accessToken, refreshToken);
+        } else {
+          logger.e(
+            '토큰 누락: access=$accessToken, refresh=$refreshToken',
+          );
+        }
+
+        // 2) 유저 정보 저장 (이름 + 인플루언서 체크 여부)
+        final name = data['name'] as String?;
+        final isInfluencer = data['isInfluencerChecked'] as bool? ?? false;
+
+        final user = UserModel(
+          name: name,
+          isInfluencerChecked: isInfluencer,
+        );
+        await _authStorage.setUserInfo(user);
+
+        // 3) LoginResponse 반환
+        return LoginResponse(
+          isSuccess: true,
+          errorMessage: null,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          name: data['name'] as String,
+          isInfluencerChecked: isInfluencer,
+        );
       }
-    } catch (e) {
-      logger.e("토큰 갱신 중 오류 발생: $e");
-      rethrow;
+
+      return LoginResponse(
+        isSuccess: false,
+        errorMessage: '로그인에 실패했습니다.',
+        isInfluencerChecked: false,
+      );
+    } catch (e, st) {
+      logger.e('로그인 중 오류 발생', error: e, stackTrace: st);
+      if (e is DioException &&
+          (e.response?.statusCode == 401 || e.response?.statusCode == 404)) {
+        return LoginResponse(
+          isSuccess: false,
+          errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.',
+          isInfluencerChecked: false,
+        );
+      }
+      return LoginResponse(
+        isSuccess: false,
+        errorMessage: '로그인 중 오류가 발생했습니다.',
+        isInfluencerChecked: false,
+      );
     }
   }
 
@@ -164,7 +152,7 @@ class AuthRepository {
     String? provider,
   }) async {
     final response = await _dio.post(
-      '/api/auth/social-login',
+      '/auth/social-login',
       data: {
         'provider': provider,
         'accessToken': accessToken,
@@ -172,38 +160,42 @@ class AuthRepository {
     );
 
     if (response.statusCode == 201) {
-      final statusCode = response.statusCode.toString();
-
       final refreshToken = response.data['tokens']['refreshToken'];
       final accessToken = response.data['tokens']['accessToken'];
-      final isFirstLogin = response.data['isFirstLogin'] ?? false;
-      final certificateStatus =
-          response.data['certificateStatus'] ?? 'NOT_REQUESTED';
 
       final user = UserModel.fromJson(
-        response.data['user'],
-        isFirstLogin: isFirstLogin,
-        certificateStatus: certificateStatus,
+        response.data,
+        name: response.data['name'],
+        isInfluencerChecked: response.data['isInfluencerChecked'],
       );
-      final fcmToken = await GlobalStorage().getFcmToken();
-      final deviceId = await GlobalStorage().getDeviceId();
-      final deviceModel = await GlobalStorage().getDeviceModel();
+
+      final fcmToken = await _globalStorage.getFcmToken();
+      final deviceId = await _globalStorage.getDeviceId();
+      final deviceModel = await _globalStorage.getDeviceModel();
       final notificationViewModel = NotificationViewModel();
       // 토큰, 유저 정보 글로벌 스토리지 저장
-      await GlobalStorage().setToken(accessToken, refreshToken);
-      await GlobalStorage().setUserInfo(user);
-      await GlobalStorage().setAutoLogin(); // 자동 로그인 활성화
+      await _authStorage.setToken(accessToken, refreshToken);
+      await _authStorage.setUserInfo(user);
+      await _authStorage.setAutoLogin(); // 자동 로그인 활성화
       await notificationViewModel.registerFCMToken(
           fcmData: FCMTokenModel(
         token: fcmToken ?? '',
         deviceId: deviceId ?? '',
         deviceModel: deviceModel ?? '',
       ));
+
+      UserViewModel().updateUser(UserUpdateRequestDto(
+        name: user.name,
+        isInfluencerChecked: user.isInfluencerChecked,
+      ));
+
       return LoginRes(
-        statusCode: statusCode,
-        refreshToken: refreshToken,
-        accessToken: accessToken,
-        user: user,
+        tokens: TokenModel(
+          refreshToken: refreshToken,
+          accessToken: accessToken,
+        ),
+        name: user.name,
+        isInfluencerChecked: user.isInfluencerChecked,
       );
     } else {
       throw Exception("로그인 실패: ${response.statusCode}");
@@ -213,12 +205,12 @@ class AuthRepository {
   /// 로그아웃 요청
   Future<bool> logout() async {
     try {
-      final response = await _dio.post('/api/auth/logout');
+      final response = await _dio.post('/auth/logout');
 
       if (response.statusCode == 201) {
-        await _storage.deleteUserInfo();
-        await _storage.deleteLoginToken();
-        await _storage.removeAutoLogin();
+        await _authStorage.deleteUserInfo();
+        await _authStorage.deleteLoginToken();
+        await _authStorage.removeAutoLogin();
         return true;
       } else {
         throw Exception('로그아웃 실패: ${response.statusCode}');
@@ -232,7 +224,7 @@ class AuthRepository {
       CompleteSignUpRequest request) async {
     try {
       final response = await _dio.patch(
-        '/api/v1/auth/complete-sign-up',
+        '/auth/complete-sign-up',
         data: request.toJson(),
       );
       if (response.statusCode == 200) {

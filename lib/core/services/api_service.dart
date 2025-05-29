@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:giftrip/core/app.dart';
-import 'package:giftrip/core/constants/api_endpoint.dart';
 import 'package:giftrip/core/services/storage_service.dart';
+import 'package:giftrip/core/storage/auth_storage.dart';
+import 'package:giftrip/core/utils/env_config.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 
@@ -10,6 +11,8 @@ class DioClient {
   factory DioClient() => _instance;
 
   late final Dio _dio;
+  final AuthStorage _authStorage = AuthStorage();
+  final GlobalStorage _globalStorage = GlobalStorage();
 
   // 토큰 필요 없는 요청 경로
   static const List<String> _pathsWithoutToken = [
@@ -20,7 +23,7 @@ class DioClient {
   DioClient._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: EnvConfig.fullApiUrl,
         connectTimeout: const Duration(milliseconds: 10000),
         receiveTimeout: const Duration(milliseconds: 10000),
         sendTimeout: const Duration(milliseconds: 10000),
@@ -47,7 +50,7 @@ class DioClient {
     if (options.path.contains("/api/auth/refresh")) {
       options.headers.remove('Authorization');
     } else if (!_pathsWithoutToken.any((path) => options.path.contains(path))) {
-      String? accessToken = await GlobalStorage().getAccessToken();
+      String? accessToken = await _authStorage.getAccessToken();
       if (accessToken != null) {
         logger.d('Access Token: $accessToken');
         options.headers['Authorization'] = "Bearer $accessToken";
@@ -71,7 +74,10 @@ class DioClient {
 
     final statusCode = err.response?.statusCode;
     final requestPath = err.requestOptions.path;
-    final errorMessage = err.response?.data['message'];
+    final errorMessage = err.response?.data is Map<String, dynamic>
+        ? err.response?.data['message'] as String? ??
+            err.response?.data['error'] as String?
+        : null;
 
     // 만료된 토큰일 경우
     if (statusCode == 401 || errorMessage == 'token-expired') {
@@ -112,7 +118,7 @@ class DioClient {
 
     await AuthRepository().refreshAccessToken();
 
-    final newAccessToken = await GlobalStorage().getAccessToken();
+    final newAccessToken = await _authStorage.getAccessToken();
     logger.d('New Access Token: $newAccessToken');
 
     final options = err.requestOptions;
@@ -137,8 +143,9 @@ class DioClient {
   }
 
   void _handleRefreshFail() {
-    GlobalStorage().deleteSpecificKeys();
-    GlobalStorage().removeAutoLogin();
+    _authStorage.deleteLoginToken();
+    _authStorage.deleteUserInfo();
+    _authStorage.removeAutoLogin();
 
     // 로그인 페이지로 이동
     navigatorKey.currentState
