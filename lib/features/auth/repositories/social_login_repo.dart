@@ -22,16 +22,13 @@ class SocialLoginRepo {
     }
 
     try {
-      logger.d('애플 로그인 인증 시도');
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      logger.d('애플 로그인 인증 성공: ${credential.identityToken}');
 
-      logger.d('서버 로그인 시도');
       final loginResult = await authRepo.postLoginWithSocial(
         credential.identityToken.toString(),
         provider: "apple",
@@ -40,7 +37,7 @@ class SocialLoginRepo {
       return AuthRes(
           isSuccess: true,
           user: UserModel(
-              name: loginResult.name ?? '',
+              name: loginResult.name,
               isInfluencerChecked: loginResult.isInfluencerChecked));
     } catch (e) {
       logger.e('애플 로그인 실패: $e');
