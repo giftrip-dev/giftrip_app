@@ -26,10 +26,7 @@ class AuthViewModel extends ChangeNotifier {
 
       // 유저 정보가 없으면 로그인 화면으로 이동
       if (user == null) {
-        return const RootScreen(
-          selectedIndex: 0,
-        );
-        ;
+        return const LoginScreen();
       }
 
       // 인플루언서 인증 여부 확인
@@ -41,9 +38,7 @@ class AuthViewModel extends ChangeNotifier {
         return const InfluencerCheckScreen();
       }
     } else {
-      return const RootScreen(
-        selectedIndex: 0,
-      );
+      return const LoginScreen();
     }
   }
 
