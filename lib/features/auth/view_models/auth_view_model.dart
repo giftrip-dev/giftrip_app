@@ -139,4 +139,30 @@ class AuthViewModel extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<Widget?> logout() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final refreshToken = await _authStorage.getRefreshToken();
+      if (refreshToken == null) {
+        throw Exception('리프레시 토큰이 없습니다.');
+      }
+      final response = await _authRepo.logout(refreshToken);
+      _isLoading = false;
+      notifyListeners();
+
+      if (response) {
+        return const RootScreen(selectedIndex: 0);
+      }
+      return null;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return null;
+    }
+  }
 }

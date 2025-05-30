@@ -70,9 +70,17 @@ class SocialLoginRepo {
       final GoogleSignInAuthentication googleAuth = await result.authentication;
       logger.d('구글 인증 토큰 획득: ${googleAuth.idToken}');
 
+      if (googleAuth.idToken == null || googleAuth.idToken!.isEmpty) {
+        logger.e('구글 ID 토큰이 유효하지 않습니다.');
+        return AuthRes(isSuccess: false, errorMessage: "인증 토큰을 받지 못했습니다.");
+      }
+
       logger.d('서버 로그인 시도');
+      logger
+          .d('요청 데이터: {provider: google, accessToken: ${googleAuth.idToken}}');
+
       final loginResult = await authRepo.postLoginWithSocial(
-        googleAuth.idToken.toString(),
+        googleAuth.idToken!,
         provider: "google",
       );
       logger.d('서버 로그인 성공: ${loginResult.name}');
@@ -85,13 +93,17 @@ class SocialLoginRepo {
     } catch (e) {
       logger.e('구글 로그인 실패: $e');
       String errorMessage = '로그인 중 오류가 발생했습니다.';
+
       if (e.toString().contains('network_error')) {
         errorMessage = '네트워크 연결을 확인해주세요.';
       } else if (e.toString().contains('sign_in_canceled')) {
         errorMessage = '로그인이 취소되었습니다.';
       } else if (e.toString().contains('sign_in_failed')) {
         errorMessage = '구글 로그인에 실패했습니다.';
+      } else if (e.toString().contains('500')) {
+        errorMessage = '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
       }
+
       return AuthRes(isSuccess: false, errorMessage: errorMessage);
     } finally {
       AmplitudeLogger.logClickEvent(
