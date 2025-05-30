@@ -152,7 +152,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const InfluencerCheckScreen(),
+              builder: (context) =>
+                  const InfluencerCheckScreen(fromSocialLogin: false),
             ),
           );
         }
