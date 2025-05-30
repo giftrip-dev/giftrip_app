@@ -39,7 +39,9 @@ class AuthViewModel extends ChangeNotifier {
         return const InfluencerCheckScreen(fromSocialLogin: true);
       }
     } else {
-      return const LoginScreen();
+      return const RootScreen(
+        selectedIndex: 0,
+      );
     }
   }
 
