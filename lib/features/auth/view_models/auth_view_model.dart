@@ -20,7 +20,7 @@ class AuthViewModel extends ChangeNotifier {
   // 자동 로그인 확인
   Future<Widget> checkAutoLogin() async {
     final autoLoginStatus = await _authStorage.getAutoLogin();
-    return const LoginScreen();
+
     if (autoLoginStatus) {
       final user = await _authStorage.getUserInfo();
 
