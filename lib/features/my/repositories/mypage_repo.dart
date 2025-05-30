@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/services/storage_service.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
+import 'package:giftrip/features/my/models/coupon_model.dart';
 import 'package:giftrip/features/my/models/request_model.dart';
 import 'package:giftrip/features/my/models/user_model.dart';
+import 'package:giftrip/features/my/repositories/mock_coupon_data.dart';
 import 'package:giftrip/features/my/repositories/mock_request_data.dart';
 import 'package:giftrip/features/my/repositories/mock_user_data.dart';
 
@@ -72,6 +74,47 @@ class MyPageRepository {
       throw Exception('취소,반품,교환 목록 조회 실패: $e');
     }
   }
+
+  Future<CouponPageResponse> getCouponList({
+    int page = 1,
+    int limit = 10,
+  }) async {
+    try {
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      final startIndex = (page - 1) * limit;
+      final endIndex = startIndex + limit;
+
+      if (startIndex >= mockCouponList.length) {
+        return CouponPageResponse(
+          items: [],
+          meta: PageMeta(
+            currentPage: page,
+            totalPages: (mockCouponList.length / limit).ceil(),
+            totalItems: mockCouponList.length,
+            itemsPerPage: limit,
+          ),
+        );
+      }
+
+      final items = mockCouponList.sublist(
+        startIndex,
+        endIndex > mockCouponList.length ? mockCouponList.length : endIndex,
+      );
+
+      return CouponPageResponse(
+        items: items,
+        meta: PageMeta(
+          currentPage: page,
+          totalPages: (mockCouponList.length / limit).ceil(),
+          totalItems: mockCouponList.length,
+          itemsPerPage: limit,
+        ),
+      );
+    } catch (e) {
+      throw Exception('쿠폰 목록 조회 실패: $e');
+    }
+  }
 }
 
 class RequestPageResponse {
@@ -79,6 +122,16 @@ class RequestPageResponse {
   final PageMeta meta;
 
   RequestPageResponse({
+    required this.items,
+    required this.meta,
+  });
+}
+
+class CouponPageResponse {
+  final List<CouponModel> items;
+  final PageMeta meta;
+
+  CouponPageResponse({
     required this.items,
     required this.meta,
   });

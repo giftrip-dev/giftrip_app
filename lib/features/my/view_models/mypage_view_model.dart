@@ -65,6 +65,16 @@ class MyPageViewModel extends ChangeNotifier {
     );
   }
 
+  Future<CouponPageResponse> getCouponList({
+    int page = 1,
+    int limit = 10,
+  }) async {
+    return await _repository.getCouponList(
+      page: page,
+      limit: limit,
+    );
+  }
+
   void onTapUserDetail(context) {
     Navigator.push(
       context,
