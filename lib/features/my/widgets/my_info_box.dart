@@ -4,6 +4,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:giftrip/features/my/screens/user_management_screen.dart';
+import 'package:giftrip/features/my/screens/coupon_screen.dart';
 
 class MyInfoBox extends StatelessWidget {
   final bool isInfluencer;
@@ -117,7 +118,14 @@ class MyInfoBox extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CouponScreen(),
+                    ),
+                  );
+                },
                 behavior: HitTestBehavior.opaque,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
