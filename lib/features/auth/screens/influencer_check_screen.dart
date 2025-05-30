@@ -10,7 +10,12 @@ import 'package:giftrip/features/auth/models/register_model.dart';
 import 'dart:developer' as developer;
 
 class InfluencerCheckScreen extends StatefulWidget {
-  const InfluencerCheckScreen({super.key});
+  final bool fromSocialLogin; // 소셜 로그인에서 왔는지 구분
+
+  const InfluencerCheckScreen({
+    super.key,
+    this.fromSocialLogin = false,
+  });
 
   @override
   State<InfluencerCheckScreen> createState() => _InfluencerCheckScreenState();
@@ -90,11 +95,11 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
   Future<void> _submitInfluencerInfo() async {
     developer.log(
       '''인플루언서 정보 제출 시작:
+      - 플로우: ${widget.fromSocialLogin ? '소셜 로그인' : '회원가입'}
       - 인플루언서 여부: ${_yes ? '예' : '아니오'}
       - 선택된 도메인: ${_selectedDomain ?? '없음'}
       - 커스텀 도메인: ${_customDomain.isEmpty ? '없음' : _customDomain}
-      - 계정 이름: ${_accountName.isEmpty ? '없음' : _accountName}
-      - 유효성: ${_no || (_yes && _selectedDomain != null && _accountName.isNotEmpty && (_selectedDomain != '기타' || (_selectedDomain == '기타' && _customDomain.isNotEmpty)))}''',
+      - 계정 이름: ${_accountName.isEmpty ? '없음' : _accountName}''',
       name: 'InfluencerCheckScreen',
     );
 
@@ -102,17 +107,45 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
       _isLoading = true;
     });
 
-    final request = CompleteSignUpRequest(
-      isInfluencer: _yes,
-      influencerInfo: InfluencerInfo(
-        platform: _selectedDomain ?? '',
-        platformId: _selectedDomain == '기타' ? _customDomain : '',
-      ),
-    );
+    final CompleteSignUpRequest request;
+
+    if (_no) {
+      // "아니요" 선택 시: isInfluencer = false, influencerInfo 없음
+      request = CompleteSignUpRequest(
+        isInfluencer: false,
+        // 소셜 로그인에서 온 경우 약관 동의 정보 제외
+        isMarketingAgreed: widget.fromSocialLogin ? null : false,
+        isTermsAgreed: widget.fromSocialLogin ? null : false,
+        isPrivacyAgreed: widget.fromSocialLogin ? null : false,
+      );
+      developer.log(
+          '아니요 선택 - ${widget.fromSocialLogin ? '약관 동의 정보 제외' : '약관 동의 정보 포함'}하여 전송',
+          name: 'InfluencerCheckScreen');
+    } else {
+      // "예" 선택 시: isInfluencer = true, influencerInfo 포함
+      final String platform =
+          _selectedDomain == '기타' ? _customDomain : _selectedDomain!;
+      final String platformId = _accountName;
+
+      request = CompleteSignUpRequest(
+        isInfluencer: true,
+        influencerInfo: InfluencerInfo(
+          platform: platform,
+          platformId: platformId,
+        ),
+        // 소셜 로그인에서 온 경우 약관 동의 정보 제외
+        isMarketingAgreed: widget.fromSocialLogin ? null : false,
+        isTermsAgreed: widget.fromSocialLogin ? null : false,
+        isPrivacyAgreed: widget.fromSocialLogin ? null : false,
+      );
+      developer.log(
+          '예 선택 - ${widget.fromSocialLogin ? '약관 동의 정보 제외' : '약관 동의 정보 포함'}, influencerInfo: platform=$platform, platformId=$platformId',
+          name: 'InfluencerCheckScreen');
+    }
 
     final response = await _authRepo.completeSignUp(request);
 
-    if (response.isInfluencerChecked) {
+    if (response) {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,

@@ -20,7 +20,7 @@ class AuthViewModel extends ChangeNotifier {
   // 자동 로그인 확인
   Future<Widget> checkAutoLogin() async {
     final autoLoginStatus = await _authStorage.getAutoLogin();
-
+    return const LoginScreen();
     if (autoLoginStatus) {
       final user = await _authStorage.getUserInfo();
 
@@ -35,7 +35,8 @@ class AuthViewModel extends ChangeNotifier {
           selectedIndex: 0,
         );
       } else {
-        return const InfluencerCheckScreen();
+        // 자동 로그인에서는 소셜 로그인으로 간주
+        return const InfluencerCheckScreen(fromSocialLogin: true);
       }
     } else {
       return const LoginScreen();
@@ -62,7 +63,7 @@ class AuthViewModel extends ChangeNotifier {
 
       // 2) 인플루언서 여부에 따라 다음 화면 반환
       if (!response.isInfluencerChecked) {
-        return const InfluencerCheckScreen();
+        return const InfluencerCheckScreen(fromSocialLogin: false);
       } else {
         return const RootScreen(selectedIndex: 0);
       }
@@ -104,8 +105,8 @@ class AuthViewModel extends ChangeNotifier {
     bool? isTermsAgreed,
     bool? isPrivacyAgreed,
     required bool isInfluencer,
-    required String platform,
-    required String platformId,
+    String? platform,
+    String? platformId,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -116,17 +117,19 @@ class AuthViewModel extends ChangeNotifier {
       isTermsAgreed: isTermsAgreed,
       isPrivacyAgreed: isPrivacyAgreed,
       isInfluencer: isInfluencer,
-      influencerInfo: InfluencerInfo(
-        platform: platform,
-        platformId: platformId,
-      ),
+      influencerInfo: (isInfluencer && platform != null && platformId != null)
+          ? InfluencerInfo(
+              platform: platform,
+              platformId: platformId,
+            )
+          : null,
     );
 
     try {
       final response = await _authRepo.completeSignUp(request);
       _isLoading = false;
       notifyListeners();
-      return response.isInfluencerChecked;
+      return response;
     } catch (e) {
       _isLoading = false;
       _errorMessage = '회원가입 완료에 실패했습니다.';

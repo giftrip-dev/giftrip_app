@@ -85,33 +85,37 @@ class CompleteSignUpRequest {
   final bool? isTermsAgreed;
   final bool? isPrivacyAgreed;
   final bool isInfluencer;
-  final InfluencerInfo influencerInfo;
+  final InfluencerInfo? influencerInfo;
 
   CompleteSignUpRequest({
     this.isMarketingAgreed = false,
     this.isTermsAgreed = false,
     this.isPrivacyAgreed = false,
     required this.isInfluencer,
-    required this.influencerInfo,
+    this.influencerInfo,
   });
 
-  Map<String, dynamic> toJson() => {
-        'isMarketingAgreed': isMarketingAgreed,
-        'isTermsAgreed': isTermsAgreed,
-        'isPrivacyAgreed': isPrivacyAgreed,
-        'isInfluencer': isInfluencer,
-        'influencerInfo': influencerInfo.toJson(),
-      };
-}
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = {
+      'isInfluencer': isInfluencer,
+    };
 
-class CompleteSignUpResponse {
-  final bool isInfluencerChecked;
+    // 약관 동의 정보들이 null이 아닌 경우에만 포함
+    if (isMarketingAgreed != null) {
+      json['isMarketingAgreed'] = isMarketingAgreed;
+    }
+    if (isTermsAgreed != null) {
+      json['isTermsAgreed'] = isTermsAgreed;
+    }
+    if (isPrivacyAgreed != null) {
+      json['isPrivacyAgreed'] = isPrivacyAgreed;
+    }
 
-  CompleteSignUpResponse({required this.isInfluencerChecked});
+    // 인플루언서 정보가 있을 때만 포함
+    if (influencerInfo != null) {
+      json['influencerInfo'] = influencerInfo!.toJson();
+    }
 
-  factory CompleteSignUpResponse.fromJson(Map<String, dynamic> json) {
-    return CompleteSignUpResponse(
-      isInfluencerChecked: json['isInfluencerChecked'] ?? false,
-    );
+    return json;
   }
 }

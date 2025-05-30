@@ -220,15 +220,22 @@ class AuthRepository {
     }
   }
 
-  Future<CompleteSignUpResponse> completeSignUp(
-      CompleteSignUpRequest request) async {
+  Future<bool> completeSignUp(CompleteSignUpRequest request) async {
+    logger.i('인플루언서 정보 제출 요청: ${request.toJson()}');
     try {
       final response = await _dio.patch(
         '/auth/complete-sign-up',
         data: request.toJson(),
       );
       if (response.statusCode == 200) {
-        return CompleteSignUpResponse.fromJson(response.data);
+        // 유저 스토리지 업데이트
+        await _authStorage.setUserInfo(UserModel.fromJson(response.data));
+        // 유저 뷰모델 업데이트
+        UserViewModel().updateUser(UserUpdateRequestDto(
+          name: response.data['name'],
+          isInfluencerChecked: response.data['isInfluencerChecked'],
+        ));
+        return true;
       } else {
         throw Exception('회원가입 완료 실패: ${response.statusCode}');
       }

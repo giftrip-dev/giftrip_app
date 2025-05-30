@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
+import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 import 'package:giftrip/features/auth/repositories/social_login_repo.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
-import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
 
 GestureDetector appleLoginButton({
   required BuildContext context,
@@ -35,12 +35,16 @@ GestureDetector appleLoginButton({
           );
         }
       } else {
-        if (!context.mounted) return;
-        if (result.user?.isTermsOfServiceConsent == false) {
+        if (!context.mounted || !result.isSuccess) return;
+
+        // 인플루언서 인증 여부에 따라 라우팅
+        if (result.user!.isInfluencerChecked == false) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const TermsAgreementScreen(),
+              builder: (context) => const InfluencerCheckScreen(
+                fromSocialLogin: true,
+              ),
             ),
             (route) => false,
           );
