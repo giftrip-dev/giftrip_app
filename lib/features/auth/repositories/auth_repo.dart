@@ -27,7 +27,7 @@ class AuthRepository {
       }
 
       final response = await _dio.post(
-        '/auth/refresh',
+        '/auth/rotate-tokens',
         data: {'refreshToken': refreshToken},
       );
 
