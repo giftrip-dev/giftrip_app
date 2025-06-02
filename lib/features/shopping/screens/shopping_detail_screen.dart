@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
 import 'package:giftrip/shared/widgets/product/product_detail_image_section.dart';
+import 'package:giftrip/shared/widgets/product/product_description_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/features/shopping/view_models/shopping_view_model.dart';
@@ -105,11 +106,12 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                       ),
                       const SectionDivider(),
 
-                      // 상세 이미지
-                      ProductDetailImageSection(
-                        croppedImageUrl: shopping.croppedDetailImageUrl,
-                        detailImageUrl: shopping.detailImageUrl,
+                      // 상품 설명 섹션 (퀼 에디터)
+                      ProductDescriptionSection(
+                        title: '상품 상세 설명',
+                        content: shopping.content,
                       ),
+
                       const SectionDivider(),
 
                       // 문의하기 섹션
