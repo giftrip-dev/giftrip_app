@@ -12,10 +12,10 @@ class CouponItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('yy.MM.dd');
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
             color: const Color(0x1F000000), // #00000012 (12% opacity)
@@ -26,51 +26,54 @@ class CouponItem extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // giftrip 로고 및 텍스트
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text('gif',
-                        style: title_L.copyWith(color: AppColors.primary)),
-                    Text('trip',
-                        style: title_L.copyWith(color: AppColors.labelStrong)),
-                  ],
-                ),
-                const SizedBox(height: 4),
+                Image.asset('assets/png/logo.png', width: 48),
+                const SizedBox(height: 12),
                 Text(
                   coupon.couponName,
                   style: body_M.copyWith(color: AppColors.label),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 4),
                 Text(
-                  coupon.discountRate > 0
-                      ? '숙박 ${coupon.discountRate}% 할인'
-                      : '숙박 ${NumberFormat('#,###').format(coupon.discount)}원 할인',
-                  style: title_L.copyWith(fontWeight: FontWeight.bold),
+                  '${coupon.category.label} ${coupon.discountRate}% 할인',
+                  style: h1_R.copyWith(color: AppColors.labelStrong),
                 ),
               ],
             ),
             const Spacer(),
             // 날짜
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  dateFormat.format(DateTime.parse(coupon.startDate)),
-                  style: body_S.copyWith(color: AppColors.labelAlternative),
+            Container(
+              padding: const EdgeInsets.only(left: 16),
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: AppColors.line,
+                    width: 1,
+                  ),
                 ),
-                const Text('~', style: body_S),
-                Text(
-                  dateFormat.format(DateTime.parse(coupon.endDate)),
-                  style: body_S.copyWith(color: AppColors.labelAlternative),
-                ),
-              ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    dateFormat.format(DateTime.parse(coupon.startDate)),
+                    style: caption.copyWith(color: AppColors.labelAlternative),
+                  ),
+                  Text('~',
+                      style:
+                          body_S.copyWith(color: AppColors.labelAlternative)),
+                  Text(
+                    dateFormat.format(DateTime.parse(coupon.endDate)),
+                    style: caption.copyWith(color: AppColors.labelAlternative),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

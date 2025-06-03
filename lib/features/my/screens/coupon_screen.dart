@@ -96,39 +96,42 @@ class _CouponScreenState extends State<CouponScreen> {
       ),
       body: _coupons.isEmpty && _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: () async {
-                setState(() {
-                  _coupons.clear();
-                  _currentPage = 1;
-                  _hasMore = true;
-                });
-                await _loadInitialData();
-              },
-              child: ListView(
-                controller: _scrollController,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
-                    child: Text(
-                      '사용 가능 쿠폰 ${_coupons.length}개',
-                      style: body_M.copyWith(color: AppColors.label),
-                    ),
+          : Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        '사용 가능 쿠폰 ',
+                        style:
+                            subtitle_XS.copyWith(color: AppColors.labelStrong),
+                      ),
+                      Text(
+                        '${_coupons.length}',
+                        style: subtitle_XS.copyWith(
+                            color: AppColors.primaryStrong),
+                      ),
+                      Text(
+                        '개',
+                        style: subtitle_XS.copyWith(color: AppColors.label),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  ..._coupons
-                      .map((coupon) => CouponItem(coupon: coupon))
-                      .toList(),
-                  if (_hasMore)
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: ListView(
+                    controller: _scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    children: [
+                      ..._coupons
+                          .map((coupon) => CouponItem(coupon: coupon))
+                          .toList(),
+                    ],
+                  ),
+                ),
+              ],
             ),
     );
   }
