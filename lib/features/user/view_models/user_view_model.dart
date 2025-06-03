@@ -11,14 +11,14 @@ class UserViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading; // 로딩 상태 getter
 
-  Future<bool> updateUser(UserUpdateRequestDto dto) async {
-    try {
-      await _repository.updateUser(dto);
-      return true; // 업데이트 성공
-    } catch (e) {
-      return false; // 업데이트 실패
-    }
-  }
+  // Future<bool> updateUser(UserUpdateRequestDto dto) async {
+  //   try {
+  //     await _repository.updateUser(dto);
+  //     return true; // 업데이트 성공
+  //   } catch (e) {
+  //     return false; // 업데이트 실패
+  //   }
+  // }
 
   // 닉네임 업데이트
   Future<String?> updateUserNickname(String nickname) async {
@@ -31,8 +31,8 @@ class UserViewModel extends ChangeNotifier {
         // 중복된 경우
         return '중복된 닉네임입니다.'; // 중복된 경우 에러 메시지 반환
       }
-      await _repository
-          .updateUserNickname(UserUpdateRequestDto(nickname: nickname));
+      // await _repository
+      //     .updateUserNickname(UserUpdateRequestDto(nickname: nickname));
       return null; // 업데이트 성공
     } catch (e) {
       print('닉네임 업데이트에 실패했습니다~~~~~~~~~~~.');

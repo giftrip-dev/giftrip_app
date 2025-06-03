@@ -5,6 +5,7 @@ import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/core/utils/env_config.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
+import 'package:flutter/widgets.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();
@@ -16,8 +17,10 @@ class DioClient {
 
   // 토큰 필요 없는 요청 경로
   static const List<String> _pathsWithoutToken = [
-    "/login",
-    "/api/auth/social-login",
+    "/auth/login",
+    "/auth/social-login",
+    "/auth/sign-up",
+    "/auth/phone-verifications",
   ];
 
   DioClient._internal() {
@@ -47,7 +50,7 @@ class DioClient {
       RequestOptions options, RequestInterceptorHandler handler) async {
     logger.d('Request: ${options.method} ${options.path}');
 
-    if (options.path.contains("/auth/rotate-tokens")) {
+    if (options.path.contains("/auth/token/refresh")) {
       options.headers.remove('Authorization');
     } else if (!_pathsWithoutToken.any((path) => options.path.contains(path))) {
       String? accessToken = await _authStorage.getAccessToken();

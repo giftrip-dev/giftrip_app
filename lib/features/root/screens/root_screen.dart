@@ -6,6 +6,8 @@ import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/category/category_screen.dart';
 import 'package:giftrip/features/cart/screens/cart_screen.dart';
 import 'package:giftrip/features/my/screens/my_page_screen.dart';
+import 'package:giftrip/features/auth/screens/login_screen.dart';
+import 'package:giftrip/core/storage/auth_storage.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({
@@ -96,23 +98,26 @@ class RootScreenState extends State<RootScreen> {
             ? const Center(child: CircularProgressIndicator())
             : _buildCurrentScreen(),
       ),
-      // bottomNavigationBar: BottomGnb(
-      //   selectedIndex: selectedIndex,
-      //   onTap: onItemTapped,
-      // ),
-      // 로그인 화면에서는 메뉴바 숨김(시연 영상용)
-      // bottomNavigationBar: selectedIndex == 3
-      //     ? null
-      //     : BottomGnb(
-      //         selectedIndex: selectedIndex,
-      //         onTap: onItemTapped,
-      //       ),
-      bottomNavigationBar: selectedIndex == 2
-          ? null
-          : BottomGnb(
-              selectedIndex: selectedIndex,
-              onTap: onItemTapped,
-            ),
+      bottomNavigationBar: FutureBuilder<bool>(
+        future: AuthStorage().getAutoLogin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox.shrink();
+          }
+
+          final isAutoLogin = snapshot.data ?? false;
+          if (selectedIndex == 3 && !isAutoLogin) {
+            return const SizedBox.shrink();
+          }
+
+          return selectedIndex == 2
+              ? const SizedBox.shrink()
+              : BottomGnb(
+                  selectedIndex: selectedIndex,
+                  onTap: onItemTapped,
+                );
+        },
+      ),
     );
   }
 
@@ -125,8 +130,24 @@ class RootScreenState extends State<RootScreen> {
       case 2:
         return const CartScreen(key: ValueKey('cart'));
       case 3:
-        return const MyPageScreen(key: ValueKey('myPage'));
-      // return const LoginScreen(key: ValueKey('login'));
+        return FutureBuilder<bool>(
+          key: const ValueKey('auth_check'),
+          future: AuthStorage().getAutoLogin(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                key: ValueKey('loading'),
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            final isAutoLogin = snapshot.data ?? false;
+            if (!isAutoLogin) {
+              return const LoginScreen(key: ValueKey('login'));
+            }
+            return const MyPageScreen(key: ValueKey('myPage'));
+          },
+        );
       default:
         return const HomeScreen(key: ValueKey('home'));
     }

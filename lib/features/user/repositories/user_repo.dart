@@ -8,52 +8,52 @@ class UserRepository {
   final Dio _dio = DioClient().to();
 
   /// 유저 정보 업데이트 요청
-  Future<UserResponseDto?> updateUser(UserUpdateRequestDto dto) async {
-    try {
-      logger.i("유저 정보 업데이트 요청: $dto");
-      Response response = await _dio.patch(
-        "/api/users/me",
-        data: {
-          'isTermsOfServiceConsent': dto.isTermsOfServiceConsent,
-          'isPersonalInfoConsent': dto.isPersonalInfoConsent,
-          'isAdvConsent': dto.isAdvConsent,
-        },
-      );
+  // Future<UserResponseDto?> updateUser(UserUpdateRequestDto dto) async {
+  //   try {
+  //     logger.i("유저 정보 업데이트 요청: $dto");
+  //     Response response = await _dio.patch(
+  //       "/api/users/me",
+  //       data: {
+  //         'isTermsOfServiceConsent': dto.isTermsOfServiceConsent,
+  //         'isPersonalInfoConsent': dto.isPersonalInfoConsent,
+  //         'isAdvConsent': dto.isAdvConsent,
+  //       },
+  //     );
 
-      if (response.statusCode == 200) {
-        logger.i("유저 정보 업데이트 성공: ${response.data}");
-        return UserResponseDto.fromJson(response.data);
-      } else {
-        logger.e("유저 정보 업데이트 실패: ${response.statusCode}");
-      }
-    } catch (e) {
-      logger.e("유저 정보 업데이트 요청 실패: $e");
-    }
-    return null;
-  }
+  //     if (response.statusCode == 200) {
+  //       logger.i("유저 정보 업데이트 성공: ${response.data}");
+  //       return UserResponseDto.fromJson(response.data);
+  //     } else {
+  //       logger.e("유저 정보 업데이트 실패: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     logger.e("유저 정보 업데이트 요청 실패: $e");
+  //   }
+  //   return null;
+  // }
 
   /// 유저 닉네임 업데이트 요청
-  Future<UserResponseDto?> updateUserNickname(UserUpdateRequestDto dto) async {
-    try {
-      logger.i("유저 닉네임 업데이트 요청: $dto");
-      Response response = await _dio.patch(
-        "/api/users/me",
-        data: {
-          'nickname': dto.nickname,
-        },
-      );
+  // Future<UserResponseDto?> updateUserNickname(UserUpdateRequestDto dto) async {
+  //   try {
+  //     logger.i("유저 닉네임 업데이트 요청: $dto");
+  //     Response response = await _dio.patch(
+  //       "/api/users/me",
+  //       data: {
+  //         'nickname': dto.nickname,
+  //       },
+  //     );
 
-      if (response.statusCode == 200) {
-        logger.i("유저 닉네임 업데이트 성공: ${response.data}");
-        return UserResponseDto.fromJson(response.data);
-      } else {
-        logger.e("유저 닉네임 업데이트 실패: ${response.statusCode}");
-      }
-    } catch (e) {
-      logger.e("유저 닉네임 업데이트 요청 실패: $e");
-    }
-    return null;
-  }
+  //     if (response.statusCode == 200) {
+  //       logger.i("유저 닉네임 업데이트 성공: ${response.data}");
+  //       return UserResponseDto.fromJson(response.data);
+  //     } else {
+  //       logger.e("유저 닉네임 업데이트 실패: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     logger.e("유저 닉네임 업데이트 요청 실패: $e");
+  //   }
+  //   return null;
+  // }
 
   /// 유저 닉네임 중복 체크
   Future<bool> checkNickname(String nickname) async {

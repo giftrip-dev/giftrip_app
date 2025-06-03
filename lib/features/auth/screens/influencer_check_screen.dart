@@ -11,10 +11,16 @@ import 'dart:developer' as developer;
 
 class InfluencerCheckScreen extends StatefulWidget {
   final bool fromSocialLogin; // 소셜 로그인에서 왔는지 구분
+  final bool isMarketingAgreed;
+  final bool isTermsAgreed;
+  final bool isPrivacyAgreed;
 
   const InfluencerCheckScreen({
     super.key,
     this.fromSocialLogin = false,
+    this.isMarketingAgreed = false,
+    this.isTermsAgreed = false,
+    this.isPrivacyAgreed = false,
   });
 
   @override
@@ -38,6 +44,13 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
 
   // 도메인 선택 및 계정 이름 상태 변수 추가
   final List<String> _domains = ['유튜브', '인스타그램', 'X (구 트위터)', '네이버 블로그', '기타'];
+
+  final Map<String, String> _domainMap = {
+    '유튜브': 'youtube',
+    '인스타그램': 'instagram',
+    'X (구 트위터)': 'x',
+    '네이버 블로그': 'naver_blog',
+  };
   String? _selectedDomain;
   final TextEditingController _accountController = TextEditingController();
   final TextEditingController _customDomainController = TextEditingController();
@@ -113,33 +126,42 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
       // "아니요" 선택 시: isInfluencer = false, influencerInfo 없음
       request = CompleteSignUpRequest(
         isInfluencer: false,
-        // 소셜 로그인에서 온 경우 약관 동의 정보 제외
-        isMarketingAgreed: widget.fromSocialLogin ? null : false,
-        isTermsAgreed: widget.fromSocialLogin ? null : false,
-        isPrivacyAgreed: widget.fromSocialLogin ? null : false,
+        // 소셜 로그인에서 온 경우 약관 동의 정보 포함
+        isMarketingAgreed:
+            widget.fromSocialLogin ? widget.isMarketingAgreed : null,
+        isTermsAgreed: widget.fromSocialLogin ? widget.isTermsAgreed : null,
+        isPrivacyAgreed: widget.fromSocialLogin ? widget.isPrivacyAgreed : null,
       );
       developer.log(
-          '아니요 선택 - ${widget.fromSocialLogin ? '약관 동의 정보 제외' : '약관 동의 정보 포함'}하여 전송',
+          '아니요 선택 - ${widget.fromSocialLogin ? '약관 동의 정보 포함' : '약관 동의 정보 제외'}하여 전송',
           name: 'InfluencerCheckScreen');
     } else {
       // "예" 선택 시: isInfluencer = true, influencerInfo 포함
-      final String platform =
-          _selectedDomain == '기타' ? _customDomain : _selectedDomain!;
+      final String platform = _selectedDomain == '기타'
+          ? 'others'
+          : (_domainMap[_selectedDomain!] ?? _selectedDomain!);
       final String platformId = _accountName;
 
       request = CompleteSignUpRequest(
         isInfluencer: true,
-        influencerInfo: InfluencerInfo(
-          platform: platform,
-          platformId: platformId,
-        ),
-        // 소셜 로그인에서 온 경우 약관 동의 정보 제외
-        isMarketingAgreed: widget.fromSocialLogin ? null : false,
-        isTermsAgreed: widget.fromSocialLogin ? null : false,
-        isPrivacyAgreed: widget.fromSocialLogin ? null : false,
+        influencerInfo: _selectedDomain == '기타'
+            ? InfluencerInfo(
+                platform: platform,
+                platformId: platformId,
+                platformName: _customDomain,
+              )
+            : InfluencerInfo(
+                platform: platform,
+                platformId: platformId,
+              ),
+        // 소셜 로그인에서 온 경우 약관 동의 정보 포함
+        isMarketingAgreed:
+            widget.fromSocialLogin ? widget.isMarketingAgreed : null,
+        isTermsAgreed: widget.fromSocialLogin ? widget.isTermsAgreed : null,
+        isPrivacyAgreed: widget.fromSocialLogin ? widget.isPrivacyAgreed : null,
       );
       developer.log(
-          '예 선택 - ${widget.fromSocialLogin ? '약관 동의 정보 제외' : '약관 동의 정보 포함'}, influencerInfo: platform=$platform, platformId=$platformId',
+          '예 선택 - ${widget.fromSocialLogin ? '약관 동의 정보 포함' : '약관 동의 정보 제외'}, influencerInfo: platform=$platform, platformId=$platformId',
           name: 'InfluencerCheckScreen');
     }
 

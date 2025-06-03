@@ -68,15 +68,18 @@ class RegisterResponse {
 class InfluencerInfo {
   final String platform;
   final String platformId;
+  final String? platformName;
 
   InfluencerInfo({
     required this.platform,
     required this.platformId,
+    this.platformName,
   });
 
   Map<String, dynamic> toJson() => {
         'platform': platform,
         'platformId': platformId,
+        if (platformName != null) 'platformName': platformName,
       };
 }
 

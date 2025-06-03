@@ -7,6 +7,7 @@ import 'package:giftrip/features/auth/models/register_model.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 import 'package:giftrip/features/user/models/dto/user_dto.dart';
 import 'package:giftrip/features/user/view_models/user_view_model.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthStorage _authStorage = AuthStorage();
@@ -29,20 +30,24 @@ class AuthViewModel extends ChangeNotifier {
         return const LoginScreen();
       }
 
-      // 인플루언서 인증 여부 확인
-      if (user.isInfluencerChecked) {
-        return const RootScreen(
-          selectedIndex: 0,
-        );
-      } else {
-        // 자동 로그인에서는 소셜 로그인으로 간주
-        return const InfluencerCheckScreen(fromSocialLogin: true);
-      }
-    } else {
-      return const RootScreen(
-        selectedIndex: 0,
-      );
+      //   // 인플루언서 인증 여부 확인
+      //   if (user.isInfluencerChecked) {
+      //     return const RootScreen(
+      //       selectedIndex: 0,
+      //     );
+      //   } else {
+      //     // 자동 로그인에서는 소셜 로그인으로 간주
+      //     return const InfluencerCheckScreen(fromSocialLogin: true);
+      //   }
+      // } else {
+      //   return const RootScreen(
+      //     selectedIndex: 0,
+      //   );
     }
+    // 기본적으로 로그인 화면 반환
+    return const RootScreen(
+      selectedIndex: 0,
+    );
   }
 
   // 로그인
@@ -58,10 +63,10 @@ class AuthViewModel extends ChangeNotifier {
 
     if (response.isSuccess) {
       // 1) 메모리 상의 전역 유저 상태 업데이트
-      UserViewModel().updateUser(UserUpdateRequestDto(
-        name: response.name,
-        isInfluencerChecked: response.isInfluencerChecked,
-      ));
+      // UserViewModel().updateUser(UserUpdateRequestDto(
+      //   name: response.name,
+      //   isInfluencerChecked: response.isInfluencerChecked,
+      // ));
 
       // 2) 인플루언서 여부에 따라 다음 화면 반환
       if (!response.isInfluencerChecked) {
@@ -83,13 +88,13 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _authRepo.postSignUp(request);
+      await _authRepo.postSignUp(request);
 
       // 유저 정보 업데이트 (이름, 인플루언서 여부)
-      UserViewModel().updateUser(UserUpdateRequestDto(
-        name: response.name,
-        isInfluencerChecked: response.isInfluencerChecked,
-      ));
+      // UserViewModel().updateUser(UserUpdateRequestDto(
+      //   name: response.name,
+      //   isInfluencerChecked: response.isInfluencerChecked,
+      // ));
 
       _isLoading = false;
       notifyListeners();
@@ -109,6 +114,7 @@ class AuthViewModel extends ChangeNotifier {
     required bool isInfluencer,
     String? platform,
     String? platformId,
+    String? platformName,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -123,6 +129,7 @@ class AuthViewModel extends ChangeNotifier {
           ? InfluencerInfo(
               platform: platform,
               platformId: platformId,
+              platformName: platformName,
             )
           : null,
     );
@@ -141,27 +148,19 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<Widget?> logout() async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-
     try {
       final refreshToken = await _authStorage.getRefreshToken();
       if (refreshToken == null) {
-        throw Exception('리프레시 토큰이 없습니다.');
+        return const LoginScreen();
       }
-      final response = await _authRepo.logout(refreshToken);
-      _isLoading = false;
-      notifyListeners();
 
-      if (response) {
+      final success = await _authRepo.logout(refreshToken);
+      if (success) {
         return const RootScreen(selectedIndex: 0);
       }
       return null;
     } catch (e) {
-      _isLoading = false;
-      _errorMessage = e.toString();
-      notifyListeners();
+      logger.e('로그아웃 중 오류 발생: $e');
       return null;
     }
   }

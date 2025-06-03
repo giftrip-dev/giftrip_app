@@ -27,7 +27,7 @@ class AuthRepository {
       }
 
       final response = await _dio.post(
-        '/auth/rotate-tokens',
+        '/auth/token/refresh',
         data: {'refreshToken': refreshToken},
       );
 
@@ -115,6 +115,7 @@ class AuthRepository {
           isInfluencerChecked: isInfluencer,
         );
         await _authStorage.setUserInfo(user);
+        await _authStorage.setAutoLogin(); // 자동 로그인 활성화
 
         // 3) LoginResponse 반환
         return LoginResponse(
@@ -188,10 +189,10 @@ class AuthRepository {
         deviceModel: deviceModel ?? '',
       ));
 
-      UserViewModel().updateUser(UserUpdateRequestDto(
-        name: user.name,
-        isInfluencerChecked: user.isInfluencerChecked,
-      ));
+      // UserViewModel().updateUser(UserUpdateRequestDto(
+      //   name: user.name,
+      //   isInfluencerChecked: user.isInfluencerChecked,
+      // ));
 
       return LoginRes(
         tokens: TokenModel(
@@ -217,6 +218,8 @@ class AuthRepository {
         await _authStorage.deleteUserInfo();
         await _authStorage.deleteLoginToken();
         await _authStorage.removeAutoLogin();
+
+        // 로그아웃 후 화면 전환은 호출하는 쪽에서 처리하도록 수정
         return true;
       } else {
         throw Exception('로그아웃 실패: ${response.statusCode}');
@@ -229,6 +232,9 @@ class AuthRepository {
   Future<bool> completeSignUp(CompleteSignUpRequest request) async {
     logger.i('인플루언서 정보 제출 요청: ${request.toJson()}');
     try {
+      final accessToken = await _authStorage.getAccessToken();
+      logger.i('요청 헤더 토큰: $accessToken');
+
       final response = await _dio.patch(
         '/auth/complete-sign-up',
         data: request.toJson(),
@@ -237,10 +243,10 @@ class AuthRepository {
         // 유저 스토리지 업데이트
         await _authStorage.setUserInfo(UserModel.fromJson(response.data));
         // 유저 뷰모델 업데이트
-        UserViewModel().updateUser(UserUpdateRequestDto(
-          name: response.data['name'],
-          isInfluencerChecked: response.data['isInfluencerChecked'],
-        ));
+        // UserViewModel().updateUser(UserUpdateRequestDto(
+        //   name: response.data['name'],
+        //   isInfluencerChecked: response.data['isInfluencerChecked'],
+        // ));
         return true;
       } else {
         throw Exception('회원가입 완료 실패: ${response.statusCode}');
