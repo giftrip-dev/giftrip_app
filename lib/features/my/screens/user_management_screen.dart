@@ -56,6 +56,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
             const SizedBox(height: 24),
             Text('배송 정보', style: title_S),
             const SizedBox(height: 12),
+            _InfoRow(label: '이름', value: '홍길동'),
+            _InfoRow(label: '연락처', value: '010-1234-5678'),
             _InfoRow(
               label: '주소',
               value: '[12345]\n서울 논현로 98길 23 (역삼동) 오피스타워',
@@ -79,8 +81,6 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                 ),
               ),
             ),
-            _InfoRow(label: '이메일', value: 'daggle@naver.com'),
-            _InfoRow(label: '연락처', value: '010-1234-5678'),
           ],
         ),
       ),

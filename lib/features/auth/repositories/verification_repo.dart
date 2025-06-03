@@ -45,14 +45,21 @@ class VerificationRepository {
       );
       return VerificationResult.fromJson(response.data);
     } catch (e) {
+      String errorMessage = '인증번호 확인에 실패했습니다.';
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+        if (statusCode != null && statusCode != 200) {
+          errorMessage = '잘못된 인증번호입니다.';
+        } else {
+          errorMessage = e.response?.data?['message'] ?? errorMessage;
+        }
+      }
       return VerificationResult(
         success: false,
         isVerified: false,
         error: Error(
           code: 'VERIFICATION_ERROR',
-          message: e is DioException
-              ? (e.response?.data?['message'] ?? '인증번호 확인에 실패했습니다.')
-              : '인증번호 확인에 실패했습니다.',
+          message: errorMessage,
           remainingAttempts: null,
           expiresIn: null,
         ),
