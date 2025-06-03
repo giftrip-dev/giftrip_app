@@ -79,7 +79,7 @@ class InfluencerInfo {
   Map<String, dynamic> toJson() => {
         'platform': platform,
         'platformId': platformId,
-        'platformName': platformName,
+        if (platformName != null) 'platformName': platformName,
       };
 }
 

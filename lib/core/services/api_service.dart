@@ -5,6 +5,7 @@ import 'package:giftrip/core/storage/auth_storage.dart';
 import 'package:giftrip/core/utils/env_config.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/auth/repositories/auth_repo.dart';
+import 'package:flutter/widgets.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();

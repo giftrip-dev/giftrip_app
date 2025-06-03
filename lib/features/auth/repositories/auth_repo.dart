@@ -27,7 +27,7 @@ class AuthRepository {
       }
 
       final response = await _dio.post(
-        '/auth/rotate-tokens',
+        '/auth/token/refresh',
         data: {'refreshToken': refreshToken},
       );
 
@@ -189,10 +189,10 @@ class AuthRepository {
         deviceModel: deviceModel ?? '',
       ));
 
-      UserViewModel().updateUser(UserUpdateRequestDto(
-        name: user.name,
-        isInfluencerChecked: user.isInfluencerChecked,
-      ));
+      // UserViewModel().updateUser(UserUpdateRequestDto(
+      //   name: user.name,
+      //   isInfluencerChecked: user.isInfluencerChecked,
+      // ));
 
       return LoginRes(
         tokens: TokenModel(
@@ -218,6 +218,8 @@ class AuthRepository {
         await _authStorage.deleteUserInfo();
         await _authStorage.deleteLoginToken();
         await _authStorage.removeAutoLogin();
+
+        // 로그아웃 후 화면 전환은 호출하는 쪽에서 처리하도록 수정
         return true;
       } else {
         throw Exception('로그아웃 실패: ${response.statusCode}');
@@ -241,10 +243,10 @@ class AuthRepository {
         // 유저 스토리지 업데이트
         await _authStorage.setUserInfo(UserModel.fromJson(response.data));
         // 유저 뷰모델 업데이트
-        UserViewModel().updateUser(UserUpdateRequestDto(
-          name: response.data['name'],
-          isInfluencerChecked: response.data['isInfluencerChecked'],
-        ));
+        // UserViewModel().updateUser(UserUpdateRequestDto(
+        //   name: response.data['name'],
+        //   isInfluencerChecked: response.data['isInfluencerChecked'],
+        // ));
         return true;
       } else {
         throw Exception('회원가입 완료 실패: ${response.statusCode}');

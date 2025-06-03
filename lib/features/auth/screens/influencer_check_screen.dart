@@ -141,16 +141,19 @@ class _InfluencerCheckScreenState extends State<InfluencerCheckScreen> {
           ? 'others'
           : (_domainMap[_selectedDomain!] ?? _selectedDomain!);
       final String platformId = _accountName;
-      final String? platformName =
-          _selectedDomain == '기타' ? _customDomain : null;
 
       request = CompleteSignUpRequest(
         isInfluencer: true,
-        influencerInfo: InfluencerInfo(
-          platform: platform,
-          platformId: platformId,
-          platformName: platformName,
-        ),
+        influencerInfo: _selectedDomain == '기타'
+            ? InfluencerInfo(
+                platform: platform,
+                platformId: platformId,
+                platformName: _customDomain,
+              )
+            : InfluencerInfo(
+                platform: platform,
+                platformId: platformId,
+              ),
         // 소셜 로그인에서 온 경우 약관 동의 정보 포함
         isMarketingAgreed:
             widget.fromSocialLogin ? widget.isMarketingAgreed : null,

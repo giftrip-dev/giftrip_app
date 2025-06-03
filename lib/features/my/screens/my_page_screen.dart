@@ -6,6 +6,7 @@ import 'package:giftrip/features/my/widgets/my_info_box.dart';
 import 'package:giftrip/features/my/view_models/mypage_view_model.dart';
 import 'package:giftrip/core/widgets/modal/outline_two_button_modal.dart';
 import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
@@ -28,14 +29,20 @@ class _MyPageScreenState extends State<MyPageScreen> {
   @override
   void initState() {
     super.initState();
-    myPageViewModel = Provider.of<MyPageViewModel>(context, listen: false);
-    userViewModel = Provider.of<MyPageViewModel>(context, listen: false);
-    authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    _loadUserInfo();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        myPageViewModel = Provider.of<MyPageViewModel>(context, listen: false);
+        userViewModel = Provider.of<MyPageViewModel>(context, listen: false);
+        authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+        _loadUserInfo();
+      }
+    });
   }
 
   void _loadUserInfo() async {
+    if (!mounted) return;
     var userInfo = await userViewModel.getUserInfo();
+    if (!mounted) return;
     // if (userInfo != null) {
     //   setState(() {
     //     userNickname = userInfo.nickname; // 닉네임 저장
@@ -113,31 +120,47 @@ class _MyPageScreenState extends State<MyPageScreen> {
                             () {},
                       },
                       '로그아웃': {
-                        'onTap': () => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return OutlineTwoButtonModal(
-                                  title: '로그아웃을 진행하시나요?',
-                                  cancelText: '취소',
-                                  confirmText: '로그아웃',
-                                  onConfirm: () async {
+                        'onTap': () {
+                          final authViewModel = Provider.of<AuthViewModel>(
+                              context,
+                              listen: false);
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return OutlineTwoButtonModal(
+                                title: '로그아웃을 진행하시나요?',
+                                cancelText: '취소',
+                                confirmText: '로그아웃',
+                                onConfirm: () async {
+                                  final result = await authViewModel.logout();
+                                  if (result != null) {
+                                    // 로그아웃 성공 시 RootScreen으로 이동 (기존 스택 모두 제거)
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => result),
+                                      (route) => false,
+                                    );
+                                    // 로그아웃 성공 메시지
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('로그아웃 되었습니다.')),
+                                    );
+                                  } else {
+                                    // 실패 시 에러 처리 (필요시)
                                     Navigator.of(context).pop();
-                                    final nextScreen =
-                                        await authViewModel.logout();
-                                    if (nextScreen != null) {
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => nextScreen),
-                                        (route) => false,
-                                      );
-                                    }
-                                  },
-                                  onCancel: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                );
-                              },
-                            ),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('로그아웃에 실패했습니다.')),
+                                    );
+                                  }
+                                },
+                                onCancel: () {
+                                  Navigator.of(context).pop();
+                                },
+                              );
+                            },
+                          );
+                        },
                       },
                     },
                   ),
