@@ -7,6 +7,7 @@ import 'package:giftrip/core/widgets/tooltip/tooltip.dart';
 import 'package:giftrip/features/auth/widgets/social_login_box.dart';
 import 'package:giftrip/features/auth/widgets/terms_box.dart';
 import 'package:giftrip/features/auth/widgets/login_input_fields.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,10 +21,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BackButtonAppBar(
-        type: BackButtonAppBarType.textCenter,
-        title: '로그인',
-        onBack: () => Navigator.pop(context),
-      ),
+          type: BackButtonAppBarType.textCenter,
+          title: '로그인',
+          onBack: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RootScreen(
+                    selectedIndex: 0,
+                  ),
+                ),
+                (route) => false,
+              )),
       body: SafeArea(
         child: Container(
           width: double.infinity,

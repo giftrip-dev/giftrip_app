@@ -3,9 +3,9 @@ import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/core/widgets/modal/one_button_modal.dart';
 import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
 import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
+import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
 import 'package:giftrip/features/auth/repositories/social_login_repo.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
-import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 
 GestureDetector appleLoginButton({
   required BuildContext context,
@@ -43,7 +43,7 @@ GestureDetector appleLoginButton({
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const InfluencerCheckScreen(
+              builder: (context) => TermsAgreementScreen(
                 fromSocialLogin: true,
               ),
             ),

@@ -29,20 +29,24 @@ class AuthViewModel extends ChangeNotifier {
         return const LoginScreen();
       }
 
-      // 인플루언서 인증 여부 확인
-      if (user.isInfluencerChecked) {
-        return const RootScreen(
-          selectedIndex: 0,
-        );
-      } else {
-        // 자동 로그인에서는 소셜 로그인으로 간주
-        return const InfluencerCheckScreen(fromSocialLogin: true);
-      }
-    } else {
-      return const RootScreen(
-        selectedIndex: 0,
-      );
+      //   // 인플루언서 인증 여부 확인
+      //   if (user.isInfluencerChecked) {
+      //     return const RootScreen(
+      //       selectedIndex: 0,
+      //     );
+      //   } else {
+      //     // 자동 로그인에서는 소셜 로그인으로 간주
+      //     return const InfluencerCheckScreen(fromSocialLogin: true);
+      //   }
+      // } else {
+      //   return const RootScreen(
+      //     selectedIndex: 0,
+      //   );
     }
+    // 기본적으로 로그인 화면 반환
+    return const RootScreen(
+      selectedIndex: 0,
+    );
   }
 
   // 로그인
@@ -109,6 +113,7 @@ class AuthViewModel extends ChangeNotifier {
     required bool isInfluencer,
     String? platform,
     String? platformId,
+    String? platformName,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -123,6 +128,7 @@ class AuthViewModel extends ChangeNotifier {
           ? InfluencerInfo(
               platform: platform,
               platformId: platformId,
+              platformName: platformName,
             )
           : null,
     );

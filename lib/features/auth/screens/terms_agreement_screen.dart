@@ -6,11 +6,17 @@ import 'package:giftrip/core/utils/pdf_download.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/utils/amplitude_logger.dart';
 import 'package:giftrip/features/auth/screens/register_screen.dart';
+import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 import 'package:giftrip/features/auth/models/terms_model.dart';
 import 'package:giftrip/features/auth/repositories/terms_repo.dart';
 
 class TermsAgreementScreen extends StatefulWidget {
-  const TermsAgreementScreen({super.key});
+  final bool fromSocialLogin; // 소셜 로그인에서 왔는지 구분
+
+  const TermsAgreementScreen({
+    super.key,
+    this.fromSocialLogin = false,
+  });
 
   @override
   State<TermsAgreementScreen> createState() => _TermsAgreementScreenState();
@@ -95,17 +101,32 @@ class _TermsAgreementScreenState extends State<TermsAgreementScreen> {
           "terms_agreement_cta_button", "terms_agreement_screen");
 
       if (mounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RegisterScreen(
-              isTermsAgreed: _required1,
-              isPrivacyAgreed: _required2,
-              isMarketingAgreed: _optional,
+        if (widget.fromSocialLogin) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InfluencerCheckScreen(
+                fromSocialLogin: true,
+                isTermsAgreed: _required1,
+                isPrivacyAgreed: _required2,
+                isMarketingAgreed: _optional,
+              ),
             ),
-          ),
-          (route) => false,
-        );
+            (route) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegisterScreen(
+                isTermsAgreed: _required1,
+                isPrivacyAgreed: _required2,
+                isMarketingAgreed: _optional,
+              ),
+            ),
+            (route) => false,
+          );
+        }
       }
     } else {
       if (mounted) {

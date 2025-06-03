@@ -115,6 +115,7 @@ class AuthRepository {
           isInfluencerChecked: isInfluencer,
         );
         await _authStorage.setUserInfo(user);
+        await _authStorage.setAutoLogin(); // 자동 로그인 활성화
 
         // 3) LoginResponse 반환
         return LoginResponse(
@@ -229,6 +230,9 @@ class AuthRepository {
   Future<bool> completeSignUp(CompleteSignUpRequest request) async {
     logger.i('인플루언서 정보 제출 요청: ${request.toJson()}');
     try {
+      final accessToken = await _authStorage.getAccessToken();
+      logger.i('요청 헤더 토큰: $accessToken');
+
       final response = await _dio.patch(
         '/auth/complete-sign-up',
         data: request.toJson(),
