@@ -18,7 +18,7 @@ class LodgingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   LodgingCategory? _selectedCategory;
-  String _locationText = '강남/역삼/삼성';
+  String _locationText = '서울';
   String _stayOptionText = '';
   String _stayDateText = '';
   int _adultCount = 2;

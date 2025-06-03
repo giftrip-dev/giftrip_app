@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/app_bar/custom_app_bar.dart';
+import 'package:giftrip/features/search/screens/search_screen.dart';
 import 'package:giftrip/shared/widgets/cart/cart_icon_button.dart';
 
 /// 홈 화면 앱바
@@ -24,7 +25,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             onTap: onSearchTap ??
                 () {
                   // 검색 페이지로 이동
-                  Navigator.pushNamed(context, '/search');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchScreen(),
+                    ),
+                  );
                 },
             behavior: HitTestBehavior.opaque,
             child: const Icon(Icons.search, size: 24, color: Colors.black),

@@ -28,9 +28,12 @@ final List<LodgingModel> mockLodgingList = () {
 
     // 지역 설정
     final locations = [
-      '강남/역삼/삼성',
-      '신사/청담/압구정',
-      '서초/교대/사당',
+      '서울',
+      '인천',
+      '가평/남양주/포천',
+      '용인/수원/화성/평택',
+      '파주/고양/김포',
+      '이천/여주/안성/광주',
     ];
     final subLocation = locations[index % locations.length];
     final distanceInfo =
@@ -42,7 +45,7 @@ final List<LodgingModel> mockLodgingList = () {
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 편안한 휴식을 위한 최고의 선택이 될 것입니다.',
       thumbnailUrl: product.thumbnailUrl,
-      mainLocation: MainLocation.seoul.label,
+      mainLocation: MainLocation.sudogwon.label,
       subLocation: subLocation,
       distanceInfo: distanceInfo,
       originalPrice: product.originalPrice,
