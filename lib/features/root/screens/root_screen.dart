@@ -131,10 +131,14 @@ class RootScreenState extends State<RootScreen> {
         return const CartScreen(key: ValueKey('cart'));
       case 3:
         return FutureBuilder<bool>(
+          key: const ValueKey('auth_check'),
           future: AuthStorage().getAutoLogin(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                key: ValueKey('loading'),
+                child: CircularProgressIndicator(),
+              );
             }
 
             final isAutoLogin = snapshot.data ?? false;
