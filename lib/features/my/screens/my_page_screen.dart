@@ -69,7 +69,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 children: [
                   MyInfoBox(
                     isInfluencer: userIsInfluencer,
-                    nickname: userName,
+                    // nickname: userName,
                     point: int.parse(userPoint.toString()),
                     couponCount: int.parse(userCoponCount.toString()),
                   ),
