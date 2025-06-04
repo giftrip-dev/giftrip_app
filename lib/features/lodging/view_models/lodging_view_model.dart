@@ -107,8 +107,8 @@ class LodgingViewModel extends ChangeNotifier {
         page: page,
         mainLocation: _mainLocation?.name,
         subLocation: _subLocation,
-        createdAtStart: _startDate?.toIso8601String(),
-        createdAtEnd: _endDate?.toIso8601String(),
+        // createdAtStart: _startDate?.toIso8601String(),
+        // createdAtEnd: _endDate?.toIso8601String(),
       );
 
       if (refresh || _lodgingList.isEmpty) {
