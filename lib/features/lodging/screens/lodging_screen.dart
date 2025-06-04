@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
+import 'package:giftrip/core/widgets/banner/event_banner.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
@@ -93,7 +94,15 @@ class _LodgingScreenState extends State<LodgingScreen> {
                 : NestedScrollView(
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return [
-                        // 1) 지역 날짜 선택 바 (고정)
+                        // 1) 이벤트 배너 (스크롤됨)
+                        const SliverToBoxAdapter(
+                          child: EventBannerWidget(),
+                        ),
+                        // 여백 추가
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: 16),
+                        ),
+                        // 2) 지역 날짜 선택 바 (고정)
                         SliverPersistentHeader(
                           pinned: true,
                           floating: true,
