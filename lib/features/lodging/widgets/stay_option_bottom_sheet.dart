@@ -206,15 +206,11 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
                 setState(() {
                   _adultCount = val;
                 });
-                final viewModel = context.read<LodgingViewModel>();
-                viewModel.setGuestCount(_adultCount, _childCount);
               },
               onChildChanged: (val) {
                 setState(() {
                   _childCount = val;
                 });
-                final viewModel = context.read<LodgingViewModel>();
-                viewModel.setGuestCount(_adultCount, _childCount);
               },
             ),
           ],
