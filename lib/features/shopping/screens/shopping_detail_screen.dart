@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
-import 'package:giftrip/shared/widgets/product/product_detail_image_section.dart';
 import 'package:giftrip/shared/widgets/product/product_description_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
@@ -88,11 +87,10 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                         title: shopping.name,
                         thumbnailUrl: shopping.thumbnailUrl,
                         badges: shopping.badges,
-                        location: shopping.location,
+                        location: shopping.manufacturer,
                         phoneNumber: shopping.managerPhoneNumber,
                         memo: shopping.description,
                         relatedLink: shopping.relatedLink,
-                        manufacturer: shopping.manufacturer, // 제조사 정보 추가
                       ),
                       const SectionDivider(),
 

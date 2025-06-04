@@ -6,6 +6,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/item_badge.dart';
+import 'package:giftrip/core/utils/format_utils.dart';
 
 /// 상품 상세 정보 섹션 위젯
 class ProductBasicInfoSection extends StatelessWidget {
@@ -16,7 +17,6 @@ class ProductBasicInfoSection extends StatelessWidget {
   final String? memo;
   final String phoneNumber;
   final String? relatedLink;
-  final String? manufacturer;
 
   const ProductBasicInfoSection({
     required this.title,
@@ -26,7 +26,6 @@ class ProductBasicInfoSection extends StatelessWidget {
     required this.phoneNumber,
     this.memo,
     this.relatedLink,
-    this.manufacturer,
     super.key,
   });
 
@@ -74,16 +73,6 @@ class ProductBasicInfoSection extends StatelessWidget {
                 text: location,
               ),
 
-              // 제조사 정보 (있는 경우만 표시)
-              if (manufacturer != null && manufacturer!.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: _buildInfoRow(
-                    icon: LucideIcons.factory,
-                    text: manufacturer!,
-                  ),
-                ),
-
               // 메모 정보 (항상 표시, 없으면 "-"로 표시)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
@@ -98,7 +87,7 @@ class ProductBasicInfoSection extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 16),
                 child: _buildInfoRow(
                   icon: LucideIcons.phone,
-                  text: phoneNumber,
+                  text: formatPhoneNumber(phoneNumber),
                   onTap: () => _makePhoneCall(phoneNumber),
                 ),
               ),

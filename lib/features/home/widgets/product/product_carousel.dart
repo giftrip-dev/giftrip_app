@@ -60,19 +60,22 @@ class _ProductCarouselState extends State<ProductCarousel> {
   void _onScroll() {
     final vm = context.read<ProductViewModel>();
     final pos = _controller.position;
-    if (pos.pixels >= pos.maxScrollExtent - 100 && !vm.isLoading) {
+    if (pos.pixels >= pos.maxScrollExtent - 100) {
       switch (widget.section) {
         case ProductSection.newArrivals:
-          if (vm.hasMoreNew) vm.nextPageNew();
+          if (vm.hasMoreNew && !vm.isNewLoading) vm.nextPageNew();
           break;
         case ProductSection.bestSellers:
-          if (vm.hasMoreBest) vm.nextPageBest();
+          if (vm.hasMoreBest && !vm.isBestLoading) vm.nextPageBest();
           break;
         case ProductSection.timeDeals:
-          if (vm.hasMoreTimeDeal) vm.nextPageTimeDeal();
+          if (vm.hasMoreTimeDeal && !vm.isTimeDealLoading)
+            vm.nextPageTimeDeal();
           break;
         case ProductSection.relatedProducts:
-          if (vm.hasMoreRelated && widget.relatedToProductType != null) {
+          if (vm.hasMoreRelated &&
+              !vm.isRelatedLoading &&
+              widget.relatedToProductType != null) {
             vm.nextPageRelated(
               productType: widget.relatedToProductType!,
               productId: widget.relatedToProductId,
@@ -101,35 +104,41 @@ class _ProductCarouselState extends State<ProductCarousel> {
     return Consumer<ProductViewModel>(
       builder: (_, vm, __) {
         final List<ProductModel> items;
+        final bool isLoading;
 
         // 섹션에 따라 어떤 데이터를 사용할지 결정
         switch (widget.section) {
           case ProductSection.newArrivals:
             items = vm.newList;
+            isLoading = vm.isNewLoading;
             break;
           case ProductSection.bestSellers:
             items = vm.bestList;
+            isLoading = vm.isBestLoading;
             break;
           case ProductSection.timeDeals:
             items = vm.timeDealList;
+            isLoading = vm.isTimeDealLoading;
             break;
           case ProductSection.relatedProducts:
             items = vm.relatedList;
+            isLoading = vm.isRelatedLoading;
             break;
         }
 
-        if (items.isEmpty) {
-          return const EmptyStateWidget(
-            message: '상품이 없습니다.',
-            icon: Icons.shopping_bag_outlined,
-            buttonText: '상품 등록하기',
+        // 로딩 중이고 데이터가 없는 경우
+        if (isLoading && items.isEmpty) {
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        if (vm.isLoading) {
-          return const SizedBox(
-            height: 150,
-            child: Center(child: CircularProgressIndicator()),
+        // 데이터가 없는 경우
+        if (items.isEmpty && !isLoading) {
+          return const EmptyStateWidget(
+            message: '아직 등록된 상품이 없어요',
+            icon: Icons.shopping_bag_outlined,
           );
         }
 
@@ -150,8 +159,8 @@ class _ProductCarouselState extends State<ProductCarousel> {
                 ),
                 if (i != items.length - 1) const SizedBox(width: 12),
               ],
-              if (vm.isLoading)
-                SizedBox(
+              if (isLoading)
+                const SizedBox(
                   width: 156,
                   height: 145, // 상품 이미지 높이와 동일하게 맞춤
                   child: Center(

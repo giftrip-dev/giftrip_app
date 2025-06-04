@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onRefresh: () async {
                 await vm.fetchNewProducts(page: 1);
                 await vm.fetchBestProducts(page: 1);
+                await vm.fetchTimeDealProducts(page: 1);
               },
               color: AppColors.primary,
               backgroundColor: Colors.transparent,

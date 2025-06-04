@@ -3,6 +3,7 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/repositories/product_repo.dart';
+import 'package:giftrip/features/shopping/repositories/shopping_repo.dart';
 
 /// 목업용 상품 리스트 (쇼핑 상품 + 기타 상품들)
 final List<ProductModel> mockProducts = () {
@@ -148,6 +149,7 @@ enum ProductSection { newArrivals, bestSellers, timeDeals, relatedProducts }
 
 class ProductViewModel extends ChangeNotifier {
   final ProductRepo _repo = ProductRepo();
+  final ShoppingRepo _shoppingRepo = ShoppingRepo();
 
   /// 목업 데이터를 사용할지 판단하는 플래그
   /// todo: 목업 플래그 없애기
@@ -162,7 +164,10 @@ class ProductViewModel extends ChangeNotifier {
   PageMeta? _bestMeta;
   PageMeta? _timeDealMeta;
   PageMeta? _relatedMeta;
-  bool _isLoading = false;
+  bool _isNewLoading = false;
+  bool _isBestLoading = false;
+  bool _isTimeDealLoading = false;
+  bool _isRelatedLoading = false;
 
   // 외부 접근용 Getter
   List<ProductModel> get newList => _newList;
@@ -173,7 +178,17 @@ class ProductViewModel extends ChangeNotifier {
   PageMeta? get bestMeta => _bestMeta;
   PageMeta? get timeDealMeta => _timeDealMeta;
   PageMeta? get relatedMeta => _relatedMeta;
-  bool get isLoading => _isLoading;
+  bool get isNewLoading => _isNewLoading;
+  bool get isBestLoading => _isBestLoading;
+  bool get isTimeDealLoading => _isTimeDealLoading;
+  bool get isRelatedLoading => _isRelatedLoading;
+
+  /// 전체 로딩 상태 (하나라도 로딩 중이면 true)
+  bool get isLoading =>
+      _isNewLoading ||
+      _isBestLoading ||
+      _isTimeDealLoading ||
+      _isRelatedLoading;
 
   /// 다음 페이지 번호 계산 (NEW)
   int? get nextNewPage {
@@ -215,7 +230,7 @@ class ProductViewModel extends ChangeNotifier {
 
   /// 신상품 조회 (목업/실제 API 분기)
   Future<void> fetchNewProducts({int page = 1, int limit = 10}) async {
-    _isLoading = true;
+    _isNewLoading = true;
     notifyListeners();
 
     // UX 완화를 위한 지연
@@ -223,7 +238,7 @@ class ProductViewModel extends ChangeNotifier {
 
     try {
       final response = await _repo.getNewProductList(page: page, limit: limit);
-      logger.d('신상품 조회 성공: ${response.items.map((e) => e.toJson())}');
+      logger.d('신상품 조회 성공: ${response.items.length}개');
       if (page == 1) {
         _newList = response.items;
       } else {
@@ -233,14 +248,14 @@ class ProductViewModel extends ChangeNotifier {
     } catch (e, st) {
       logger.e('신상품 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isNewLoading = false;
       notifyListeners();
     }
   }
 
   /// 베스트상품 조회 (목업/실제 API 분기)
   Future<void> fetchBestProducts({int page = 1, int limit = 10}) async {
-    _isLoading = true;
+    _isBestLoading = true;
     notifyListeners();
 
     // UX 완화를 위한 지연
@@ -257,14 +272,14 @@ class ProductViewModel extends ChangeNotifier {
     } catch (e, st) {
       logger.e('베스트상품 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isBestLoading = false;
       notifyListeners();
     }
   }
 
   /// 타임 딜 조회
   Future<void> fetchTimeDealProducts({int page = 1, int limit = 10}) async {
-    _isLoading = true;
+    _isTimeDealLoading = true;
     notifyListeners();
 
     // UX 완화를 위한 지연
@@ -281,7 +296,8 @@ class ProductViewModel extends ChangeNotifier {
     } catch (e, st) {
       logger.e('타임 딜 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isTimeDealLoading = false;
+      notifyListeners();
     }
   }
 
@@ -292,19 +308,26 @@ class ProductViewModel extends ChangeNotifier {
     int page = 1,
     int limit = 10,
   }) async {
-    _isLoading = true;
+    _isRelatedLoading = true;
     notifyListeners();
 
     // 지연
     await Future.delayed(Duration(milliseconds: page == 1 ? 200 : 500));
 
     try {
-      final resp = await _repo.getRelatedProducts(
-        productType: productType,
-        productId: productId,
-        page: page,
-        limit: limit,
-      );
+      final resp = productType == ProductType.product
+          ? await _shoppingRepo.getRelatedProducts(
+              productId: productId ?? '',
+              page: page,
+              limit: limit,
+            )
+          : await _repo.getRelatedProducts(
+              productType: productType,
+              productId: productId,
+              page: page,
+              limit: limit,
+            );
+
       if (page == 1) {
         _relatedList = resp.items;
       } else {
@@ -314,7 +337,7 @@ class ProductViewModel extends ChangeNotifier {
     } catch (e, st) {
       logger.e('관련 상품 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isRelatedLoading = false;
       notifyListeners();
     }
   }
