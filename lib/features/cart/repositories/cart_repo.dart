@@ -3,7 +3,6 @@ import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/features/cart/models/cart_item_model.dart';
 import 'package:giftrip/features/cart/models/cart_category.dart';
-import 'package:giftrip/features/shopping/repositories/mock_shopping_data.dart';
 import 'package:giftrip/features/experience/repositories/mock_experience_data.dart';
 import 'package:giftrip/features/lodging/repositories/mock_lodging_data.dart';
 import 'package:giftrip/features/tester/repositories/mock_tester_data.dart';
@@ -51,29 +50,6 @@ class CartRepo {
       CartItemModel? cartItem;
 
       switch (type) {
-        case ProductItemType.product:
-          final product = mockShoppingList.firstWhere(
-            (item) => item.id == productId,
-            orElse: () => throw Exception('상품을 찾을 수 없습니다: $productId'),
-          );
-          cartItem = CartItemModel(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            productId: productId,
-            category: CartCategory.product,
-            title: product.name,
-            thumbnailUrl: product.thumbnailUrl,
-            originalPrice: product.originalPrice,
-            price: product.finalPrice,
-            discountRate: product.discountRate,
-            quantity: quantity,
-            type: type,
-            addedAt: DateTime.now(),
-            tags: product.badges.map((badge) => badge.name).toList(),
-            options:
-                product.options.isNotEmpty ? product.options.first.name : null,
-          );
-          break;
-
         case ProductItemType.experience:
           final experience = mockExperienceList.firstWhere(
             (item) => item.id == productId,

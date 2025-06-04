@@ -47,7 +47,7 @@ final List<ExperienceModel> mockExperienceList = () {
       title: '${category.label} 상품 ${index + 1}',
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 특별한 체험을 통해 잊지 못할 추억을 만들어보세요.',
-      thumbnailUrl: product.thumbnailUrl,
+      thumbnailUrl: product.thumbnailUrl ?? '',
       originalPrice: product.originalPrice,
       finalPrice: product.finalPrice,
       category: category,
