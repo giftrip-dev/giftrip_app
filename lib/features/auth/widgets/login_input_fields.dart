@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 import 'package:giftrip/core/widgets/snack_bar/custom_snack_bar.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:giftrip/features/auth/screens/find_account_screen.dart';
 
 class LoginInputFields extends StatefulWidget {
   const LoginInputFields({super.key});
@@ -139,7 +140,14 @@ class _LoginInputFieldsState extends State<LoginInputFields> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FindAccountScreen(),
+                    ),
+                  );
+                },
                 child: Text(
                   '아이디 / 비밀번호 찾기',
                   style:
