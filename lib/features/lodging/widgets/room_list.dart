@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
+import 'package:giftrip/features/lodging/models/lodging_room_model.dart';
 import 'package:giftrip/features/lodging/widgets/room_item.dart';
 
 class RoomList extends StatelessWidget {
-  final List<RoomViewModel> rooms;
+  final List<LodgingRoomModel> rooms;
   final double width;
   final double height;
 

@@ -6,6 +6,7 @@ import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
+import 'package:giftrip/features/lodging/models/lodging_room_model.dart';
 
 class LodgingRepo {
   final Dio _dio = DioClient().to();
@@ -59,6 +60,34 @@ class LodgingRepo {
       }
     } catch (e) {
       throw Exception('숙박 상품 상세 정보 API 요청 실패: $e');
+    }
+  }
+
+  /// 숙박업소 내 날짜 인원 별 객실 조회
+  Future<LodgingRoomPageResponse> getAvailableRoomsForAccommodation({
+    required String accommodationId,
+    required String startDate,
+    required String endDate,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      final response = await _dio.get(
+        '/accommodations/rooms/$accommodationId/available',
+        queryParameters: {
+          'startDate': startDate,
+          'endDate': endDate,
+          'page': page,
+          'limit': limit,
+        },
+      );
+      if (response.statusCode == 200) {
+        return LodgingRoomPageResponse.fromJson(response.data);
+      } else {
+        throw Exception('객실 조회 실패: [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception('객실 조회 API 요청 실패: $e');
     }
   }
 }
