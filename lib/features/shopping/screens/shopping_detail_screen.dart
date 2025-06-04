@@ -86,7 +86,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                       ProductBasicInfoSection(
                         title: shopping.name,
                         thumbnailUrl: shopping.thumbnailUrl,
-                        badges: shopping.badges,
+                        badges: shopping.itemTags,
                         location: shopping.manufacturer,
                         phoneNumber: shopping.managerPhoneNumber,
                         memo: shopping.description,

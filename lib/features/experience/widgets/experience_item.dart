@@ -96,14 +96,14 @@ class ExperienceItem extends StatelessWidget {
           // 5. 뱃지들
           if (experience.soldOut)
             // 품절인 경우 품절 뱃지만 표시
-            const ItemBadge(type: ProductTagType.soldOut)
+            const ItemBadge(tag: '품절')
           else if (experience.badges.isNotEmpty)
             // 품절이 아닌 경우 기존 뱃지 표시
             Row(
               children: [
                 for (var i = 0; i < experience.badges.length; i++) ...[
                   if (i > 0) const SizedBox(width: 4),
-                  ItemBadge(type: experience.badges[i]),
+                  ItemBadge(tag: experience.badges[i].name),
                 ],
               ],
             ),

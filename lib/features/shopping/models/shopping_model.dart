@@ -70,16 +70,6 @@ class ShoppingModel {
   /// 평균 평점 (rating을 double로 변환)
   double get averageRating => double.tryParse(rating) ?? 0.0;
 
-  /// 제품 배지 (itemTags를 ProductTagType으로 변환)
-  List<ProductTagType> get badges {
-    return itemTags
-        .map((tag) => ProductTagType.values.firstWhere(
-              (type) => type.name.toLowerCase() == tag.toLowerCase(),
-              orElse: () => ProductTagType.newArrival,
-            ))
-        .toList();
-  }
-
   /// JSON -> Shopping Model
   factory ShoppingModel.fromJson(Map<String, dynamic> json) {
     return ShoppingModel(

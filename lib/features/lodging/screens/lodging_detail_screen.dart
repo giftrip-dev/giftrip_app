@@ -81,7 +81,7 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 ProductBasicInfoSection(
                   title: lodging.title,
                   thumbnailUrl: lodging.thumbnailUrl,
-                  badges: lodging.badges,
+                  badges: lodging.badges.map((e) => e.name).toList(),
                   location: lodging.distanceInfo,
                   phoneNumber: lodging.managerPhoneNumber,
                   memo: lodging.description,

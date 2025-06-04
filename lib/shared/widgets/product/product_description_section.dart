@@ -81,35 +81,35 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
 
     if (widget.content != null && widget.content!.isNotEmpty) {
       try {
-        // JSON 형태의 퀼 콘텐츠를 파싱
-        final json = jsonDecode(widget.content!);
+        // content가 이미 JSON 문자열이므로 한 번만 파싱
+        final dynamic decodedContent = jsonDecode(widget.content!);
 
-        // JSON이 List인지 확인하고, Quill Document 요구사항에 맞게 수정
-        if (json is List && json.isNotEmpty) {
+        // ops 배열을 직접 사용
+        if (decodedContent is Map && decodedContent.containsKey('ops')) {
+          final List<dynamic> ops = decodedContent['ops'];
+
           // 마지막 요소가 개행문자로 끝나는지 확인
-          final lastElement = json.last;
           bool needsNewline = true;
-
-          if (lastElement is Map && lastElement.containsKey('insert')) {
-            final insertValue = lastElement['insert'];
-            // insert 값이 String인 경우에만 개행문자 체크
-            if (insertValue is String && insertValue.endsWith('\n')) {
-              needsNewline = false;
+          if (ops.isNotEmpty) {
+            final lastElement = ops.last;
+            if (lastElement is Map && lastElement.containsKey('insert')) {
+              final insertValue = lastElement['insert'];
+              if (insertValue is String && insertValue.endsWith('\n')) {
+                needsNewline = false;
+              }
             }
-            // insert 값이 Map(이미지 등)인 경우는 항상 개행문자 추가 필요
           }
 
           if (needsNewline) {
-            // 마지막에 개행문자 요소 추가
-            json.add({'insert': '\n'});
-            print('Added newline to end of document');
+            ops.add({'insert': '\n'});
           }
 
-          document = Document.fromJson(json);
+          document = Document.fromJson(ops);
         } else {
           document = Document()..insert(0, widget.content ?? '');
         }
       } catch (e) {
+        print('Error parsing Quill content: $e');
         // JSON 파싱에 실패하면 일반 텍스트로 처리
         document = Document()..insert(0, widget.content ?? '');
       }

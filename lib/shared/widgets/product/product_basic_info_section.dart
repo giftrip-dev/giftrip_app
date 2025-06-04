@@ -4,7 +4,6 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
-import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/item_badge.dart';
 import 'package:giftrip/core/utils/format_utils.dart';
 
@@ -12,7 +11,7 @@ import 'package:giftrip/core/utils/format_utils.dart';
 class ProductBasicInfoSection extends StatelessWidget {
   final String title;
   final String thumbnailUrl;
-  final List<ProductTagType> badges;
+  final List<String> badges;
   final String location;
   final String? memo;
   final String phoneNumber;
@@ -61,7 +60,7 @@ class ProductBasicInfoSection extends StatelessWidget {
                     spacing: 4,
                     runSpacing: 4,
                     children:
-                        badges.map((badge) => ItemBadge(type: badge)).toList(),
+                        badges.map((badge) => ItemBadge(tag: badge)).toList(),
                   ),
                 ),
 
