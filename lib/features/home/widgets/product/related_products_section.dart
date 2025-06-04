@@ -85,7 +85,6 @@ class _RelatedProductsSectionState extends State<RelatedProductsSection> {
               // 관련 상품 캐러셀
               ProductCarousel(
                 section: ProductSection.relatedProducts,
-                isHomeScreen: false, // 상품 자체의 뱃지를 사용하도록 설정
                 relatedToProductType: widget.productType,
                 relatedToProductId: widget.productId,
               ),

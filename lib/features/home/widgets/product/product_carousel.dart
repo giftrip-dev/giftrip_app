@@ -5,13 +5,14 @@ import 'package:provider/provider.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/product_thumbnail_item.dart';
+import 'package:giftrip/features/experience/screens/experience_detail_screen.dart';
+import 'package:giftrip/features/lodging/screens/lodging_detail_screen.dart';
+import 'package:giftrip/features/shopping/screens/shopping_detail_screen.dart';
+import 'package:giftrip/features/tester/screens/tester_detail_screen.dart';
 
 /// 가로 슬라이드 & 무한 페칭 캐러셀
 class ProductCarousel extends StatefulWidget {
   final ProductSection section;
-
-  /// 홈 화면에서 표시될 때는 true, 다른 화면에서 표시될 때는 false
-  final bool isHomeScreen;
 
   /// 관련 상품 로딩에 필요한 파라미터 (section이 relatedProducts일 때 사용)
   final ProductType? relatedToProductType;
@@ -20,7 +21,6 @@ class ProductCarousel extends StatefulWidget {
   const ProductCarousel({
     Key? key,
     required this.section,
-    this.isHomeScreen = true,
     this.relatedToProductType,
     this.relatedToProductId,
   }) : super(key: key);
@@ -86,16 +86,48 @@ class _ProductCarouselState extends State<ProductCarousel> {
     }
   }
 
-  /// 섹션에 따른 배지 타입 결정
-  ProductTagType _getBadgeTypeForSection() {
-    switch (widget.section) {
-      case ProductSection.newArrivals:
-        return ProductTagType.newArrival;
-      case ProductSection.bestSellers:
-        return ProductTagType.bestSeller;
-      case ProductSection.timeDeals:
-      case ProductSection.relatedProducts:
-        return ProductTagType.newArrival;
+  void _onProductTap(BuildContext context, ProductModel product) {
+    switch (product.productType) {
+      case ProductType.experience:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ExperienceDetailScreen(
+              experienceId: product.id,
+            ),
+          ),
+        );
+        break;
+      case ProductType.experienceGroup:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TesterDetailScreen(
+              testerId: product.id,
+            ),
+          ),
+        );
+        break;
+      case ProductType.product:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShoppingDetailScreen(
+              shoppingId: product.id,
+            ),
+          ),
+        );
+        break;
+      case ProductType.lodging:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LodgingDetailScreen(
+              lodgingId: product.id,
+            ),
+          ),
+        );
+        break;
     }
   }
 
@@ -152,10 +184,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
               for (var i = 0; i < items.length; i++) ...[
                 ProductThumbnailItem(
                   product: items[i],
-                  // 홈 화면에서는 섹션 기반 배지 사용, 다른 화면에서는 상품 자체 배지 사용
-                  badgeType:
-                      widget.isHomeScreen ? _getBadgeTypeForSection() : null,
-                  useProductBadges: !widget.isHomeScreen,
+                  onTap: () => _onProductTap(context, items[i]),
                 ),
                 if (i != items.length - 1) const SizedBox(width: 12),
               ],

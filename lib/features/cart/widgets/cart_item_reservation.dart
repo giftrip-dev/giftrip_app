@@ -136,8 +136,7 @@ class CartItemReservation extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(right: 4),
                               child: ItemBadge(
-                                type: ProductTagType.values
-                                    .firstWhere((e) => e.name == tag),
+                                tag: tag,
                               ),
                             ),
                         ],

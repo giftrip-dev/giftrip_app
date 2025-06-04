@@ -1,137 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/core/widgets/text/price_text.dart';
+import 'package:giftrip/core/widgets/text/discount_rate_text.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/widgets/product/item_badge.dart';
-import 'package:giftrip/features/experience/screens/experience_detail_screen.dart';
-import 'package:giftrip/features/lodging/screens/lodging_detail_screen.dart';
-import 'package:giftrip/features/shopping/screens/shopping_detail_screen.dart';
-import 'package:giftrip/features/tester/screens/tester_detail_screen.dart';
 
+/// 상품 썸네일 아이템 위젯
 class ProductThumbnailItem extends StatelessWidget {
   final ProductModel product;
-  final ProductTagType? badgeType;
-
-  /// 홈 화면이 아닌 곳에서는 상품 자체의 배지를 사용하려면 true로 설정
-  final bool useProductBadges;
+  final VoidCallback? onTap;
 
   const ProductThumbnailItem({
     super.key,
     required this.product,
-    this.badgeType,
-    this.useProductBadges = false,
-  }) : assert(badgeType != null || useProductBadges);
-
-  void _onTap(BuildContext context) {
-    switch (product.productType) {
-      case ProductType.experience:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ExperienceDetailScreen(
-              experienceId: product.id,
-            ),
-          ),
-        );
-        break;
-      case ProductType.experienceGroup:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => TesterDetailScreen(
-              testerId: product.id,
-            ),
-          ),
-        );
-        break;
-      case ProductType.product:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ShoppingDetailScreen(
-              shoppingId: product.id,
-            ),
-          ),
-        );
-        break;
-      case ProductType.lodging:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LodgingDetailScreen(
-              lodgingId: product.id,
-            ),
-          ),
-        );
-    }
-  }
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onTap(context),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 1. 썸네일
-          CustomImage(
-            imageUrl: product.thumbnailUrl ?? '',
-            width: 156,
-            height: 145,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          const SizedBox(height: 8),
-
-          // 2. 제목
-          SizedBox(
-            // height: 44,
-            child: Text(
-              product.title,
-              style: body_S,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+      onTap: onTap,
+      child: SizedBox(
+        width: 156,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 썸네일 이미지
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: CustomImage(
+                imageUrl: product.thumbnailUrl ?? '',
+                width: 156,
+                height: 145,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
 
-          // 3. 가격 및 할인율
-          if (product.hasDiscount) ...[
-            Row(
-              children: [
-                Text(
-                  '${product.discountRate}%',
-                  style: subtitle_XS.copyWith(
-                    color: AppColors.statusError,
+            // 상품 정보
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 상품명
+                  Text(
+                    product.title,
+                    style: body_M,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  '${formatPrice(product.originalPrice)}원',
-                  style: caption.copyWith(
-                    color: AppColors.labelAlternative,
-                    decoration: TextDecoration.lineThrough,
+
+                  // 가격 정보
+                  const SizedBox(height: 8),
+                  if (product.discountRate > 0) ...[
+                    DiscountRateText(
+                      discountRate: product.discountRate,
+                      originalPrice: product.originalPrice,
+                    ),
+                    const SizedBox(height: 2),
+                  ],
+                  PriceText(
+                    price: product.finalPrice,
+                    color: AppColors.labelStrong,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+
+                  // 뱃지들 (NEW, BEST 등)
+                  if (product.itemTags.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: product.itemTags
+                            .map((tag) => ItemBadge(tag: tag))
+                            .toList(),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ],
-
-          // 4. 최종 가격
-          Text(
-            '${formatPrice(product.finalPrice)}원',
-            style: title_L,
-          ),
-
-          const SizedBox(height: 8),
-
-          // 5. 뱃지 (홈 화면에서는 섹션 배지, 다른 화면에서는 상품 자체 배지)
-          if (useProductBadges && product.badges != null)
-            ItemBadges(badges: product.badges!)
-          else if (badgeType != null)
-            ItemBadge(type: badgeType!),
-        ],
+        ),
       ),
     );
   }

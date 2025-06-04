@@ -97,14 +97,14 @@ class TesterItem extends StatelessWidget {
           // 5. 뱃지들
           if (tester.soldOut)
             // 품절인 경우 품절 뱃지만 표시
-            const ItemBadge(type: ProductTagType.soldOut)
+            const ItemBadge(tag: '품절')
           else if (tester.badges.isNotEmpty)
             // 품절이 아닌 경우 기존 뱃지 표시
             Row(
               children: [
                 for (var i = 0; i < tester.badges.length; i++) ...[
                   if (i > 0) const SizedBox(width: 4),
-                  ItemBadge(type: tester.badges[i]),
+                  ItemBadge(tag: tester.badges[i].name),
                 ],
               ],
             ),

@@ -81,7 +81,7 @@ class LodgingItem extends StatelessWidget {
               children: [
                 for (var i = 0; i < lodging.badges.length; i++) ...[
                   if (i > 0) const SizedBox(width: 4),
-                  ItemBadge(type: lodging.badges[i]),
+                  ItemBadge(tag: lodging.badges[i].name),
                 ],
               ],
             ),

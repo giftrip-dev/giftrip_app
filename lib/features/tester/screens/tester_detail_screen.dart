@@ -86,7 +86,7 @@ class _TesterDetailScreenState extends State<TesterDetailScreen> {
                       ProductBasicInfoSection(
                         title: tester.title,
                         thumbnailUrl: tester.thumbnailUrl,
-                        badges: tester.badges,
+                        badges: tester.badges.map((e) => e.name).toList(),
                         location: tester.location,
                         phoneNumber: tester.managerPhoneNumber,
                         memo: tester.description,
