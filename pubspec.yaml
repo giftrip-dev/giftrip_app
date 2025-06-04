@@ -47,6 +47,7 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   daum_postcode_search: ^0.0.4
   google_sign_in: ^6.3.0
+  flutter_quill: ^10.8.5
 
 dev_dependencies:
   flutter_test:

@@ -101,6 +101,7 @@ class ShoppingRepo {
       id: shopping.id,
       title: shopping.title,
       description: shopping.description,
+      content: shopping.content,
       thumbnailUrl: shopping.thumbnailUrl,
       originalPrice: shopping.originalPrice,
       finalPrice: shopping.finalPrice,

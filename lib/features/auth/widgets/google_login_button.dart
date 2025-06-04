@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
 import 'package:giftrip/core/widgets/modal/request_fail_modal.dart';
 import 'package:giftrip/features/auth/repositories/social_login_repo.dart';
+import 'package:giftrip/features/auth/screens/terms_agreement_screen.dart';
 import 'package:giftrip/features/root/screens/root_screen.dart';
-import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 
 GestureDetector googleLoginButton({
   required BuildContext context,
@@ -23,12 +23,16 @@ GestureDetector googleLoginButton({
           ),
         );
       } else {
-        if (!context.mounted) return;
+        if (!context.mounted || !result.isSuccess) return;
+
+        // 인플루언서 인증 여부에 따라 라우팅
         if (result.user?.isInfluencerChecked == false) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const InfluencerCheckScreen(),
+              builder: (context) => TermsAgreementScreen(
+                fromSocialLogin: true,
+              ),
             ),
             (route) => false,
           );

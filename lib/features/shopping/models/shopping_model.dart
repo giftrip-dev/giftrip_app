@@ -7,6 +7,7 @@ class ShoppingModel {
   final String id;
   final String title;
   final String description;
+  final String content; // 퀼 에디터용 콘텐츠 (JSON 형태)
   final String thumbnailUrl;
   final String manufacturer;
   final int originalPrice;
@@ -24,6 +25,7 @@ class ShoppingModel {
     required this.id,
     required this.title,
     required this.description,
+    required this.content,
     required this.thumbnailUrl,
     required this.manufacturer,
     required this.originalPrice,
@@ -50,6 +52,7 @@ class ShoppingModel {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
+      content: json['content'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       manufacturer: json['manufacturer'] as String,
       originalPrice: json['originalPrice'] as int,
@@ -80,6 +83,7 @@ class ShoppingModel {
       'id': id,
       'title': title,
       'description': description,
+      'content': content,
       'thumbnailUrl': thumbnailUrl,
       'manufacturer': manufacturer,
       'originalPrice': originalPrice,

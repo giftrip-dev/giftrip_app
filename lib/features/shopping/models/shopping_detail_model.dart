@@ -28,6 +28,7 @@ class ShoppingDetailModel extends ShoppingModel {
     required super.id,
     required super.title,
     required super.description,
+    required super.content,
     required super.thumbnailUrl,
     required super.originalPrice,
     required super.finalPrice,
@@ -56,6 +57,7 @@ class ShoppingDetailModel extends ShoppingModel {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
+      content: json['content'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
@@ -105,6 +107,7 @@ class ShoppingDetailModel extends ShoppingModel {
       'relatedLink': relatedLink,
       'detailImageUrl': detailImageUrl,
       'croppedDetailImageUrl': croppedDetailImageUrl,
+      'content': content,
       'inquiryInfo': {
         'title': inquiryInfo.title,
         'content': inquiryInfo.content,
