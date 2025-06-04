@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
-import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/widgets/location_tab.dart';
 import 'package:giftrip/features/lodging/widgets/sub_category_item.dart';
@@ -16,6 +17,7 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   int _selectedIndex = 0;
+  String? _selectedSubLocation;
   late final List<LocationData> _locationData;
 
   @override
@@ -27,9 +29,8 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BackButtonAppBar(
-        type: BackButtonAppBarType.textLeft,
-        title: '위치',
+      appBar: const SearchAppBar(
+        title: '위치 선택',
       ),
       body: Column(
         children: [
@@ -52,6 +53,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         onTap: () {
                           setState(() {
                             _selectedIndex = index;
+                            _selectedSubLocation = null;
                           });
                         },
                       );
@@ -66,8 +68,11 @@ class _LocationScreenState extends State<LocationScreen> {
                         .map((item) => SubCategoryItem(
                               title: item,
                               categoryIndex: _selectedIndex,
+                              isSelected: _selectedSubLocation == item,
                               onTap: () {
-                                Navigator.pop(context, item);
+                                setState(() {
+                                  _selectedSubLocation = item;
+                                });
                               },
                             ))
                         .toList(),
@@ -77,6 +82,15 @@ class _LocationScreenState extends State<LocationScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomCTAButton(
+        isEnabled: _selectedSubLocation != null,
+        text: '숙소 찾기',
+        onPressed: () {
+          if (_selectedSubLocation != null) {
+            Navigator.pop(context, _selectedSubLocation);
+          }
+        },
       ),
     );
   }

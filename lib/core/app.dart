@@ -8,6 +8,7 @@ import 'package:giftrip/features/event/screens/event_screen.dart';
 import 'package:giftrip/features/event/view_models/event_view_model.dart';
 import 'package:giftrip/features/experience/screens/experience_screen.dart';
 import 'package:giftrip/features/experience/view_models/experience_view_model.dart';
+import 'package:giftrip/features/lodging/screens/location_screen.dart';
 import 'package:giftrip/features/lodging/screens/lodging_screen.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
@@ -183,6 +184,7 @@ class _MyAppState extends State<MyApp> {
               '/experience': (ctx) => const ExperienceScreen(),
               '/shopping': (ctx) => const ShoppingScreen(),
               '/lodging': (ctx) => const LodgingScreen(),
+              '/location': (ctx) => const LocationScreen(),
               '/tester': (ctx) => const TesterScreen(),
               '/event': (ctx) => const EventScreen(),
               '/inquiry': (ctx) => const InquiryScreen(),

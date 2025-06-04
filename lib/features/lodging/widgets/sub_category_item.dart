@@ -9,12 +9,14 @@ import 'package:provider/provider.dart';
 class SubCategoryItem extends StatelessWidget {
   final String title;
   final int categoryIndex;
+  final bool isSelected;
   final VoidCallback? onTap;
 
   const SubCategoryItem({
     super.key,
     required this.title,
     required this.categoryIndex,
+    this.isSelected = false,
     this.onTap,
   });
 
@@ -22,11 +24,26 @@ class SubCategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: Text(
-          title,
-          style: body_M.copyWith(color: AppColors.label),
+        color: isSelected ? const Color(0xFFEAF0FF) : Colors.white,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: body_M.copyWith(
+                  color: AppColors.label,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(
+                Icons.check,
+                color: AppColors.primaryStrong,
+                size: 24,
+              ),
+          ],
         ),
       ),
     );
