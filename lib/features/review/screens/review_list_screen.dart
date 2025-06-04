@@ -230,7 +230,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
             width: double.infinity,
             alignment: Alignment.center,
             child: Text(
-              '아직 등록된 리뷰가 없어요',
+              '등록된 리뷰가 없어요',
               style: body_S.copyWith(color: AppColors.labelAlternative),
             ),
           ),

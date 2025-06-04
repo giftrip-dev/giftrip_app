@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/text_field/custom_input_field.dart';
-import 'package:giftrip/core/widgets/dropdown/custom_dropdown.dart';
 import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/auth/widgets/phone_number_verification.dart';
 import 'package:giftrip/features/auth/screens/influencer_check_screen.dart';
 import 'package:giftrip/features/auth/models/register_model.dart';
-import 'package:giftrip/features/auth/repositories/auth_repo.dart';
 import 'package:giftrip/features/auth/view_models/auth_view_model.dart';
 
 class RegisterScreen extends StatefulWidget {
