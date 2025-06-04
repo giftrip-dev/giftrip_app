@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:giftrip/core/widgets/empty/empty_state_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
@@ -117,7 +118,15 @@ class _ProductCarouselState extends State<ProductCarousel> {
             break;
         }
 
-        if (items.isEmpty && vm.isLoading) {
+        if (items.isEmpty) {
+          return const EmptyStateWidget(
+            message: '상품이 없습니다.',
+            icon: Icons.shopping_bag_outlined,
+            buttonText: '상품 등록하기',
+          );
+        }
+
+        if (vm.isLoading) {
           return const SizedBox(
             height: 150,
             child: Center(child: CircularProgressIndicator()),

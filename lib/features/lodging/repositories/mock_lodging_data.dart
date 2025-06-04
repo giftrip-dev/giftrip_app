@@ -41,7 +41,7 @@ final List<LodgingModel> mockLodgingList = () {
       title: '${category.label} 상품 ${index + 1} ${subLocation}',
       description:
           '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 편안한 휴식을 위한 최고의 선택이 될 것입니다.',
-      thumbnailUrl: product.thumbnailUrl,
+      thumbnailUrl: product.thumbnailUrl ?? '',
       mainLocation: MainLocation.seoul.label,
       subLocation: subLocation,
       distanceInfo: distanceInfo,

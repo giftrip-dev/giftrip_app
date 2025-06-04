@@ -11,7 +11,7 @@ class ProductRepo {
     int limit = 10,
   }) async {
     try {
-      final response = await _dio.get('/api/posts', queryParameters: {
+      final response = await _dio.get('/landing/new', queryParameters: {
         'page': page,
         'limit': limit,
       });
@@ -32,7 +32,7 @@ class ProductRepo {
     int limit = 10,
   }) async {
     try {
-      final response = await _dio.get('/api/posts', queryParameters: {
+      final response = await _dio.get('/landing/best', queryParameters: {
         'page': page,
         'limit': limit,
       });
@@ -47,6 +47,27 @@ class ProductRepo {
     }
   }
 
+  // 타임딜 상품 목록 조회
+  Future<ProductPageResponse> getTimeDealProductList({
+    int page = 1,
+    int limit = 10,
+  }) async {
+    try {
+      final response = await _dio.get('/landing/time-deal', queryParameters: {
+        'page': page,
+        'limit': limit,
+      });
+
+      if (response.statusCode == 200) {
+        return ProductPageResponse.fromJson(response.data);
+      } else {
+        throw Exception('타임딜 상품 조회 실패: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('타임딜 상품 조회 API 요청 실패: $e');
+    }
+  }
+
   /// 관련 상품 목록 조회
   /// [productType] - 상품 타입에 따라 적절한 관련 상품 목록을 조회
   /// [productId] - 현재 보고 있는 상품 ID (관련 상품 추천 시 제외하기 위함)
@@ -57,8 +78,7 @@ class ProductRepo {
     int limit = 10,
   }) async {
     try {
-      final response =
-          await _dio.get('/api/products/related', queryParameters: {
+      final response = await _dio.get('/landing/related', queryParameters: {
         'type': productType.toString().split('.').last,
         'productId': productId,
         'page': page,

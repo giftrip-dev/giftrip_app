@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
 
 /// 빈 상태를 표시하는 공통 위젯
 class EmptyStateWidget extends StatelessWidget {
@@ -28,7 +29,7 @@ class EmptyStateWidget extends StatelessWidget {
             if (icon != null) ...[
               Icon(
                 icon,
-                size: 64,
+                size: 32,
                 color: AppColors.labelAlternative,
               ),
               const SizedBox(height: 16),
@@ -42,9 +43,11 @@ class EmptyStateWidget extends StatelessWidget {
             ),
             if (buttonText != null && onButtonPressed != null) ...[
               const SizedBox(height: 24),
-              ElevatedButton(
+              CTAButton(
+                isEnabled: true,
+                text: buttonText!,
+                type: CTAButtonType.outline,
                 onPressed: onButtonPressed,
-                child: Text(buttonText!),
               ),
             ],
           ],
