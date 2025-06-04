@@ -10,6 +10,7 @@ import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dar
 import 'package:giftrip/features/lodging/screens/location_screen.dart';
 import 'package:giftrip/features/lodging/widgets/stay_option_bottom_sheet.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_category_bar.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -22,7 +23,16 @@ class _LodgingScreenState extends State<LodgingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SearchAppBar(title: '숙박'),
+      appBar: SearchAppBar(
+        title: '숙박',
+        onBackPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RootScreen(selectedIndex: 0)),
+          );
+        },
+      ),
       body: Consumer<LodgingViewModel>(
         builder: (context, vm, child) {
           return RefreshIndicator(
