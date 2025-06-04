@@ -292,7 +292,7 @@ class _ShoppingPurchaseBottomSheetState
         optionName: entry.key.name,
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         productId: shopping.id,
-        title: '${shopping.title} - ${entry.key.name}',
+        title: '${shopping.name} - ${entry.key.name}',
         thumbnailUrl: shopping.thumbnailUrl,
         price: entry.key.price,
         quantity: entry.value,

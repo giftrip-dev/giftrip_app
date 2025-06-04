@@ -17,7 +17,6 @@ class InformationSection {
 class ShoppingDetailModel extends ShoppingModel {
   final String location; // 판매처 위치
   final String managerPhoneNumber; // 담당자 연락처
-  final String relatedLink; // 관련 링크
   final String detailImageUrl; // 상세 이미지 URL
   final String croppedDetailImageUrl; // 상세 이미지 URL (크롭된 버전)
   final InformationSection inquiryInfo; // 문의 정보
@@ -26,7 +25,7 @@ class ShoppingDetailModel extends ShoppingModel {
 
   const ShoppingDetailModel({
     required super.id,
-    required super.title,
+    required super.name,
     required super.description,
     required super.content,
     required super.thumbnailUrl,
@@ -34,28 +33,36 @@ class ShoppingDetailModel extends ShoppingModel {
     required super.finalPrice,
     required super.category,
     required super.rating,
-    required super.averageRating,
     required super.reviewCount,
     required super.manufacturer,
+    super.managerPhone,
+    super.isSoldOut = false,
+    super.isOptionUsed = false,
+    super.stockCount,
+    super.itemTags = const [],
+    super.exposureTags,
+    super.relatedLink,
+    super.hasDiscount = false,
+    super.isAvailableToPurchase = true,
+    super.isOrderQuantityLimited = false,
+    super.maxOrderQuantity,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.options,
     required this.location,
     required this.managerPhoneNumber,
-    required this.relatedLink,
     required this.detailImageUrl,
     required this.croppedDetailImageUrl,
     required this.inquiryInfo,
     required this.changeInfo,
     required this.deliveryInfo,
-    required super.options,
-    super.badges = const [],
-    super.discountRate,
-    super.soldOut = false,
   });
 
   /// JSON -> Shopping Detail Model
   factory ShoppingDetailModel.fromJson(Map<String, dynamic> json) {
     return ShoppingDetailModel(
       id: json['id'] as String,
-      title: json['title'] as String,
+      name: json['name'] as String,
       description: json['description'] as String,
       content: json['content'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
@@ -63,37 +70,50 @@ class ShoppingDetailModel extends ShoppingModel {
       finalPrice: json['finalPrice'] as int,
       category: ShoppingCategory.fromString(json['category'] as String) ??
           ShoppingCategory.others,
-      rating: (json['rating'] as num).toDouble(),
-      averageRating: (json['averageRating'] as num).toDouble(),
+      rating: json['rating'] as String? ?? "0.00",
       reviewCount: json['reviewCount'] as int,
-      discountRate: json['discountRate'] as int?,
-      badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ProductTagType.values.firstWhere(
-                    (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ProductTagType.newArrival,
-                  ))
+      manufacturer: json['manufacturer'] as String,
+      managerPhone: json['managerPhone'] as String?,
+      isSoldOut: json['isSoldOut'] as bool? ?? false,
+      isOptionUsed: json['isOptionUsed'] as bool? ?? false,
+      stockCount: json['stockCount'] as int?,
+      itemTags: (json['itemTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
               .toList() ??
           [],
-      manufacturer: json['manufacturer'] as String,
-      soldOut: json['soldOut'] as bool? ?? false,
-      location: json['location'] as String,
-      managerPhoneNumber: json['managerPhoneNumber'] as String,
-      relatedLink: json['relatedLink'] as String,
-      detailImageUrl: json['detailImageUrl'] as String,
-      croppedDetailImageUrl: json['croppedDetailImageUrl'] as String,
-      inquiryInfo: InformationSection(
-        title: json['inquiryInfo']['title'] as String,
-        content: json['inquiryInfo']['content'] as String,
-      ),
-      changeInfo: InformationSection(
-        title: json['changeInfo']['title'] as String,
-        content: json['changeInfo']['content'] as String,
-      ),
-      deliveryInfo: json['deliveryInfo'] as String,
+      exposureTags: (json['exposureTags'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
+      relatedLink: json['relatedLink'] as String?,
+      hasDiscount: json['hasDiscount'] as bool? ?? false,
+      isAvailableToPurchase: json['isAvailableToPurchase'] as bool? ?? true,
+      isOrderQuantityLimited: json['isOrderQuantityLimited'] as bool? ?? false,
+      maxOrderQuantity: json['maxOrderQuantity'] as int?,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
       options: (json['options'] as List<dynamic>?)
               ?.map((e) => ShoppingOption.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      location: json['location'] as String? ?? '',
+      managerPhoneNumber: json['managerPhoneNumber'] as String? ?? '',
+      detailImageUrl: json['detailImageUrl'] as String? ?? '',
+      croppedDetailImageUrl: json['croppedDetailImageUrl'] as String? ?? '',
+      inquiryInfo: json['inquiryInfo'] != null
+          ? InformationSection(
+              title: json['inquiryInfo']['title'] as String,
+              content: json['inquiryInfo']['content'] as String,
+            )
+          : const InformationSection(
+              title: '문의하기', content: '문의사항이 있으시면 연락 부탁드립니다.'),
+      changeInfo: json['changeInfo'] != null
+          ? InformationSection(
+              title: json['changeInfo']['title'] as String,
+              content: json['changeInfo']['content'] as String,
+            )
+          : const InformationSection(
+              title: '교환/환불 안내', content: '교환/환불 관련 안내입니다.'),
+      deliveryInfo: json['deliveryInfo'] as String? ?? '배송 정보',
     );
   }
 
@@ -104,10 +124,8 @@ class ShoppingDetailModel extends ShoppingModel {
       ...baseJson,
       'location': location,
       'managerPhoneNumber': managerPhoneNumber,
-      'relatedLink': relatedLink,
       'detailImageUrl': detailImageUrl,
       'croppedDetailImageUrl': croppedDetailImageUrl,
-      'content': content,
       'inquiryInfo': {
         'title': inquiryInfo.title,
         'content': inquiryInfo.content,

@@ -60,7 +60,7 @@ class CartRepo {
             id: DateTime.now().millisecondsSinceEpoch.toString(),
             productId: productId,
             category: CartCategory.product,
-            title: product.title,
+            title: product.name,
             thumbnailUrl: product.thumbnailUrl,
             originalPrice: product.originalPrice,
             price: product.finalPrice,
