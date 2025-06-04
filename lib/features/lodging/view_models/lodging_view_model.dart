@@ -18,7 +18,7 @@ class LodgingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   LodgingCategory? _selectedCategory;
-  String _locationText = '서울';
+  String _locationText = '';
   String _stayOptionText = '';
   String _stayDateText = '';
   int _adultCount = 2;
@@ -82,6 +82,8 @@ class LodgingViewModel extends ChangeNotifier {
 
   /// 숙박 상품 목록 조회
   Future<void> fetchLodgingList({bool refresh = false}) async {
+    logger.d(
+        '111fetchLodgingList: $locationText, $startDate, $endDate, $adultCount, $childCount, $selectedCategory, $stayOptionText');
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
     if ((!refresh && _isLoading) ||
         (!refresh && _lodgingList.isNotEmpty && nextPage == null)) {
@@ -152,6 +154,7 @@ class LodgingViewModel extends ChangeNotifier {
   }
 
   void setStayDates(DateTime startDate, DateTime endDate) {
+    logger.d('111setStayDates: $startDate, $endDate');
     _startDate = startDate;
     _endDate = endDate;
     final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
@@ -163,13 +166,21 @@ class LodgingViewModel extends ChangeNotifier {
   }
 
   void setGuestCount(int adultCount, int childCount) {
+    logger.d('111setGuestCount: $adultCount, $childCount');
     _adultCount = adultCount;
     _childCount = childCount;
-    // 현재 선택된 날짜가 있다면 stayOptionText 업데이트
-    if (_stayOptionText.isNotEmpty) {
-      final now = DateTime.now();
-      final tomorrow = now.add(const Duration(days: 1));
-      setStayDates(now, tomorrow);
+
+    // stayOptionText 업데이트
+    if (_startDate != null && _endDate != null) {
+      final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
+      _stayOptionText =
+          '${dateFormat.format(_startDate!)}~${dateFormat.format(_endDate!)} | 성인 $_adultCount${_childCount > 0 ? ', 아동 $_childCount' : ''}';
     }
+
+    // UI 업데이트
+    notifyListeners();
+
+    // 데이터 새로 조회
+    fetchLodgingList(refresh: true);
   }
 }

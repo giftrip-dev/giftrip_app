@@ -108,13 +108,16 @@ class _LocationScreenState extends State<LocationScreen> {
         text: '숙소 찾기',
         onPressed: () {
           if (_selectedSubLocation != null) {
+            // 현재 컨텍스트에서 LodgingViewModel을 찾아서 업데이트
+            final lodgingViewModel = context.read<LodgingViewModel>();
+            lodgingViewModel.setLocationText(_selectedSubLocation!);
+
             // 현재 화면을 모두 pop하고 lodging_screen으로 이동
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                  create: (context) => LodgingViewModel()
-                    ..setLocationText(_selectedSubLocation!),
+                builder: (context) => ChangeNotifierProvider.value(
+                  value: lodgingViewModel,
                   child: const LodgingScreen(),
                 ),
               ),
