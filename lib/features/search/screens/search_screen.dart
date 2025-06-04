@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final GlobalStorage _storage = GlobalStorage();
   List<String> _recentSearches = [];
   bool _isSearched = false;
-  ProductItemType? _selectedCategory;
+  ProductItemType? _selectedCategory = ProductItemType.product;
 
   @override
   void initState() {
@@ -38,7 +38,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _onSearch(String value) async {
     if (value.trim().isEmpty) return;
     await _storage.setRecentSearch(value.trim());
-    _controller.clear();
     await _loadRecentSearches();
     setState(() {
       _isSearched = true;
@@ -130,28 +129,38 @@ class _SearchScreenState extends State<SearchScreen> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: _recentSearches.map((search) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundAlternative,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: AppColors.line),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(search,
-                              style: title_XS.copyWith(
-                                  color: AppColors.labelStrong)),
-                          const SizedBox(width: 4),
-                          GestureDetector(
-                            onTap: () => _deleteSearch(search),
-                            child: Icon(LucideIcons.x,
-                                size: 16, color: AppColors.componentNatural),
-                          ),
-                        ],
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _controller.text = search;
+                        });
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _onSearch(search);
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundAlternative,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: AppColors.line),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(search,
+                                style: title_XS.copyWith(
+                                    color: AppColors.labelStrong)),
+                            const SizedBox(width: 4),
+                            GestureDetector(
+                              onTap: () => _deleteSearch(search),
+                              child: Icon(LucideIcons.x,
+                                  size: 16, color: AppColors.componentNatural),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }).toList(),
