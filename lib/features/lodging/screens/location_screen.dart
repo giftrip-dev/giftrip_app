@@ -7,9 +7,16 @@ import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/widgets/location_tab.dart';
 import 'package:giftrip/features/lodging/widgets/sub_category_item.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
+import 'package:giftrip/features/lodging/screens/lodging_screen.dart';
+import 'package:provider/provider.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({super.key});
+  final String? currentLocation;
+
+  const LocationScreen({
+    super.key,
+    this.currentLocation,
+  });
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
@@ -24,6 +31,19 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     super.initState();
     _locationData = LocationManager.getLocationData();
+
+    // 현재 선택된 위치가 있다면 해당 위치의 인덱스와 서브카테고리를 찾아서 설정
+    if (widget.currentLocation != null) {
+      for (int i = 0; i < _locationData.length; i++) {
+        final subLocations = _locationData[i].subLocations;
+        final index = subLocations.indexOf(widget.currentLocation!);
+        if (index != -1) {
+          _selectedIndex = i;
+          _selectedSubLocation = widget.currentLocation;
+          break;
+        }
+      }
+    }
   }
 
   @override
@@ -88,7 +108,18 @@ class _LocationScreenState extends State<LocationScreen> {
         text: '숙소 찾기',
         onPressed: () {
           if (_selectedSubLocation != null) {
-            Navigator.pop(context, _selectedSubLocation);
+            // 현재 화면을 모두 pop하고 lodging_screen으로 이동
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (context) => LodgingViewModel()
+                    ..setLocationText(_selectedSubLocation!),
+                  child: const LodgingScreen(),
+                ),
+              ),
+              (route) => false,
+            );
           }
         },
       ),
