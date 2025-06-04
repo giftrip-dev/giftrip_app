@@ -58,12 +58,12 @@ class _RelatedProductsSectionState extends State<RelatedProductsSection> {
     return Consumer<ProductViewModel>(
       builder: (context, vm, child) {
         // 로딩 중이고 데이터가 없는 경우
-        if (vm.isLoading && vm.relatedList.isEmpty) {
+        if (vm.isRelatedLoading && vm.relatedList.isEmpty) {
           return _buildLoadingState();
         }
 
         // 데이터가 없는 경우
-        if (!vm.isLoading && vm.relatedList.isEmpty) {
+        if (!vm.isRelatedLoading && vm.relatedList.isEmpty) {
           return const SizedBox.shrink(); // 관련 상품이 없으면 섹션 자체를 표시하지 않음
         }
 

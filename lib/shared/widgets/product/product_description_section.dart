@@ -81,12 +81,8 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
 
     if (widget.content != null && widget.content!.isNotEmpty) {
       try {
-        // 디버깅용 로그
-        print('Content to parse: ${widget.content}');
-
         // JSON 형태의 퀼 콘텐츠를 파싱
         final json = jsonDecode(widget.content!);
-        print('Parsed JSON: $json');
 
         // JSON이 List인지 확인하고, Quill Document 요구사항에 맞게 수정
         if (json is List && json.isNotEmpty) {
@@ -110,13 +106,10 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
           }
 
           document = Document.fromJson(json);
-          print('Document created successfully');
         } else {
-          print('JSON is not a valid List, treating as plain text');
           document = Document()..insert(0, widget.content ?? '');
         }
       } catch (e) {
-        print('JSON parsing failed: $e');
         // JSON 파싱에 실패하면 일반 텍스트로 처리
         document = Document()..insert(0, widget.content ?? '');
       }
