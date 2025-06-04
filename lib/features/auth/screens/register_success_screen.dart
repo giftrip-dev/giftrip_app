@@ -49,9 +49,10 @@ class RegisterSuccessScreen extends StatelessWidget {
               const Spacer(),
               BottomCTAButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => RootScreen()),
+                    (route) => false,
                   );
                 },
                 text: "홈으로 이동",

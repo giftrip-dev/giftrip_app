@@ -169,7 +169,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
         // 데이터가 없는 경우
         if (items.isEmpty && !isLoading) {
           return const EmptyStateWidget(
-            message: '아직 등록된 상품이 없어요',
+            message: '등록된 상품이 없어요',
             icon: Icons.shopping_bag_outlined,
           );
         }

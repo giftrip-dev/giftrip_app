@@ -92,7 +92,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
     // 상품이 없는 경우
     if (vm.shoppingList.isEmpty && !vm.isLoading) {
       return const EmptyStateWidget(
-        message: '아직 등록된 상품이 없습니다.',
+        message: '등록된 상품이 없어요',
         icon: Icons.shopping_bag_outlined,
       );
     }
