@@ -5,6 +5,7 @@ import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
 import 'package:giftrip/features/lodging/repositories/mock_lodging_data.dart';
+import 'package:giftrip/core/utils/logger.dart';
 
 class LodgingRepo {
   final Dio _dio = DioClient().to();
@@ -17,7 +18,11 @@ class LodgingRepo {
     String? location,
     DateTime? startDate,
     DateTime? endDate,
+    int? adultCount,
+    int? childCount,
   }) async {
+    logger.d(
+        'getLodgingList: $category, $page, $limit, $location, $startDate, $endDate, $adultCount, $childCount');
     // 데이터를 불러오는 동안 0.2초 딜레이
     await Future.delayed(const Duration(milliseconds: 200));
 

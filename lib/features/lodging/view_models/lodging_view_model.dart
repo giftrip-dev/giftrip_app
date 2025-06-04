@@ -103,6 +103,8 @@ class LodgingViewModel extends ChangeNotifier {
         location: _locationText,
         startDate: _startDate,
         endDate: _endDate,
+        adultCount: _adultCount,
+        childCount: _childCount,
       );
 
       if (refresh || _lodgingList.isEmpty) {
