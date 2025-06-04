@@ -89,7 +89,7 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                       ProductBasicInfoSection(
                         title: experience.title,
                         thumbnailUrl: experience.thumbnailUrl,
-                        badges: experience.badges,
+                        badges: experience.badges.map((e) => e.name).toList(),
                         location: experience.location,
                         phoneNumber: experience.managerPhoneNumber,
                         memo: experience.description,

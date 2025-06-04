@@ -13,7 +13,7 @@ class ShoppingRelatedProductModel {
   final int finalPrice;
   final bool isSoldOut;
   final bool isOptionUsed;
-  final int stockCount;
+  final int? stockCount;
   final List<dynamic> options;
   final String category;
   final double rating;
@@ -65,7 +65,7 @@ class ShoppingRelatedProductModel {
     required this.finalPrice,
     required this.isSoldOut,
     required this.isOptionUsed,
-    required this.stockCount,
+    this.stockCount,
     required this.options,
     required this.category,
     required this.rating,
@@ -94,7 +94,7 @@ class ShoppingRelatedProductModel {
       finalPrice: json['finalPrice'] as int,
       isSoldOut: json['isSoldOut'] as bool,
       isOptionUsed: json['isOptionUsed'] as bool,
-      stockCount: json['stockCount'] as int,
+      stockCount: json['stockCount'] as int?,
       options: json['options'] as List<dynamic>,
       category: json['category'] as String,
       rating: double.parse(json['rating'] as String),
