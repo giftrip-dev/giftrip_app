@@ -1,10 +1,10 @@
 enum MainLocation {
-  sudogwon('수도권'),
-  gangwon('강원도'),
-  gyeongsang('경상도'),
-  chungcheong('충청도'),
-  jeolla('전라도'),
-  jeju('제주도');
+  CAPITAL('수도권'),
+  GANGWON('강원도'),
+  GYEONGSANG('경상도'),
+  CHUNGCHONG('충청도'),
+  JEONLA('전라도'),
+  JEJU('제주도');
 
   final String label;
   const MainLocation(this.label);
@@ -26,7 +26,7 @@ class LocationManager {
   static List<LocationData> getLocationData() {
     return [
       LocationData(
-        mainLocation: MainLocation.sudogwon,
+        mainLocation: MainLocation.CAPITAL,
         subLocations: [
           '서울',
           '인천',
@@ -37,7 +37,7 @@ class LocationManager {
         ],
       ),
       LocationData(
-        mainLocation: MainLocation.gangwon,
+        mainLocation: MainLocation.GANGWON,
         subLocations: [
           '강릉/속초/양양',
           '춘천/인제/철원',
@@ -47,7 +47,7 @@ class LocationManager {
         ],
       ),
       LocationData(
-        mainLocation: MainLocation.gyeongsang,
+        mainLocation: MainLocation.GYEONGSANG,
         subLocations: [
           '부산',
           '경주/포항',
@@ -57,7 +57,7 @@ class LocationManager {
         ],
       ),
       LocationData(
-        mainLocation: MainLocation.chungcheong,
+        mainLocation: MainLocation.CHUNGCHONG,
         subLocations: [
           '대전/세종',
           '충주/제천/단양',
@@ -67,7 +67,7 @@ class LocationManager {
         ],
       ),
       LocationData(
-        mainLocation: MainLocation.jeolla,
+        mainLocation: MainLocation.JEONLA,
         subLocations: [
           '전주/군산',
           '광주/나주/담양',
@@ -76,7 +76,7 @@ class LocationManager {
         ],
       ),
       LocationData(
-        mainLocation: MainLocation.jeju,
+        mainLocation: MainLocation.JEJU,
         subLocations: [
           '제주시',
           '서귀포시',

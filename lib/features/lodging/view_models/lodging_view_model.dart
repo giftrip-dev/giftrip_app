@@ -4,6 +4,7 @@ import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/repositories/lodging_repo.dart';
 import 'package:intl/intl.dart';
 
@@ -18,7 +19,8 @@ class LodgingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasError = false;
   LodgingCategory? _selectedCategory;
-  String _locationText = '';
+  MainLocation? _mainLocation;
+  String _subLocation = '';
   String _stayOptionText = '';
   String _stayDateText = '';
   int _adultCount = 2;
@@ -33,7 +35,8 @@ class LodgingViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
   LodgingCategory? get selectedCategory => _selectedCategory;
-  String get locationText => _locationText;
+  MainLocation? get mainLocation => _mainLocation;
+  String get subLocation => _subLocation;
   String get stayOptionText => _stayOptionText;
   int get adultCount => _adultCount;
   int get childCount => _childCount;
@@ -83,7 +86,7 @@ class LodgingViewModel extends ChangeNotifier {
   /// 숙박 상품 목록 조회
   Future<void> fetchLodgingList({bool refresh = false}) async {
     logger.d(
-        '111fetchLodgingList: $locationText, $startDate, $endDate, $adultCount, $childCount, $selectedCategory, $stayOptionText');
+        '111fetchLodgingList: $_mainLocation, $_subLocation, $startDate, $endDate, $adultCount, $childCount, $selectedCategory, $stayOptionText');
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
     if ((!refresh && _isLoading) ||
         (!refresh && _lodgingList.isNotEmpty && nextPage == null)) {
@@ -100,13 +103,12 @@ class LodgingViewModel extends ChangeNotifier {
       final page = refresh || _lodgingList.isEmpty ? 1 : (nextPage ?? 1);
 
       final response = await _repo.getLodgingList(
-        category: _selectedCategory,
+        category: _selectedCategory?.name,
         page: page,
-        location: _locationText,
-        startDate: _startDate,
-        endDate: _endDate,
-        adultCount: _adultCount,
-        childCount: _childCount,
+        mainLocation: _mainLocation?.name,
+        subLocation: _subLocation,
+        createdAtStart: _startDate?.toIso8601String(),
+        createdAtEnd: _endDate?.toIso8601String(),
       );
 
       if (refresh || _lodgingList.isEmpty) {
@@ -148,8 +150,12 @@ class LodgingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setLocationText(String text) {
-    _locationText = text;
+  void setLocationText(String subLocation) {
+    _subLocation = subLocation;
+    // subLocation에 해당하는 mainLocation 찾기
+    _mainLocation = LocationManager.getLocationData()
+        .firstWhere((data) => data.subLocations.contains(subLocation))
+        .mainLocation;
     fetchLodgingList(refresh: true);
   }
 

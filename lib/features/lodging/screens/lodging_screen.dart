@@ -57,13 +57,13 @@ class _LodgingScreenState extends State<LodgingScreen> {
                               padding: const EdgeInsets.only(
                                   left: 16, right: 16, bottom: 16),
                               child: LodgingFilterCombinedBar(
-                                locationText: vm.locationText,
+                                locationText: vm.subLocation,
                                 onLocationTap: () async {
                                   final selected = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => LocationScreen(
-                                        currentLocation: vm.locationText,
+                                        currentLocation: vm.subLocation,
                                       ),
                                     ),
                                   );
@@ -125,14 +125,14 @@ class _LodgingScreenState extends State<LodgingScreen> {
                             onCategoryChanged: (category) {
                               vm.changeCategory(category);
                             },
-                            locationText: vm.locationText,
+                            locationText: vm.subLocation,
                             stayOptionText: vm.stayOptionText,
                             onLocationTap: () async {
                               final selected = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => LocationScreen(
-                                    currentLocation: vm.locationText,
+                                    currentLocation: vm.subLocation,
                                   ),
                                 ),
                               );

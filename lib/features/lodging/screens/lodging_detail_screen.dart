@@ -79,12 +79,12 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
               children: [
                 // 기본 정보 섹션
                 ProductBasicInfoSection(
-                  title: lodging.title,
+                  title: lodging.name,
                   thumbnailUrl: lodging.thumbnailUrl,
-                  badges: lodging.badges.map((e) => e.name).toList(),
-                  location: lodging.distanceInfo,
+                  badges: [],
+                  location: lodging.mainLocation,
                   phoneNumber: lodging.managerPhoneNumber,
-                  memo: lodging.description,
+                  memo: lodging.address1,
                   relatedLink: lodging.relatedLink,
                 ),
                 const SectionDivider(),
@@ -93,9 +93,9 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 ReviewList(
                   productId: widget.lodgingId,
                   productType: ProductType.lodging,
-                  productTitle: lodging.title,
+                  productTitle: lodging.name,
                   productThumbnailUrl: lodging.thumbnailUrl,
-                  averageRating: lodging.averageRating,
+                  averageRating: 0,
                 ),
                 const SectionDivider(),
 
@@ -110,16 +110,16 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 // 문의하기 섹션
                 ProductPolicySection(
                   title: '문의하기',
-                  sectionTitle: lodging.inquiryInfo.title,
-                  sectionContent: lodging.inquiryInfo.content,
+                  sectionTitle: '문의하기',
+                  sectionContent: '문의하기',
                 ),
                 const SectionDivider(),
 
                 // 변경 및 취소 섹션
                 ProductPolicySection(
                   title: '변경 및 취소',
-                  sectionTitle: lodging.changeInfo.title,
-                  sectionContent: lodging.changeInfo.content,
+                  sectionTitle: '변경 및 취소',
+                  sectionContent: '변경 및 취소',
                 ),
                 const SectionDivider(),
 

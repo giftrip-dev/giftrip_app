@@ -41,23 +41,19 @@ final List<LodgingModel> mockLodgingList = () {
 
     return LodgingModel(
       id: product.id, // 홈스크린과 동일한 ID 사용
-      title: '${category.label} 상품 ${index + 1} ${subLocation}',
-      description:
-          '이것은 ${category.label} 상품 ${index + 1}의 상세 설명입니다. 편안한 휴식을 위한 최고의 선택이 될 것입니다.',
-      thumbnailUrl: product.thumbnailUrl ?? '',
-      mainLocation: MainLocation.sudogwon.label,
-      subLocation: subLocation,
-      distanceInfo: distanceInfo,
-      originalPrice: product.originalPrice,
-      finalPrice: product.finalPrice,
+      name: '${category.label} 상품 ${index + 1} ${subLocation}',
       category: category,
-      rating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평점
-      averageRating: 3.5 + (index % 20) / 10, // 3.5 ~ 5.0 사이의 평균 별점
-      reviewCount: 10 + index, // 10개부터 1개씩 증가
-      discountRate: product.discountRate,
-      badges: product.badges ?? [],
-      availableFrom: availableFrom,
-      availableTo: availableTo,
+      thumbnailUrl: product.thumbnailUrl ?? '',
+      mainLocation: MainLocation.CAPITAL.label,
+      subLocation: subLocation,
+      address1: '${category.label} 상품 ${index + 1} ${subLocation}',
+      address2: '${category.label} 상품 ${index + 1} ${subLocation}',
+      postalCode: '${category.label} 상품 ${index + 1} ${subLocation}',
+      managerName: '${category.label} 상품 ${index + 1} ${subLocation}',
+      managerPhoneNumber: '${category.label} 상품 ${index + 1} ${subLocation}',
+      relatedLink: '${category.label} 상품 ${index + 1} ${subLocation}',
+      createdAt: availableFrom,
+      updatedAt: availableTo,
     );
   }).toList();
 }();

@@ -47,7 +47,7 @@ class LodgingItem extends StatelessWidget {
           // 2. 제목
           SizedBox(
             child: Text(
-              lodging.title,
+              lodging.name,
               style: title_L,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -65,7 +65,7 @@ class LodgingItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  lodging.distanceInfo,
+                  lodging.address1,
                   style: body_S.copyWith(
                     color: AppColors.label,
                   ),
@@ -76,47 +76,47 @@ class LodgingItem extends StatelessWidget {
           const SizedBox(height: 8),
 
           // 5. 뱃지들
-          if (lodging.badges.isNotEmpty)
-            Row(
-              children: [
-                for (var i = 0; i < lodging.badges.length; i++) ...[
-                  if (i > 0) const SizedBox(width: 4),
-                  ItemBadge(tag: lodging.badges[i].name),
-                ],
-              ],
-            ),
+          // if (lodging.category.isNotEmpty)
+          //   Row(
+          //     children: [
+          //       for (var i = 0; i < lodging.category.length; i++) ...[
+          //         if (i > 0) const SizedBox(width: 4),
+          //         ItemBadge(tag: lodging.category),
+          //       ],
+          //     ],
+          //   ),
           const SizedBox(height: 12),
           // 6. 가격 및 할인율
-          if (lodging.hasDiscount) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  '${lodging.discountRate}%',
-                  style: subtitle_XS.copyWith(
-                    color: AppColors.labelAlternative,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  '${formatPrice(lodging.originalPrice)}원',
-                  style: caption.copyWith(
-                    color: AppColors.labelAlternative,
-                    decoration: TextDecoration.lineThrough,
-                  ),
-                ),
-              ],
-            ),
-          ],
+          // if (lodging.hasDiscount) ...[
+          //   Row(
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       Text(
+          //         '${lodging.discountRate}%',
+          //         style: subtitle_XS.copyWith(
+          //           color: AppColors.labelAlternative,
+          //         ),
+          //       ),
+          //       const SizedBox(width: 4),
+          //       Text(
+          //         '${formatPrice(lodging.originalPrice)}원',
+          //         style: caption.copyWith(
+          //           color: AppColors.labelAlternative,
+          //           decoration: TextDecoration.lineThrough,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ],
 
           // 7. 최종 가격
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              '${formatPrice(lodging.finalPrice)}원',
-              style: title_L,
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: Text(
+          //     '${formatPrice(lodging.finalPrice)}원',
+          //     style: title_L,
+          //   ),
+          // ),
         ],
       ),
     );
