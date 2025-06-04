@@ -49,8 +49,9 @@ class _LodgingScreenState extends State<LodgingScreen> {
                                   final selected = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LocationScreen(),
+                                      builder: (context) => LocationScreen(
+                                        currentLocation: vm.locationText,
+                                      ),
                                     ),
                                   );
                                   if (selected is String &&
@@ -117,7 +118,9 @@ class _LodgingScreenState extends State<LodgingScreen> {
                               final selected = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const LocationScreen(),
+                                  builder: (context) => LocationScreen(
+                                    currentLocation: vm.locationText,
+                                  ),
                                 ),
                               );
                               if (selected is String && selected.isNotEmpty) {
