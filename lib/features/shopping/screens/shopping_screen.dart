@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
 import 'package:giftrip/core/widgets/banner/event_banner.dart';
 import 'package:giftrip/core/widgets/category/generic_persistent_category_bar.dart';
+import 'package:giftrip/core/widgets/empty/empty_state_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/shopping/models/shopping_category.dart';
@@ -61,19 +62,46 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                 ];
               },
               // 3) 쇼핑 상품 리스트
-              body: vm.shoppingList.isEmpty && vm.isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ShoppingItemList(
-                      shoppingItems: vm.shoppingList,
-                      isLoading: vm.isLoading,
-                      onLoadMore: vm.nextPage != null
-                          ? () => vm.fetchShoppingList()
-                          : null,
-                    ),
+              body: _buildBody(vm),
             ),
           );
         },
       ),
+    );
+  }
+
+  /// 바디 콘텐츠를 구성하는 메서드
+  Widget _buildBody(ShoppingViewModel vm) {
+    // 로딩 중 (첫 로드)
+    if (vm.shoppingList.isEmpty && vm.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // 에러 발생
+    if (vm.hasError) {
+      return EmptyStateWidget(
+        message: '상품을 불러오는 중 오류가 발생했습니다.',
+        icon: Icons.error_outline,
+        buttonText: '다시 시도',
+        onButtonPressed: () {
+          vm.fetchShoppingList(refresh: true);
+        },
+      );
+    }
+
+    // 상품이 없는 경우
+    if (vm.shoppingList.isEmpty && !vm.isLoading) {
+      return const EmptyStateWidget(
+        message: '아직 등록된 상품이 없습니다.',
+        icon: Icons.shopping_bag_outlined,
+      );
+    }
+
+    // 상품 리스트
+    return ShoppingItemList(
+      shoppingItems: vm.shoppingList,
+      isLoading: vm.isLoading,
+      onLoadMore: vm.nextPage != null ? () => vm.fetchShoppingList() : null,
     );
   }
 

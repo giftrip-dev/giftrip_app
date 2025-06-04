@@ -85,7 +85,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                     children: [
                       // 기본 정보 섹션
                       ProductBasicInfoSection(
-                        title: shopping.title,
+                        title: shopping.name,
                         thumbnailUrl: shopping.thumbnailUrl,
                         badges: shopping.badges,
                         location: shopping.location,
@@ -100,7 +100,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                       ReviewList(
                         productId: widget.shoppingId,
                         productType: ProductType.experienceGroup,
-                        productTitle: shopping.title,
+                        productTitle: shopping.name,
                         productThumbnailUrl: shopping.thumbnailUrl,
                         averageRating: shopping.averageRating,
                       ),

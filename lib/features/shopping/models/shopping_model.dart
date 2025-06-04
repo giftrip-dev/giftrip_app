@@ -5,75 +5,117 @@ import 'package:giftrip/features/home/models/product_model.dart';
 /// 쇼핑 상품 모델
 class ShoppingModel {
   final String id;
-  final String title;
+  final String name;
   final String description;
   final String content; // 퀼 에디터용 콘텐츠 (JSON 형태)
   final String thumbnailUrl;
   final String manufacturer;
+  final String? managerPhone;
   final int originalPrice;
   final int finalPrice;
-  final int? discountRate;
-  final bool soldOut;
+  final bool isSoldOut;
+  final bool isOptionUsed;
+  final int? stockCount;
   final List<ShoppingOption> options;
   final ShoppingCategory category;
-  final double rating;
-  final double averageRating;
+  final String rating;
   final int reviewCount;
-  final List<ProductTagType> badges;
+  final List<String> itemTags;
+  final List<String>? exposureTags;
+  final String? relatedLink;
+  final bool hasDiscount;
+  final bool isAvailableToPurchase;
+  final bool isOrderQuantityLimited;
+  final int? maxOrderQuantity;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const ShoppingModel({
     required this.id,
-    required this.title,
+    required this.name,
     required this.description,
     required this.content,
     required this.thumbnailUrl,
     required this.manufacturer,
+    this.managerPhone,
     required this.originalPrice,
     required this.finalPrice,
-    this.discountRate,
-    this.soldOut = false,
+    this.isSoldOut = false,
+    this.isOptionUsed = false,
+    this.stockCount,
     required this.options,
     required this.category,
     required this.rating,
-    required this.averageRating,
     required this.reviewCount,
-    required this.badges,
+    required this.itemTags,
+    this.exposureTags,
+    this.relatedLink,
+    this.hasDiscount = false,
+    this.isAvailableToPurchase = true,
+    this.isOrderQuantityLimited = false,
+    this.maxOrderQuantity,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  /// 할인이 적용되었는지 여부
-  bool get hasDiscount => discountRate != null && discountRate! > 0;
+  /// 할인율 계산 (originalPrice와 finalPrice 차이로)
+  int? get discountRate {
+    if (!hasDiscount || originalPrice <= finalPrice) return null;
+    return (((originalPrice - finalPrice) / originalPrice) * 100).round();
+  }
 
   /// 현재 구매 가능한지 여부
-  bool get isAvailableToPurchase => !soldOut;
+  bool get soldOut => isSoldOut;
+
+  /// 평균 평점 (rating을 double로 변환)
+  double get averageRating => double.tryParse(rating) ?? 0.0;
+
+  /// 제품 배지 (itemTags를 ProductTagType으로 변환)
+  List<ProductTagType> get badges {
+    return itemTags
+        .map((tag) => ProductTagType.values.firstWhere(
+              (type) => type.name.toLowerCase() == tag.toLowerCase(),
+              orElse: () => ProductTagType.newArrival,
+            ))
+        .toList();
+  }
 
   /// JSON -> Shopping Model
   factory ShoppingModel.fromJson(Map<String, dynamic> json) {
     return ShoppingModel(
       id: json['id'] as String,
-      title: json['title'] as String,
+      name: json['name'] as String,
       description: json['description'] as String,
       content: json['content'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       manufacturer: json['manufacturer'] as String,
+      managerPhone: json['managerPhone'] as String?,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
-      discountRate: json['discountRate'] as int?,
-      soldOut: json['soldOut'] as bool? ?? false,
+      isSoldOut: json['isSoldOut'] as bool? ?? false,
+      isOptionUsed: json['isOptionUsed'] as bool? ?? false,
+      stockCount: json['stockCount'] as int?,
       options: (json['options'] as List<dynamic>)
           .map((e) => ShoppingOption.fromJson(e as Map<String, dynamic>))
           .toList(),
       category: ShoppingCategory.fromString(json['category'] as String) ??
           ShoppingCategory.others,
-      rating: (json['rating'] as num).toDouble(),
-      averageRating: (json['averageRating'] as num).toDouble(),
+      rating: json['rating'] as String? ?? "0.00",
       reviewCount: json['reviewCount'] as int,
-      badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ProductTagType.values.firstWhere(
-                    (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ProductTagType.newArrival,
-                  ))
+      itemTags: (json['itemTags'] as List<dynamic>?)
+              ?.map((e) => e.toString())
               .toList() ??
           [],
+      exposureTags: (json['exposureTags'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
+      relatedLink: json['relatedLink'] as String?,
+      hasDiscount: json['hasDiscount'] as bool? ?? false,
+      isAvailableToPurchase: json['isAvailableToPurchase'] as bool? ?? true,
+      isOrderQuantityLimited: json['isOrderQuantityLimited'] as bool? ?? false,
+      maxOrderQuantity: json['maxOrderQuantity'] as int?,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
 
@@ -81,45 +123,62 @@ class ShoppingModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
+      'name': name,
       'description': description,
       'content': content,
       'thumbnailUrl': thumbnailUrl,
       'manufacturer': manufacturer,
+      'managerPhone': managerPhone,
       'originalPrice': originalPrice,
       'finalPrice': finalPrice,
-      'discountRate': discountRate,
-      'soldOut': soldOut,
+      'isSoldOut': isSoldOut,
+      'isOptionUsed': isOptionUsed,
+      'stockCount': stockCount,
       'options': options.map((e) => e.toJson()).toList(),
       'category': category.name,
       'rating': rating,
-      'averageRating': averageRating,
       'reviewCount': reviewCount,
-      'badges': badges.map((e) => e.name).toList(),
+      'itemTags': itemTags,
+      'exposureTags': exposureTags,
+      'relatedLink': relatedLink,
+      'hasDiscount': hasDiscount,
+      'isAvailableToPurchase': isAvailableToPurchase,
+      'isOrderQuantityLimited': isOrderQuantityLimited,
+      'maxOrderQuantity': maxOrderQuantity,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 }
 
 class ShoppingOption {
+  final int seq;
   final String name;
   final int price;
+  final int stockCount;
 
   ShoppingOption({
+    required this.seq,
     required this.name,
     required this.price,
+    required this.stockCount,
   });
 
   factory ShoppingOption.fromJson(Map<String, dynamic> json) {
     return ShoppingOption(
+      seq: json['seq'] as int,
       name: json['name'] as String,
       price: json['price'] as int,
+      stockCount: json['stockCount'] as int,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'seq': seq,
       'name': name,
       'price': price,
+      'stockCount': stockCount,
     };
   }
 }

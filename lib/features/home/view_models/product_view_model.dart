@@ -14,7 +14,7 @@ final List<ProductModel> mockProducts = () {
   allProducts.addAll(mockShoppingList.map((shopping) => ProductModel(
         id: shopping.id,
         thumbnailUrl: shopping.thumbnailUrl,
-        title: shopping.title,
+        title: shopping.name,
         originalPrice: shopping.originalPrice,
         finalPrice: shopping.finalPrice,
         discountRate: shopping.discountRate,
