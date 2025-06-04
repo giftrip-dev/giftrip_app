@@ -45,7 +45,10 @@ class _LodgingScreenState extends State<LodgingScreen> {
             child: vm.lodgingList.isEmpty && !vm.isLoading
                 ? Column(
                     children: [
-                      // 1) 지역 날짜 선택 바 (고정)
+                      // 1) 이벤트 배너 추가
+                      const EventBannerWidget(),
+                      const SizedBox(height: 16),
+                      // 2) 지역 날짜 선택 바 (고정)
                       Container(
                         color: Colors.white,
                         child: Column(
@@ -84,7 +87,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
                           ],
                         ),
                       ),
-                      // 2) 빈 상태 메시지
+                      // 3) 빈 상태 메시지
                       Expanded(
                         child: Center(
                           child: Container(
