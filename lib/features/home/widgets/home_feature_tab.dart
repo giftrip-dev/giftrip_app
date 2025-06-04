@@ -21,7 +21,7 @@ class HomeFeatureTab extends StatelessWidget {
       {
         'label': '숙소',
         'icon': 'assets/webp/icons/lodging.webp',
-        'route': '/lodging',
+        'route': '/location',
       },
       {
         'label': '체험단',

@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
-import 'package:giftrip/core/constants/app_text_style.dart';
-import 'package:giftrip/core/widgets/app_bar/back_button_app_bar.dart';
+import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
+import 'package:giftrip/features/auth/widgets/bottom_cta_button.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/widgets/location_tab.dart';
 import 'package:giftrip/features/lodging/widgets/sub_category_item.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
+import 'package:giftrip/features/lodging/screens/lodging_screen.dart';
+import 'package:provider/provider.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({super.key});
+  final String? currentLocation;
+
+  const LocationScreen({
+    super.key,
+    this.currentLocation,
+  });
 
   @override
   State<LocationScreen> createState() => _LocationScreenState();
@@ -16,20 +24,33 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   int _selectedIndex = 0;
+  String? _selectedSubLocation;
   late final List<LocationData> _locationData;
 
   @override
   void initState() {
     super.initState();
     _locationData = LocationManager.getLocationData();
+
+    // 현재 선택된 위치가 있다면 해당 위치의 인덱스와 서브카테고리를 찾아서 설정
+    if (widget.currentLocation != null) {
+      for (int i = 0; i < _locationData.length; i++) {
+        final subLocations = _locationData[i].subLocations;
+        final index = subLocations.indexOf(widget.currentLocation!);
+        if (index != -1) {
+          _selectedIndex = i;
+          _selectedSubLocation = widget.currentLocation;
+          break;
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BackButtonAppBar(
-        type: BackButtonAppBarType.textLeft,
-        title: '위치',
+      appBar: const SearchAppBar(
+        title: '위치 선택',
       ),
       body: Column(
         children: [
@@ -52,6 +73,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         onTap: () {
                           setState(() {
                             _selectedIndex = index;
+                            _selectedSubLocation = null;
                           });
                         },
                       );
@@ -66,8 +88,11 @@ class _LocationScreenState extends State<LocationScreen> {
                         .map((item) => SubCategoryItem(
                               title: item,
                               categoryIndex: _selectedIndex,
+                              isSelected: _selectedSubLocation == item,
                               onTap: () {
-                                Navigator.pop(context, item);
+                                setState(() {
+                                  _selectedSubLocation = item;
+                                });
                               },
                             ))
                         .toList(),
@@ -77,6 +102,29 @@ class _LocationScreenState extends State<LocationScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomCTAButton(
+        isEnabled: _selectedSubLocation != null,
+        text: '숙소 찾기',
+        onPressed: () {
+          if (_selectedSubLocation != null) {
+            // 현재 컨텍스트에서 LodgingViewModel을 찾아서 업데이트
+            final lodgingViewModel = context.read<LodgingViewModel>();
+            lodgingViewModel.setLocationText(_selectedSubLocation!);
+
+            // 현재 화면을 모두 pop하고 lodging_screen으로 이동
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider.value(
+                  value: lodgingViewModel,
+                  child: const LodgingScreen(),
+                ),
+              ),
+              (route) => false,
+            );
+          }
+        },
       ),
     );
   }

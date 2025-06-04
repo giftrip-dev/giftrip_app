@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/app_bar/search_app_bar.dart';
+import 'package:giftrip/core/widgets/banner/event_banner.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
@@ -9,6 +10,7 @@ import 'package:giftrip/features/lodging/widgets/lodging_filter_combined_bar.dar
 import 'package:giftrip/features/lodging/screens/location_screen.dart';
 import 'package:giftrip/features/lodging/widgets/stay_option_bottom_sheet.dart';
 import 'package:giftrip/features/lodging/widgets/lodging_category_bar.dart';
+import 'package:giftrip/features/root/screens/root_screen.dart';
 
 class LodgingScreen extends StatefulWidget {
   const LodgingScreen({super.key});
@@ -21,7 +23,16 @@ class _LodgingScreenState extends State<LodgingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SearchAppBar(title: '숙박'),
+      appBar: SearchAppBar(
+        title: '숙박',
+        onBackPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RootScreen(selectedIndex: 0)),
+          );
+        },
+      ),
       body: Consumer<LodgingViewModel>(
         builder: (context, vm, child) {
           return RefreshIndicator(
@@ -34,7 +45,10 @@ class _LodgingScreenState extends State<LodgingScreen> {
             child: vm.lodgingList.isEmpty && !vm.isLoading
                 ? Column(
                     children: [
-                      // 1) 지역 날짜 선택 바 (고정)
+                      // 1) 이벤트 배너 추가
+                      const EventBannerWidget(),
+                      const SizedBox(height: 16),
+                      // 2) 지역 날짜 선택 바 (고정)
                       Container(
                         color: Colors.white,
                         child: Column(
@@ -48,8 +62,9 @@ class _LodgingScreenState extends State<LodgingScreen> {
                                   final selected = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LocationScreen(),
+                                      builder: (context) => LocationScreen(
+                                        currentLocation: vm.locationText,
+                                      ),
                                     ),
                                   );
                                   if (selected is String &&
@@ -72,7 +87,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
                           ],
                         ),
                       ),
-                      // 2) 빈 상태 메시지
+                      // 3) 빈 상태 메시지
                       Expanded(
                         child: Center(
                           child: Container(
@@ -93,7 +108,15 @@ class _LodgingScreenState extends State<LodgingScreen> {
                 : NestedScrollView(
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return [
-                        // 1) 지역 날짜 선택 바 (고정)
+                        // 1) 이벤트 배너 (스크롤됨)
+                        const SliverToBoxAdapter(
+                          child: EventBannerWidget(),
+                        ),
+                        // 여백 추가
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: 16),
+                        ),
+                        // 2) 지역 날짜 선택 바 (고정)
                         SliverPersistentHeader(
                           pinned: true,
                           floating: true,
@@ -108,7 +131,9 @@ class _LodgingScreenState extends State<LodgingScreen> {
                               final selected = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const LocationScreen(),
+                                  builder: (context) => LocationScreen(
+                                    currentLocation: vm.locationText,
+                                  ),
                                 ),
                               );
                               if (selected is String && selected.isNotEmpty) {

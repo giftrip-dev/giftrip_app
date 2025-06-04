@@ -22,13 +22,15 @@ class LocationTab extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         width: 100,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.grey[100],
+          color: isSelected
+              ? AppColors.primaryStrong
+              : AppColors.backgroundNatural,
         ),
         alignment: Alignment.center,
         child: Text(
           title,
           style: isSelected
-              ? subtitle_M.copyWith(color: AppColors.labelStrong)
+              ? subtitle_M.copyWith(color: AppColors.white)
               : subtitle_M.copyWith(color: AppColors.labelAlternative),
         ),
       ),
