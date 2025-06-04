@@ -77,7 +77,7 @@ class ProductThumbnailItem extends StatelessWidget {
         children: [
           // 1. 썸네일
           CustomImage(
-            imageUrl: product.thumbnailUrl,
+            imageUrl: product.thumbnailUrl ?? '',
             width: 156,
             height: 145,
             borderRadius: BorderRadius.circular(4),

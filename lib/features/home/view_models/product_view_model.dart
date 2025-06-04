@@ -3,26 +3,12 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/home/repositories/product_repo.dart';
-import 'package:giftrip/features/shopping/repositories/mock_shopping_data.dart';
+import 'package:giftrip/features/shopping/repositories/shopping_repo.dart';
 
 /// 목업용 상품 리스트 (쇼핑 상품 + 기타 상품들)
 final List<ProductModel> mockProducts = () {
   // 모든 상품을 담을 리스트 생성
   List<ProductModel> allProducts = [];
-
-  // 쇼핑 상품들을 ProductModel로 변환
-  allProducts.addAll(mockShoppingList.map((shopping) => ProductModel(
-        id: shopping.id,
-        thumbnailUrl: shopping.thumbnailUrl,
-        title: shopping.title,
-        originalPrice: shopping.originalPrice,
-        finalPrice: shopping.finalPrice,
-        discountRate: shopping.discountRate,
-        createdAt: DateTime.now()
-            .subtract(Duration(days: mockShoppingList.indexOf(shopping))),
-        productType: ProductType.product,
-        badges: shopping.badges,
-      )));
 
   // 체험 상품들 추가
   allProducts.addAll(List.generate(
@@ -30,15 +16,25 @@ final List<ProductModel> mockProducts = () {
     (index) {
       final id = 'exp_${index + 1}';
       final originalPrice = 20000 + (index * 1000);
-      final discountRate = (index % 4 == 0) ? ((index * 3) % 40 + 10) : null;
-      final finalPrice = discountRate != null
+      final discountRate = (index % 4 == 0) ? ((index * 3) % 40 + 10) : 0;
+      final finalPrice = discountRate > 0
           ? ((originalPrice * (100 - discountRate)) / 100).round()
           : originalPrice;
 
       List<ProductTagType> badges = [];
-      if (index % 3 == 0) badges.add(ProductTagType.newArrival);
-      if (index % 5 == 0) badges.add(ProductTagType.bestSeller);
-      if (index % 8 == 7) badges.add(ProductTagType.almostSoldOut);
+      List<String> itemTags = [];
+      if (index % 3 == 0) {
+        badges.add(ProductTagType.newArrival);
+        itemTags.add('신상품');
+      }
+      if (index % 5 == 0) {
+        badges.add(ProductTagType.bestSeller);
+        itemTags.add('베스트');
+      }
+      if (index % 8 == 7) {
+        badges.add(ProductTagType.almostSoldOut);
+        itemTags.add('품절임박');
+      }
 
       return ProductModel(
         id: id,
@@ -47,7 +43,11 @@ final List<ProductModel> mockProducts = () {
         originalPrice: originalPrice,
         finalPrice: finalPrice,
         discountRate: discountRate,
+        exposureTags: index % 2 == 0 ? ['new'] : [],
+        itemTags: itemTags,
+        itemType: 'experience',
         createdAt: DateTime.now().subtract(Duration(days: index)),
+        updatedAt: DateTime.now().subtract(Duration(days: index - 1)),
         productType: ProductType.experience,
         badges: badges.isNotEmpty ? badges : null,
       );
@@ -60,14 +60,21 @@ final List<ProductModel> mockProducts = () {
     (index) {
       final id = 'lodging_${index + 1}';
       final originalPrice = 80000 + (index * 5000);
-      final discountRate = (index % 3 == 0) ? ((index * 2) % 30 + 5) : null;
-      final finalPrice = discountRate != null
+      final discountRate = (index % 3 == 0) ? ((index * 2) % 30 + 5) : 0;
+      final finalPrice = discountRate > 0
           ? ((originalPrice * (100 - discountRate)) / 100).round()
           : originalPrice;
 
       List<ProductTagType> badges = [];
-      if (index % 4 == 0) badges.add(ProductTagType.newArrival);
-      if (index % 6 == 0) badges.add(ProductTagType.bestSeller);
+      List<String> itemTags = [];
+      if (index % 4 == 0) {
+        badges.add(ProductTagType.newArrival);
+        itemTags.add('신상품');
+      }
+      if (index % 6 == 0) {
+        badges.add(ProductTagType.bestSeller);
+        itemTags.add('베스트');
+      }
 
       return ProductModel(
         id: id,
@@ -76,7 +83,11 @@ final List<ProductModel> mockProducts = () {
         originalPrice: originalPrice,
         finalPrice: finalPrice,
         discountRate: discountRate,
+        exposureTags: index % 3 == 0 ? ['new'] : [],
+        itemTags: itemTags,
+        itemType: 'lodging',
         createdAt: DateTime.now().subtract(Duration(days: index)),
+        updatedAt: DateTime.now().subtract(Duration(days: index - 1)),
         productType: ProductType.lodging,
         badges: badges.isNotEmpty ? badges : null,
       );
@@ -89,15 +100,25 @@ final List<ProductModel> mockProducts = () {
     (index) {
       final id = 'tester_${index + 1}';
       final originalPrice = 25000 + (index * 3000);
-      final discountRate = (index % 4 == 0) ? ((index * 2) % 25 + 10) : null;
-      final finalPrice = discountRate != null
+      final discountRate = (index % 4 == 0) ? ((index * 2) % 25 + 10) : 0;
+      final finalPrice = discountRate > 0
           ? ((originalPrice * (100 - discountRate)) / 100).round()
           : originalPrice;
 
       List<ProductTagType> badges = [];
-      if (index % 3 == 0) badges.add(ProductTagType.newArrival);
-      if (index % 5 == 0) badges.add(ProductTagType.bestSeller);
-      if (index % 7 == 6) badges.add(ProductTagType.almostSoldOut);
+      List<String> itemTags = [];
+      if (index % 3 == 0) {
+        badges.add(ProductTagType.newArrival);
+        itemTags.add('신상품');
+      }
+      if (index % 5 == 0) {
+        badges.add(ProductTagType.bestSeller);
+        itemTags.add('베스트');
+      }
+      if (index % 7 == 6) {
+        badges.add(ProductTagType.almostSoldOut);
+        itemTags.add('품절임박');
+      }
 
       return ProductModel(
         id: id,
@@ -106,7 +127,11 @@ final List<ProductModel> mockProducts = () {
         originalPrice: originalPrice,
         finalPrice: finalPrice,
         discountRate: discountRate,
+        exposureTags: index % 2 == 1 ? ['new'] : [],
+        itemTags: itemTags,
+        itemType: 'experienceGroup',
         createdAt: DateTime.now().subtract(Duration(days: index)),
+        updatedAt: DateTime.now().subtract(Duration(days: index - 1)),
         productType: ProductType.experienceGroup,
         badges: badges.isNotEmpty ? badges : null,
       );
@@ -124,10 +149,11 @@ enum ProductSection { newArrivals, bestSellers, timeDeals, relatedProducts }
 
 class ProductViewModel extends ChangeNotifier {
   final ProductRepo _repo = ProductRepo();
+  final ShoppingRepo _shoppingRepo = ShoppingRepo();
 
   /// 목업 데이터를 사용할지 판단하는 플래그
   /// todo: 목업 플래그 없애기
-  final bool useMock = true;
+  final bool useMock = false;
 
   // 상태 저장
   List<ProductModel> _newList = [];
@@ -138,7 +164,10 @@ class ProductViewModel extends ChangeNotifier {
   PageMeta? _bestMeta;
   PageMeta? _timeDealMeta;
   PageMeta? _relatedMeta;
-  bool _isLoading = false;
+  bool _isNewLoading = false;
+  bool _isBestLoading = false;
+  bool _isTimeDealLoading = false;
+  bool _isRelatedLoading = false;
 
   // 외부 접근용 Getter
   List<ProductModel> get newList => _newList;
@@ -149,7 +178,17 @@ class ProductViewModel extends ChangeNotifier {
   PageMeta? get bestMeta => _bestMeta;
   PageMeta? get timeDealMeta => _timeDealMeta;
   PageMeta? get relatedMeta => _relatedMeta;
-  bool get isLoading => _isLoading;
+  bool get isNewLoading => _isNewLoading;
+  bool get isBestLoading => _isBestLoading;
+  bool get isTimeDealLoading => _isTimeDealLoading;
+  bool get isRelatedLoading => _isRelatedLoading;
+
+  /// 전체 로딩 상태 (하나라도 로딩 중이면 true)
+  bool get isLoading =>
+      _isNewLoading ||
+      _isBestLoading ||
+      _isTimeDealLoading ||
+      _isRelatedLoading;
 
   /// 다음 페이지 번호 계산 (NEW)
   int? get nextNewPage {
@@ -191,192 +230,114 @@ class ProductViewModel extends ChangeNotifier {
 
   /// 신상품 조회 (목업/실제 API 분기)
   Future<void> fetchNewProducts({int page = 1, int limit = 10}) async {
-    _isLoading = true;
+    _isNewLoading = true;
     notifyListeners();
 
     // UX 완화를 위한 지연
     await Future.delayed(Duration(milliseconds: page == 1 ? 100 : 300));
 
     try {
-      if (useMock) {
-        // ─ 목업 페이지네이션 로직
-        final all = mockProducts;
-        final pageItems = all.skip((page - 1) * limit).take(limit).toList();
-        if (page == 1) {
-          _newList = pageItems;
-        } else {
-          _newList.addAll(pageItems);
-        }
-        final total = all.length;
-        _newMeta = PageMeta(
-          totalItems: total,
-          currentPage: page,
-          itemsPerPage: limit,
-          totalPages: (total ~/ limit) + (total % limit > 0 ? 1 : 0),
-        );
+      final response = await _repo.getNewProductList(page: page, limit: limit);
+      logger.d('신상품 조회 성공: ${response.items.length}개');
+      if (page == 1) {
+        _newList = response.items;
       } else {
-        // ─ 실제 API 호출 로직
-        // final resp = await _repo.getNewProductList(page: page, limit: limit);
-        // if (page == 1) {
-        //   _newList = resp.items;
-        // } else {
-        //   _newList.addAll(resp.items);
-        // }
-        // _newMeta = resp.meta;
+        _newList.addAll(response.items);
       }
+      _newMeta = response.meta;
     } catch (e, st) {
       logger.e('신상품 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isNewLoading = false;
       notifyListeners();
     }
   }
 
   /// 베스트상품 조회 (목업/실제 API 분기)
   Future<void> fetchBestProducts({int page = 1, int limit = 10}) async {
-    _isLoading = true;
+    _isBestLoading = true;
     notifyListeners();
 
     // UX 완화를 위한 지연
     await Future.delayed(Duration(milliseconds: page == 1 ? 100 : 300));
 
     try {
-      if (useMock) {
-        // ─ 목업 페이지네이션 로직
-        final all = mockProducts;
-        final pageItems = all.skip((page - 1) * limit).take(limit).toList();
-        if (page == 1) {
-          _bestList = pageItems;
-        } else {
-          _bestList.addAll(pageItems);
-        }
-        final total = all.length;
-        _bestMeta = PageMeta(
-          totalItems: total,
-          currentPage: page,
-          itemsPerPage: limit,
-          totalPages: (total ~/ limit) + (total % limit > 0 ? 1 : 0),
-        );
+      final resp = await _repo.getBestProductList(page: page, limit: limit);
+      if (page == 1) {
+        _bestList = resp.items;
       } else {
-        // ─ 실제 API 호출 로직
-        // final resp = await _repo.getBestProductList(page: page, limit: limit);
-        // if (page == 1) {
-        //   _bestList = resp.items;
-        // } else {
-        //   _bestList.addAll(resp.items);
-        // }
-        // _bestMeta = resp.meta;
+        _bestList.addAll(resp.items);
       }
+      _bestMeta = resp.meta;
     } catch (e, st) {
       logger.e('베스트상품 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isBestLoading = false;
       notifyListeners();
     }
   }
 
-  /// 타임 딜 조회 (목업/실제 API 분기)
+  /// 타임 딜 조회
   Future<void> fetchTimeDealProducts({int page = 1, int limit = 10}) async {
-    _isLoading = true;
+    _isTimeDealLoading = true;
     notifyListeners();
 
     // UX 완화를 위한 지연
     await Future.delayed(Duration(milliseconds: page == 1 ? 100 : 300));
 
     try {
-      if (useMock) {
-        // ─ 목업 페이지네이션 로직
-        final all = mockProducts;
-        final pageItems = all.skip((page - 1) * limit).take(limit).toList();
-        if (page == 1) {
-          _timeDealList = pageItems;
-        } else {
-          _timeDealList.addAll(pageItems);
-        }
-        final total = all.length;
-        _timeDealMeta = PageMeta(
-          totalItems: total,
-          currentPage: page,
-          itemsPerPage: limit,
-          totalPages: (total ~/ limit) + (total % limit > 0 ? 1 : 0),
-        );
+      final resp = await _repo.getTimeDealProductList(page: page, limit: limit);
+      if (page == 1) {
+        _timeDealList = resp.items;
       } else {
-        // ─ 실제 API 호출 로직
-        // final resp = await _repo.getTimeDealProductList(page: page, limit: limit);
-        // if (page == 1) {
-        //   _timeDealList = resp.items;
-        // } else {
-        //   _timeDealList.addAll(resp.items);
-        // }
-        // _timeDealMeta = resp.meta;
+        _timeDealList.addAll(resp.items);
       }
+      _timeDealMeta = resp.meta;
     } catch (e, st) {
       logger.e('타임 딜 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isTimeDealLoading = false;
+      notifyListeners();
     }
   }
 
-  /// 관련 상품 조회 (목업/실제 API 분기)
+  /// 관련 상품 조회
   Future<void> fetchRelatedProducts({
     required ProductType productType,
     String? productId,
     int page = 1,
     int limit = 10,
   }) async {
-    _isLoading = true;
+    _isRelatedLoading = true;
     notifyListeners();
 
     // 지연
     await Future.delayed(Duration(milliseconds: page == 1 ? 200 : 500));
 
     try {
-      if (useMock) {
-        // ─ 목업 페이지네이션 로직
-        // 상품 타입에 따라 필터링
-        final all =
-            mockProducts.where((p) => p.productType == productType).toList();
+      final resp = productType == ProductType.product
+          ? await _shoppingRepo.getRelatedProducts(
+              productId: productId ?? '',
+              page: page,
+              limit: limit,
+            )
+          : await _repo.getRelatedProducts(
+              productType: productType,
+              productId: productId,
+              page: page,
+              limit: limit,
+            );
 
-        // 현재 상품 ID와 다른 상품들만 선택
-        final filtered = productId != null
-            ? all.where((p) => p.title != '테스트 상품 제목 $productId').toList()
-            : all;
-
-        final pageItems =
-            filtered.skip((page - 1) * limit).take(limit).toList();
-
-        if (page == 1) {
-          _relatedList = pageItems;
-        } else {
-          _relatedList.addAll(pageItems);
-        }
-
-        final total = filtered.length;
-        _relatedMeta = PageMeta(
-          totalItems: total,
-          currentPage: page,
-          itemsPerPage: limit,
-          totalPages: (total ~/ limit) + (total % limit > 0 ? 1 : 0),
-        );
+      if (page == 1) {
+        _relatedList = resp.items;
       } else {
-        // ─ 실제 API 호출 로직
-        // final resp = await _repo.getRelatedProducts(
-        //   productType: productType,
-        //   productId: productId,
-        //   page: page,
-        //   limit: limit,
-        // );
-        // if (page == 1) {
-        //   _relatedList = resp.items;
-        // } else {
-        //   _relatedList.addAll(resp.items);
-        // }
-        // _relatedMeta = resp.meta;
+        _relatedList.addAll(resp.items);
       }
+      _relatedMeta = resp.meta;
     } catch (e, st) {
       logger.e('관련 상품 조회 실패: $e\n$st');
     } finally {
-      _isLoading = false;
+      _isRelatedLoading = false;
       notifyListeners();
     }
   }

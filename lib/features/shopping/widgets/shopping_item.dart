@@ -49,7 +49,7 @@ class ShoppingItem extends StatelessWidget {
           // 2. 제목
           SizedBox(
             child: Text(
-              shopping.title,
+              shopping.name,
               style: body_S.copyWith(
                 // 품절일 경우 텍스트 색상을 labelAlternative로 변경
                 color: shopping.soldOut ? AppColors.labelAlternative : null,

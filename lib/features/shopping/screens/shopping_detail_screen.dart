@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
-import 'package:giftrip/shared/widgets/product/product_detail_image_section.dart';
 import 'package:giftrip/shared/widgets/product/product_description_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
@@ -85,14 +84,13 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                     children: [
                       // 기본 정보 섹션
                       ProductBasicInfoSection(
-                        title: shopping.title,
+                        title: shopping.name,
                         thumbnailUrl: shopping.thumbnailUrl,
                         badges: shopping.badges,
-                        location: shopping.location,
+                        location: shopping.manufacturer,
                         phoneNumber: shopping.managerPhoneNumber,
                         memo: shopping.description,
                         relatedLink: shopping.relatedLink,
-                        manufacturer: shopping.manufacturer, // 제조사 정보 추가
                       ),
                       const SectionDivider(),
 
@@ -100,7 +98,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                       ReviewList(
                         productId: widget.shoppingId,
                         productType: ProductType.experienceGroup,
-                        productTitle: shopping.title,
+                        productTitle: shopping.name,
                         productThumbnailUrl: shopping.thumbnailUrl,
                         averageRating: shopping.averageRating,
                       ),
