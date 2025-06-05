@@ -81,10 +81,10 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 ProductBasicInfoSection(
                   title: lodging.name,
                   thumbnailUrl: lodging.thumbnailUrl,
-                  badges: [],
-                  location: lodging.address1,
+                  badges: lodging.itemTags,
+                  location: '${lodging.address1} ${lodging.address2}',
                   phoneNumber: lodging.managerPhoneNumber,
-                  memo: lodging.address2,
+                  memo: lodging.itemMemo,
                   relatedLink: lodging.relatedLink,
                 ),
                 const SectionDivider(),

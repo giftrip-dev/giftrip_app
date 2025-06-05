@@ -10,7 +10,7 @@ import 'package:giftrip/features/lodging/models/lodging_room_model.dart';
 class LodgingRepo {
   final Dio _dio = DioClient().to();
 
-  /// 예약가능 숙소업소 목록 조회
+  /// 예약가능 업체 목록 조회
   Future<LodgingPageResponse> getAvailableLodgingList({
     String? startDate,
     String? endDate,
@@ -49,6 +49,35 @@ class LodgingRepo {
       }
     } catch (e) {
       throw Exception('숙소 상품 조회 API 요청 실패: $e');
+    }
+  }
+
+  /// 업체 목록 조회
+  Future<LodgingPageResponse> getLodgingList({
+    String? mainLocation,
+    String? subLocation,
+    String? category,
+    int page = 1,
+    int limit = 10,
+  }) async {
+    try {
+      final response = await _dio.get(
+        '/accommodations',
+        queryParameters: {
+          'mainLocation': mainLocation,
+          'subLocation': subLocation,
+          'page': page,
+          'limit': limit,
+          'category': category,
+        }..removeWhere((key, value) => value == null),
+      );
+      if (response.statusCode == 200) {
+        return LodgingPageResponse.fromJson(response.data);
+      } else {
+        throw Exception('업체 목록 조회 실패: [${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('업체 목록 조회 API 요청 실패: $e');
     }
   }
 

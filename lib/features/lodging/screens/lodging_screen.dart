@@ -37,7 +37,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
         builder: (context, vm, child) {
           return RefreshIndicator(
             onRefresh: () async {
-              await vm.fetchLodgingList(refresh: true);
+              await vm.fetchAvailableLodgingList(refresh: true);
             },
             color: AppColors.primary,
             backgroundColor: Colors.transparent,
@@ -154,7 +154,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
                             lodgings: vm.lodgingList,
                             isLoading: vm.isLoading,
                             onLoadMore: vm.nextPage != null
-                                ? () => vm.fetchLodgingList()
+                                ? () => vm.fetchAvailableLodgingList()
                                 : null,
                           ),
                   ),
@@ -170,7 +170,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
     // 초기 데이터 로드
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final vm = context.read<LodgingViewModel>();
-      vm.fetchLodgingList();
+      vm.fetchAvailableLodgingList();
     });
   }
 }

@@ -65,7 +65,7 @@ class LodgingItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  lodging.address1,
+                  '${lodging.address1} ${lodging.address2}',
                   style: body_S.copyWith(
                     color: AppColors.label,
                   ),
@@ -76,15 +76,15 @@ class LodgingItem extends StatelessWidget {
           const SizedBox(height: 8),
 
           // 5. 뱃지들
-          // if (lodging.category.isNotEmpty)
-          //   Row(
-          //     children: [
-          //       for (var i = 0; i < lodging.category.length; i++) ...[
-          //         if (i > 0) const SizedBox(width: 4),
-          //         ItemBadge(tag: lodging.category),
-          //       ],
-          //     ],
-          //   ),
+          if (lodging.itemTags.isNotEmpty)
+            Row(
+              children: [
+                for (var i = 0; i < lodging.itemTags.length; i++) ...[
+                  if (i > 0) const SizedBox(width: 4),
+                  ItemBadge(tag: lodging.itemTags[i]),
+                ],
+              ],
+            ),
           const SizedBox(height: 12),
           // 6. 가격 및 할인율
           if (lodging.cheapestDiscountRate > 0) ...[
@@ -114,7 +114,7 @@ class LodgingItem extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Text(
               '${formatPrice(lodging.cheapestFinalPrice)}원',
-              style: title_L,
+              style: h1_R,
             ),
           ),
         ],
