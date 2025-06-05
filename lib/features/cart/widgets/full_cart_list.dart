@@ -19,7 +19,7 @@ class FullCartList extends StatelessWidget {
     return CartListBase(
       items: items,
       selectedCategory: selectedCategory,
-      useGroupHeaders: true, // 그룹별 헤더 사용 (숙박/체험/체험단, 쇼핑)
+      useGroupHeaders: true, // 그룹별 헤더 사용 (숙소/체험/체험단, 쇼핑)
     );
   }
 }

@@ -3,22 +3,23 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
-import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/repositories/lodging_repo.dart';
 import 'package:intl/intl.dart';
 
-/// 숙박 상품 뷰모델
+/// 숙소 상품 뷰모델
 class LodgingViewModel extends ChangeNotifier {
   final LodgingRepo _repo = LodgingRepo();
 
   // 상태 저장
   List<LodgingModel> _lodgingList = [];
-  LodgingDetailModel? _selectedLodging;
+  LodgingModel? _selectedLodging;
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
   LodgingCategory? _selectedCategory;
-  String _locationText = '';
+  MainLocation? _mainLocation;
+  String _subLocation = '';
   String _stayOptionText = '';
   String _stayDateText = '';
   int _adultCount = 2;
@@ -28,12 +29,13 @@ class LodgingViewModel extends ChangeNotifier {
 
   // 외부 접근용 Getter
   List<LodgingModel> get lodgingList => _lodgingList;
-  LodgingDetailModel? get selectedLodging => _selectedLodging;
+  LodgingModel? get selectedLodging => _selectedLodging;
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
   LodgingCategory? get selectedCategory => _selectedCategory;
-  String get locationText => _locationText;
+  MainLocation? get mainLocation => _mainLocation;
+  String get subLocation => _subLocation;
   String get stayOptionText => _stayOptionText;
   int get adultCount => _adultCount;
   int get childCount => _childCount;
@@ -77,13 +79,11 @@ class LodgingViewModel extends ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 200));
 
     _selectedCategory = category;
-    await fetchLodgingList(refresh: true);
+    await fetchAvailableLodgingList(refresh: true);
   }
 
-  /// 숙박 상품 목록 조회
-  Future<void> fetchLodgingList({bool refresh = false}) async {
-    logger.d(
-        '111fetchLodgingList: $locationText, $startDate, $endDate, $adultCount, $childCount, $selectedCategory, $stayOptionText');
+  /// 예약가능 업체 목록 조회
+  Future<void> fetchAvailableLodgingList({bool refresh = false}) async {
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
     if ((!refresh && _isLoading) ||
         (!refresh && _lodgingList.isNotEmpty && nextPage == null)) {
@@ -99,14 +99,24 @@ class LodgingViewModel extends ChangeNotifier {
       // 새로고침이거나 첫 로드인 경우 페이지 1부터 시작
       final page = refresh || _lodgingList.isEmpty ? 1 : (nextPage ?? 1);
 
+      // final response = await _repo.getAvailableLodgingList(
+      //   startDate: _startDate?.toIso8601String().split('T').first,
+      //   endDate: _endDate?.toIso8601String().split('T').first,
+      //   mainLocation: _mainLocation?.name,
+      //   subLocation: _subLocation,
+      //   occupancy: _adultCount + _childCount,
+      //   category: _selectedCategory?.name,
+      //   isActive: true,
+      //   page: page,
+      //   limit: 10,
+      // );
+
       final response = await _repo.getLodgingList(
-        category: _selectedCategory,
+        mainLocation: _mainLocation?.name,
+        subLocation: _subLocation,
+        category: _selectedCategory?.name,
         page: page,
-        location: _locationText,
-        startDate: _startDate,
-        endDate: _endDate,
-        adultCount: _adultCount,
-        childCount: _childCount,
+        limit: 10,
       );
 
       if (refresh || _lodgingList.isEmpty) {
@@ -118,14 +128,14 @@ class LodgingViewModel extends ChangeNotifier {
       _hasError = false;
     } catch (e) {
       _hasError = true;
-      logger.e('숙박 상품 목록 조회 실패: $e');
+      logger.e('숙소 상품 목록 조회 실패: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  /// 숙박 상품 상세 정보 조회
+  /// 숙소 상품 상세 정보 조회
   Future<void> fetchLodgingDetail(String id) async {
     try {
       _isLoading = true;
@@ -135,7 +145,7 @@ class LodgingViewModel extends ChangeNotifier {
       _selectedLodging = await _repo.getLodgingDetail(id);
     } catch (e) {
       _hasError = true;
-      logger.e('숙박 상품 상세 정보 조회 실패: $e');
+      logger.e('숙소 상품 상세 정보 조회 실패: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -148,9 +158,13 @@ class LodgingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setLocationText(String text) {
-    _locationText = text;
-    fetchLodgingList(refresh: true);
+  void setLocationText(String subLocation) {
+    _subLocation = subLocation;
+    // subLocation에 해당하는 mainLocation 찾기
+    _mainLocation = LocationManager.getLocationData()
+        .firstWhere((data) => data.subLocations.contains(subLocation))
+        .mainLocation;
+    fetchAvailableLodgingList(refresh: true);
   }
 
   void setStayDates(DateTime startDate, DateTime endDate) {
@@ -162,7 +176,7 @@ class LodgingViewModel extends ChangeNotifier {
         '${dateFormat.format(startDate)}~${dateFormat.format(endDate)} | 성인 $_adultCount${_childCount > 0 ? ', 아동 $_childCount' : ''}';
     _stayDateText =
         '${dateFormat.format(startDate)}~${dateFormat.format(endDate)}';
-    fetchLodgingList(refresh: true);
+    fetchAvailableLodgingList(refresh: true);
   }
 
   void setGuestCount(int adultCount, int childCount) {
@@ -181,6 +195,6 @@ class LodgingViewModel extends ChangeNotifier {
     notifyListeners();
 
     // 데이터 새로 조회
-    fetchLodgingList(refresh: true);
+    fetchAvailableLodgingList(refresh: true);
   }
 }

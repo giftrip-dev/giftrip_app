@@ -119,8 +119,9 @@ class ProductBasicInfoSection extends StatelessWidget {
     final textWidget = Text(
       text,
       style: body_S.copyWith(
-        color: AppColors.label,
+        color: isLink ? const Color(0xFF2C53FF) : AppColors.label,
         decoration: isLink ? TextDecoration.underline : null,
+        decorationColor: isLink ? const Color(0xFF2C53FF) : null,
       ),
     );
 

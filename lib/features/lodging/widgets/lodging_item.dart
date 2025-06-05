@@ -47,7 +47,7 @@ class LodgingItem extends StatelessWidget {
           // 2. 제목
           SizedBox(
             child: Text(
-              lodging.title,
+              lodging.name,
               style: title_L,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -65,7 +65,7 @@ class LodgingItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  lodging.distanceInfo,
+                  '${lodging.address1} ${lodging.address2}',
                   style: body_S.copyWith(
                     color: AppColors.label,
                   ),
@@ -76,30 +76,30 @@ class LodgingItem extends StatelessWidget {
           const SizedBox(height: 8),
 
           // 5. 뱃지들
-          if (lodging.badges.isNotEmpty)
+          if (lodging.itemTags.isNotEmpty)
             Row(
               children: [
-                for (var i = 0; i < lodging.badges.length; i++) ...[
+                for (var i = 0; i < lodging.itemTags.length; i++) ...[
                   if (i > 0) const SizedBox(width: 4),
-                  ItemBadge(tag: lodging.badges[i].name),
+                  ItemBadge(tag: lodging.itemTags[i]),
                 ],
               ],
             ),
           const SizedBox(height: 12),
           // 6. 가격 및 할인율
-          if (lodging.hasDiscount) ...[
+          if (lodging.cheapestDiscountRate > 0) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '${lodging.discountRate}%',
+                  '${lodging.cheapestDiscountRate}%',
                   style: subtitle_XS.copyWith(
                     color: AppColors.labelAlternative,
                   ),
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  '${formatPrice(lodging.originalPrice)}원',
+                  '${formatPrice(lodging.cheapestOriginalPrice)}원',
                   style: caption.copyWith(
                     color: AppColors.labelAlternative,
                     decoration: TextDecoration.lineThrough,
@@ -113,8 +113,8 @@ class LodgingItem extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              '${formatPrice(lodging.finalPrice)}원',
-              style: title_L,
+              '${formatPrice(lodging.cheapestFinalPrice)}원',
+              style: h1_R,
             ),
           ),
         ],

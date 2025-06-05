@@ -24,7 +24,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchAppBar(
-        title: '숙박',
+        title: '숙소',
         onBackPressed: () {
           Navigator.push(
             context,
@@ -37,7 +37,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
         builder: (context, vm, child) {
           return RefreshIndicator(
             onRefresh: () async {
-              await vm.fetchLodgingList(refresh: true);
+              await vm.fetchAvailableLodgingList(refresh: true);
             },
             color: AppColors.primary,
             backgroundColor: Colors.transparent,
@@ -57,13 +57,13 @@ class _LodgingScreenState extends State<LodgingScreen> {
                               padding: const EdgeInsets.only(
                                   left: 16, right: 16, bottom: 16),
                               child: LodgingFilterCombinedBar(
-                                locationText: vm.locationText,
+                                locationText: vm.subLocation,
                                 onLocationTap: () async {
                                   final selected = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => LocationScreen(
-                                        currentLocation: vm.locationText,
+                                        currentLocation: vm.subLocation,
                                       ),
                                     ),
                                   );
@@ -125,14 +125,14 @@ class _LodgingScreenState extends State<LodgingScreen> {
                             onCategoryChanged: (category) {
                               vm.changeCategory(category);
                             },
-                            locationText: vm.locationText,
+                            locationText: vm.subLocation,
                             stayOptionText: vm.stayOptionText,
                             onLocationTap: () async {
                               final selected = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => LocationScreen(
-                                    currentLocation: vm.locationText,
+                                    currentLocation: vm.subLocation,
                                   ),
                                 ),
                               );
@@ -147,14 +147,14 @@ class _LodgingScreenState extends State<LodgingScreen> {
                         ),
                       ];
                     },
-                    // 3) 숙박 상품 리스트
+                    // 3) 숙소 상품 리스트
                     body: vm.lodgingList.isEmpty && vm.isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : LodgingItemList(
                             lodgings: vm.lodgingList,
                             isLoading: vm.isLoading,
                             onLoadMore: vm.nextPage != null
-                                ? () => vm.fetchLodgingList()
+                                ? () => vm.fetchAvailableLodgingList()
                                 : null,
                           ),
                   ),
@@ -170,7 +170,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
     // 초기 데이터 로드
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final vm = context.read<LodgingViewModel>();
-      vm.fetchLodgingList();
+      vm.fetchAvailableLodgingList();
     });
   }
 }

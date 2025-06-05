@@ -4,6 +4,7 @@ import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/constants/item_type.dart';
 import 'package:giftrip/core/utils/formatter.dart';
 import 'package:giftrip/core/widgets/image/custom_image.dart';
+import 'package:giftrip/features/lodging/models/lodging_room_model.dart';
 import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/view_models/room_view_model.dart';
 import 'package:giftrip/shared/widgets/cart/cart_icon_button.dart';
@@ -11,7 +12,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 class RoomItem extends StatefulWidget {
-  final RoomViewModel room;
+  final LodgingRoomModel room;
   final double width;
   final double height;
   const RoomItem({
@@ -141,7 +142,7 @@ class _RoomItemState extends State<RoomItem> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Text(
-                widget.room.roomName,
+                widget.room.name,
                 style: title_L,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -155,17 +156,17 @@ class _RoomItemState extends State<RoomItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      '• 기준 ${widget.room.baseOccupancy}인 / 최대 ${widget.room.maxOccupancy}인',
+                      '• 기준 ${widget.room.maxOccupancy}인 / 최대 ${widget.room.maxOccupancy}인',
                       style: caption.copyWith(
                         color: AppColors.label,
                       )),
                   const SizedBox(height: 4),
-                  Text('• ${widget.room.bedType}',
-                      style: caption.copyWith(color: AppColors.label)),
-                  const SizedBox(height: 4),
-                  Text('• ${widget.room.viewType}',
-                      style: caption.copyWith(color: AppColors.label)),
-                  const SizedBox(height: 4),
+                  // Text('• ${widget.room.bedType}',
+                  //     style: caption.copyWith(color: AppColors.label)),
+                  // const SizedBox(height: 4),
+                  // Text('• ${widget.room.viewType}',
+                  //     style: caption.copyWith(color: AppColors.label)),
+                  // const SizedBox(height: 4),
                   Text(
                       '• 체크인 ${widget.room.checkInTime}~체크아웃 ${widget.room.checkOutTime}',
                       style: caption.copyWith(color: AppColors.label)),
@@ -188,27 +189,27 @@ class _RoomItemState extends State<RoomItem> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (widget.room.discountRate > 0) ...[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${widget.room.discountRate}%',
-                              style: subtitle_XS.copyWith(
-                                color: AppColors.labelAlternative,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${formatPrice(widget.room.originalPrice)}원',
-                              style: caption.copyWith(
-                                color: AppColors.labelAlternative,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      // if (widget.room.discountRate > 0) ...[
+                      //   Row(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     children: [
+                      //       Text(
+                      //         '${widget.room.discountRate}%',
+                      //         style: subtitle_XS.copyWith(
+                      //           color: AppColors.labelAlternative,
+                      //         ),
+                      //       ),
+                      //       const SizedBox(width: 4),
+                      //       Text(
+                      //         '${formatPrice(widget.room.originalPrice)}원',
+                      //         style: caption.copyWith(
+                      //           color: AppColors.labelAlternative,
+                      //           decoration: TextDecoration.lineThrough,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ],
                       // 5. 최종 가격
                       Text(
                         '${formatPrice(widget.room.finalPrice)}원',

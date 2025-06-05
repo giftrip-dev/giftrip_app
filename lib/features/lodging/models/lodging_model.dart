@@ -1,83 +1,79 @@
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
-import 'package:giftrip/features/home/models/product_model.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 
-/// 숙박 상품 모델
+/// 숙소 상품 모델
 class LodgingModel {
   final String id;
-  final String title;
-  final String description;
-  final String thumbnailUrl;
-  final String mainLocation;
-  final String subLocation;
-  final String distanceInfo;
-  final int originalPrice;
-  final int finalPrice;
-  final int? discountRate;
+  final String name;
   final LodgingCategory category;
-  final double rating;
-  final double averageRating; // 평균 별점
-  final int reviewCount;
-  final List<ProductTagType> badges;
-  final DateTime availableFrom; // 구매 가능 시작일
-  final DateTime availableTo; // 구매 가능 종료일
+  final MainLocation mainLocation;
+  final String subLocation;
+  final String address1;
+  final String address2;
+  final String postalCode;
+  final String managerName;
+  final String managerPhoneNumber;
+  final String thumbnailUrl;
+  final String? relatedLink;
+  final List<String> itemTags;
+  final String? itemMemo;
+  final int cheapestOriginalPrice;
+  final int cheapestFinalPrice;
+  final int cheapestDiscountRate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const LodgingModel({
     required this.id,
-    required this.title,
-    required this.description,
-    required this.thumbnailUrl,
+    required this.name,
+    required this.category,
     required this.mainLocation,
     required this.subLocation,
-    required this.distanceInfo,
-    required this.originalPrice,
-    required this.finalPrice,
-    required this.category,
-    required this.rating,
-    required this.averageRating,
-    required this.reviewCount,
-    required this.badges,
-    required this.availableFrom,
-    required this.availableTo,
-    this.discountRate,
+    required this.address1,
+    required this.address2,
+    required this.postalCode,
+    required this.managerName,
+    required this.managerPhoneNumber,
+    required this.thumbnailUrl,
+    this.relatedLink,
+    this.itemTags = const [],
+    this.itemMemo,
+    required this.cheapestOriginalPrice,
+    required this.cheapestFinalPrice,
+    required this.cheapestDiscountRate,
+    required this.createdAt,
+    required this.updatedAt,
   });
-
-  /// 할인이 적용되었는지 여부
-  bool get hasDiscount => discountRate != null && discountRate! > 0;
-
-  /// 현재 구매 가능한지 여부
-  bool get isAvailableToPurchase {
-    final now = DateTime.now();
-    return now.isAfter(availableFrom) && now.isBefore(availableTo);
-  }
 
   /// JSON -> Lodging Model
   factory LodgingModel.fromJson(Map<String, dynamic> json) {
     return LodgingModel(
       id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      thumbnailUrl: json['thumbnailUrl'] as String,
-      mainLocation: json['mainLocation'] as String,
-      subLocation: json['subLocation'] as String,
-      distanceInfo: json['distanceInfo'] as String,
-      originalPrice: json['originalPrice'] as int,
-      finalPrice: json['finalPrice'] as int,
+      name: json['name'] as String,
       category: LodgingCategory.fromString(json['category'] as String) ??
           LodgingCategory.hotel,
-      rating: (json['rating'] as num).toDouble(),
-      averageRating: (json['averageRating'] as num).toDouble(),
-      reviewCount: json['reviewCount'] as int,
-      discountRate: json['discountRate'] as int?,
-      badges: (json['badges'] as List<dynamic>?)
-              ?.map((e) => ProductTagType.values.firstWhere(
-                    (type) => type.name == e.toString().toUpperCase(),
-                    orElse: () => ProductTagType.newArrival,
-                  ))
+      mainLocation: MainLocation.values.firstWhere(
+        (location) => location.name == json['mainLocation'],
+      ),
+      subLocation: json['subLocation'] as String,
+      address1: json['address1'] as String,
+      address2: json['address2'] as String,
+      postalCode: json['postalCode'] as String,
+      managerName: json['managerName'] as String,
+      managerPhoneNumber: json['managerPhoneNumber'] as String,
+      thumbnailUrl: json['thumbnailUrl'] as String,
+      relatedLink: json['relatedLink'] as String?,
+      itemTags: (json['itemTags'] as List<dynamic>?)
+              ?.map((e) => e as String)
               .toList() ??
           [],
-      availableFrom: DateTime.parse(json['availableFrom'] as String),
-      availableTo: DateTime.parse(json['availableTo'] as String),
+      itemMemo: json['itemMemo'] as String?,
+      cheapestOriginalPrice: json['cheapestOriginalPrice'] as int,
+      cheapestFinalPrice: json['cheapestFinalPrice'] as int,
+      cheapestDiscountRate: json['cheapestDiscountRate'] as int,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
 
@@ -85,22 +81,24 @@ class LodgingModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
-      'description': description,
-      'thumbnailUrl': thumbnailUrl,
+      'name': name,
+      'category': category.name,
       'mainLocation': mainLocation,
       'subLocation': subLocation,
-      'distanceInfo': distanceInfo,
-      'originalPrice': originalPrice,
-      'finalPrice': finalPrice,
-      'category': category.name,
-      'rating': rating,
-      'averageRating': averageRating,
-      'reviewCount': reviewCount,
-      'discountRate': discountRate,
-      'badges': badges.map((e) => e.name).toList(),
-      'availableFrom': availableFrom.toIso8601String(),
-      'availableTo': availableTo.toIso8601String(),
+      'address1': address1,
+      'address2': address2,
+      'postalCode': postalCode,
+      'managerName': managerName,
+      'managerPhoneNumber': managerPhoneNumber,
+      'thumbnailUrl': thumbnailUrl,
+      'relatedLink': relatedLink,
+      'itemTags': itemTags,
+      'itemMemo': itemMemo,
+      'cheapestOriginalPrice': cheapestOriginalPrice,
+      'cheapestFinalPrice': cheapestFinalPrice,
+      'cheapestDiscountRate': cheapestDiscountRate,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 }

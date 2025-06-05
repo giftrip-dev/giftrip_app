@@ -70,12 +70,12 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
               children: [
                 // 기본 정보 섹션
                 ProductBasicInfoSection(
-                  title: lodging.title,
+                  title: lodging.name,
                   thumbnailUrl: lodging.thumbnailUrl,
-                  badges: lodging.badges.map((e) => e.name).toList(),
-                  location: lodging.distanceInfo,
+                  badges: lodging.itemTags,
+                  location: '${lodging.address1} ${lodging.address2}',
                   phoneNumber: lodging.managerPhoneNumber,
-                  memo: lodging.description,
+                  memo: lodging.itemMemo,
                   relatedLink: lodging.relatedLink,
                 ),
                 const SectionDivider(),
@@ -84,9 +84,9 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 ReviewList(
                   productId: widget.lodgingId,
                   productType: ProductType.lodging,
-                  productTitle: lodging.title,
+                  productTitle: lodging.name,
                   productThumbnailUrl: lodging.thumbnailUrl,
-                  averageRating: lodging.averageRating,
+                  averageRating: 0,
                 ),
                 const SectionDivider(),
 
@@ -101,22 +101,22 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 // 문의하기 섹션
                 ProductPolicySection(
                   title: '문의하기',
-                  sectionTitle: lodging.inquiryInfo.title,
-                  sectionContent: lodging.inquiryInfo.content,
+                  sectionTitle: '문의하기',
+                  sectionContent: '문의하기',
                 ),
                 const SectionDivider(),
 
                 // 변경 및 취소 섹션
                 ProductPolicySection(
                   title: '변경 및 취소',
-                  sectionTitle: lodging.changeInfo.title,
-                  sectionContent: lodging.changeInfo.content,
+                  sectionTitle: '변경 및 취소',
+                  sectionContent: '변경 및 취소',
                 ),
                 const SectionDivider(),
 
-                // 관련 숙박 추천 섹션
+                // 관련 숙소 추천 섹션
                 RelatedProductsSection(
-                  title: '이런 숙박 어떠세요?',
+                  title: '이런 숙소 어떠세요?',
                   productType: ProductType.lodging,
                   productId: widget.lodgingId,
                   pageSize: 5,
