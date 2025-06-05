@@ -3,6 +3,7 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
+import 'package:giftrip/features/lodging/models/lodging_room_model.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/repositories/lodging_repo.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,7 @@ class LodgingViewModel extends ChangeNotifier {
   int _childCount = 0;
   DateTime? _startDate;
   DateTime? _endDate;
+  List<LodgingRoomModel> _roomList = [];
 
   // 외부 접근용 Getter
   List<LodgingModel> get lodgingList => _lodgingList;
@@ -42,6 +44,7 @@ class LodgingViewModel extends ChangeNotifier {
   DateTime? get startDate => _startDate;
   DateTime? get endDate => _endDate;
   String get stayDateText => _stayDateText;
+  List<LodgingRoomModel> get roomList => _roomList;
 
   LodgingViewModel() {
     // 초기 카테고리 설정
@@ -146,6 +149,36 @@ class LodgingViewModel extends ChangeNotifier {
     } catch (e) {
       _hasError = true;
       logger.e('숙소 상품 상세 정보 조회 실패: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  /// 객실 목록 조회
+  Future<void> fetchRoomList(String lodgingId,
+      {bool refresh = false, int page = 1, int limit = 10}) async {
+    try {
+      _isLoading = true;
+      _hasError = false;
+      notifyListeners();
+
+      final response = await _repo.getAvailableRooms(
+        accommodationId: lodgingId,
+        startDate: _startDate!.toIso8601String().split('T').first,
+        endDate: _endDate!.toIso8601String().split('T').first,
+        page: page,
+        limit: limit,
+      );
+
+      if (refresh || _roomList.isEmpty) {
+        _roomList = response.items;
+      } else {
+        _roomList = [..._roomList, ...response.items];
+      }
+    } catch (e) {
+      _hasError = true;
+      logger.e('객실 목록 조회 실패: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

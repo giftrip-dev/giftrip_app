@@ -14,9 +14,9 @@ class LodgingRoomModel {
   final int finalPrice;
   final int dailyStock;
   final bool isActive;
-  final String id;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   LodgingRoomModel({
     required this.accommodationId,
@@ -32,9 +32,9 @@ class LodgingRoomModel {
     required this.finalPrice,
     required this.dailyStock,
     required this.isActive,
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory LodgingRoomModel.fromJson(Map<String, dynamic> json) {
@@ -54,9 +54,13 @@ class LodgingRoomModel {
       finalPrice: json['finalPrice'] as int,
       dailyStock: json['dailyStock'] as int,
       isActive: json['isActive'] as bool,
-      id: json['id'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      id: json['id'] as String?,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
+          : null,
     );
   }
 
@@ -76,8 +80,8 @@ class LodgingRoomModel {
       'dailyStock': dailyStock,
       'isActive': isActive,
       'id': id,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }
@@ -87,18 +91,18 @@ class LodgingRoomPageResponse {
   final int total;
   final int page;
   final int limit;
-  final String id;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   LodgingRoomPageResponse({
     required this.items,
     required this.total,
     required this.page,
     required this.limit,
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory LodgingRoomPageResponse.fromJson(Map<String, dynamic> json) {
@@ -109,9 +113,13 @@ class LodgingRoomPageResponse {
       total: json['total'] as int,
       page: json['page'] as int,
       limit: json['limit'] as int,
-      id: json['id'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      id: json['id'] as String?,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
+          : null,
     );
   }
 }

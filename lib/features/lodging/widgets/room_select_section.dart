@@ -51,8 +51,14 @@ class _RoomSelectSectionState extends State<RoomSelectSection> {
 
           // 필터 바
           GestureDetector(
-            onTap: () {
-              StayOptionBottomSheet.show(context);
+            onTap: () async {
+              await StayOptionBottomSheet.show(context);
+              if (viewModel.selectedLodging != null) {
+                await viewModel.fetchRoomList(
+                  viewModel.selectedLodging!.id,
+                  refresh: true,
+                );
+              }
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -76,8 +82,14 @@ class _RoomSelectSectionState extends State<RoomSelectSection> {
           ),
           const SizedBox(height: 8),
           GestureDetector(
-            onTap: () {
-              StayOptionBottomSheet.show(context);
+            onTap: () async {
+              await StayOptionBottomSheet.show(context);
+              if (viewModel.selectedLodging != null) {
+                await viewModel.fetchRoomList(
+                  viewModel.selectedLodging!.id,
+                  refresh: true,
+                );
+              }
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -101,7 +113,7 @@ class _RoomSelectSectionState extends State<RoomSelectSection> {
           ),
           const SizedBox(height: 12),
           RoomList(
-            rooms: mockRoomList,
+            rooms: viewModel.roomList,
             width: itemWidth,
             height: itemHeight,
           ),

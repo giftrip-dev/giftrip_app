@@ -28,9 +28,11 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    // 화면 진입 시 상세 정보 로드
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<LodgingViewModel>().fetchLodgingDetail(widget.lodgingId);
+    // 화면 진입 시 상세 정보와 객실 리스트 로드
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final viewModel = context.read<LodgingViewModel>();
+      await viewModel.fetchLodgingDetail(widget.lodgingId);
+      await viewModel.fetchRoomList(widget.lodgingId, refresh: true);
     });
   }
 
