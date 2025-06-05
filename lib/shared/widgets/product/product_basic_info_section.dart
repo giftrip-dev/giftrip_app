@@ -13,7 +13,7 @@ class ProductBasicInfoSection extends StatelessWidget {
   final String thumbnailUrl;
   final List<String> badges;
   final String location;
-  final String? memo;
+  final String? description;
   final String phoneNumber;
   final String? relatedLink;
 
@@ -23,7 +23,7 @@ class ProductBasicInfoSection extends StatelessWidget {
     required this.badges,
     required this.location,
     required this.phoneNumber,
-    this.memo,
+    this.description,
     this.relatedLink,
     super.key,
   });
@@ -77,7 +77,7 @@ class ProductBasicInfoSection extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 16),
                 child: _buildInfoRow(
                   icon: LucideIcons.pin,
-                  text: memo?.isNotEmpty == true ? memo! : "-",
+                  text: description?.isNotEmpty == true ? description! : "-",
                 ),
               ),
 

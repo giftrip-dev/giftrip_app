@@ -75,7 +75,7 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                   badges: lodging.itemTags,
                   location: '${lodging.address1} ${lodging.address2}',
                   phoneNumber: lodging.managerPhoneNumber,
-                  memo: lodging.itemMemo,
+                  description: lodging.description,
                   relatedLink: lodging.relatedLink,
                 ),
                 const SectionDivider(),

@@ -83,7 +83,7 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
                         badges: experience.badges.map((e) => e.name).toList(),
                         location: experience.location,
                         phoneNumber: experience.managerPhoneNumber,
-                        memo: experience.description,
+                        description: experience.description,
                         relatedLink: experience.relatedLink,
                       ),
                       const SectionDivider(),

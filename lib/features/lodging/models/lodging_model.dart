@@ -17,7 +17,7 @@ class LodgingModel {
   final String thumbnailUrl;
   final String? relatedLink;
   final List<String> itemTags;
-  final String? itemMemo;
+  final String? description;
   final int cheapestOriginalPrice;
   final int cheapestFinalPrice;
   final int? cheapestDiscountRate;
@@ -38,7 +38,7 @@ class LodgingModel {
     required this.thumbnailUrl,
     this.relatedLink,
     this.itemTags = const [],
-    this.itemMemo,
+    this.description,
     required this.cheapestOriginalPrice,
     required this.cheapestFinalPrice,
     this.cheapestDiscountRate,
@@ -68,7 +68,7 @@ class LodgingModel {
               ?.map((e) => e as String)
               .toList() ??
           [],
-      itemMemo: json['itemMemo'] as String?,
+      description: json['description'] as String?,
       cheapestOriginalPrice: json['cheapestOriginalPrice'] as int,
       cheapestFinalPrice: json['cheapestFinalPrice'] as int,
       cheapestDiscountRate: json['cheapestDiscountRate'] as int?,
@@ -93,7 +93,7 @@ class LodgingModel {
       'thumbnailUrl': thumbnailUrl,
       'relatedLink': relatedLink,
       'itemTags': itemTags,
-      'itemMemo': itemMemo,
+      'description': description,
       'cheapestOriginalPrice': cheapestOriginalPrice,
       'cheapestFinalPrice': cheapestFinalPrice,
       'cheapestDiscountRate': cheapestDiscountRate,

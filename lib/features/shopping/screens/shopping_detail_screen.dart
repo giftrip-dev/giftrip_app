@@ -81,7 +81,7 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
                         badges: shopping.itemTags,
                         location: shopping.manufacturer,
                         phoneNumber: shopping.managerPhoneNumber,
-                        memo: shopping.description,
+                        description: shopping.description,
                         relatedLink: shopping.relatedLink,
                       ),
                       const SectionDivider(),

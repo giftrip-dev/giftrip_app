@@ -80,7 +80,7 @@ class _TesterDetailScreenState extends State<TesterDetailScreen> {
                         badges: tester.badges.map((e) => e.name).toList(),
                         location: tester.location,
                         phoneNumber: tester.managerPhoneNumber,
-                        memo: tester.description,
+                        description: tester.description,
                         relatedLink: tester.relatedLink,
                       ),
                       const SectionDivider(),
