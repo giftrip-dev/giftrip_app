@@ -1,4 +1,4 @@
-/// 숙박 상품 카테고리
+/// 숙소 상품 카테고리
 enum LodgingCategory {
   hotel('호텔'),
   pension('펜션'),

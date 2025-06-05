@@ -27,13 +27,13 @@ List<CartItemModel> generateMockCartList() {
       addedAt: now,
     ),
 
-    // 숙박 2개
+    // 숙소 2개
     // for (int i = 0; i < 2; i++)
     //   CartItemModel(
     //     id: 'cart_lodging_${i + 1}',
     //     productId: 'prod_lodging_${i + 1}',
     //     category: CartCategory.lodging,
-    //     title: '숙박 ${i + 1}',
+    //     title: '숙소 ${i + 1}',
     //     thumbnailUrl: 'assets/png/banner.png',
     //     originalPrice: 100000 + i * 10000,
     //     price: 90000 + i * 10000,

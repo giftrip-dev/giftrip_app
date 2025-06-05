@@ -1,7 +1,7 @@
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 
-/// 숙박 상품 모델
+/// 숙소 상품 모델
 class LodgingModel {
   final String id;
   final String name;

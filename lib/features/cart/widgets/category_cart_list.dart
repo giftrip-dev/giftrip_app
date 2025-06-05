@@ -19,7 +19,7 @@ class CategoryCartList extends StatelessWidget {
     return CartListBase(
       items: items,
       selectedCategory: selectedCategory,
-      useGroupHeaders: false, // 개별 카테고리별 헤더 사용 (숙박, 체험, 체험단, 쇼핑)
+      useGroupHeaders: false, // 개별 카테고리별 헤더 사용 (숙소, 체험, 체험단, 쇼핑)
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 
-/// 숙박 상품 상세 모델
+/// 숙소 상품 상세 모델
 class LodgingDetailModel extends LodgingModel {
   const LodgingDetailModel({
     required super.id,

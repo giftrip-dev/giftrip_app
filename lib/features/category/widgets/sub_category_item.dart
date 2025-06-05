@@ -40,7 +40,7 @@ class SubCategoryItem extends StatelessWidget {
           }
         }
         if (categoryIndex == 2) {
-          // 숙박 카테고리인 경우
+          // 숙소 카테고리인 경우
           final category = LodgingCategory.fromString(title);
           if (category != null) {
             Navigator.push(

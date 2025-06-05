@@ -8,7 +8,7 @@ import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/repositories/lodging_repo.dart';
 import 'package:intl/intl.dart';
 
-/// 숙박 상품 뷰모델
+/// 숙소 상품 뷰모델
 class LodgingViewModel extends ChangeNotifier {
   final LodgingRepo _repo = LodgingRepo();
 
@@ -83,10 +83,8 @@ class LodgingViewModel extends ChangeNotifier {
     await fetchLodgingList(refresh: true);
   }
 
-  /// 숙박 상품 목록 조회
+  /// 숙소 상품 목록 조회
   Future<void> fetchLodgingList({bool refresh = false}) async {
-    logger.d(
-        '111fetchLodgingList: $_mainLocation, $_subLocation, $startDate, $endDate, $adultCount, $childCount, $selectedCategory, $stayOptionText');
     // 이미 로딩 중이거나, 첫 로드/새로고침이 아닌데 다음 페이지가 없는 경우 리턴
     if ((!refresh && _isLoading) ||
         (!refresh && _lodgingList.isNotEmpty && nextPage == null)) {
@@ -102,13 +100,16 @@ class LodgingViewModel extends ChangeNotifier {
       // 새로고침이거나 첫 로드인 경우 페이지 1부터 시작
       final page = refresh || _lodgingList.isEmpty ? 1 : (nextPage ?? 1);
 
-      final response = await _repo.getLodgingList(
-        category: _selectedCategory?.name,
-        page: page,
+      final response = await _repo.getAvailableLodgingList(
+        startDate: _startDate?.toIso8601String().split('T').first,
+        endDate: _endDate?.toIso8601String().split('T').first,
         mainLocation: _mainLocation?.name,
         subLocation: _subLocation,
-        // createdAtStart: _startDate?.toIso8601String(),
-        // createdAtEnd: _endDate?.toIso8601String(),
+        occupancy: _adultCount + _childCount,
+        category: _selectedCategory?.name,
+        isActive: true,
+        page: page,
+        limit: 10,
       );
 
       if (refresh || _lodgingList.isEmpty) {
@@ -120,14 +121,14 @@ class LodgingViewModel extends ChangeNotifier {
       _hasError = false;
     } catch (e) {
       _hasError = true;
-      logger.e('숙박 상품 목록 조회 실패: $e');
+      logger.e('숙소 상품 목록 조회 실패: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  /// 숙박 상품 상세 정보 조회
+  /// 숙소 상품 상세 정보 조회
   Future<void> fetchLodgingDetail(String id) async {
     try {
       _isLoading = true;
@@ -137,7 +138,7 @@ class LodgingViewModel extends ChangeNotifier {
       _selectedLodging = await _repo.getLodgingDetail(id);
     } catch (e) {
       _hasError = true;
-      logger.e('숙박 상품 상세 정보 조회 실패: $e');
+      logger.e('숙소 상품 상세 정보 조회 실패: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

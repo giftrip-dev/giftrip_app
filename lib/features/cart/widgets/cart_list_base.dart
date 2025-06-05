@@ -49,7 +49,7 @@ class CartListBase extends StatelessWidget {
     }
   }
 
-  /// 그룹별 섹션 구성 (숙박/체험/체험단, 쇼핑)
+  /// 그룹별 섹션 구성 (숙소/체험/체험단, 쇼핑)
   Widget _buildGroupSections(
       BuildContext context, CartViewModel cartViewModel) {
     final mainCategories = [
@@ -68,7 +68,7 @@ class CartListBase extends StatelessWidget {
             cartViewModel: cartViewModel,
             categories: mainCategories,
             items: mainItems,
-            title: '숙박 / 체험 / 체험단',
+            title: '숙소 / 체험 / 체험단',
           ),
         if (shoppingItems.isNotEmpty)
           _buildSection(
@@ -82,7 +82,7 @@ class CartListBase extends StatelessWidget {
     );
   }
 
-  /// 개별 카테고리별 섹션 구성 (숙박, 체험, 체험단, 쇼핑)
+  /// 개별 카테고리별 섹션 구성 (숙소, 체험, 체험단, 쇼핑)
   Widget _buildCategorySections(
       BuildContext context, CartViewModel cartViewModel) {
     final sections = <Widget>[];

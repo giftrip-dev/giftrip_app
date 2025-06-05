@@ -9,7 +9,7 @@ import 'package:giftrip/features/lodging/view_models/lodging_view_model.dart';
 import 'package:giftrip/features/lodging/widgets/calendar_widget.dart';
 import 'package:giftrip/features/lodging/widgets/guest_widget.dart';
 
-/// 숙박 옵션 바텀시트
+/// 숙소 옵션 바텀시트
 class StayOptionBottomSheet extends StatefulWidget {
   final VoidCallback? onClose;
 

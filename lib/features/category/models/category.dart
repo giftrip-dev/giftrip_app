@@ -3,7 +3,7 @@ import 'package:giftrip/features/experience/models/experience_category.dart';
 enum MainCategory {
   experience('체험'),
   product('상품'),
-  lodging('숙박'),
+  lodging('숙소'),
   experienceGroup('체험단');
 
   final String label;

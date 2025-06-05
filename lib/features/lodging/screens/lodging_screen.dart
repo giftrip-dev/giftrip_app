@@ -24,7 +24,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchAppBar(
-        title: '숙박',
+        title: '숙소',
         onBackPressed: () {
           Navigator.push(
             context,
@@ -147,7 +147,7 @@ class _LodgingScreenState extends State<LodgingScreen> {
                         ),
                       ];
                     },
-                    // 3) 숙박 상품 리스트
+                    // 3) 숙소 상품 리스트
                     body: vm.lodgingList.isEmpty && vm.isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : LodgingItemList(

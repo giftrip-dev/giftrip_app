@@ -1,6 +1,6 @@
 enum CategoryType {
   product('상품'),
-  lodging('숙박'),
+  lodging('숙소'),
   experience('체험'),
   all('전체');
 

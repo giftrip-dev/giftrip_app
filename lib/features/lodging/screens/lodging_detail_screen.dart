@@ -123,9 +123,9 @@ class _LodgingDetailScreenState extends State<LodgingDetailScreen> {
                 ),
                 const SectionDivider(),
 
-                // 관련 숙박 추천 섹션
+                // 관련 숙소 추천 섹션
                 RelatedProductsSection(
-                  title: '이런 숙박 어떠세요?',
+                  title: '이런 숙소 어떠세요?',
                   productType: ProductType.lodging,
                   productId: widget.lodgingId,
                   pageSize: 5,

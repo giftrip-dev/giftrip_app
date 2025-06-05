@@ -4,7 +4,7 @@ import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/home/view_models/product_view_model.dart';
 
-/// 목업 숙박 상품 데이터
+/// 목업 숙소 상품 데이터
 /// 홈스크린의 목업 데이터에서 숙소 타입만 필터링해서 LodgingModel로 변환
 final List<LodgingModel> mockLodgingList = () {
   // 홈스크린 목업 데이터에서 숙소 타입만 필터링
