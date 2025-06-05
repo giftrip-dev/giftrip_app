@@ -96,7 +96,7 @@ class LodgingRepo {
   }
 
   /// 숙소업소 내 날짜 인원 별 객실 조회
-  Future<LodgingRoomPageResponse> getAvailableRoomsForAccommodation({
+  Future<LodgingRoomPageResponse> getAvailableRooms({
     required String accommodationId,
     required String startDate,
     required String endDate,

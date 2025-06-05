@@ -38,7 +38,7 @@ class RoomViewModel extends ChangeNotifier {
     _hasError = false;
     notifyListeners();
     try {
-      final response = await _repo.getAvailableRoomsForAccommodation(
+      final response = await _repo.getAvailableRooms(
         accommodationId: accommodationId,
         startDate: startDate.toIso8601String().split('T').first,
         endDate: endDate.toIso8601String().split('T').first,
