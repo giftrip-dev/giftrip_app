@@ -18,6 +18,7 @@ class LodgingViewModel extends ChangeNotifier {
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
+  bool _isRoomLoading = false;
   LodgingCategory? _selectedCategory;
   MainLocation? _mainLocation;
   String _subLocation = '';
@@ -35,6 +36,7 @@ class LodgingViewModel extends ChangeNotifier {
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;
+  bool get isRoomLoading => _isRoomLoading;
   LodgingCategory? get selectedCategory => _selectedCategory;
   MainLocation? get mainLocation => _mainLocation;
   String get subLocation => _subLocation;
@@ -159,8 +161,7 @@ class LodgingViewModel extends ChangeNotifier {
   Future<void> fetchRoomList(String lodgingId,
       {bool refresh = false, int page = 1, int limit = 10}) async {
     try {
-      _isLoading = true;
-      _hasError = false;
+      _isRoomLoading = true;
       notifyListeners();
 
       final response = await _repo.getAvailableRooms(
@@ -177,10 +178,9 @@ class LodgingViewModel extends ChangeNotifier {
         _roomList = [..._roomList, ...response.items];
       }
     } catch (e) {
-      _hasError = true;
       logger.e('객실 목록 조회 실패: $e');
     } finally {
-      _isLoading = false;
+      _isRoomLoading = false;
       notifyListeners();
     }
   }
@@ -212,6 +212,18 @@ class LodgingViewModel extends ChangeNotifier {
     fetchAvailableLodgingList(refresh: true);
   }
 
+  void setStayDatesOnly(DateTime startDate, DateTime endDate) {
+    logger.d('setStayDatesOnly: $startDate, $endDate');
+    _startDate = startDate;
+    _endDate = endDate;
+    final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
+    _stayOptionText =
+        '${dateFormat.format(startDate)}~${dateFormat.format(endDate)} | 성인 $_adultCount${_childCount > 0 ? ', 아동 $_childCount' : ''}';
+    _stayDateText =
+        '${dateFormat.format(startDate)}~${dateFormat.format(endDate)}';
+    notifyListeners();
+  }
+
   void setGuestCount(int adultCount, int childCount) {
     logger.d('111setGuestCount: $adultCount, $childCount');
     _adultCount = adultCount;
@@ -229,5 +241,21 @@ class LodgingViewModel extends ChangeNotifier {
 
     // 데이터 새로 조회
     fetchAvailableLodgingList(refresh: true);
+  }
+
+  void setGuestCountOnly(int adultCount, int childCount) {
+    logger.d('setGuestCountOnly: $adultCount, $childCount');
+    _adultCount = adultCount;
+    _childCount = childCount;
+
+    // stayOptionText 업데이트
+    if (_startDate != null && _endDate != null) {
+      final dateFormat = DateFormat('MM.dd(E)', 'ko_KR');
+      _stayOptionText =
+          '${dateFormat.format(_startDate!)}~${dateFormat.format(_endDate!)} | 성인 $_adultCount${_childCount > 0 ? ', 아동 $_childCount' : ''}';
+    }
+
+    // UI 업데이트
+    notifyListeners();
   }
 }

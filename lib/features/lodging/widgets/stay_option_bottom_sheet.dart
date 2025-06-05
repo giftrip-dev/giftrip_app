@@ -22,8 +22,8 @@ class StayOptionBottomSheet extends StatefulWidget {
   State<StayOptionBottomSheet> createState() => _StayOptionBottomSheetState();
 
   /// 바텀시트를 표시하는 정적 메서드
-  static Future<void> show(BuildContext context) {
-    return showModalBottomSheet(
+  static Future<bool?> show(BuildContext context) {
+    return showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -222,10 +222,10 @@ class _StayOptionBottomSheetState extends State<StayOptionBottomSheet> {
             onPressed: _selectedStartDate != null && _selectedEndDate != null
                 ? () {
                     final viewModel = context.read<LodgingViewModel>();
-                    viewModel.setStayDates(
+                    viewModel.setStayDatesOnly(
                         _selectedStartDate!, _selectedEndDate!);
-                    viewModel.setGuestCount(_adultCount, _childCount);
-                    Navigator.pop(context);
+                    viewModel.setGuestCountOnly(_adultCount, _childCount);
+                    Navigator.pop(context, true);
                   }
                 : null,
             isEnabled: _selectedStartDate != null && _selectedEndDate != null,
