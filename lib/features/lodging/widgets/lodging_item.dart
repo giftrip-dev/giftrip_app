@@ -87,7 +87,8 @@ class LodgingItem extends StatelessWidget {
             ),
           const SizedBox(height: 12),
           // 6. 가격 및 할인율
-          if (lodging.cheapestDiscountRate > 0) ...[
+          if (lodging.cheapestDiscountRate != null &&
+              lodging.cheapestDiscountRate! > 0) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

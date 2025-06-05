@@ -20,7 +20,7 @@ class LodgingModel {
   final String? itemMemo;
   final int cheapestOriginalPrice;
   final int cheapestFinalPrice;
-  final int cheapestDiscountRate;
+  final int? cheapestDiscountRate;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -41,7 +41,7 @@ class LodgingModel {
     this.itemMemo,
     required this.cheapestOriginalPrice,
     required this.cheapestFinalPrice,
-    required this.cheapestDiscountRate,
+    this.cheapestDiscountRate,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -71,7 +71,7 @@ class LodgingModel {
       itemMemo: json['itemMemo'] as String?,
       cheapestOriginalPrice: json['cheapestOriginalPrice'] as int,
       cheapestFinalPrice: json['cheapestFinalPrice'] as int,
-      cheapestDiscountRate: json['cheapestDiscountRate'] as int,
+      cheapestDiscountRate: json['cheapestDiscountRate'] as int?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );

@@ -1,14 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:giftrip/core/constants/app_colors.dart';
 import 'package:giftrip/core/constants/app_text_style.dart';
+import 'dart:math';
 
 /// 상품 뱃지 위젯
 class ItemBadge extends StatelessWidget {
   static final Map<String, Color> _tagColors = {};
   static final List<Color> _availableColors = [
-    AppColors.statusAlarm,
+    AppColors.statusClear,
+    AppColors.statusWarning,
     AppColors.primarySoft,
+    AppColors.component,
   ];
+  static int? _lastColorIndex;
+  static final Random _random = Random();
 
   final String tag;
   final Color? backgroundColor;
@@ -22,8 +27,16 @@ class ItemBadge extends StatelessWidget {
   /// 태그별 고정 색상 가져오기
   static Color _getTagColor(String tag) {
     if (!_tagColors.containsKey(tag)) {
-      _tagColors[tag] =
-          _availableColors[_tagColors.length % _availableColors.length];
+      // 마지막 색상 인덱스와 다른 인덱스만 후보로 둠
+      List<int> candidateIndexes =
+          List.generate(_availableColors.length, (i) => i);
+      if (_lastColorIndex != null && _availableColors.length > 1) {
+        candidateIndexes.remove(_lastColorIndex);
+      }
+      int selectedIndex =
+          candidateIndexes[_random.nextInt(candidateIndexes.length)];
+      _tagColors[tag] = _availableColors[selectedIndex];
+      _lastColorIndex = selectedIndex;
     }
     return _tagColors[tag]!;
   }
