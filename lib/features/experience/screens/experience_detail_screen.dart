@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
+import 'package:giftrip/core/widgets/error/error_view.dart';
 import 'package:giftrip/shared/widgets/product/product_detail_image_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
@@ -58,22 +59,12 @@ class _ExperienceDetailScreenState extends State<ExperienceDetailScreen> {
 
           // 에러 발생
           if (viewModel.hasError || experience == null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('데이터를 불러오는 중 오류가 발생했습니다.'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<ExperienceViewModel>()
-                          .fetchExperienceDetail(widget.experienceId);
-                    },
-                    child: const Text('다시 시도'),
-                  ),
-                ],
-              ),
+            return ErrorView(
+              onRetry: () {
+                context
+                    .read<ExperienceViewModel>()
+                    .fetchExperienceDetail(widget.experienceId);
+              },
             );
           }
 
