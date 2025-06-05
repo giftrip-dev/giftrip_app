@@ -1,4 +1,3 @@
-import 'package:giftrip/features/home/models/product_model.dart';
 import 'package:giftrip/features/shopping/models/shopping_category.dart';
 import 'package:giftrip/features/shopping/models/shopping_model.dart';
 
@@ -16,7 +15,6 @@ class InformationSection {
 /// 쇼핑 상품 상세 모델
 class ShoppingDetailModel extends ShoppingModel {
   final String location; // 판매처 위치
-  final String managerPhoneNumber; // 담당자 연락처
   final String detailImageUrl; // 상세 이미지 URL
   final String croppedDetailImageUrl; // 상세 이미지 URL (크롭된 버전)
   final InformationSection inquiryInfo; // 문의 정보
@@ -29,13 +27,14 @@ class ShoppingDetailModel extends ShoppingModel {
     required super.description,
     required super.content,
     required super.thumbnailUrl,
+    required super.manufacturer,
+    required super.managerPhoneNumber,
     required super.originalPrice,
     required super.finalPrice,
     required super.category,
     required super.rating,
     required super.reviewCount,
-    required super.manufacturer,
-    super.managerPhone,
+    required super.options,
     super.isSoldOut = false,
     super.isOptionUsed = false,
     super.stockCount,
@@ -48,9 +47,7 @@ class ShoppingDetailModel extends ShoppingModel {
     super.maxOrderQuantity,
     required super.createdAt,
     required super.updatedAt,
-    required super.options,
     required this.location,
-    required this.managerPhoneNumber,
     required this.detailImageUrl,
     required this.croppedDetailImageUrl,
     required this.inquiryInfo,
@@ -66,14 +63,18 @@ class ShoppingDetailModel extends ShoppingModel {
       description: json['description'] as String,
       content: json['content'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
+      manufacturer: json['manufacturer'] as String,
+      managerPhoneNumber: json['managerPhoneNumber'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
       category: ShoppingCategory.fromString(json['category'] as String) ??
           ShoppingCategory.others,
       rating: json['rating'] as String? ?? "0.00",
       reviewCount: json['reviewCount'] as int,
-      manufacturer: json['manufacturer'] as String,
-      managerPhone: json['managerPhone'] as String?,
+      options: (json['options'] as List<dynamic>?)
+              ?.map((e) => ShoppingOption.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       isSoldOut: json['isSoldOut'] as bool? ?? false,
       isOptionUsed: json['isOptionUsed'] as bool? ?? false,
       stockCount: json['stockCount'] as int?,
@@ -91,12 +92,7 @@ class ShoppingDetailModel extends ShoppingModel {
       maxOrderQuantity: json['maxOrderQuantity'] as int?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
-      options: (json['options'] as List<dynamic>?)
-              ?.map((e) => ShoppingOption.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
       location: json['location'] as String? ?? '',
-      managerPhoneNumber: json['managerPhoneNumber'] as String? ?? '',
       detailImageUrl: json['detailImageUrl'] as String? ?? '',
       croppedDetailImageUrl: json['croppedDetailImageUrl'] as String? ?? '',
       inquiryInfo: json['inquiryInfo'] != null

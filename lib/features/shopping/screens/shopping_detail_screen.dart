@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/widgets/button/cta_button.dart';
 import 'package:giftrip/core/widgets/section_divider.dart';
+import 'package:giftrip/core/widgets/error/error_view.dart';
 import 'package:giftrip/shared/widgets/product/product_description_section.dart';
 import 'package:provider/provider.dart';
 import 'package:giftrip/core/constants/item_type.dart';
@@ -55,22 +57,12 @@ class _ShoppingDetailScreenState extends State<ShoppingDetailScreen> {
 
           // 에러 발생
           if (viewModel.hasError || shopping == null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('데이터를 불러오는 중 오류가 발생했습니다.'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      context
-                          .read<ShoppingViewModel>()
-                          .fetchShoppingDetail(widget.shoppingId);
-                    },
-                    child: const Text('다시 시도'),
-                  ),
-                ],
-              ),
+            return ErrorView(
+              onRetry: () {
+                context
+                    .read<ShoppingViewModel>()
+                    .fetchShoppingDetail(widget.shoppingId);
+              },
             );
           }
 
