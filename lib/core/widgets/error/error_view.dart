@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:giftrip/core/constants/app_colors.dart';
+import 'package:giftrip/core/constants/app_text_style.dart';
 import 'package:giftrip/core/widgets/button/cta_button.dart';
 
 class ErrorView extends StatelessWidget {
@@ -7,7 +9,7 @@ class ErrorView extends StatelessWidget {
   final VoidCallback onRetry;
 
   const ErrorView({
-    this.message = '데이터를 불러오는 중 오류가 발생했습니다.',
+    this.message = '상품을 불러오는 중 오류가 발생했습니다.',
     this.buttonText = '다시 시도',
     required this.onRetry,
     super.key,
@@ -21,12 +23,26 @@ class ErrorView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(message),
+            Icon(
+              Icons.error_outline_rounded,
+              color: Theme.of(context).colorScheme.error,
+              size: 48,
+            ),
             const SizedBox(height: 16),
-            CTAButton(
-              onPressed: onRetry,
-              text: buttonText,
-              isEnabled: true,
+            Text(
+              message,
+              style: body_M.copyWith(color: AppColors.labelAlternative),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: 120,
+              child: CTAButton(
+                type: CTAButtonType.outline,
+                onPressed: onRetry,
+                text: buttonText,
+                isEnabled: true,
+              ),
             ),
           ],
         ),
