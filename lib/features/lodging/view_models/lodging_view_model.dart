@@ -3,7 +3,6 @@ import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
-import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/repositories/lodging_repo.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +13,7 @@ class LodgingViewModel extends ChangeNotifier {
 
   // 상태 저장
   List<LodgingModel> _lodgingList = [];
-  LodgingDetailModel? _selectedLodging;
+  LodgingModel? _selectedLodging;
   PageMeta? _meta;
   bool _isLoading = false;
   bool _hasError = false;
@@ -30,7 +29,7 @@ class LodgingViewModel extends ChangeNotifier {
 
   // 외부 접근용 Getter
   List<LodgingModel> get lodgingList => _lodgingList;
-  LodgingDetailModel? get selectedLodging => _selectedLodging;
+  LodgingModel? get selectedLodging => _selectedLodging;
   PageMeta? get meta => _meta;
   bool get isLoading => _isLoading;
   bool get hasError => _hasError;

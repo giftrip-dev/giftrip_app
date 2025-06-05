@@ -3,7 +3,6 @@ import 'package:giftrip/core/services/api_service.dart';
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
-import 'package:giftrip/features/lodging/models/lodging_detail_model.dart';
 import 'package:giftrip/core/utils/logger.dart';
 import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/models/lodging_room_model.dart';
@@ -54,11 +53,11 @@ class LodgingRepo {
   }
 
   /// 숙소 상품 상세 정보 조회
-  Future<LodgingDetailModel> getLodgingDetail(String id) async {
+  Future<LodgingModel> getLodgingDetail(String id) async {
     try {
       final response = await _dio.get('/accommodations/$id');
       if (response.statusCode == 200) {
-        return LodgingDetailModel.fromJson(response.data);
+        return LodgingModel.fromJson(response.data);
       } else {
         throw Exception('숙소 상품 상세 정보 조회 실패: ${response.statusCode}');
       }
