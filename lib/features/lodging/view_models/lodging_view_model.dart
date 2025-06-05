@@ -99,25 +99,25 @@ class LodgingViewModel extends ChangeNotifier {
       // 새로고침이거나 첫 로드인 경우 페이지 1부터 시작
       final page = refresh || _lodgingList.isEmpty ? 1 : (nextPage ?? 1);
 
-      // final response = await _repo.getAvailableLodgingList(
-      //   startDate: _startDate?.toIso8601String().split('T').first,
-      //   endDate: _endDate?.toIso8601String().split('T').first,
-      //   mainLocation: _mainLocation?.name,
-      //   subLocation: _subLocation,
-      //   occupancy: _adultCount + _childCount,
-      //   category: _selectedCategory?.name,
-      //   isActive: true,
-      //   page: page,
-      //   limit: 10,
-      // );
-
-      final response = await _repo.getLodgingList(
+      final response = await _repo.getAvailableLodgingList(
+        startDate: _startDate?.toIso8601String().split('T').first,
+        endDate: _endDate?.toIso8601String().split('T').first,
         mainLocation: _mainLocation?.name,
         subLocation: _subLocation,
+        occupancy: _adultCount + _childCount,
         category: _selectedCategory?.name,
+        isActive: true,
         page: page,
         limit: 10,
       );
+
+      // final response = await _repo.getLodgingList(
+      //   mainLocation: _mainLocation?.name,
+      //   subLocation: _subLocation,
+      //   category: _selectedCategory?.name,
+      //   page: page,
+      //   limit: 10,
+      // );
 
       if (refresh || _lodgingList.isEmpty) {
         _lodgingList = response.items;
