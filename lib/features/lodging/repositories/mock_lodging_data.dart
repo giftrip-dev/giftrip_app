@@ -44,7 +44,7 @@ final List<LodgingModel> mockLodgingList = () {
       name: '${category.label} 상품 ${index + 1} ${subLocation}',
       category: category,
       thumbnailUrl: product.thumbnailUrl ?? '',
-      mainLocation: MainLocation.CAPITAL.label,
+      mainLocation: MainLocation.CAPITAL,
       subLocation: subLocation,
       address1: '${category.label} 상품 ${index + 1} ${subLocation}',
       address2: '${category.label} 상품 ${index + 1} ${subLocation}',
@@ -52,6 +52,9 @@ final List<LodgingModel> mockLodgingList = () {
       managerName: '${category.label} 상품 ${index + 1} ${subLocation}',
       managerPhoneNumber: '${category.label} 상품 ${index + 1} ${subLocation}',
       relatedLink: '${category.label} 상품 ${index + 1} ${subLocation}',
+      cheapestOriginalPrice: 100000,
+      cheapestFinalPrice: 100000,
+      cheapestDiscountRate: 10,
       createdAt: availableFrom,
       updatedAt: availableTo,
     );

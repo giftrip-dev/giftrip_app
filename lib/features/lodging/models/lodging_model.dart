@@ -1,12 +1,13 @@
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 
 /// 숙소 상품 모델
 class LodgingModel {
   final String id;
   final String name;
   final LodgingCategory category;
-  final String mainLocation;
+  final MainLocation mainLocation;
   final String subLocation;
   final String address1;
   final String address2;
@@ -15,6 +16,9 @@ class LodgingModel {
   final String managerPhoneNumber;
   final String thumbnailUrl;
   final String relatedLink;
+  final int cheapestOriginalPrice;
+  final int cheapestFinalPrice;
+  final int cheapestDiscountRate;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -31,6 +35,9 @@ class LodgingModel {
     required this.managerPhoneNumber,
     required this.thumbnailUrl,
     required this.relatedLink,
+    required this.cheapestOriginalPrice,
+    required this.cheapestFinalPrice,
+    required this.cheapestDiscountRate,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -42,7 +49,9 @@ class LodgingModel {
       name: json['name'] as String,
       category: LodgingCategory.fromString(json['category'] as String) ??
           LodgingCategory.hotel,
-      mainLocation: json['mainLocation'] as String,
+      mainLocation: MainLocation.values.firstWhere(
+        (location) => location.name == json['mainLocation'],
+      ),
       subLocation: json['subLocation'] as String,
       address1: json['address1'] as String,
       address2: json['address2'] as String,
@@ -51,6 +60,9 @@ class LodgingModel {
       managerPhoneNumber: json['managerPhoneNumber'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       relatedLink: json['relatedLink'] as String,
+      cheapestOriginalPrice: json['cheapestOriginalPrice'] as int,
+      cheapestFinalPrice: json['cheapestFinalPrice'] as int,
+      cheapestDiscountRate: json['cheapestDiscountRate'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -71,6 +83,9 @@ class LodgingModel {
       'managerPhoneNumber': managerPhoneNumber,
       'thumbnailUrl': thumbnailUrl,
       'relatedLink': relatedLink,
+      'cheapestOriginalPrice': cheapestOriginalPrice,
+      'cheapestFinalPrice': cheapestFinalPrice,
+      'cheapestDiscountRate': cheapestDiscountRate,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

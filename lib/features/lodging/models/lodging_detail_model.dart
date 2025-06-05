@@ -1,4 +1,5 @@
 import 'package:giftrip/features/lodging/models/lodging_model.dart';
+import 'package:giftrip/features/lodging/models/location.dart';
 import 'package:giftrip/features/lodging/models/lodging_category.dart';
 
 /// 숙소 상품 상세 모델
@@ -16,6 +17,9 @@ class LodgingDetailModel extends LodgingModel {
     required super.managerPhoneNumber,
     required super.thumbnailUrl,
     required super.relatedLink,
+    required super.cheapestOriginalPrice,
+    required super.cheapestFinalPrice,
+    required super.cheapestDiscountRate,
     required super.createdAt,
     required super.updatedAt,
   });
@@ -26,7 +30,9 @@ class LodgingDetailModel extends LodgingModel {
       name: json['name'] as String,
       category: LodgingCategory.fromString(json['category'] as String) ??
           LodgingCategory.hotel,
-      mainLocation: json['mainLocation'] as String,
+      mainLocation: MainLocation.values.firstWhere(
+        (location) => location.label == json['mainLocation'],
+      ),
       subLocation: json['subLocation'] as String,
       address1: json['address1'] as String,
       address2: json['address2'] as String,
@@ -35,6 +41,9 @@ class LodgingDetailModel extends LodgingModel {
       managerPhoneNumber: json['managerPhoneNumber'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       relatedLink: json['relatedLink'] as String,
+      cheapestOriginalPrice: json['cheapestOriginalPrice'] as int,
+      cheapestFinalPrice: json['cheapestFinalPrice'] as int,
+      cheapestDiscountRate: json['cheapestDiscountRate'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );

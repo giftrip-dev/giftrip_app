@@ -87,36 +87,36 @@ class LodgingItem extends StatelessWidget {
           //   ),
           const SizedBox(height: 12),
           // 6. 가격 및 할인율
-          // if (lodging.hasDiscount) ...[
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       Text(
-          //         '${lodging.discountRate}%',
-          //         style: subtitle_XS.copyWith(
-          //           color: AppColors.labelAlternative,
-          //         ),
-          //       ),
-          //       const SizedBox(width: 4),
-          //       Text(
-          //         '${formatPrice(lodging.originalPrice)}원',
-          //         style: caption.copyWith(
-          //           color: AppColors.labelAlternative,
-          //           decoration: TextDecoration.lineThrough,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ],
+          if (lodging.cheapestDiscountRate > 0) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  '${lodging.cheapestDiscountRate}%',
+                  style: subtitle_XS.copyWith(
+                    color: AppColors.labelAlternative,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '${formatPrice(lodging.cheapestOriginalPrice)}원',
+                  style: caption.copyWith(
+                    color: AppColors.labelAlternative,
+                    decoration: TextDecoration.lineThrough,
+                  ),
+                ),
+              ],
+            ),
+          ],
 
           // 7. 최종 가격
-          // Align(
-          //   alignment: Alignment.centerRight,
-          //   child: Text(
-          //     '${formatPrice(lodging.finalPrice)}원',
-          //     style: title_L,
-          //   ),
-          // ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              '${formatPrice(lodging.cheapestFinalPrice)}원',
+              style: title_L,
+            ),
+          ),
         ],
       ),
     );
