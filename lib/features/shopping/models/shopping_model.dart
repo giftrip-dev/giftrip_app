@@ -1,6 +1,5 @@
 import 'package:giftrip/core/utils/page_meta.dart';
 import 'package:giftrip/features/shopping/models/shopping_category.dart';
-import 'package:giftrip/features/home/models/product_model.dart';
 
 /// 쇼핑 상품 모델
 class ShoppingModel {
@@ -10,7 +9,7 @@ class ShoppingModel {
   final String content; // 퀼 에디터용 콘텐츠 (JSON 형태)
   final String thumbnailUrl;
   final String manufacturer;
-  final String? managerPhone;
+  final String managerPhoneNumber;
   final int originalPrice;
   final int finalPrice;
   final bool isSoldOut;
@@ -37,7 +36,7 @@ class ShoppingModel {
     required this.content,
     required this.thumbnailUrl,
     required this.manufacturer,
-    this.managerPhone,
+    required this.managerPhoneNumber,
     required this.originalPrice,
     required this.finalPrice,
     this.isSoldOut = false,
@@ -79,7 +78,7 @@ class ShoppingModel {
       content: json['content'] as String,
       thumbnailUrl: json['thumbnailUrl'] as String,
       manufacturer: json['manufacturer'] as String,
-      managerPhone: json['managerPhone'] as String?,
+      managerPhoneNumber: json['managerPhoneNumber'] as String,
       originalPrice: json['originalPrice'] as int,
       finalPrice: json['finalPrice'] as int,
       isSoldOut: json['isSoldOut'] as bool? ?? false,
@@ -114,11 +113,10 @@ class ShoppingModel {
     return {
       'id': id,
       'name': name,
-      'description': description,
       'content': content,
       'thumbnailUrl': thumbnailUrl,
       'manufacturer': manufacturer,
-      'managerPhone': managerPhone,
+      'managerPhoneNumber': managerPhoneNumber,
       'originalPrice': originalPrice,
       'finalPrice': finalPrice,
       'isSoldOut': isSoldOut,
